@@ -96,7 +96,7 @@ const verifiedAuth = async (req, res, next) => {
     // info for next()
     req.user = verifiedToken;
   } catch (err) {
-    return res.status(401).sned('Invalid Token');
+    return res.status(401).send('Invalid Token');
   }
 
   return next();
