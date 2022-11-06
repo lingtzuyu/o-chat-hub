@@ -1,4 +1,5 @@
 require('dotenv').config();
+const User = require('../models/auth_model');
 
 // use joi and validator to validate the input
 const Joi = require('joi');
@@ -17,14 +18,53 @@ const loginSchema = Joi.object({
   mail: Joi.string().email().required(),
 });
 
-// TODO: model那邊的邏輯還沒寫，目前先隨便回
+// register邏輯
 const register = async (req, res) => {
-  res.status(200).send({ message: 'Register route ' });
+  try {
+    const { username, mail, password } = req.body;
+
+    if (!username || !mail || !password) {
+      res.status(400).send({
+        error: 'Username, email and password are required.',
+      });
+      return;
+    }
+
+    // call signUp to insertInto DB
+    const result = await User.signUp(username, mail, password);
+    console.log(result);
+
+    // email already exist會進到這邊
+    if (result.error) {
+      res.status(403).send({ error: result.error });
+      return;
+    }
+
+    res.status(200).json({
+      data: {
+        tokeninfo: {
+          access_token: result.user.accesstoken,
+          access_expired: result.user.access_expired,
+        },
+        userinfo: {
+          id: result.user.id,
+          name: result.user.username,
+          mail: result.user.mail,
+        },
+      },
+    });
+  } catch (err) {
+    res.status(500).send('Error, please check input format');
+  }
 };
 
-// TODO: model那邊的邏輯還沒寫，目前先隨便回
+// login邏輯
 const login = async (req, res) => {
-  res.status(200).send({ message: 'Login route ' });
+  try {
+    res.status(200).send({ message: 'Login route ' });
+  } catch (err) {
+    res.status(500).send('Internal Error');
+  }
 };
 
 module.exports = {
