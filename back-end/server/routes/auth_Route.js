@@ -7,6 +7,7 @@ const {
   login,
   registerSchema,
   loginSchema,
+  verifiedAuth,
 } = require('../controllers/auth_controller');
 
 // register route
@@ -16,5 +17,10 @@ router
 
 // login route
 router.route('/login').post(validator.body(loginSchema), wrapAsync(login));
+
+// test router => 經過verifiedAuth這個middleware for 身分驗證後才會往下pass
+router.route('/testlogin').get(wrapAsync(verifiedAuth), (req, res) => {
+  res.send('verifiedAuth ok');
+});
 
 module.exports = router;

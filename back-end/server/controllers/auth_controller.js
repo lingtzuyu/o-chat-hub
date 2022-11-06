@@ -1,5 +1,9 @@
 require('dotenv').config();
+const jwt = require('jsonwebtoken');
+
 const User = require('../models/auth_model');
+
+const { TOKEN_SECRET } = process.env;
 
 // use joi and validator to validate the input
 const Joi = require('joi');
@@ -79,9 +83,29 @@ const login = async (req, res) => {
   }
 };
 
+const verifiedAuth = async (req, res, next) => {
+  let token = req.body.token || req.headers['authorization'];
+  if (!token) {
+    return res.status(403).send('Token missing');
+  }
+  try {
+    // decode the token, 移除bearer
+    token = token.replace(/^Bearer\s+/, '');
+    const verifiedToken = jwt.verify(token, TOKEN_SECRET);
+
+    // info for next()
+    req.user = verifiedToken;
+  } catch (err) {
+    return res.status(401).sned('Invalid Token');
+  }
+
+  return next();
+};
+
 module.exports = {
   register,
   login,
   registerSchema,
   loginSchema,
+  verifiedAuth,
 };
