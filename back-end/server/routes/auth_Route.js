@@ -1,4 +1,6 @@
 const router = require('express').Router();
+// use joi and validator to validate the input
+const validator = require('express-joi-validation').createValidator({});
 const { wrapAsync } = require('../../util/util');
 const {
   register,
@@ -6,9 +8,6 @@ const {
   registerSchema,
   loginSchema,
 } = require('../controllers/auth_controller');
-
-// use joi and validator to validate the input
-const validator = require('express-joi-validation').createValidator({});
 
 // register route
 router
