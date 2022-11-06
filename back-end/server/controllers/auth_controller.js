@@ -32,7 +32,6 @@ const register = async (req, res) => {
 
     // call signUp to insertInto DB
     const result = await User.signUp(username, mail, password);
-    console.log(result);
 
     // email already exist會進到這邊
     if (result.error) {
@@ -61,7 +60,20 @@ const register = async (req, res) => {
 // login邏輯
 const login = async (req, res) => {
   try {
-    res.status(200).send({ message: 'Login route ' });
+    const { mail, password } = req.body;
+
+    if (!mail || !password) {
+      return res.status(400).send({
+        error: 'Email and password are required.',
+      });
+    }
+
+    const result = await User.signIn(mail, password);
+    loginReturnData = {
+      accessToken: result.user.accesstoken,
+      lastLogin: result.user.lastlogin,
+    };
+    return res.status(200).send(loginReturnData);
   } catch (err) {
     res.status(500).send('Internal Error');
   }

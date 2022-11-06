@@ -21,6 +21,6 @@ const pool = mysql.createPool({
   connectionLimit: DB_CONNLIMIT,
 });
 
-const db = pool.promise();
+const sqlDB = pool.promise();
 
-module.exports = { mysql, db };
+module.exports = { mysql, sqlDB };
