@@ -11,7 +11,7 @@ const InputWrapper = styled('div')({
 });
 
 const FieldName = styled('p')({
-  color: '#9E7676',
+  color: 'white',
   textTransform: 'uppercase',
   fontWeight: '800',
   fontSize: '20px',
@@ -23,8 +23,8 @@ const Input = styled('input')({
   height: '60px',
   border: '1px solid black',
   borderRadius: '5px',
-  color: '#815B5B',
-  background: '#FFF8EA',
+  color: 'white',
+  background: 'white',
   margin: 0,
   padding: '0, 6px',
 });
