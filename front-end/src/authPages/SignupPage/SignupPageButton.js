@@ -1,4 +1,5 @@
 import React from 'react';
+
 import MainButton from '../../shared/components/MainButton';
 import RedirectPopInfo from '../../shared/components/RedirectPopInfo';
 // useHistory can't use in v6
@@ -11,14 +12,14 @@ const getIncorrectFormatTip = () => {
   return 'please check mail format and password (8~20 characters)';
 };
 const getCorrectFormatTip = () => {
-  return 'please click login button for login';
+  return 'please click signup button for register';
 };
 
 // buttonName, customStyles, disabled, onClick
-const LoginPageButton = ({ handleLogin, isValidInput }) => {
+const SignupPageButton = ({ handleSignup, isValidInput }) => {
   const forwardTo = useNavigate();
-  const forwardToRegister = () => {
-    forwardTo('/signup');
+  const forwardToLogin = () => {
+    forwardTo('/login');
   };
 
   return (
@@ -30,23 +31,23 @@ const LoginPageButton = ({ handleLogin, isValidInput }) => {
         <div>
           <MainButton
             // 輸入這邊的客製化訊息來製造按鈕
-            buttonName="Login"
+            buttonName="Signup"
             customStyles={{ marginTop: '25px', width: '60%' }}
             // 決定是否disable
             disabled={!isValidInput}
             // 如果輸入格式不符合，則disable
-            onClick={handleLogin}
+            onClick={handleSignup}
           />
         </div>
       </Tooltip>
       <RedirectPopInfo
-        content="Going to register page"
-        redirectInfo="Create account"
-        handleRedirect={forwardToRegister}
+        content="Already have an account"
+        redirectInfo="Login"
+        handleRedirect={forwardToLogin}
         customStyles={{ marginTop: '10px' }}
       />
     </>
   );
 };
 
-export default LoginPageButton;
+export default SignupPageButton;

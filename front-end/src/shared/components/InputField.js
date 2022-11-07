@@ -23,7 +23,7 @@ const Input = styled('input')({
   height: '60px',
   border: '1px solid black',
   borderRadius: '5px',
-  color: 'white',
+  color: 'black',
   background: 'white',
   margin: 0,
   padding: '0, 6px',
