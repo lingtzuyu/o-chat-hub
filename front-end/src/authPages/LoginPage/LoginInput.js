@@ -1,7 +1,7 @@
 import React from 'react';
 import InputField from '../../shared/components/InputField';
 
-export default function LoginInput({ mail, setMail, password, setPassword }) {
+const LoginInput = ({ mail, setMail, password, setPassword }) => {
   return (
     <>
       <InputField
@@ -22,4 +22,6 @@ export default function LoginInput({ mail, setMail, password, setPassword }) {
       />
     </>
   );
-}
+};
+
+export default LoginInput;

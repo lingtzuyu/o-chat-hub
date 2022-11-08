@@ -11,7 +11,7 @@ const BoxWrapper = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: '#594545',
+  background: 'white',
 });
 
 // return上面這個我們建立出來的boxwrapper
@@ -25,7 +25,7 @@ const loginArea = (props) => {
         sx={{
           width: 700,
           height: 400,
-          bgcolor: '#815B5B',
+          bgcolor: 'black',
           borderRadius: '5px',
           boxShadow: '0 3px 10px 0 rgb(0 0 0 / 30%)',
           display: 'flex',

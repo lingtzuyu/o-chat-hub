@@ -5,10 +5,10 @@ const LoginPageHeader = () => {
   return (
     <>
       {/* typography用來處理文字 ，注意看variant就可以用來賦予它是h1 h2...etc.*/}
-      <Typography variant="h5" sx={{ color: '#FFF8EA' }}>
+      <Typography variant="h5" sx={{ color: 'white' }}>
         Ready for messaging?
       </Typography>
-      <Typography variant="subtitle2" sx={{ color: '#9E7676' }}>
+      <Typography variant="subtitle2" sx={{ color: 'white' }}>
         Log in for more productivity!
       </Typography>
     </>
