@@ -58,7 +58,7 @@ const signup = (userDetails, forwardTo) => {
       localStorage.setItem('user', JSON.stringify('userDetails'));
 
       dispatch(setUserDetails(userDetails));
-      forwardTo('/profile');
+      forwardTo('/homepage');
     }
   };
 };

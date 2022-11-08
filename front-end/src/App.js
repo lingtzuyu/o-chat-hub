@@ -11,7 +11,7 @@ import './App.css';
 
 import LoginPage from './authPages/LoginPage/LoginPage';
 import SignupPage from './authPages/SignupPage/SignupPage';
-import ProfilePage from './Profile/ProfilePage';
+import MainPage from './MainPage/MainPage';
 
 // 有點像是API的route
 function App() {
@@ -22,9 +22,9 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/homepage" element={<MainPage />} />
           {/* Navigate is like Redirect */}
-          <Route path="*" element={<Navigate to="/profile" replace />} />
+          <Route path="*" element={<Navigate to="/homepage" replace />} />
         </Routes>
       </Router>
     </>
