@@ -13,7 +13,10 @@ app.use(cors());
 morganBody(app);
 
 // API routes
-app.use(`/api/${API_VERSION}`, [require('./server/routes/auth_Route')]);
+app.use(`/api/${API_VERSION}`, [
+  require('./server/routes/auth_Route'),
+  require('./server/routes/trello_Route'),
+]);
 
 app.listen(SERVER_PORT, () => {
   // TODO: remove after production published
