@@ -1,5 +1,6 @@
 import React from 'react';
 import { styled } from '@mui/system';
+import UserIconMenu from './UserIconMenu';
 
 const TopBarWrapper = styled('div')({
   display: 'flex',
@@ -15,7 +16,11 @@ const TopBarWrapper = styled('div')({
 });
 
 const TopBar = () => {
-  return <TopBarWrapper></TopBarWrapper>;
+  return (
+    <TopBarWrapper>
+      <UserIconMenu />
+    </TopBarWrapper>
+  );
 };
 
 export default TopBar;

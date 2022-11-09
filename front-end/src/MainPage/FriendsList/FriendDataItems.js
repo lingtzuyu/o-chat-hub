@@ -1,3 +1,4 @@
+// 各個好友按鈕的公版
 import React from 'react';
 import Button from '@mui/material/Button';
 

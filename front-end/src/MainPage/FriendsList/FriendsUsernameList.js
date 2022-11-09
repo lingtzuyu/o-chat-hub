@@ -1,3 +1,4 @@
+// 取得資料並且渲染好友列表
 import React from 'react';
 import { styled } from '@mui/system';
 
@@ -7,6 +8,7 @@ import { DUMMY_FRIENDS } from './DUMMY_LIST';
 import FriendDataItems from './FriendDataItems';
 
 const FriedListWrapper = styled('div')({
+  overflow: 'auto',
   flexGrow: 1,
   width: '100%',
 });
@@ -20,6 +22,7 @@ const FriendsUsernameList = () => {
 
       {DUMMY_FRIENDS.map((ele) => (
         <FriendDataItems
+          // FriendDataItems會製造擺放這些key, username, id的元素
           key={ele.id}
           username={ele.username}
           id={ele.id}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from '@mui/system';
 import AppBar from './AppBar/AppBar';
 import FriendsListBar from './FriendsList/FriendsListBar';
@@ -12,6 +12,8 @@ const MainPageWrapper = styled('div')({
 });
 
 const MainPage = () => {
+  useEffect(() => {}, []);
+
   return (
     <>
       <MainPageWrapper>

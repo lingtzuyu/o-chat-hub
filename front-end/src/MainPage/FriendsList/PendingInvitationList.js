@@ -1,9 +1,11 @@
 import React from 'react';
 import { styled } from '@mui/system';
+import { DUMMY_INVITE } from './DUMMY_LIST';
+import InviteDataItems from './InviteDataItems';
 
 const PendingListWrapper = styled('div')({
-  display: 'flex',
-  flexDirection: 'cloumn',
+  // display: 'flex',
+  // flexDirection: 'cloumn',
   alignItems: 'center',
   width: '100%',
   height: '20%',
@@ -12,7 +14,13 @@ const PendingListWrapper = styled('div')({
 });
 
 const PendingInvitationList = () => {
-  return <PendingListWrapper></PendingListWrapper>;
+  return (
+    <PendingListWrapper>
+      {DUMMY_INVITE.map((ele) => (
+        <InviteDataItems key={ele.id} username={ele.username} mail={ele.mail} />
+      ))}
+    </PendingListWrapper>
+  );
 };
 
 export default PendingInvitationList;

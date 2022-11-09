@@ -34,7 +34,7 @@ const login = (userDetails, forwardTo) => {
       // TODO: 把API回來的資料存在local storage
       // if the return is null, userDetails會變成undefined
       const { userDetails } = response?.data;
-      localStorage.setItem('user', JSON.stringify(userDetails));
+      localStorage.setItem('accessToekn', response.data.accessToken);
 
       // 改變store state (redux)
       dispatch(setUserDetails(userDetails));
