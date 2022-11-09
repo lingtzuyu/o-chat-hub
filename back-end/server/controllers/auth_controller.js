@@ -1,12 +1,12 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const Joi = require('joi');
 
 const User = require('../models/auth_model');
 
 const { TOKEN_SECRET } = process.env;
 
 // use joi and validator to validate the input
-const Joi = require('joi');
 
 // joi rule for schema
 // 1. 8~20位數的username以及password
@@ -73,7 +73,7 @@ const login = async (req, res) => {
     }
 
     const result = await User.signIn(mail, password);
-    loginReturnData = {
+    const loginReturnData = {
       accessToken: result.user.accesstoken,
       lastLogin: result.user.lastlogin,
     };
@@ -84,7 +84,7 @@ const login = async (req, res) => {
 };
 
 const verifiedAuth = async (req, res, next) => {
-  let token = req.body.token || req.headers['authorization'];
+  let token = req.body.token || req.headers.authorization;
   if (!token) {
     return res.status(403).send('Token missing');
   }

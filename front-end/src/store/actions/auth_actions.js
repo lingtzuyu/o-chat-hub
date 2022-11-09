@@ -12,6 +12,9 @@ const getActions = (dispatch) => {
     login: (userDetails, history) => dispatch(login(userDetails, history)),
     // signup action
     signup: (userDetails, history) => dispatch(signup(userDetails, history)),
+    setUserDetails: (userDetails) => {
+      dispatch(setUserDetails(userDetails));
+    },
   };
 };
 
@@ -34,7 +37,7 @@ const login = (userDetails, forwardTo) => {
       // TODO: 把API回來的資料存在local storage
       // if the return is null, userDetails會變成undefined
       const { userDetails } = response?.data;
-      localStorage.setItem('user', JSON.stringify(userDetails));
+      localStorage.setItem('accessToken', response.data.accessToken);
 
       // 改變store state (redux)
       dispatch(setUserDetails(userDetails));
@@ -58,7 +61,7 @@ const signup = (userDetails, forwardTo) => {
       localStorage.setItem('user', JSON.stringify('userDetails'));
 
       dispatch(setUserDetails(userDetails));
-      forwardTo('/profile');
+      forwardTo('/homepage');
     }
   };
 };
