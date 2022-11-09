@@ -58,7 +58,11 @@ const signup = (userDetails, forwardTo) => {
       // TODO: 把API回來的資料存在local storage
       // if the return is null
       const { userDetails } = response?.data;
-      localStorage.setItem('user', JSON.stringify('userDetails'));
+      localStorage.setItem(
+        'accessToken',
+        // TODO: 之後 JSON資料格式要統一
+        response.data.data.tokeninfo.access_token
+      );
 
       dispatch(setUserDetails(userDetails));
       forwardTo('/homepage');
