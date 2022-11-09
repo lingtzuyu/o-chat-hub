@@ -46,8 +46,8 @@ const register = async (req, res) => {
     res.status(200).json({
       data: {
         tokeninfo: {
-          access_token: result.user.accesstoken,
-          access_expired: result.user.access_expired,
+          accessToken: result.user.accesstoken,
+          accessExpired: result.user.access_expired,
         },
         userinfo: {
           id: result.user.id,
@@ -76,6 +76,9 @@ const login = async (req, res) => {
     const loginReturnData = {
       accessToken: result.user.accesstoken,
       lastLogin: result.user.lastlogin,
+      username: result.user.username,
+      userId: result.user.id,
+      mail: result.user.mail,
     };
     return res.status(200).send(loginReturnData);
   } catch (err) {
@@ -102,10 +105,28 @@ const verifiedAuth = async (req, res, next) => {
   return next();
 };
 
+// TODO: 驗證前端過來的token對不對以建立後續的socket連線，若pass，則next下去
+// https://www.tabnine.com/code/javascript/functions/socket.io/Handshake/query
+const socketAuthVerified = (socket, next) => {
+  const token = socket.handshake.auth?.token;
+  try {
+    const verifiedToken = jwt.verify(token, TOKEN_SECRET);
+    // 從變數來取出socket.user
+    socket.user = verifiedToken;
+  } catch (err) {
+    const socketConeectionFailed = new Error('failed toekn');
+    return next(socketConeectionFailed);
+  }
+  next();
+};
+
+// TODO: 這邊要過給socket.server建立連線時來用
+
 module.exports = {
   register,
   login,
   registerSchema,
   loginSchema,
   verifiedAuth,
+  socketAuthVerified,
 };
