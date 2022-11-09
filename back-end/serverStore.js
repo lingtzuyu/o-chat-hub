@@ -3,9 +3,6 @@
 const connectedUsers = new Map();
 
 // if user connect and have valid token, then save
-const addNewConnectedUsers = ({ socketId, userId }) => {
-  connectedUsers.set(socketId, { userId });
-  console.log('check connected Users', connectedUsers);
-};
+const addNewConnectedUsers = () => {};
 
 module.exports = { addNewConnectedUsers };

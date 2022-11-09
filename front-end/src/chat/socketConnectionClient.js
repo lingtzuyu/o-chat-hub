@@ -1,17 +1,19 @@
 import io from 'socket.io-client';
 
-let socket;
+let socket = null;
 
-export const connectSocketBackend = (token) => {
+export const connectSocketBackend = (accessToken) => {
   // token 在localStorage.accessToken
-  const jwtToken = localStorage.getItem('accessToken');
-  socket = io('http://localhost:8080', {
+  // 我直接在MainPage.js那邊設定變數是要帶accessToken
+
+  socket = io(process.env.REACT_APP_SERVER_ROUTE, {
     // TODO:　如果jwttoken驗證通過，則可以進行通知
     auth: {
-      token: jwtToken,
+      token: accessToken,
     },
   });
   socket.on('connect', () => {
     console.log('client side connected, id: ', socket.id);
+    console.log(socket);
   });
 };

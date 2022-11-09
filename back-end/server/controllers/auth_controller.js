@@ -108,16 +108,7 @@ const verifiedAuth = async (req, res, next) => {
 // TODO: 驗證前端過來的token對不對以建立後續的socket連線，若pass，則next下去
 // https://www.tabnine.com/code/javascript/functions/socket.io/Handshake/query
 const socketAuthVerified = (socket, next) => {
-  const token = socket.handshake.auth?.token;
-  try {
-    const verifiedToken = jwt.verify(token, TOKEN_SECRET);
-    // 從變數來取出socket.user
-    socket.user = verifiedToken;
-  } catch (err) {
-    const socketConeectionFailed = new Error('failed toekn');
-    return next(socketConeectionFailed);
-  }
-  next();
+  // 等等從socket丟過來的
 };
 
 // TODO: 這邊要過給socket.server建立連線時來用

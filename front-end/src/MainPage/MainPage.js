@@ -22,10 +22,10 @@ const MainPage = ({ setUserDetails }) => {
       // TODO: logout
       window.location.pathname = '/login';
     } else {
-      // store state，從authactions這邊派發
+      // store state，從authactions這邊派發，之後userEmail可以從這邊解
       setUserDetails(accessToken);
       // TODO: 透過socket.id與mail (唯一值) 的綁定廣播來讓別人知道某人上線
-      connectSocketBackend();
+      connectSocketBackend(accessToken);
     }
   }, []);
 
