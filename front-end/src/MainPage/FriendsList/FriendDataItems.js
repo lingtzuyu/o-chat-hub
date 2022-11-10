@@ -47,8 +47,8 @@ const FriendDataItems = ({ id, username, isOnline }) => {
         {username}
       </Typography>
       {/* TODO: 之後改成icon */}
-      {/* TODO: 待修，現在都只會是online */}
-      {{ isOnline } ? 'online' : 'offline'}
+      {/* DB的online offline以1: online 0: offline寫 */}
+      {isOnline ? 'online' : 'offline'}
     </Button>
   );
 };

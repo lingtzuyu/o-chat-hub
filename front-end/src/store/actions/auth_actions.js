@@ -1,4 +1,5 @@
 import * as api from '../../api';
+import { showAlert } from './alert_actions';
 
 const authActions = {
   // 定義redux action
@@ -29,8 +30,9 @@ const login = (userDetails, forwardTo) => {
     // userDetails will become the data for this post request
     const response = await api.login(userDetails);
     if (response.error) {
-      console.log(response.error);
-      // TODO: show error message from API in alert, error是從login apis那邊的exception來的
+      console.log(response?.exception?.response?.data);
+      // show error message from API in alert, error是從login apis那邊的exception來的
+      dispatch(showAlert(response?.exception?.response?.data));
     } else {
       // TODO: 把API回來的資料存在local storage
       // if the return is null, userDetails會變成undefined
@@ -51,8 +53,9 @@ const signup = (userDetails, forwardTo) => {
     const response = await api.signup(userDetails);
 
     if (response.error) {
-      console.log(response.error);
-      // TODO: show error message from API in alert
+      console.log(response?.exception?.response?.data);
+      // show error message from API in alert
+      dispatch(showAlert(response?.exception?.response?.data));
     } else {
       // TODO: 把API回來的資料存在local storage
       // if the return is null
