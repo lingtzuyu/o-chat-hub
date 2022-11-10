@@ -110,10 +110,13 @@ const verifiedAuth = async (req, res, next) => {
 const socketAuthVerified = (socket, next) => {
   // 等等從socket丟過來的，socket資料內確認會帶token
   // https://stackoverflow.com/questions/36788831/authenticating-socket-io-connections-using-jwt
+  const tokenFromSocket = socket.handshake.auth.token;
   try {
-    const tokenFromSocket = socket.handshake.auth.token;
     const verifiedToken = jwt.verify(tokenFromSocket, TOKEN_SECRET);
-    console.log(verifiedToken);
+    // 將userMail加入socket資訊裡面，之後要 Map的時候用
+    // TODO: 將mail改為id增加讀取寫入效率
+    socket.userMail = verifiedToken.mail;
+    // verifiedToken=> { name: 'test0001', mail: 'test0001@gmail.com', iat: 1668010656 }
   } catch (err) {
     const socketFailed = new Error('Invalid Token');
     return next(socketFailed);

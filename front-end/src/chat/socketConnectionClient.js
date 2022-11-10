@@ -8,6 +8,7 @@ export const connectSocketBackend = (accessToken) => {
 
   socket = io(process.env.REACT_APP_SERVER_ROUTE, {
     // TODO:　如果jwttoken驗證通過，則可以進行通知
+    // 把 jwt token塞到socket 訊息中
     auth: {
       token: accessToken,
     },
