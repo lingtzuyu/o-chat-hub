@@ -111,7 +111,7 @@ const socketAuthVerified = (socket, next) => {
   // 等等從socket丟過來的，socket資料內確認會帶token
   // https://stackoverflow.com/questions/36788831/authenticating-socket-io-connections-using-jwt
   try {
-    const tokenFromSocket = socket.handshake.query.auth?.token;
+    const tokenFromSocket = socket.handshake.auth.token;
     const verifiedToken = jwt.verify(tokenFromSocket, TOKEN_SECRET);
     console.log(verifiedToken);
   } catch (err) {
