@@ -6,22 +6,22 @@ export const friendActions = {
   SET_ONLINE_USERS: 'FRIENDS.SET_ONLINE_USERS',
 };
 
-export const getActions = (dispatch) => {
+const getActions = (dispatch) => {
   return {
     // data以及關閉popout視窗
-    sendInvitation: (data, closePopout) =>
-      dispatch(sendInvitation(data, closePopout)),
+    sendFriendRequest: (data, closePopout) =>
+      dispatch(sendFriendRequest(data, closePopout)),
   };
 };
 
-export const sendInvitation = (data, closePopout) => {
+const sendFriendRequest = (data, closePopout) => {
   return async (dispatch) => {
     console.log('test');
     // 這邊response要await不然有可能爆掉
     // TODO: 之後要dispatch到某個popout alert上
-    const response = await api.sendFriendInvitation(data);
+    const response = await api.sendFriendRequest(data);
     if (response.error) {
-      console.log(response.error);
+      console.log(response.exception?.response?.data);
       // TODO: show error message from API in alert, error是從login apis那邊的exception來的， 後面可以做alert Popout
     } else {
       console.log('Invitation sent');
@@ -31,3 +31,5 @@ export const sendInvitation = (data, closePopout) => {
     }
   };
 };
+
+export { sendFriendRequest, getActions };

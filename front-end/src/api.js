@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { logout } from './shared/utils/generalAuth';
 
 // 建立後端API連線，不要衝3000
 const apiAdress = process.env.REACT_APP_API_URL;
@@ -27,22 +28,22 @@ const signup = async (data) => {
 };
 
 // route after login
-const sendFriendInvitation = async (data) => {
+const sendFriendRequest = async (data) => {
   try {
     console.log('1');
-    return await apiClient.post('/friend/invite', data);
+    return await apiClient.post('/friend/invitation', data);
   } catch (exception) {
+    checkStatusCode(exception);
     return { error: true, exception };
   }
 };
 
-// const checkStatusCode = (exception) => {
-//   const statusCode = exception?.response?.status;
-//   if (statusCode) {
-//     // TODO: 之後可以考慮401或是403的auth問題時做登出 logout()
-//     console.log(statusCode);
-//     return statusCode;
-//   }
-// };
+const checkStatusCode = (exception) => {
+  const statusCode = exception?.response?.status;
+  if (statusCode === 401 || statusCode === 403) {
+    // 401或是403的auth問題時做登出 logout()
+    logout();
+  }
+};
 
-export { login, signup, sendFriendInvitation };
+export { login, signup, sendFriendRequest };
