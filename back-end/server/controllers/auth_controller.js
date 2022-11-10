@@ -108,10 +108,20 @@ const verifiedAuth = async (req, res, next) => {
 // TODO: 驗證前端過來的token對不對以建立後續的socket連線，若pass，則next下去
 // https://www.tabnine.com/code/javascript/functions/socket.io/Handshake/query
 const socketAuthVerified = (socket, next) => {
-  // 等等從socket丟過來的
+  // 等等從socket丟過來的，socket資料內確認會帶token
+  // https://stackoverflow.com/questions/36788831/authenticating-socket-io-connections-using-jwt
+  try {
+    const tokenFromSocket = socket.handshake.query.auth?.token;
+    const verifiedToken = jwt.verify(tokenFromSocket, TOKEN_SECRET);
+    console.log(verifiedToken);
+  } catch (err) {
+    const socketFailed = new Error('Invalid Token');
+    return next(socketFailed);
+  }
+  next();
 };
 
-// TODO: 這邊要過給socket.server建立連線時來用
+// TODO: 這邊要過給socket.server建立連線時來用 (建立連線前驗證)
 
 module.exports = {
   register,
