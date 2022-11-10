@@ -26,7 +26,7 @@ const FriendsUsernameList = () => {
           key={ele.id}
           username={ele.username}
           id={ele.id}
-          isOnline={false.isOnline}
+          isOnline={ele.isOnline}
         />
       ))}
     </FriedListWrapper>

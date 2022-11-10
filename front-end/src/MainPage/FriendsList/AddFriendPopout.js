@@ -11,6 +11,10 @@ import { validateInputMail } from '../../shared/utils/validators';
 import { Typography } from '@mui/material';
 import InputField from '../../shared/components/InputField';
 
+// 朋友相關的actions都定義完綁定後
+import { getActions } from '../../store/actions/friend_actions';
+import { connect } from 'react-redux';
+
 // TODO: 透過mail來新增朋友
 // 1. 按下新增好友按鈕打開popout
 // 2. 送出邀請sendFriendRequest
@@ -24,7 +28,9 @@ const AddFriendPopout = ({
   const [isMailValid, setIsMailValid] = useState('');
 
   const handleInvitationSent = () => {
-    // TODO: send friend request to server
+    // send friend request to server via mail，上方useState
+    sendFriendRequest({ mail: mail });
+    handleClosePopout();
   };
 
   const handleClosePopout = () => {
@@ -40,33 +46,41 @@ const AddFriendPopout = ({
   }, [mail, setIsMailValid]);
 
   return (
-    <Dialog open={isPopoutOpen} onCloase={handleClosePopout}>
-      <DialogTitle>
-        <Typography>Invite by mail</Typography>
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          <Typography>Please enter a mail to invite friend</Typography>
-        </DialogContentText>
-        <InputField
-          fieldname="Mail"
-          type="text"
-          // {mail} from state
-          value={mail}
-          setValue={setMail}
-          placeholder="Please enter a valid mail"
-        ></InputField>
-      </DialogContent>
-      <DialogActions>
-        <MainButton
-          buttonName="Confirm"
-          onClick={handleInvitationSent}
-          disabled={!isMailValid}
-          customStyles={{ margin: '10' }}
-        />
-      </DialogActions>
-    </Dialog>
+    <div>
+      <Dialog open={isPopoutOpen} onClose={handleClosePopout}>
+        <DialogTitle>
+          <Typography>Invite by mail</Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Typography>Please enter a mail to invite friend</Typography>
+          </DialogContentText>
+          <InputField
+            fieldname="Mail"
+            type="text"
+            // {mail} from state
+            value={mail}
+            setValue={setMail}
+            placeholder="Please enter a valid mail"
+          ></InputField>
+        </DialogContent>
+        <DialogActions>
+          <MainButton
+            buttonName="Confirm"
+            onClick={handleInvitationSent}
+            disabled={!isMailValid}
+            customStyles={{ margin: '10' }}
+          />
+        </DialogActions>
+      </Dialog>
+    </div>
   );
 };
 
-export default AddFriendPopout;
+const mapActionsToProps = (dispatch) => {
+  return {
+    ...getActions(dispatch),
+  };
+};
+
+export default connect(null, mapActionsToProps)(AddFriendPopout);

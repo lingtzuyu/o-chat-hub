@@ -1,88 +1,86 @@
 // 假資料for FriendListBar
 // map 對象是array
 
-import { SliderValueLabelUnstyled } from '@mui/base';
-
 export const DUMMY_FRIENDS = [
   {
     id: '1',
     username: 'Domingo',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '2',
     username: 'Domingogoro',
-    isOnline: false,
+    isOnline: 0,
   },
   {
     id: '3',
     username: 'DominTrivago',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '4',
     username: 'Sally',
-    isOnline: true,
+    isOnline: 0,
   },
   {
     id: '5',
     username: 'Yoyoman',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '6',
     username: 'Yoyowoman',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '7',
     username: 'Yoyowoman2',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '8',
     username: 'Yoyowoman3',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '9',
     username: 'Yoyowoman4',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '10',
     username: 'Yoyowoman5',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '11',
     username: 'Yoyowoman6',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '12',
     username: 'Yoyowoman7',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '13',
     username: 'Yoyowoman8',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '14',
     username: 'Yoyowoman9',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '15',
     username: 'Yoyowoman10',
-    isOnline: true,
+    isOnline: 1,
   },
   {
     id: '16',
     username: 'Yoyowoman11',
-    isOnline: true,
+    isOnline: 0,
   },
 ];
 
