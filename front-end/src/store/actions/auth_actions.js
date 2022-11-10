@@ -28,16 +28,16 @@ const login = (userDetails, forwardTo) => {
   return async (dispatch) => {
     // userDetails will become the data for this post request
     const response = await api.login(userDetails);
-    //test
-    console.log(response);
-
     if (response.error) {
+      console.log(response.error);
       // TODO: show error message from API in alert, error是從login apis那邊的exception來的
     } else {
       // TODO: 把API回來的資料存在local storage
       // if the return is null, userDetails會變成undefined
       const { userDetails } = response?.data;
       localStorage.setItem('accessToken', response.data.accessToken);
+      localStorage.setItem('userMail', response.data.mail);
+      localStorage.setItem('userId', response.data.userId);
 
       // 改變store state (redux)
       dispatch(setUserDetails(userDetails));
@@ -49,10 +49,9 @@ const login = (userDetails, forwardTo) => {
 const signup = (userDetails, forwardTo) => {
   return async (dispatch) => {
     const response = await api.signup(userDetails);
-    //test
-    console.log(response);
 
     if (response.error) {
+      console.log(response.error);
       // TODO: show error message from API in alert
     } else {
       // TODO: 把API回來的資料存在local storage
@@ -61,8 +60,10 @@ const signup = (userDetails, forwardTo) => {
       localStorage.setItem(
         'accessToken',
         // TODO: 之後 JSON資料格式要統一
-        response.data.data.tokeninfo.access_token
+        response.data.data.tokeninfo.accessToken
       );
+      localStorage.setItem('userMail', response.data.data.userinfo.mail);
+      localStorage.setItem('userId', response.data.data.userinfo.id);
 
       dispatch(setUserDetails(userDetails));
       forwardTo('/homepage');

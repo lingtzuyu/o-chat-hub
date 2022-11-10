@@ -46,8 +46,8 @@ const register = async (req, res) => {
     res.status(200).json({
       data: {
         tokeninfo: {
-          access_token: result.user.accesstoken,
-          access_expired: result.user.access_expired,
+          accessToken: result.user.accesstoken,
+          accessExpired: result.user.access_expired,
         },
         userinfo: {
           id: result.user.id,
@@ -76,6 +76,9 @@ const login = async (req, res) => {
     const loginReturnData = {
       accessToken: result.user.accesstoken,
       lastLogin: result.user.lastlogin,
+      username: result.user.username,
+      userId: result.user.id,
+      mail: result.user.mail,
     };
     return res.status(200).send(loginReturnData);
   } catch (err) {
@@ -102,10 +105,32 @@ const verifiedAuth = async (req, res, next) => {
   return next();
 };
 
+// TODO: 驗證前端過來的token對不對以建立後續的socket連線，若pass，則next下去
+// https://www.tabnine.com/code/javascript/functions/socket.io/Handshake/query
+const socketAuthVerified = (socket, next) => {
+  // 等等從socket丟過來的，socket資料內確認會帶token
+  // https://stackoverflow.com/questions/36788831/authenticating-socket-io-connections-using-jwt
+  const tokenFromSocket = socket.handshake.auth.token;
+  try {
+    const verifiedToken = jwt.verify(tokenFromSocket, TOKEN_SECRET);
+    // 將userMail加入socket資訊裡面，之後要 Map的時候用
+    // TODO: 將mail改為id增加讀取寫入效率
+    socket.userMail = verifiedToken.mail;
+    // verifiedToken=> { name: 'test0001', mail: 'test0001@gmail.com', iat: 1668010656 }
+  } catch (err) {
+    const socketFailed = new Error('Invalid Token');
+    return next(socketFailed);
+  }
+  next();
+};
+
+// TODO: 這邊要過給socket.server建立連線時來用 (建立連線前驗證)
+
 module.exports = {
   register,
   login,
   registerSchema,
   loginSchema,
   verifiedAuth,
+  socketAuthVerified,
 };

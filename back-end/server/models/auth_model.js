@@ -92,7 +92,7 @@ const signIn = async (email, password) => {
     await conn.query('COMMIT');
 
     // 回應資料
-    user.access_token = accessToken;
+    user.accessToken = accessToken;
     user.lastlogin = loginTime;
     user.access_expired = TOKEN_EXPIRE;
 
