@@ -45,4 +45,27 @@ const checkPendingInvitation = async (senderId, receiverId) => {
   return result;
 };
 
-module.exports = { checkUserExist, sendFriendRequest, checkPendingInvitation };
+const getAllFriendshipFromDB = async (userId) => {
+  const friendshipQuery = 'SELECT friend FROM friendship WHERE user = ?';
+  const [result] = await sqlDB.query(friendshipQuery, userId);
+  const friendList = result.map((ele) => ele.friend);
+  // 這會return像這樣的array => [ 66, 47 ]
+  return friendList;
+};
+
+// 加快讀取速度，只鎖定senderId(user)以及receiverId(friend)
+const getTargetFriendFromDB = async (senderId, receiverId) => {
+  const friendshipQuery =
+    'SELECT * FROM friendship WHERE user = ? AND friend = ?';
+  const [result] = await sqlDB.query(friendshipQuery, [senderId, receiverId]);
+  // 這會return像這樣的array => [ 66, 47 ]
+  return result;
+};
+
+module.exports = {
+  checkUserExist,
+  sendFriendRequest,
+  checkPendingInvitation,
+  getAllFriendshipFromDB,
+  getTargetFriendFromDB,
+};

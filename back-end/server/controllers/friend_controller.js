@@ -21,9 +21,7 @@ const sentFriendInvitation = async (req, res) => {
   const checkRecieverIdExist = await Friend.checkUserExist(receiverMail);
   const checkSenderIdExist = await Friend.checkUserExist(senderMail);
   const receiverId = checkRecieverIdExist[0]?.id;
-  console.log('f-controller: receiverID', receiverId);
   const senderId = checkSenderIdExist[0].id;
-  console.log('f-controller: senderID', senderId);
 
   try {
     // receiver使用者不存在
@@ -38,6 +36,20 @@ const sentFriendInvitation = async (req, res) => {
         .status(400)
         .send({ error: 'You are not allowed to add yourself' });
     }
+
+    // 已經是好友
+
+    const targetfriendCheck = await Friend.getTargetFriendFromDB(
+      senderId,
+      receiverId
+    );
+
+    if (targetfriendCheck[0]) {
+      return res.status(400).json({
+        error: `The user ${receiverMail} is already your friend`,
+      });
+    }
+
     // 已經被加過了，在等待
     const checkPendingInvitation = await Friend.checkPendingInvitation(
       senderId,
@@ -45,8 +57,6 @@ const sentFriendInvitation = async (req, res) => {
     );
     // !=null => 表內有資料，已經邀請過
     if (checkPendingInvitation[0]) {
-      console.log('check', checkPendingInvitation);
-      console.log('3');
       const sentTime = checkPendingInvitation[0].sendtime;
 
       return res.status(400).json({
@@ -54,15 +64,12 @@ const sentFriendInvitation = async (req, res) => {
         senttime: `${sentTime}`,
       });
     }
-    // 插入好友邀請表
-    if (!checkPendingInvitation[0]) {
-      console.log('ㄅ');
-      const result = await Friend.sendFriendRequest(senderId, receiverId);
-      return res.status(200).json({
-        status: 'Friend Request sent ok',
-        friendRequestId: result.insertId,
-      });
-    }
+
+    const result = await Friend.sendFriendRequest(senderId, receiverId);
+    return res.status(200).json({
+      status: 'Friend Request sent ok',
+      friendRequestId: result.insertId,
+    });
   } catch (err) {
     console.log('error msg', err);
     res.status(500).send('Internal Error controller');
