@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/system';
-import { DUMMY_INVITE } from './DUMMY_LIST';
 import InviteDataItems from './InviteDataItems';
+import { connect } from 'react-redux';
 
 const PendingListWrapper = styled('div')({
   // display: 'flex',
@@ -13,14 +13,28 @@ const PendingListWrapper = styled('div')({
   overflow: 'auto',
 });
 
-const PendingInvitationList = () => {
+// 線上即時傳送 => ws
+// 在接上的第一時間抓DB資料庫渲染 => new connection (socket.js在建立連線的時候)
+const PendingInvitationList = ({ pendingInvitation }) => {
   return (
     <PendingListWrapper>
-      {DUMMY_INVITE.map((ele) => (
-        <InviteDataItems key={ele.id} username={ele.username} mail={ele.mail} />
+      {pendingInvitation.map((ele) => (
+        <InviteDataItems
+          key={ele.sender_user_id}
+          id={ele.sender_user_id}
+          username={ele.username}
+          mail={ele.mail}
+        />
       ))}
     </PendingListWrapper>
   );
 };
 
-export default PendingInvitationList;
+// friends 在 rootReducer (store.js)那邊綁定
+const mapStoreStateToProps = ({ friends }) => {
+  return {
+    ...friends,
+  };
+};
+
+export default connect(mapStoreStateToProps)(PendingInvitationList);

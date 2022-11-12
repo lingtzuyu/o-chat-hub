@@ -12,6 +12,16 @@ const invitationSchema = Joi.object({
   ),
 });
 
+// id from accept (or reject) => {id: 47}
+const friendConfirmSchema = Joi.object({
+  // TODO: 這個用number或是string都會過..靠邀
+  acceptId: Joi.number().required(),
+  // https://github.com/hapijs/joi/issues/992
+  token: Joi.string().regex(
+    /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/
+  ),
+});
+
 // 送出好友邀請
 const sentFriendInvitation = async (req, res) => {
   // 可以從 verifiedAuth(auth_controller)的middleware中拿到是誰發出(sender_user_id)的順便認證
@@ -27,12 +37,10 @@ const sentFriendInvitation = async (req, res) => {
   try {
     // receiver使用者不存在
     if (receiverId === undefined) {
-      console.log('1');
       return res.status(400).send({ error: `User ${receiverMail} not exist` });
     }
     // 不能加自己
     if (receiverId === senderId) {
-      console.log('2');
       return res
         .status(400)
         .send({ error: 'You are not allowed to add yourself' });
@@ -82,4 +90,33 @@ const sentFriendInvitation = async (req, res) => {
   }
 };
 
-module.exports = { invitationSchema, sentFriendInvitation };
+// 接受好友邀請
+const accpetFriendInvitation = async (req, res) => {
+  const { acceptId } = req.body;
+  // TODO: 直接在body內 (JWT解出來的地方)，改為id也帶進去，就不用再query sql找一次id
+  const acceptorMail = req.user.mail;
+  const queryAccptorIdByMail = await Friend.checkUserExist(acceptorMail);
+  const acceptorId = queryAccptorIdByMail[0].id;
+  const acceptTime = new Date();
+  console.log('接受這個人的好友', acceptId);
+  console.log('這是接受別人好友的人', acceptorId);
+  // 插入資料
+  try {
+    const result = await Friend.insertDaulFriendship(
+      acceptId,
+      acceptorId,
+      acceptTime
+    );
+    return res.status(200).json({ result: 'Accept' });
+  } catch (err) {
+    console.log('accept error', err);
+    return res.status(500).sned('internal error');
+  }
+};
+
+module.exports = {
+  invitationSchema,
+  friendConfirmSchema,
+  sentFriendInvitation,
+  accpetFriendInvitation,
+};

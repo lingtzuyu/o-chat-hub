@@ -30,7 +30,7 @@ const removeDisconnectedUsersFromMap = (socketId) => {
   console.log('after DC', connectedUsers);
 };
 
-// 之後改為userMail
+// 之後改為userID
 const getOnlineUsers = (userMail) => {
   const onlineSocket = [];
   // 把global的Map抓近來

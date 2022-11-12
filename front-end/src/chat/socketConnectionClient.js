@@ -24,8 +24,8 @@ export const connectSocketBackend = (accessToken) => {
   // 確認此socket是否有pending的邀請
   socket.on('friendInvitations', (data) => {
     const { pendingInvitations } = data;
-    console.log('check friendInvitation event', pendingInvitations);
-    // 改變store state
+    console.log('friendInvitation event launch', pendingInvitations);
+    // dispatch改變store state
 
     store.dispatch(setPendingFriendsInvite(pendingInvitations));
   });

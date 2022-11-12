@@ -12,9 +12,10 @@ const checkUserExist = async (mail) => {
 const sendFriendRequest = async (senderId, receiverId) => {
   const conn = await sqlDB.getConnection();
 
+  // TODO: 這個應該放在controller，把時間變成參數，待改
   const sendTime = new Date();
 
-  // 0 is pending, 1 is accepted
+  // 0 is pending, 1 is accepted, reject就直接刪除該筆
   const initialStatus = 0;
 
   try {
@@ -85,6 +86,38 @@ const getTargetFriendFromDB = async (senderId, receiverId) => {
   return result;
 };
 
+// 接受好友並插入資料庫 (雙向)
+// 變更friendshipinvitation狀態並且押上日期 (0改為1)
+// TODO:要不要雙向? query麻煩還是插入麻煩
+const insertDaulFriendship = async (acceptId, acceptorId, currentTime) => {
+  const conn = await sqlDB.getConnection();
+  const insertFriendshipQuery =
+    'INSERT INTO friendship SET user = ?, friend = ?';
+  // acceptId 是 sender, acceptorId 是 receiver
+  const updateFriendInvitationStatus =
+    'UPDATE friendinvitation SET status = ?, confirmtime = ? WHERE sender_user_id = ? AND receiver_user_id = ? ';
+  try {
+    await conn.query('START TRANSACTION');
+    await conn.query(insertFriendshipQuery, [acceptId, acceptorId]);
+    await conn.query(insertFriendshipQuery, [acceptorId, acceptId]);
+    // 1 stands for accept，如果拒絕就直接delete => 就會直接從畫面渲染上刪除
+    await conn.query(updateFriendInvitationStatus, [
+      1,
+      currentTime,
+      acceptId,
+      acceptorId,
+    ]);
+    await conn.query('COMMIT');
+    return true;
+  } catch (err) {
+    console.log('Error message (friend_model)', err);
+    await conn.query('ROLLBACK');
+    return { err };
+  } finally {
+    conn.release();
+  }
+};
+
 module.exports = {
   checkUserInfoById,
   checkPendingInvitationByReceiver,
@@ -93,4 +126,5 @@ module.exports = {
   checkPendingInvitation,
   getAllFriendshipFromDB,
   getTargetFriendFromDB,
+  insertDaulFriendship,
 };
