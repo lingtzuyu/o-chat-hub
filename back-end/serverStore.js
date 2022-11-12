@@ -2,6 +2,16 @@
 // !!! null會變成undefined
 // TODO: 想像成redis (可能之後可以存在redis?)
 const connectedUsers = new Map();
+let io = null;
+
+// 使用篩選後在線上的socketId來建立
+const setSocketServer = (ioServer) => {
+  io = ioServer;
+};
+
+const getSocketServer = () => {
+  return io;
+};
 
 // if user connect and have valid token, then save
 const addNewConnectedUsersToMap = ({ socketId, userMail }) => {
@@ -20,4 +30,25 @@ const removeDisconnectedUsersFromMap = (socketId) => {
   console.log('after DC', connectedUsers);
 };
 
-module.exports = { addNewConnectedUsersToMap, removeDisconnectedUsersFromMap };
+// 之後改為userMail
+const getOnlineUsers = (userMail) => {
+  const onlineSocket = [];
+  // 把global的Map抓近來
+  // use ForEach loop the Map https://bobbyhadz.com/blog/javascript-iterate-map#:~:text=Use%20the%20forEach()%20method,Map%20object%20on%20each%20iteration.
+  // ! forEach的第一個是value，第二個變數才是key
+  connectedUsers.forEach((value, key) => {
+    if (value.userMail === userMail) {
+      onlineSocket.push(key);
+    }
+  });
+  return onlineSocket;
+  // online socket的array，用這個去檢查線上的user有誰，並且對他觸發相關的event
+};
+
+module.exports = {
+  addNewConnectedUsersToMap,
+  removeDisconnectedUsersFromMap,
+  getOnlineUsers,
+  setSocketServer,
+  getSocketServer,
+};
