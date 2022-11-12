@@ -65,6 +65,7 @@ const sentFriendInvitation = async (req, res) => {
       });
     }
 
+    // 加入好友邀請資料表
     const result = await Friend.sendFriendRequest(senderId, receiverId);
     return res.status(200).json({
       status: 'Friend Request sent ok',
