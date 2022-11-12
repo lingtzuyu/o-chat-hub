@@ -30,7 +30,6 @@ const signup = async (data) => {
 // route after login
 const sendFriendRequest = async (data) => {
   try {
-    console.log('1');
     return await apiClient.post('/friend/invitation', data);
   } catch (exception) {
     checkStatusCode(exception);

@@ -29,8 +29,11 @@ const AddFriendPopout = ({
 
   const handleInvitationSent = () => {
     // send friend request to server via mail，上方useState
-    sendFriendRequest({ mail: mail });
-    handleClosePopout();
+    sendFriendRequest(
+      // 好友邀請也送出token(從前端localStorage拿) 驗證
+      { mail: mail, token: localStorage.accessToken },
+      handleClosePopout
+    );
   };
 
   const handleClosePopout = () => {

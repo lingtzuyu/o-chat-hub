@@ -7,13 +7,15 @@ const AddFriendButton = () => {
   const [isPopoutOpen, setIsPopoutOpen] = useState(false);
 
   // 這個要寫在裡面，等等會一起被打包走
-  const handleClosePopout = () => {
+  const handleOpenPopout = () => {
     // 如果isPopoutOpen的話，傳遞true的state
     setIsPopoutOpen(true);
   };
 
   // 變動是否開啟popout的狀態為false，以便下次開啟
-  const setCloseFriendInvitePopout = () => {};
+  const handleClosePopout = () => {
+    setIsPopoutOpen(false);
+  };
 
   return (
     <>
@@ -29,7 +31,7 @@ const AddFriendButton = () => {
           fontSize: '12px',
           fontWeight: '600',
         }}
-        onClick={handleClosePopout}
+        onClick={handleOpenPopout}
       >
         Add Friends
       </Button>

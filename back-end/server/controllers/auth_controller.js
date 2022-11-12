@@ -87,18 +87,19 @@ const login = async (req, res) => {
 };
 
 const verifiedAuth = async (req, res, next) => {
-  let token = req.body.token || req.headers.authorization;
+  let token = req.body.token || req.headers.authorization || req.query.token;
   if (!token) {
+    // 403連Auth都沒過
     return res.status(403).send('Token missing');
   }
   try {
     // decode the token, 移除bearer
     token = token.replace(/^Bearer\s+/, '');
     const verifiedToken = jwt.verify(token, TOKEN_SECRET);
-
-    // info for next()
+    // info for next()，這邊可以傳給下一個
     req.user = verifiedToken;
   } catch (err) {
+    // 401可以進但沒權限
     return res.status(401).send('Invalid Token');
   }
 

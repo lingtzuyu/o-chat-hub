@@ -26,6 +26,7 @@ const Socket = require('./socket');
 app.use(`/api/${API_VERSION}`, [
   require('./server/routes/auth_Route'),
   require('./server/routes/trello_Route'),
+  require('./server/routes/friend_Route'),
 ]);
 
 server.listen(SERVER_PORT, () => {
