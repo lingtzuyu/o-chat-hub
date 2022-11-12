@@ -38,6 +38,7 @@ const sendFriendRequest = async (senderId, receiverId) => {
 };
 
 // TODO: 缺少拒絕後重新申請的判斷 (靠status)
+// 確認pending Invitations
 const checkPendingInvitation = async (senderId, receiverId) => {
   const invitationQuery =
     'SELECT * FROM friendinvitation WHERE sender_user_id = ? AND receiver_user_id = ? AND status = 0';
@@ -45,6 +46,28 @@ const checkPendingInvitation = async (senderId, receiverId) => {
   return result;
 };
 
+// receiver 視角，渲染登入的時候有哪些好友邀請
+const checkPendingInvitationByReceiver = async (receiverId) => {
+  // join friendinvitation以及user table直接找出送給這個receiverID的人有哪些info
+  const invitationQuery =
+    'SELECT friendinvitation.sender_user_id, user.username, user.mail FROM friendinvitation JOIN user on friendinvitation.sender_user_id = user.id WHERE receiver_user_id = ? AND status = 0';
+  const [result] = await sqlDB.query(invitationQuery, [receiverId]);
+  return result;
+};
+
+// check user info by ID
+const checkUserInfoById = async (userId) => {
+  const userQuery = 'SELECT username, mail, FROM user WHERE id = ?';
+  const [result] = await sqlDB.query(userQuery, [userId]);
+  const userInfo = {
+    username: result[0].username,
+    mail: result[0].mail,
+    id: userId,
+  };
+  return { userInfo };
+};
+
+// 取得全部的DB
 const getAllFriendshipFromDB = async (userId) => {
   const friendshipQuery = 'SELECT friend FROM friendship WHERE user = ?';
   const [result] = await sqlDB.query(friendshipQuery, userId);
@@ -63,6 +86,8 @@ const getTargetFriendFromDB = async (senderId, receiverId) => {
 };
 
 module.exports = {
+  checkUserInfoById,
+  checkPendingInvitationByReceiver,
   checkUserExist,
   sendFriendRequest,
   checkPendingInvitation,

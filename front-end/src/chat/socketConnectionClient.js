@@ -1,4 +1,6 @@
 import io from 'socket.io-client';
+import { setPendingFriendsInvite } from '../store/actions/friend_actions';
+import store from '../store/store';
 
 let socket = null;
 
@@ -16,5 +18,15 @@ export const connectSocketBackend = (accessToken) => {
   socket.on('connect', () => {
     console.log('client side connected, id: ', socket.id);
     console.log(socket);
+  });
+
+  // custom evnet: firneds-invitation
+  // 確認此socket是否有pending的邀請
+  socket.on('friendInvitations', (data) => {
+    const { pendingInvitations } = data;
+    console.log('check friendInvitation event', pendingInvitations);
+    // 改變store state
+
+    store.dispatch(setPendingFriendsInvite(pendingInvitations));
   });
 };

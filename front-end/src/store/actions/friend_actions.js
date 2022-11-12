@@ -14,9 +14,16 @@ const getActions = (dispatch) => {
   };
 };
 
+// dispatch this action to store state (socket事件中的friendInvitation事件)
+const setPendingFriendsInvite = (pendingFriendsInvite) => {
+  return {
+    type: friendActions.SET_PENDING_INVITATION,
+    pendingFriendsInvite,
+  };
+};
+
 const sendFriendRequest = (data, closePopout) => {
   return async (dispatch) => {
-    console.log('test');
     // 這邊response要await不然有可能爆掉
     // TODO: 之後要dispatch到某個popout alert上
     const response = await api.sendFriendRequest(data);
@@ -32,4 +39,4 @@ const sendFriendRequest = (data, closePopout) => {
   };
 };
 
-export { sendFriendRequest, getActions };
+export { setPendingFriendsInvite, sendFriendRequest, getActions };

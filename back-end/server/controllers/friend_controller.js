@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Joi = require('joi');
 const Friend = require('../models/friend_model');
+const chatStatusIpdate = require('../../socketConnectDealer/updateChatStatus');
 
 // mail from friendInvitation
 const invitationSchema = Joi.object({
@@ -67,6 +68,10 @@ const sentFriendInvitation = async (req, res) => {
 
     // 加入好友邀請資料表
     const result = await Friend.sendFriendRequest(senderId, receiverId);
+
+    // 靠event: friendInvitations來傳送邀請到某個特定的socketId(s)
+    chatStatusIpdate.updateInvitations(receiverMail, receiverId);
+
     return res.status(200).json({
       status: 'Friend Request sent ok',
       friendRequestId: result.insertId,
