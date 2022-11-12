@@ -5,7 +5,7 @@ import { logout } from './shared/utils/generalAuth';
 const apiAdress = process.env.REACT_APP_API_URL;
 const apiClient = axios.create({
   baseURL: apiAdress,
-  timeout: 5000,
+  timeout: 30000,
 });
 
 // login request (這邊是公開route)
@@ -37,6 +37,25 @@ const sendFriendRequest = async (data) => {
   }
 };
 
+// 接受或是拒絕好友的API
+const acceptInvite = async (data) => {
+  try {
+    return await apiClient.post('/friend/accept', data);
+  } catch (exception) {
+    checkStatusCode(exception);
+    return { error: true, exception };
+  }
+};
+
+const rejectInvite = async (data) => {
+  try {
+    return await apiClient.post('/friend/reject', data);
+  } catch (exception) {
+    checkStatusCode(exception);
+    return { error: true, exception };
+  }
+};
+
 const checkStatusCode = (exception) => {
   const statusCode = exception?.response?.status;
   if (statusCode === 401 || statusCode === 403) {
@@ -45,4 +64,4 @@ const checkStatusCode = (exception) => {
   }
 };
 
-export { login, signup, sendFriendRequest };
+export { login, signup, sendFriendRequest, acceptInvite, rejectInvite };
