@@ -21,7 +21,7 @@ const InviteDataItems = ({
   };
 
   const dealRejectInivte = () => {
-    rejectInvite({ acceptId: id, token: localStorage.accessToken });
+    rejectInvite({ rejectId: id, token: localStorage.accessToken });
     // 如果按了一次 就不能再按第二次
     setButtonDisabled(true);
   };
