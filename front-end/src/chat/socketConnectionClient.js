@@ -2,6 +2,7 @@ import io from 'socket.io-client';
 import {
   setPendingFriendsInvite,
   showFriends,
+  setOnlineUsers,
 } from '../store/actions/friend_actions';
 import store from '../store/store';
 
@@ -36,5 +37,14 @@ export const connectSocketBackend = (accessToken) => {
     const { friends } = data;
     // 發到friend_actions給showFriends處理
     store.dispatch(showFriends(friends));
+  });
+
+  socket.on('onlineUsers', (data) => {
+    console.log('check broadcast every 10s', data);
+    // obj可以動態被加屬性，盡量不影響本來的邏輯
+    const { onlineUsers } = data;
+    // 有資料進來，就記得dispatch
+    // 去friend_action接資料
+    store.dispatch(setOnlineUsers(onlineUsers));
   });
 };

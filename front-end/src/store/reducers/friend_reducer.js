@@ -24,6 +24,8 @@ const reducer = (state = initState, action) => {
         pendingInvitation: action.pendingInvitation,
       };
 
+    // 如果這個case被dispatch，onlineUsers就會被set
+    // 去該元件的地方確認
     case friendActions.SET_ONLINE_USERS:
       return {
         ...state,

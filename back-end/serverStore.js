@@ -30,7 +30,7 @@ const removeDisconnectedUsersFromMap = (socketId) => {
   console.log('after DC', connectedUsers);
 };
 
-// 之後改為userID
+// 之後改為userID (全部線上的socket ID有誰)
 const getOnlineUsers = (userMail) => {
   const onlineSocket = [];
   // 把global的Map抓近來
@@ -45,10 +45,27 @@ const getOnlineUsers = (userMail) => {
   // online socket的array，用這個去檢查線上的user有誰，並且對他觸發相關的event
 };
 
+// 取得線上的用戶 (利用socketID Map到的mail)
+const fetchOnlineUserSocket = () => {
+  const onlineUsers = [];
+  connectedUsers.forEach((value, key) => {
+    // object比較好處理
+    onlineUsers.push({ socketId: key, userMail: value.userMail });
+  });
+  console.log('fetchOnlineUserSocket內的', onlineUsers);
+  return onlineUsers;
+  // onlineUsers的資料
+  // [
+  //   { socketId: '83tDzTrbTT04cEBTAAAC', userMail: 'test0003@gmail.com' },
+  //   { socketId: 'dC1W1jNr0QeBfWJEAAAX', userMail: 'test0003@gmail.com' }
+  // ]
+};
+
 module.exports = {
   addNewConnectedUsersToMap,
   removeDisconnectedUsersFromMap,
   getOnlineUsers,
   setSocketServer,
   getSocketServer,
+  fetchOnlineUserSocket,
 };

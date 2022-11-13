@@ -81,4 +81,18 @@ const showFriends = (friends) => {
   };
 };
 
-export { setPendingFriendsInvite, sendFriendRequest, getActions, showFriends };
+const setOnlineUsers = (onlineUsers) => {
+  return {
+    type: friendActions.SET_ONLINE_USERS,
+    onlineUsers,
+  };
+};
+// check friend reducer
+
+export {
+  setPendingFriendsInvite,
+  sendFriendRequest,
+  getActions,
+  showFriends,
+  setOnlineUsers,
+};
