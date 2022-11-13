@@ -110,7 +110,7 @@ const accpetFriendInvitation = async (req, res) => {
   // 發發送好友邀請的人 = accept
   const queryAcceptInfoById = await Friend.checkUserInfoById(acceptId);
   console.log('accept用ID反查', queryAcceptInfoById);
-  const acceptMail = queryAcceptInfoById[0].userInfo.mail;
+  const acceptMail = queryAcceptInfoById.userInfo.mail;
   const acceptorId = queryAccptorIdByMail[0].id;
   const acceptTime = new Date();
   console.log('接受這個人的好友', acceptId);

@@ -21,7 +21,7 @@ const initialSocketServer = (server) => {
 
   const broadcastOnlineUser = () => {
     const onlineUsers = serverStore.fetchOnlineUserSocket();
-    console.log('socketServer這邊的', onlineUsers);
+    // console.log('socketServer這邊的', onlineUsers);
     // io.emit會廣撥給全部線上的
     io.emit('onlineUsers', { onlineUsers });
     // TODO: set event "onlineUsers" in react socket connection
