@@ -1,7 +1,7 @@
 require('dotenv').config();
 const Joi = require('joi');
 const Friend = require('../models/friend_model');
-const EmitEvent = require('../../socketConnectDealer/updateChatStatus');
+const FriendEmitEvent = require('../../socketConnectDealer/updateChatStatus');
 
 // mail from friendInvitation
 const invitationSchema = Joi.object({
@@ -88,7 +88,7 @@ const sentFriendInvitation = async (req, res) => {
     const result = await Friend.sendFriendRequest(senderId, receiverId);
 
     // 靠event: friendInvitations來傳送邀請到某個特定的socketId(s)
-    EmitEvent.updateInvitations(receiverMail, receiverId);
+    FriendEmitEvent.updateInvitations(receiverMail, receiverId);
 
     return res.status(200).json({
       status: 'Friend Request sent ok',
@@ -112,6 +112,20 @@ const accpetFriendInvitation = async (req, res) => {
   console.log('這是接受別人好友的人', acceptorId);
   // 插入資料
   try {
+    // 不能讓別人直接用打API亂加
+    const checkFriendInvitationiTable = await Friend.checkPendingInvitation(
+      acceptId,
+      acceptorId
+    );
+    // 如果資料庫內有該筆資料，才讓他執行插入好友資料表
+    if (!checkFriendInvitationiTable) {
+      return res
+        .status(400)
+        .send(
+          'Internal Error, please send invitation first before adding friend'
+        );
+    }
+
     const result = await Friend.insertDaulFriendship(
       acceptId,
       acceptorId,
@@ -119,11 +133,11 @@ const accpetFriendInvitation = async (req, res) => {
     );
 
     // update socket event friendInvitation (讓渲染pending List的消失)
-    await EmitEvent.updateInvitations(acceptorMail, acceptId);
-    return res.status(200).json({ result: 'Accept invitation' });
+    await FriendEmitEvent.updateInvitations(acceptorMail, acceptId);
+    return res.status(200).json({ result: 'Accept invitation success' });
   } catch (err) {
     console.log('accept error', err);
-    return res.status(500).sned('internal error');
+    return res.status(500).sned('Internal Error, please try again');
   }
 };
 
