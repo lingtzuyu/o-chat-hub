@@ -3,6 +3,7 @@ import { styled } from '@mui/system';
 import AppBar from './AppBar/AppBar';
 import FriendsListBar from './FriendsList/FriendsListBar';
 import Messenger from './Messenger/Messenger';
+import MessageStatusBar from './MessageStatusBar/MessageStatusBar';
 import TopBar from './TopBar/TopBar';
 import { connect } from 'react-redux';
 import { getActions } from '../store/actions/auth_actions';
@@ -17,7 +18,7 @@ const MainPageWrapper = styled('div')({
 const MainPage = ({ setUserDetails }) => {
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
-    const userMail = localStorage.getItem('userMail');
+    // const userMail = localStorage.getItem('userMail');
     if (!accessToken) {
       // TODO: logout
       window.location.pathname = '/login';
@@ -36,6 +37,7 @@ const MainPage = ({ setUserDetails }) => {
         <FriendsListBar />
         <Messenger />
         <TopBar />
+        <MessageStatusBar />
       </MainPageWrapper>
     </>
   );

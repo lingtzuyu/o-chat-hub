@@ -11,12 +11,14 @@ import thunk from 'redux-thunk';
 import alertReducer from './reducers/alert_reducer';
 import authReducer from './reducers/auth_reducer';
 import friendReducer from './reducers/friend_reducer';
+import chatReducer from './reducers/chat_reducer';
 
 // 想像成API route
 const rootReducer = combineReducers({
   alert: alertReducer,
   auth: authReducer,
   friends: friendReducer,
+  chat: chatReducer,
 });
 
 const store = createStore(
