@@ -72,4 +72,27 @@ const rejectInvite = (data) => {
   };
 };
 
-export { setPendingFriendsInvite, sendFriendRequest, getActions };
+const showFriends = (friends) => {
+  return {
+    // type of the action 要dispatch的
+    // check reducer是否有接到此case
+    type: friendActions.SET_FRIENDS,
+    friends,
+  };
+};
+
+const setOnlineUsers = (onlineUsers) => {
+  return {
+    type: friendActions.SET_ONLINE_USERS,
+    onlineUsers,
+  };
+};
+// check friend reducer
+
+export {
+  setPendingFriendsInvite,
+  sendFriendRequest,
+  getActions,
+  showFriends,
+  setOnlineUsers,
+};

@@ -38,10 +38,10 @@ const sendFriendRequest = async (senderId, receiverId) => {
   }
 };
 
-// TODO: 缺少拒絕後重新申請的判斷 (靠status)
+// 拒絕後如果要重新申請
 // 確認pending Invitations
 // 這邊直接設0的好處是，如果接受(status變1)或是拒絕後(刪除)，就query不到 => 也不會渲染畫面
-// TODO: 但是要即時消失
+// 但是要即時消失的機制靠FriendEmitEvent發送，重新讓react撈DB渲染畫面 (接受: 因為status變成1撈不到 拒絕: 因為直接刪除該欄位所以找不到)
 const checkPendingInvitation = async (senderId, receiverId) => {
   const invitationQuery =
     'SELECT * FROM friendinvitation WHERE sender_user_id = ? AND receiver_user_id = ? AND status = 0';
@@ -60,7 +60,7 @@ const checkPendingInvitationByReceiver = async (receiverId) => {
 
 // check user info by ID
 const checkUserInfoById = async (userId) => {
-  const userQuery = 'SELECT username, mail, FROM user WHERE id = ?';
+  const userQuery = 'SELECT username, mail FROM user WHERE id = ?';
   const [result] = await sqlDB.query(userQuery, [userId]);
   const userInfo = {
     username: result[0].username,
@@ -120,6 +120,7 @@ const insertDaulFriendship = async (acceptId, acceptorId, currentTime) => {
   }
 };
 
+// 如果拒絕則直接刪除該筆在friendinvitation內的資料 (下次就可以加)
 const deleteRejectedFriendship = async (rejectId, rejectorId) => {
   try {
     const deleteFirendInviteQuery =
@@ -134,6 +135,17 @@ const deleteRejectedFriendship = async (rejectId, rejectorId) => {
   }
 };
 
+// checkFriendsByUserId
+const fetchFriendList = async (userId) => {
+  try {
+    const friendListQuery = 'SELECT friend FROM friendship WHERE user = ?';
+    const [friendListById] = await sqlDB.query(friendListQuery, [userId]);
+    return friendListById;
+  } catch (err) {
+    console.log('fetchFriendList Error (model)', err);
+  }
+};
+
 module.exports = {
   checkUserInfoById,
   checkPendingInvitationByReceiver,
@@ -144,4 +156,5 @@ module.exports = {
   getTargetFriendFromDB,
   insertDaulFriendship,
   deleteRejectedFriendship,
+  fetchFriendList,
 };

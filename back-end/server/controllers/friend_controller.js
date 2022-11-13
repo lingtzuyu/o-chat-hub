@@ -1,7 +1,7 @@
 require('dotenv').config();
 const Joi = require('joi');
 const Friend = require('../models/friend_model');
-const EmitEvent = require('../../socketConnectDealer/updateChatStatus');
+const FriendEmitEvent = require('../../socketConnectDealer/updateChatStatus');
 
 // mail from friendInvitation
 const invitationSchema = Joi.object({
@@ -88,7 +88,7 @@ const sentFriendInvitation = async (req, res) => {
     const result = await Friend.sendFriendRequest(senderId, receiverId);
 
     // 靠event: friendInvitations來傳送邀請到某個特定的socketId(s)
-    EmitEvent.updateInvitations(receiverMail, receiverId);
+    FriendEmitEvent.updateInvitations(receiverMail, receiverId);
 
     return res.status(200).json({
       status: 'Friend Request sent ok',
@@ -105,13 +105,33 @@ const accpetFriendInvitation = async (req, res) => {
   const { acceptId } = req.body;
   // TODO: 直接在body內 (JWT解出來的地方)，改為id也帶進去，就不用再query sql找一次id
   const acceptorMail = req.user.mail;
+  // 操作的人 (user) = acceptor
   const queryAccptorIdByMail = await Friend.checkUserExist(acceptorMail);
+  // 發發送好友邀請的人 = accept
+  const queryAcceptInfoById = await Friend.checkUserInfoById(acceptId);
+  console.log('accept用ID反查', queryAcceptInfoById);
+  const acceptMail = queryAcceptInfoById[0].userInfo.mail;
   const acceptorId = queryAccptorIdByMail[0].id;
   const acceptTime = new Date();
   console.log('接受這個人的好友', acceptId);
   console.log('這是接受別人好友的人', acceptorId);
   // 插入資料
   try {
+    // 不能讓別人直接用打API亂加
+    const checkFriendInvitationiTable = await Friend.checkPendingInvitation(
+      acceptId,
+      acceptorId
+    );
+    // 如果資料庫內有該筆資料，才讓他執行插入好友資料表
+    if (!checkFriendInvitationiTable) {
+      return res
+        .status(400)
+        .send(
+          'Internal Error, please send invitation first before adding friend'
+        );
+    }
+
+    // TODO: 現在是把friendinvitation表內的status從0改到1，但是好像直接刪除會比較好 (考慮到後面如果被刪除要重新加的話)
     const result = await Friend.insertDaulFriendship(
       acceptId,
       acceptorId,
@@ -119,11 +139,17 @@ const accpetFriendInvitation = async (req, res) => {
     );
 
     // update socket event friendInvitation (讓渲染pending List的消失)
-    await EmitEvent.updateInvitations(acceptorMail, acceptId);
-    return res.status(200).json({ result: 'Accept invitation' });
+    await FriendEmitEvent.updateInvitations(acceptorMail, acceptId);
+
+    // 在friend list處新增好友 (按下accept後雙方新增)
+    // 用updateFriendList在觸發一次render
+    await FriendEmitEvent.updateFriendList(acceptorMail);
+    await FriendEmitEvent.updateFriendList(acceptMail);
+
+    return res.status(200).json({ result: 'Accept invitation success' });
   } catch (err) {
     console.log('accept error', err);
-    return res.status(500).sned('internal error');
+    return res.status(500).sned('Internal Error, please try again');
   }
 };
 
@@ -139,11 +165,9 @@ const rejectFriendInvitation = async (req, res) => {
     console.log('這是拒絕別人好友的人', rejectorId);
     // update socket event friendInvitation
     // TODO: 這邊之後也需要做更改... 統一用id
-    await EmitEvent.updateInvitations(rejectorMail, rejectId);
-
-    res.status(200).json({ result: 'Reject invitation success' });
-
+    await FriendEmitEvent.updateInvitations(rejectorMail, rejectId);
     const result = await Friend.deleteRejectedFriendship(rejectId, rejectorId);
+    res.status(200).json({ result: 'Reject invitation success' });
   } catch (err) {
     console.log(err);
     return res.status(500).send('Internal Error, please try again');

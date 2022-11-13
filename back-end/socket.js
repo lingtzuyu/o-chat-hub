@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Server } = require('socket.io');
 const { socketAuthVerified } = require('./server/controllers/auth_controller');
 const { newConnectionDealer } = require('./socketConnectDealer/newConnection');
@@ -18,11 +19,22 @@ const initialSocketServer = (server) => {
     socketAuthVerified(socket, next);
   });
 
+  const broadcastOnlineUser = () => {
+    const onlineUsers = serverStore.fetchOnlineUserSocket();
+    console.log('socketServer這邊的', onlineUsers);
+    // io.emit會廣撥給全部線上的
+    io.emit('onlineUsers', { onlineUsers });
+    // TODO: set event "onlineUsers" in react socket connection
+  };
+
   io.on('connection', (socket) => {
     console.log('a user connected:', socket.id);
 
     // 呼叫callback來儲存map
     newConnectionDealer(socket, io);
+
+    // user一上線就call一次盤點誰在線上
+    broadcastOnlineUser();
     // Map(1) { 'UF_8WLnn5L-kJTXgAAAB' => { userMail: 'test0001@gmail.com' } }
 
     // 在這個io.on監聽connection event之下，我也監聽每一個socket的斷線
@@ -33,6 +45,11 @@ const initialSocketServer = (server) => {
       newDisconnectDealer(socket);
     });
   });
+
+  // 每隔10秒廣播全線上用戶
+  setInterval(() => {
+    broadcastOnlineUser();
+  }, process.env.SOCKET_BRAODCAST);
 
   // TODO: save the connected socket ID Map
 };

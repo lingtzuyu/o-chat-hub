@@ -13,6 +13,8 @@ const reducer = (state = initState, action) => {
     case friendActions.SET_FRIENDS:
       return {
         ...state,
+        // friends action 內的代的data來的
+        // 回到頁面呈現 FriendsUsernameList.js 那邊map data
         friends: action.friends,
       };
 
@@ -22,6 +24,8 @@ const reducer = (state = initState, action) => {
         pendingInvitation: action.pendingInvitation,
       };
 
+    // 如果這個case被dispatch，onlineUsers就會被set
+    // 去該元件的地方確認
     case friendActions.SET_ONLINE_USERS:
       return {
         ...state,
