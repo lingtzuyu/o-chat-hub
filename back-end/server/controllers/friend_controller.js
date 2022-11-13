@@ -1,7 +1,7 @@
 require('dotenv').config();
 const Joi = require('joi');
 const Friend = require('../models/friend_model');
-const chatStatusIpdate = require('../../socketConnectDealer/updateChatStatus');
+const EmitEvent = require('../../socketConnectDealer/updateChatStatus');
 
 // mail from friendInvitation
 const invitationSchema = Joi.object({
@@ -17,9 +17,19 @@ const friendConfirmSchema = Joi.object({
   // TODO: 這個用number或是string都會過..靠邀
   acceptId: Joi.number().required(),
   // https://github.com/hapijs/joi/issues/992
-  token: Joi.string().regex(
-    /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/
-  ),
+  token: Joi.string()
+    .regex(/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/)
+    .required(),
+});
+
+// TODO: accept以及reject可以合併，需要改body內的key，統一為id (instead of acceptId & rejectId)
+const friendRejectSchema = Joi.object({
+  // TODO: 這個用number或是string都會過..靠邀
+  rejectId: Joi.number().required(),
+  // https://github.com/hapijs/joi/issues/992
+  token: Joi.string()
+    .regex(/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/)
+    .required(),
 });
 
 // 送出好友邀請
@@ -78,7 +88,7 @@ const sentFriendInvitation = async (req, res) => {
     const result = await Friend.sendFriendRequest(senderId, receiverId);
 
     // 靠event: friendInvitations來傳送邀請到某個特定的socketId(s)
-    chatStatusIpdate.updateInvitations(receiverMail, receiverId);
+    EmitEvent.updateInvitations(receiverMail, receiverId);
 
     return res.status(200).json({
       status: 'Friend Request sent ok',
@@ -107,16 +117,44 @@ const accpetFriendInvitation = async (req, res) => {
       acceptorId,
       acceptTime
     );
-    return res.status(200).json({ result: 'Accept' });
+
+    // update socket event friendInvitation (讓渲染pending List的消失)
+    await EmitEvent.updateInvitations(acceptorMail, acceptId);
+    return res.status(200).json({ result: 'Accept invitation' });
   } catch (err) {
     console.log('accept error', err);
     return res.status(500).sned('internal error');
   }
 };
 
+// 拒絕好友邀請
+const rejectFriendInvitation = async (req, res) => {
+  try {
+    const { rejectId } = req.body;
+    // TODO: 直接在body內 (JWT解出來的地方)，改為id也帶進去，就不用再query sql找一次id
+    const rejectorMail = req.user.mail;
+    const queryRejectorIdByMail = await Friend.checkUserExist(rejectorMail);
+    const rejectorId = queryRejectorIdByMail[0].id;
+    console.log('拒絕這個人的好友', rejectId);
+    console.log('這是拒絕別人好友的人', rejectorId);
+    // update socket event friendInvitation
+    // TODO: 這邊之後也需要做更改... 統一用id
+    await EmitEvent.updateInvitations(rejectorMail, rejectId);
+
+    res.status(200).json({ result: 'Reject invitation success' });
+
+    const result = await Friend.deleteRejectedFriendship(rejectId, rejectorId);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send('Internal Error, please try again');
+  }
+};
+
 module.exports = {
   invitationSchema,
   friendConfirmSchema,
+  friendRejectSchema,
   sentFriendInvitation,
   accpetFriendInvitation,
+  rejectFriendInvitation,
 };

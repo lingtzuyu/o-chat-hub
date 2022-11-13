@@ -40,6 +40,8 @@ const sendFriendRequest = async (senderId, receiverId) => {
 
 // TODO: 缺少拒絕後重新申請的判斷 (靠status)
 // 確認pending Invitations
+// 這邊直接設0的好處是，如果接受(status變1)或是拒絕後(刪除)，就query不到 => 也不會渲染畫面
+// TODO: 但是要即時消失
 const checkPendingInvitation = async (senderId, receiverId) => {
   const invitationQuery =
     'SELECT * FROM friendinvitation WHERE sender_user_id = ? AND receiver_user_id = ? AND status = 0';
@@ -118,6 +120,20 @@ const insertDaulFriendship = async (acceptId, acceptorId, currentTime) => {
   }
 };
 
+const deleteRejectedFriendship = async (rejectId, rejectorId) => {
+  try {
+    const deleteFirendInviteQuery =
+      'DELETE FROM friendinvitation WHERE sender_user_id = ? AND receiver_user_id = ?';
+    const [result] = sqlDB.query(deleteFirendInviteQuery, [
+      rejectId,
+      rejectorId,
+    ]);
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   checkUserInfoById,
   checkPendingInvitationByReceiver,
@@ -127,4 +143,5 @@ module.exports = {
   getAllFriendshipFromDB,
   getTargetFriendFromDB,
   insertDaulFriendship,
+  deleteRejectedFriendship,
 };

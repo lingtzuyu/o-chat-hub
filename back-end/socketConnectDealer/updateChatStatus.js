@@ -2,10 +2,12 @@
 const Friends = require('../server/models/friend_model');
 // 取得儲存socket ID及mail的Map()變數
 const serverStore = require('../serverStore');
+// 透過socket.js這邊的event來發送實實資料 (React重新渲染畫面上的pending邀請)
 
 // 使用userId來尋找friendinvitation表
 const updateInvitations = async (receiverMail, receiverId) => {
   try {
+    // 撈一次sql資料
     const pendingInvitations = await Friends.checkPendingInvitationByReceiver(
       receiverId
     );
@@ -20,6 +22,7 @@ const updateInvitations = async (receiverMail, receiverId) => {
     console.log('該reciever有用哪幾條socket連線', receiverSockets);
     // => [ 'Ia3lKVB5d19XxsynAAAF', 'S-KhERp1enEME8CzAAAJ' ]
 
+    // 發到該socket通道
     receiverSockets.forEach((socketId) => {
       // 傳送已連線且是該receiver的socket id
       // 觸發事件friendInvitations (socketConenctionClient.js中)
