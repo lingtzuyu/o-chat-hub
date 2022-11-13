@@ -1,5 +1,5 @@
 const serverStore = require('../serverStore');
-const { updateInvitations } = require('./updateChatStatus');
+const { updateInvitations, updateFriendList } = require('./updateChatStatus');
 const Friend = require('../server/models/friend_model');
 
 const newConnectionDealer = async (socket, io) => {
@@ -17,6 +17,8 @@ const newConnectionDealer = async (socket, io) => {
   // 拿updateChatStatus.updateInvitations, 裡面的Friends.checkPendingInvitationByReceiver會去sqlDB要
   // updateInvitations裡面會再去觸發一次檢查連線者有哪些socket ID，撈DB...etc.
   await updateInvitations(socket.userMail, userId);
+  // update 好友名單給這個userMail (這個mail有在哪幾條socket ID會在updateFriendList這個functions內包)
+  await updateFriendList(socket.userMail);
 };
 
 module.exports = { newConnectionDealer };

@@ -60,7 +60,7 @@ const checkPendingInvitationByReceiver = async (receiverId) => {
 
 // check user info by ID
 const checkUserInfoById = async (userId) => {
-  const userQuery = 'SELECT username, mail, FROM user WHERE id = ?';
+  const userQuery = 'SELECT username, mail FROM user WHERE id = ?';
   const [result] = await sqlDB.query(userQuery, [userId]);
   const userInfo = {
     username: result[0].username,
@@ -135,6 +135,17 @@ const deleteRejectedFriendship = async (rejectId, rejectorId) => {
   }
 };
 
+// checkFriendsByUserId
+const fetchFriendList = async (userId) => {
+  try {
+    const friendListQuery = 'SELECT friend FROM friendship WHERE user = ?';
+    const [friendListById] = await sqlDB.query(friendListQuery, [userId]);
+    return friendListById;
+  } catch (err) {
+    console.log('fetchFriendList Error (model)', err);
+  }
+};
+
 module.exports = {
   checkUserInfoById,
   checkPendingInvitationByReceiver,
@@ -145,4 +156,5 @@ module.exports = {
   getTargetFriendFromDB,
   insertDaulFriendship,
   deleteRejectedFriendship,
+  fetchFriendList,
 };

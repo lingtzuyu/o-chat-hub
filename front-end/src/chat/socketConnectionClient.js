@@ -1,5 +1,8 @@
 import io from 'socket.io-client';
-import { setPendingFriendsInvite } from '../store/actions/friend_actions';
+import {
+  setPendingFriendsInvite,
+  showFriends,
+} from '../store/actions/friend_actions';
 import store from '../store/store';
 
 let socket = null;
@@ -28,5 +31,10 @@ export const connectSocketBackend = (accessToken) => {
     // dispatch改變store state
 
     store.dispatch(setPendingFriendsInvite(pendingInvitations));
+  });
+  socket.on('friendListUpdate', (data) => {
+    const { friends } = data;
+    // 發到friend_actions給showFriends處理
+    store.dispatch(showFriends(friends));
   });
 };

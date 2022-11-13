@@ -13,6 +13,8 @@ const reducer = (state = initState, action) => {
     case friendActions.SET_FRIENDS:
       return {
         ...state,
+        // friends action 內的代的data來的
+        // 回到頁面呈現 FriendsUsernameList.js 那邊map data
         friends: action.friends,
       };
 
