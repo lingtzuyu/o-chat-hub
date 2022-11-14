@@ -8,17 +8,17 @@ const LoginInput = ({ mail, setMail, password, setPassword }) => {
         // value and setValue 會從loginPage那頁來設定
         value={mail}
         setValue={setMail}
-        fieldname="email"
+        fieldname="E-Mail ADDRESS"
         type="text"
-        placeholder="email for login"
+        placeholder="E-MAIL"
       />
       <InputField
         // value and setValue 會從loginPage那頁來設定
         value={password}
         setValue={setPassword}
-        fieldname="password"
+        fieldname="PASSWORD"
         type="text"
-        placeholder="password for login"
+        placeholder="PASSWORD"
       />
     </>
   );

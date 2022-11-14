@@ -4,24 +4,38 @@ import Button from '@mui/material/Button';
 
 import { Typography } from '@mui/material';
 
+import { chatTypes, getActions } from '../../store/actions/chat_actions';
+import { connect } from 'react-redux';
+
 // TODO:　functional component for
 // 1. 操控inOnline 紅下線，綠上線
 // 2. 是可以按的按鈕，按下去開啟對話
 // 3. 排版: 頭像 名字 上線狀態
 
-const FriendDataItems = ({ id, username, isOnline }) => {
+// setSelectedChatInfo 是從props傳過來的
+const FriendDataItems = ({ id, username, isOnline, setChosenChatDetails }) => {
+  const openConversation = () => {
+    // 這邊是在那個button裡面的id, name...etc.
+    // chatDetails 裡面可以正確抓到id, name
+    // 傳details檔案以及type
+    setChosenChatDetails({ id: id, name: username }, chatTypes.DIRECT);
+    console.log('openConversation內的', username);
+  };
+
   return (
+    // TODO: Button上建立一個onClick來打開聊天室
     <Button
+      onClick={openConversation}
       style={{
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
         width: '80%',
         height: '36px',
         marginTop: '10px',
         textTransform: 'none',
         backgroundColor: 'grey',
         color: 'black',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
         position: 'relative',
       }}
     >
@@ -53,4 +67,8 @@ const FriendDataItems = ({ id, username, isOnline }) => {
   );
 };
 
-export default FriendDataItems;
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(null, mapActionsToProps)(FriendDataItems);
