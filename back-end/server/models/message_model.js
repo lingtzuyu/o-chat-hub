@@ -6,6 +6,7 @@ const { Schema } = mongoose;
 
 const messageSchema = new Schema({
   sender: Number,
+  senderMail: String,
   body: String,
   date: Date,
   type: String,

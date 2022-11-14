@@ -6,6 +6,9 @@ const { newDisconnectDealer } = require('./socketConnectDealer/newDisconnect');
 const {
   directMessageDealer,
 } = require('./socketConnectDealer/directMessageDealer');
+const {
+  directMessageHistoryDealer,
+} = require('./socketConnectDealer/directMessageHistoryDealer');
 const serverStore = require('./serverStore');
 
 const initialSocketServer = (server) => {
@@ -42,6 +45,11 @@ const initialSocketServer = (server) => {
     // 接收directMessage事件
     socket.on('directMessage', (data) => {
       directMessageDealer(socket, data);
+    });
+
+    // 取得聊天資料
+    socket.on('directMessageHistory', (data) => {
+      directMessageHistoryDealer(socket, data);
     });
 
     // 在這個io.on監聽connection event之下，我也監聽每一個socket的斷線

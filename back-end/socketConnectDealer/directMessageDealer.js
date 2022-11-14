@@ -1,6 +1,7 @@
 const MessageDataMongo = require('../server/models/message_model');
 const ChatDataMongo = require('../server/models/chat_model');
 const Friend = require('../server/models/friend_model');
+const chatDealer = require('./chatDealer');
 
 const directMessageDealer = async (socket, data) => {
   // 1. 從serverStore獲取這個用戶有哪些連線中的socket通道
@@ -17,6 +18,7 @@ const directMessageDealer = async (socket, data) => {
 
     const message = await MessageDataMongo.create({
       sender: userId,
+      senderMail: userMail,
       body: content,
       date: new Date(),
       type: 'DIRECT',
@@ -35,6 +37,9 @@ const directMessageDealer = async (socket, data) => {
       chatExist.messages.push(message._id);
       await chatExist.save();
       // TODO: 用socket event來發送即時訊息
+      // 兩人之間的對話 => ChatDataMongo._id
+
+      chatDealer.fetchChatContent(chatExist._id.toString());
     } else {
       // 建立新的chat document
       const newChat = await ChatDataMongo.create({
@@ -42,6 +47,8 @@ const directMessageDealer = async (socket, data) => {
         participants: [userId, receiverId],
       });
       // TODO: 用socket event來發送即時訊息
+
+      chatDealer.fetchChatContent(chatExist._id.toString());
     }
   } catch (err) {
     console.log('error from socket directMessageDealer', err);

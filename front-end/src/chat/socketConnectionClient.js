@@ -28,7 +28,7 @@ export const connectSocketBackend = (accessToken) => {
   // 確認此socket是否有pending的邀請
   socket.on('friendInvitations', (data) => {
     const { pendingInvitations } = data;
-    console.log('friendInvitation event launch', pendingInvitations);
+    // console.log('friendInvitation event launch', pendingInvitations);
     // dispatch改變store state
 
     store.dispatch(setPendingFriendsInvite(pendingInvitations));
@@ -40,12 +40,17 @@ export const connectSocketBackend = (accessToken) => {
   });
 
   socket.on('onlineUsers', (data) => {
-    console.log('check broadcast every 10s', data);
+    // console.log('check broadcast every 10s', data);
     // obj可以動態被加屬性，盡量不影響本來的邏輯
     const { onlineUsers } = data;
     // 有資料進來，就記得dispatch
     // 去friend_action接資料
     store.dispatch(setOnlineUsers(onlineUsers));
+  });
+
+  // came from the server side (server端發送給我)
+  socket.on('directMessageHistory', (data) => {
+    console.log('server主動送的', data);
   });
 };
 
@@ -56,4 +61,9 @@ const sendDirectMessge = (data) => {
   socket.emit('directMessage', data);
 };
 
-export { sendDirectMessge };
+const getDirectMessageHistroy = (data) => {
+  console.log('getDirectMessageHistroy', data);
+  socket.emit('directMessageHistory', data);
+};
+
+export { sendDirectMessge, getDirectMessageHistroy };
