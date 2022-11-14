@@ -8,6 +8,7 @@ import TopBar from './TopBar/TopBar';
 import { connect } from 'react-redux';
 import { getActions } from '../store/actions/auth_actions';
 import { connectSocketBackend } from '../chat/socketConnectionClient';
+import CardArea from './CardArea/CardArea';
 
 const MainPageWrapper = styled('div')({
   width: '100%',
@@ -36,6 +37,7 @@ const MainPage = ({ setUserDetails }) => {
         <AppBar />
         <FriendsListBar />
         <Messenger />
+        <CardArea />
         <TopBar />
         <MessageStatusBar />
       </MainPageWrapper>
