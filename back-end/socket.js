@@ -3,6 +3,9 @@ const { Server } = require('socket.io');
 const { socketAuthVerified } = require('./server/controllers/auth_controller');
 const { newConnectionDealer } = require('./socketConnectDealer/newConnection');
 const { newDisconnectDealer } = require('./socketConnectDealer/newDisconnect');
+const {
+  directMessageDealer,
+} = require('./socketConnectDealer/directMessageDealer');
 const serverStore = require('./serverStore');
 
 const initialSocketServer = (server) => {
@@ -32,10 +35,14 @@ const initialSocketServer = (server) => {
 
     // 呼叫callback來儲存map
     newConnectionDealer(socket, io);
-
     // user一上線就call一次盤點誰在線上
     broadcastOnlineUser();
     // Map(1) { 'UF_8WLnn5L-kJTXgAAAB' => { userMail: 'test0001@gmail.com' } }
+
+    // 接收directMessage事件
+    socket.on('directMessage', (data) => {
+      directMessageDealer(socket, data);
+    });
 
     // 在這個io.on監聽connection event之下，我也監聽每一個socket的斷線
     // 1. 從Map中剔除

@@ -8,6 +8,8 @@ import React, { useRef, useEffect } from 'react';
 import { styled } from '@mui/system';
 import { MessageAreaHeader } from './MessageAreaHeader';
 import { connect } from 'react-redux';
+import { DUMMY_MESSAGES } from './DUMMY_MESSAGES';
+import SingleMessage from './SingleMessage';
 
 const MessagesContainer = styled('div')({
   // 卷軸
@@ -23,6 +25,21 @@ const Messages = ({ chosenChatDetails, messages }) => {
     <MessagesContainer>
       {/*  chosenDetail內有name值就秀，沒有就undefined */}
       <MessageAreaHeader name={chosenChatDetails?.name} />
+      {/* Objects are not valid as a React child */}
+      {DUMMY_MESSAGES.map((message, index) => {
+        console.log(message);
+        return (
+          // <div>{message.content}</div>
+          <SingleMessage
+            key={message.id}
+            content={message.content}
+            username={message.author.username}
+            fromMe={message.fromMe}
+            date={message.date}
+            sameTime={message.sameTime}
+          />
+        );
+      })}
     </MessagesContainer>
   );
 };

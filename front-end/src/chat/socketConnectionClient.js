@@ -48,3 +48,12 @@ export const connectSocketBackend = (accessToken) => {
     store.dispatch(setOnlineUsers(onlineUsers));
   });
 };
+
+// 如果用戶online，就送出message，否則存入DB
+// data等等直接用個{}來包要的東西
+const sendDirectMessge = (data) => {
+  console.log('確認socket事件directMessage內的data', data);
+  socket.emit('directMessage', data);
+};
+
+export { sendDirectMessge };

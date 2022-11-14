@@ -52,7 +52,7 @@ const fetchOnlineUserSocket = () => {
     // object比較好處理
     onlineUsers.push({ socketId: key, userMail: value.userMail });
   });
-  console.log('fetchOnlineUserSocket內的', onlineUsers);
+  // console.log('fetchOnlineUserSocket內的', onlineUsers);
   return onlineUsers;
   // onlineUsers的資料
   // [
