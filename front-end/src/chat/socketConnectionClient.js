@@ -5,6 +5,7 @@ import {
   setOnlineUsers,
 } from '../store/actions/friend_actions';
 import store from '../store/store';
+import { updateDirectMessageIfMatch } from '../shared/utils/chatUtil';
 
 let socket = null;
 
@@ -51,6 +52,9 @@ export const connectSocketBackend = (accessToken) => {
   // came from the server side (server端發送給我)
   socket.on('directMessageHistory', (data) => {
     console.log('server主動送的', data);
+    // {mesasage: Array(xx), participants: Array(xx)}
+    // 如果選到的choesentDetail的ID是一樣的，就渲染及update
+    updateDirectMessageIfMatch(data);
   });
 };
 

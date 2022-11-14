@@ -11,6 +11,17 @@ import { connect } from 'react-redux';
 import { DUMMY_MESSAGES } from './DUMMY_MESSAGES';
 import SingleMessage from './SingleMessage';
 
+// const convertDate = (date, format) => {
+//   const map = {
+//     mm: date.getMonth() + 1,
+//     dd: date.getDate(),
+//     yy: date.getFullYear().toString().slice(-2),
+//     yyyy: date.getFullYear(),
+//   };
+
+//   return format.replace(/mm|dd|yy|yyyy/gi, (matched) => map[matched]);
+// };
+
 const MessagesContainer = styled('div')({
   // 卷軸
   overflow: 'auto',
@@ -26,17 +37,31 @@ const Messages = ({ chosenChatDetails, messages }) => {
       {/*  chosenDetail內有name值就秀，沒有就undefined */}
       <MessageAreaHeader name={chosenChatDetails?.name} />
       {/* Objects are not valid as a React child */}
-      {DUMMY_MESSAGES.map((message, index) => {
-        console.log(message);
+      {messages.map((message, index) => {
+        // check index 0 會 crash
+        // 同樣人的發言在一起
+        const sameSender =
+          index > 0 && messages[index].sender === messages[index - 1].sender;
+        // 比較前後，會判斷true或false
+        // console.log(message);
+
+        //TODO: 放在同一天下
+        // const sameTime =
+        //   index > 0 &&
+        //   convertDate(new Date(message.date), 'dd/mm/yy') ===
+        //     convertDate(new Date(messages[index - 1].date), 'dd/mm/yy');
+
+        // console.log(convertDate(new Date(message.date)), 'yy/mm/dd');
+
         return (
           // <div>{message.content}</div>
           <SingleMessage
             key={message.id}
-            content={message.content}
-            username={message.author.username}
-            fromMe={message.fromMe}
+            content={message.body}
+            username={message.sender}
+            fromMe={sameSender}
             date={message.date}
-            sameTime={message.sameTime}
+            sameTime={true}
           />
         );
       })}
