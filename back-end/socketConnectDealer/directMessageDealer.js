@@ -46,9 +46,9 @@ const directMessageDealer = async (socket, data) => {
         messages: [message._id],
         participants: [userId, receiverId],
       });
-      // TODO: 用socket event來發送即時訊息
+      // 用socket event來發送即時訊息
 
-      chatDealer.fetchChatContent(chatExist._id.toString());
+      chatDealer.fetchChatContent(newChat._id.toString());
     }
   } catch (err) {
     console.log('error from socket directMessageDealer', err);
