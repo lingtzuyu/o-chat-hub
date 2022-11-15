@@ -8,7 +8,7 @@ const SelectedChat = ({ name }) => {
   console.log('SelectedChat內', name);
   return (
     <>
-      <Typography sx={{ fontSize: '20px', color: 'black' }}>{`${
+      <Typography sx={{ fontSize: '20px', color: 'grey' }}>{`${
         name ? `Messaging To: ${name}` : ''
       }`}</Typography>
     </>

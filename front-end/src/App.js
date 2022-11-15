@@ -28,7 +28,7 @@ function App() {
           <Route path="*" element={<Navigate to="/homepage" replace />} />
         </Routes>
       </Router>
-      <AlertMessage />
+      {/* <AlertMessage /> */}
     </>
   );
 }
