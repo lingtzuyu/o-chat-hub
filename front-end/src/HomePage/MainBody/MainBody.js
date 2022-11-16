@@ -8,7 +8,7 @@ import { AddFriendIcon } from '../../MainPage/FriendsList/AddFriendIcon';
 import MessageAreaContent from '../../MainPage/Messenger/MessageAreaContent';
 import MessageAreaTopBar from '../../MainPage/MessageStatusBar/MessageAreaTopBar';
 import Messages from '../../MainPage/Messenger/Messages';
-import { MessageContentArea } from '../../MainPage/Messenger/MessageContentArea';
+import MessageContentArea from '../../MainPage/Messenger/MessageContentArea';
 import MessageTextField from '../../MainPage/Messenger/MessageTextField';
 
 const LeftFriendBarContainer = styled('div')({
