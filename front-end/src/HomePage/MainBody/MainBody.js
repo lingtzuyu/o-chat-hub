@@ -19,7 +19,7 @@ const LeftFriendBarContainer = styled('div')({
   backgroundColor: '#DFF6FF',
 });
 const MiddleMessageBarContainer = styled('div')({
-  width: '40%',
+  width: '50%',
   height: '100vh',
   display: 'flex',
   alignItems: 'center',
@@ -29,7 +29,7 @@ const MiddleMessageBarContainer = styled('div')({
 });
 
 const RightCardBarContainer = styled('div')({
-  width: '40%',
+  width: '30%',
   height: '100vh',
   display: 'flex',
   backgroundColor: 'whie',

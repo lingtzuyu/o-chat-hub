@@ -3,7 +3,7 @@ import { styled } from '@mui/system';
 import AppBar from './AppBar/AppBar';
 import FriendsListBar from './FriendsList/FriendsListBar';
 import Messenger from './Messenger/Messenger';
-import MessageStatusBar from './MessageStatusBar/MessageStatusBar';
+
 import TopBar from './TopBar/TopBar';
 import { connect } from 'react-redux';
 import { getActions } from '../store/actions/auth_actions';

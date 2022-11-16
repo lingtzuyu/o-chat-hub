@@ -1,7 +1,8 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import MessageTextField from './MessageTextField';
 import ChatBubblesCombined from './ChatBubblesCombined';
+import { getDirectMessageHistroy } from '../../chat/socketConnectionClient';
 
 const MessageContentAreaMainContainer = styled('div')({
   width: '90%',
@@ -13,8 +14,9 @@ const MessageContentAreaMainContainer = styled('div')({
   align: 'center',
 });
 
-// 上半部分
+// 下半部分 (包含 input)
 const MessageAreaContainer = styled('div')({
+  flexGrow: 1,
   width: '100%',
   height: '90%',
   display: 'flex',
@@ -22,7 +24,14 @@ const MessageAreaContainer = styled('div')({
   align: 'center',
 });
 
-export const MessageContentArea = () => {
+export const MessageContentArea = ({ chosenChatDetails }) => {
+  console.log('messageContentArea', chosenChatDetails);
+  // useEffect(() => {
+  //   getDirectMessageHistroy({
+  //     receiverUserId: chosenChatDetails.id,
+  //   });
+  // }, [chosenChatDetails]);
+
   return (
     <MessageContentAreaMainContainer>
       <MessageAreaContainer>

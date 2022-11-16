@@ -6,13 +6,14 @@ import { ChatBubble } from './ChatBubble';
 const ChatBubblesCombinedContainer = styled('div')({
   // 卷軸
   overflow: 'auto',
+  width: '100%',
   height: 'calc(100%-60px)',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
 });
 
-const ChatBubblesCombined = ({ messages }) => {
+const ChatBubblesCombined = ({ chosenChatDetails, messages }) => {
   console.log('泡泡內的', messages);
   return (
     <>

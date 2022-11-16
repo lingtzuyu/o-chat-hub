@@ -59,7 +59,12 @@ const MessageTextField = ({ chosenChatDetails }) => {
         value={messageToBeSent}
         onChange={handleInputAreaChange}
         onKeyDown={handleKeyPressed}
-        sx={{ width: '100%', bgcolor: '#DFF6FF' }}
+        sx={{
+          width: '100%',
+          bgcolor: '#DFF6FF',
+          fontSize: '16px',
+          borderRadius: '8px',
+        }}
       />
     </MessageTextFieldContainer>
   );

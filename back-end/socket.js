@@ -67,16 +67,16 @@ const initialSocketServer = (server) => {
     socket.on('disconnect', () => {
       console.log('a user disconnected');
       newDisconnectDealer(socket);
-      setInterval(() => {
-        broadcastOnlineUser();
-      }, process.env.SOCKET_BRAODCAST);
+      // setInterval(() => {
+      //   broadcastOnlineUser();
+      // }, process.env.SOCKET_BRAODCAST);
     });
   });
 
   // 每隔10秒廣播全線上用戶
-  // setInterval(() => {
-  //   broadcastOnlineUser();
-  // }, process.env.SOCKET_BRAODCAST);
+  setInterval(() => {
+    broadcastOnlineUser();
+  }, process.env.SOCKET_BRAODCAST);
 
   // TODO: save the connected socket ID Map
 };
