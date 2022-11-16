@@ -6,10 +6,13 @@ const FriendsListLabel = ({ label }) => {
   return (
     <Typography
       sx={{
+        alignItems: 'center',
         textTransform: 'uppercase',
-        color: 'black',
-        fontSize: '20px',
+        fontWeight: 800,
+        fontSize: '36px',
+        marginLeft: '36px',
         marginTop: '20px',
+        color: '#1363DF',
       }}
     >
       {label}

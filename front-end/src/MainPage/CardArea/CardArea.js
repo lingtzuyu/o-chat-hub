@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { styled } from '@mui/system';
+import RecipeReviewCard from './Card';
 
 const CardWrapper = styled('div')({
   // 空間足夠時允許擴展
@@ -12,7 +13,11 @@ const CardWrapper = styled('div')({
 });
 
 const CardArea = () => {
-  return <CardWrapper></CardWrapper>;
+  return (
+    <CardWrapper>
+      <RecipeReviewCard></RecipeReviewCard>
+    </CardWrapper>
+  );
 };
 
 export default CardArea;

@@ -17,7 +17,10 @@ const UserIconMenu = () => {
 
   return (
     <div>
-      <IconButton onClick={handleMenuDrop} style={{ color: 'grey' }}>
+      <IconButton
+        onClick={handleMenuDrop}
+        style={{ color: '#DFF6FF', size: 'large' }}
+      >
         <AccountCircle />
       </IconButton>
       {/* TODO: personal icon here */}

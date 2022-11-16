@@ -61,6 +61,13 @@ const fetchOnlineUserSocket = () => {
   // ]
 };
 
+// 取得好友socket
+// 1. 先取得自己id或是mail
+// 2. 如果自己的mail在onlineUsers表內是唯一值 (最後一個連線的socket)
+// 3. 取得這個id的好友名單
+// 4. 取得好友名單(mail)連線中的sokcet
+// 5. 發給這些socket通知
+
 module.exports = {
   addNewConnectedUsersToMap,
   removeDisconnectedUsersFromMap,

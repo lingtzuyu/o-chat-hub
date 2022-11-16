@@ -10,6 +10,8 @@ import { MessageAreaHeader } from './MessageAreaHeader';
 import { connect } from 'react-redux';
 import { DUMMY_MESSAGES } from './DUMMY_MESSAGES';
 import SingleMessage from './SingleMessage';
+// import { SingleMessageBox } from './ChatBox';
+// import { SingleChatRoomBubble } from './SingleChatBubble';
 
 // const convertDate = (date, format) => {
 //   const map = {

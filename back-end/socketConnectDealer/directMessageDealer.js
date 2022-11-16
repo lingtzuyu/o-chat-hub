@@ -5,12 +5,12 @@ const chatDealer = require('./chatDealer');
 
 const directMessageDealer = async (socket, data) => {
   // 1. 從serverStore獲取這個用戶有哪些連線中的socket通道
-
   try {
     const { userMail } = socket;
     //TODO: 這邊一樣，還要從userMail解出userID
     // 一開始就存userID就好，待改
     const { receiverId, content } = data;
+    // TODO: save user id and name to socket object (from jwt token)
     const checkIdByMail = await Friend.checkUserExist(userMail);
     const userId = checkIdByMail[0].id;
     // console.log('前端傳來的message data', socket);

@@ -10,7 +10,7 @@ const HomePageWrapper = styled('div')({
   justifyContent: 'center',
 });
 
-const HomepageMessage = () => {
+export const MeesageIfNoChosenContact = () => {
   return (
     <HomePageWrapper>
       <Typography variant="h3" sx={{ color: 'grey' }}>
@@ -19,5 +19,3 @@ const HomepageMessage = () => {
     </HomePageWrapper>
   );
 };
-
-export { HomepageMessage };

@@ -1,47 +1,33 @@
-// 無用 => to MessageTextField.js
-
 import React, { useState } from 'react';
-import { styled } from '@mui/system';
+import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import { sendDirectMessge } from '../../chat/socketConnectionClient';
+import TextField from '@mui/material/TextField';
 
-const MainWrapper = styled('div')({
-  height: '80px',
-  width: '90%',
+const MessageTextFieldContainer = styled('div')({
+  height: '8%',
+  width: '95%',
   display: 'flex',
+  padding: '10px',
   alignItems: 'center',
   justifyContent: 'center',
 });
 
-const InputField = styled('input')({
-  backgroundColor: 'grey',
-  height: '60px',
-  width: '90%',
-  borader: 'none',
-  borderRadius: '10px',
-  fontSize: '16px',
-  padding: '0 10px',
-});
-
-// 從state拿chosenChatDetails的user Id (可以檢查redux dev tool)
-const MessageInputArea = ({ chosenChatDetails }) => {
+const MessageTextField = ({ chosenChatDetails }) => {
   // keep the state of message to be sent by useState()
   const [messageToBeSent, setMessageToBeSent] = useState('');
 
   // 監聽onChange的event
   const handleInputAreaChange = (event) => {
     setMessageToBeSent(event.target.value);
-    console.log('輸入的東西', event.target.value);
   };
-
   // send Messaages to mongoDB
 
   const sendMessages = () => {
-    console.log('send Message to DB successful');
-
     // TODO: 在socketConnection中設立發訊息事件
     // 防止空的messgage
     if (messageToBeSent.length > 0) {
+      console.log(chosenChatDetails);
       sendDirectMessge({
         // 選擇好友的時候會存入的
         receiverId: chosenChatDetails.id,
@@ -50,6 +36,8 @@ const MessageInputArea = ({ chosenChatDetails }) => {
     }
     // setMessage空直要放在送出資料後面，不然會直接先清空
     setMessageToBeSent('');
+
+    console.log('send Message to DB successful');
   };
 
   // 按下按鍵後就執行send Message
@@ -60,14 +48,24 @@ const MessageInputArea = ({ chosenChatDetails }) => {
   };
 
   return (
-    <MainWrapper>
-      <InputField
-        placehoder={`Send to ${chosenChatDetails.name}`}
+    <MessageTextFieldContainer>
+      <TextField
+        id="filled-basic"
+        label="Messages to be sent"
+        placeholder="Input your messages"
+        variant="filled"
+        // TODO: 之後可以做 multiline，要解決enter的小bug
         value={messageToBeSent}
         onChange={handleInputAreaChange}
         onKeyDown={handleKeyPressed}
-      ></InputField>
-    </MainWrapper>
+        sx={{
+          width: '100%',
+          bgcolor: '#DFF6FF',
+          fontSize: '16px',
+          borderRadius: '8px',
+        }}
+      />
+    </MessageTextFieldContainer>
   );
 };
 
@@ -76,4 +74,4 @@ const mapStoreStateToProps = ({ chat }) => {
   return { ...chat };
 };
 
-export default connect(mapStoreStateToProps)(MessageInputArea);
+export default connect(mapStoreStateToProps)(MessageTextField);

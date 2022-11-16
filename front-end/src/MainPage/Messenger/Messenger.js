@@ -1,28 +1,36 @@
-import React from 'react';
-import { styled } from '@mui/system';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { HomepageMessage } from './HomepageMessage';
-import MessageAreaContent from './MessageAreaContent';
-const MessengerWrapper = styled('div')({
-  // 空間足夠時允許擴展
-  flexGrow: 1,
-  backgroundColor: 'white',
-  marginTop: '80px',
-  height: '920px',
-  display: 'flex',
-});
+import { MeesageIfNoChosenContact } from './MeesageIfNoChosenContact';
+import ChatBubblesCombined from './ChatBubblesCombined';
+import { getDirectMessageHistroy } from '../../chat/socketConnectionClient';
+
+// const MessengerWrapper = styled('div')({
+//   // 空間足夠時允許擴展
+//   flexGrow: 1,
+//   backgroundColor: 'white',
+//   marginTop: '80px',
+//   height: '920px',
+//   display: 'flex',
+// });
 
 const Messenger = ({ chosenChatDetails }) => {
   // chosenChatDetails如果忘記，想想你在MessageStatusBar.js那編取值卡多久
+  console.log('Messenger內', chosenChatDetails);
+
+  // useEffect(() => {
+  //   getDirectMessageHistroy({
+  //     receiverUserId: chosenChatDetails.id,
+  //   });
+  // }, [chosenChatDetails]);
   return (
     // MessengerContent裡面的東西會根據chosenChatDetails來做相對應的找DB及渲染
-    <MessengerWrapper>
+    <>
       {!chosenChatDetails ? (
-        <HomepageMessage />
+        <MeesageIfNoChosenContact />
       ) : (
-        <MessageAreaContent chosenChatDetails={chosenChatDetails} />
+        <ChatBubblesCombined chosenChatDetails={chosenChatDetails} />
       )}
-    </MessengerWrapper>
+    </>
   );
 };
 

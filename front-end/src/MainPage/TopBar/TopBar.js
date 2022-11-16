@@ -1,7 +1,6 @@
 import React from 'react';
 import { styled } from '@mui/system';
 import UserIconMenu from './UserIconMenu';
-import SelectedChat from '../MessageStatusBar/SelectedChat';
 
 const TopBarWrapper = styled('div')({
   display: 'flex',
@@ -19,7 +18,6 @@ const TopBarWrapper = styled('div')({
 const TopBar = () => {
   return (
     <TopBarWrapper>
-      <SelectedChat />
       <UserIconMenu />
     </TopBarWrapper>
   );

@@ -22,10 +22,19 @@ const initialSocketServer = (server) => {
   // io.use來接middleware (ex. auth): https://socket.io/docs/v4/middlewares/
   // TODO: 這邊可做rate limiter
   io.use((socket, next) => {
+    console.log(socket);
     socketAuthVerified(socket, next);
   });
 
   const broadcastOnlineUser = () => {
+    const onlineUsers = serverStore.fetchOnlineUserSocket();
+    // console.log('socketServer這邊的', onlineUsers);
+    // io.emit會廣撥給全部線上的
+    io.emit('onlineUsers', { onlineUsers });
+    // TODO: set event "onlineUsers" in react socket connection
+  };
+
+  const broadcastOnlineUserIfFriend = () => {
     const onlineUsers = serverStore.fetchOnlineUserSocket();
     // console.log('socketServer這邊的', onlineUsers);
     // io.emit會廣撥給全部線上的
@@ -58,6 +67,9 @@ const initialSocketServer = (server) => {
     socket.on('disconnect', () => {
       console.log('a user disconnected');
       newDisconnectDealer(socket);
+      // setInterval(() => {
+      //   broadcastOnlineUser();
+      // }, process.env.SOCKET_BRAODCAST);
     });
   });
 
