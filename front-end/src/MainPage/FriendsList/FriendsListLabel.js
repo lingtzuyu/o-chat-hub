@@ -6,6 +6,7 @@ const FriendsListLabel = ({ label }) => {
   return (
     <Typography
       sx={{
+        alignItems: 'center',
         textTransform: 'uppercase',
         fontWeight: 800,
         fontSize: '36px',

@@ -22,6 +22,7 @@ const initialSocketServer = (server) => {
   // io.use來接middleware (ex. auth): https://socket.io/docs/v4/middlewares/
   // TODO: 這邊可做rate limiter
   io.use((socket, next) => {
+    console.log(socket);
     socketAuthVerified(socket, next);
   });
 

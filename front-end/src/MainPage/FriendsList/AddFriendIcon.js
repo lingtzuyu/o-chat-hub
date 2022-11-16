@@ -1,6 +1,5 @@
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
 import { IconButton } from '@mui/material';
 import AddFriendPopout from './AddFriendPopout';
 

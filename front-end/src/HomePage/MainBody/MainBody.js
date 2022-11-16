@@ -6,6 +6,10 @@ import PendingInvitationList from '../../MainPage/FriendsList/PendingInvitationL
 import FriendsListLabel from '../../MainPage/FriendsList/FriendsListLabel';
 import { AddFriendIcon } from '../../MainPage/FriendsList/AddFriendIcon';
 import MessageAreaContent from '../../MainPage/Messenger/MessageAreaContent';
+import MessageAreaTopBar from '../../MainPage/MessageStatusBar/MessageAreaTopBar';
+import Messages from '../../MainPage/Messenger/Messages';
+import { MessageContentArea } from '../../MainPage/Messenger/MessageContentArea';
+import MessageTextField from '../../MainPage/Messenger/MessageTextField';
 
 const LeftFriendBarContainer = styled('div')({
   width: '20%',
@@ -18,6 +22,8 @@ const MiddleMessageBarContainer = styled('div')({
   width: '40%',
   height: '100vh',
   display: 'flex',
+  alignItems: 'center',
+  flexDirection: 'Column',
   backgroundColor: 'white',
   borderRight: '0.5px solid grey',
 });
@@ -36,13 +42,16 @@ export default function MainBody() {
     <>
       <LeftFriendBarContainer>
         <MessgaeTopIcon />
-        <FriendsListLabel label="Friends" />
-        <AddFriendIcon />
+        {/* <FriendsListLabel label="Friends" />
+        <AddFriendIcon /> */}
         <FriedListBarWithTitle />
-        <FriendsListLabel label="Invitations" />
+
         <PendingInvitationList />
       </LeftFriendBarContainer>
-      <MiddleMessageBarContainer></MiddleMessageBarContainer>
+      <MiddleMessageBarContainer>
+        <MessageAreaTopBar />
+        <MessageContentArea />
+      </MiddleMessageBarContainer>
       <RightCardBarContainer></RightCardBarContainer>
     </>
   );
