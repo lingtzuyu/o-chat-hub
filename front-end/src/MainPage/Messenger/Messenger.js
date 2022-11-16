@@ -1,5 +1,4 @@
 import React from 'react';
-import { styled } from '@mui/system';
 import { connect } from 'react-redux';
 import { MeesageIfNoChosenContact } from './MeesageIfNoChosenContact';
 import ChatBubblesCombined from './ChatBubblesCombined';

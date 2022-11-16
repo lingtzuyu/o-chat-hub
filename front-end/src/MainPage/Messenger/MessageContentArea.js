@@ -4,6 +4,7 @@ import MessageTextField from './MessageTextField';
 import ChatBubblesCombined from './ChatBubblesCombined';
 import Messenger from './Messenger';
 import { getDirectMessageHistroy } from '../../chat/socketConnectionClient';
+import { connect } from 'react-redux';
 
 const MessageContentAreaMainContainer = styled('div')({
   width: '90%',
@@ -42,3 +43,9 @@ export const MessageContentArea = ({ chosenChatDetails }) => {
     </MessageContentAreaMainContainer>
   );
 };
+
+const mapStoreStateToProps = ({ chat }) => {
+  return { ...chat };
+};
+
+export default connect(mapStoreStateToProps)(MessageContentArea);
