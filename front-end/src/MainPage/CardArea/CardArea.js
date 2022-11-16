@@ -1,23 +1,21 @@
-import React, { useRef, useEffect } from 'react';
-import { styled } from '@mui/system';
-import RecipeReviewCard from './Card';
+import React from 'react';
+import styled from '@emotion/styled';
+import NoteCard from './NoteCard';
 
-const CardWrapper = styled('div')({
-  // 空間足夠時允許擴展
-  flexGrow: 1,
-  width: '360px',
-  backgroundColor: 'grey',
-  marginTop: '80px',
-  height: '920px',
+const CardAreaMainContainer = styled('div')({
+  width: '90%',
+  height: '80%',
+  padding: '10px',
   display: 'flex',
+  flexDirection: 'column',
+  backgroundColor: 'grey',
+  align: 'center',
 });
 
-const CardArea = () => {
+export default function CardArea() {
   return (
-    <CardWrapper>
-      <RecipeReviewCard></RecipeReviewCard>
-    </CardWrapper>
+    <CardAreaMainContainer>
+      <NoteCard />
+    </CardAreaMainContainer>
   );
-};
-
-export default CardArea;
+}

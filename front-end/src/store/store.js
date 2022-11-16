@@ -12,6 +12,7 @@ import alertReducer from './reducers/alert_reducer';
 import authReducer from './reducers/auth_reducer';
 import friendReducer from './reducers/friend_reducer';
 import chatReducer from './reducers/chat_reducer';
+import cardReducer from './reducers/card_reducer';
 
 // 想像成API route
 const rootReducer = combineReducers({
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   friends: friendReducer,
   chat: chatReducer,
+  card: cardReducer,
 });
 
 const store = createStore(

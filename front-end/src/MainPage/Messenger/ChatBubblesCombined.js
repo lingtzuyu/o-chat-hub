@@ -15,8 +15,7 @@ const ChatBubblesCombinedContainer = styled('div')({
 });
 
 const ChatBubblesCombined = ({ chosenChatDetails, messages }) => {
-  // console.log('泡泡內的', messages);
-  console.log('泡泡內的chosenChatDetails', chosenChatDetails);
+  // 點選到chosenChatDetail，渲染選中的人的歷史訊息
   useEffect(() => {
     getDirectMessageHistroy({
       receiverUserId: chosenChatDetails.id,
@@ -24,6 +23,7 @@ const ChatBubblesCombined = ({ chosenChatDetails, messages }) => {
   }, [chosenChatDetails]);
   return (
     <>
+      {/* map DB取得的訊息 */}
       <ChatBubblesCombinedContainer>
         {messages.map((message, index) => {
           const sameSender =
@@ -31,6 +31,7 @@ const ChatBubblesCombined = ({ chosenChatDetails, messages }) => {
           return (
             <ChatBubble
               key={message._id}
+              mapKey={message._id}
               content={message.body}
               username={message.senderMail}
               fromMe={sameSender}

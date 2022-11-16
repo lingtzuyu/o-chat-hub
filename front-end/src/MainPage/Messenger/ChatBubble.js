@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar } from '@mui/material';
 import FakeAvatar from '../../shared/images/fake_avatar.png';
 import styled from '@emotion/styled';
+// https://mui.com/material-ui/react-checkbox/
+import { Checkbox, FormControl, Box } from '@mui/material';
 
 const ChatRoomMainWrapper = styled('div')({
   width: '75%',
   display: 'flex',
   marginTop: '10px',
   justifyContent: 'flex-end',
+});
+
+const SaveMessageButtonContainer = styled('div')({
+  width: '10%',
+  display: 'flex',
+});
+
+const MessageContentWrapper = styled('div')({
+  width: '90%',
+  display: 'flex',
 });
 
 const MessageRow = styled('div')({
@@ -105,49 +117,112 @@ const MessageTimeStampRight = styled('div')({
 
 const DisplayName = styled('div')({ marginLeft: '20px' });
 
-const MessageLeft = ({ content, fromMe, username, date, sameTime }) => {
+const MessageLeft = ({ content, fromMe, username, date, sameTime, mapKey }) => {
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
   const photoURL = FakeAvatar;
   const displayName = username ? username : 'no username';
-  // const classes = useStyles();
+  const [selected, setSelected] = useState(false);
+  let messagesToBeTransferring = [];
+  const handleSelected = () => {
+    const selectedMessage = {
+      messageId: mapKey,
+      message: content,
+      sender: username,
+      time: date,
+    };
+    if (!selected) {
+      setSelected(true);
+      messagesToBeTransferring.push(selectedMessage);
+      // TODO: 一個function將被選取的資料push進入array
+    } else {
+      setSelected(false);
+      // TODO: 一個function將被選取的資料丟出array
+    }
+  };
+  console.log(messagesToBeTransferring);
   return (
+    // 切版
     <ChatRoomMainWrapper>
-      <MessageRow>
-        <Avatar
-          alt={displayName}
-          // className={classes.orange}
-          src={photoURL}
-        ></Avatar>
+      {/* 切版 */}
+      <SaveMessageButtonContainer>
+        <Checkbox checked={selected} onChange={handleSelected} />
+      </SaveMessageButtonContainer>
+      {/* 切版 */}
+      <MessageContentWrapper>
+        <MessageRow>
+          <Avatar
+            alt={displayName}
+            // className={classes.orange}
+            src={photoURL}
+          ></Avatar>
 
-        <DisplayName>{displayName}</DisplayName>
-        <MessageBlue>
-          <MessageContent>{message}</MessageContent>
-          <MessageTimeStampRight>{timestamp}</MessageTimeStampRight>
-        </MessageBlue>
-      </MessageRow>
+          <DisplayName>{displayName}</DisplayName>
+          <MessageBlue>
+            <MessageContent>{message}</MessageContent>
+            <MessageTimeStampRight>{timestamp}</MessageTimeStampRight>
+          </MessageBlue>
+        </MessageRow>
+      </MessageContentWrapper>
     </ChatRoomMainWrapper>
   );
 };
 
-const MessageRight = ({ content, fromMe, username, date, sameTime }) => {
-  // console.log('右邊', content);
-  // const classes = useStyles();
+const MessageRight = ({
+  content,
+  fromMe,
+  username,
+  date,
+  sameTime,
+  mapKey,
+}) => {
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
+  const [selected, setSelected] = useState(false);
+  let messagesToBeTransferring = [];
+  const handleSelected = () => {
+    const selectedMessage = {
+      messageId: mapKey,
+      message: content,
+      sender: username,
+      time: date,
+    };
+    if (!selected) {
+      setSelected(true);
+      messagesToBeTransferring.push(selectedMessage);
+      console.log(messagesToBeTransferring);
+      // TODO: 一個function將被選取的資料push進入array
+    } else {
+      setSelected(false);
+      // TODO: 一個function將被選取的資料丟出array
+    }
+  };
+
   return (
     <ChatRoomMainWrapper>
-      <MessageRowRight>
-        <MessageOrange>
-          <MessageContent>{message}</MessageContent>
-          <MessageTimeStampRight>{timestamp}</MessageTimeStampRight>
-        </MessageOrange>
-      </MessageRowRight>
+      <SaveMessageButtonContainer>
+        <Checkbox checked={selected} onChange={handleSelected} />
+      </SaveMessageButtonContainer>
+      <MessageContentWrapper>
+        <MessageRowRight>
+          <MessageOrange>
+            <MessageContent>{message}</MessageContent>
+            <MessageTimeStampRight>{timestamp}</MessageTimeStampRight>
+          </MessageOrange>
+        </MessageRowRight>
+      </MessageContentWrapper>
     </ChatRoomMainWrapper>
   );
 };
 
-export const ChatBubble = ({ content, fromMe, username, date, sameTime }) => {
+export const ChatBubble = ({
+  content,
+  fromMe,
+  username,
+  date,
+  sameTime,
+  mapKey,
+}) => {
   if (fromMe && sameTime) {
     return (
       <MessageRight
@@ -156,6 +231,7 @@ export const ChatBubble = ({ content, fromMe, username, date, sameTime }) => {
         fromMe={fromMe}
         date={date}
         sameTime={sameTime}
+        mapKey={mapKey}
       />
     );
   }
@@ -166,6 +242,7 @@ export const ChatBubble = ({ content, fromMe, username, date, sameTime }) => {
       fromMe={fromMe}
       date={date}
       sameTime={sameTime}
+      mapKey={mapKey}
     />
   );
 };
