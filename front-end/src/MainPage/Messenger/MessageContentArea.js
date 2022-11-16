@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import MessageTextField from './MessageTextField';
 import ChatBubblesCombined from './ChatBubblesCombined';
+import Messenger from './Messenger';
 import { getDirectMessageHistroy } from '../../chat/socketConnectionClient';
 
 const MessageContentAreaMainContainer = styled('div')({
@@ -35,7 +36,7 @@ export const MessageContentArea = ({ chosenChatDetails }) => {
   return (
     <MessageContentAreaMainContainer>
       <MessageAreaContainer>
-        <ChatBubblesCombined />
+        <Messenger />
       </MessageAreaContainer>
       <MessageTextField />
     </MessageContentAreaMainContainer>
