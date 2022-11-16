@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from '@mui/system';
 import { connect } from 'react-redux';
 import { ChatBubble } from './ChatBubble';
+import { getDirectMessageHistroy } from '../../chat/socketConnectionClient';
 
 const ChatBubblesCombinedContainer = styled('div')({
   // 卷軸
@@ -16,6 +17,11 @@ const ChatBubblesCombinedContainer = styled('div')({
 const ChatBubblesCombined = ({ chosenChatDetails, messages }) => {
   // console.log('泡泡內的', messages);
   console.log('泡泡內的chosenChatDetails', chosenChatDetails);
+  useEffect(() => {
+    getDirectMessageHistroy({
+      receiverUserId: chosenChatDetails.id,
+    });
+  }, [chosenChatDetails]);
   return (
     <>
       <ChatBubblesCombinedContainer>

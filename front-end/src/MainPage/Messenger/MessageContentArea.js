@@ -43,9 +43,3 @@ export const MessageContentArea = ({ chosenChatDetails }) => {
     </MessageContentAreaMainContainer>
   );
 };
-
-const mapStoreStateToProps = ({ chat }) => {
-  return { ...chat };
-};
-
-export default connect(mapStoreStateToProps)(MessageContentArea);
