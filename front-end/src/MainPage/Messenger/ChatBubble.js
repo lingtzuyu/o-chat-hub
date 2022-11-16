@@ -131,7 +131,7 @@ const MessageLeft = ({ content, fromMe, username, date, sameTime }) => {
 };
 
 const MessageRight = ({ content, fromMe, username, date, sameTime }) => {
-  console.log('右邊', content);
+  // console.log('右邊', content);
   // const classes = useStyles();
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
@@ -149,7 +149,6 @@ const MessageRight = ({ content, fromMe, username, date, sameTime }) => {
 
 export const ChatBubble = ({ content, fromMe, username, date, sameTime }) => {
   if (fromMe && sameTime) {
-    console.log('判斷式泡泡內的', content);
     return (
       <MessageRight
         content={content}

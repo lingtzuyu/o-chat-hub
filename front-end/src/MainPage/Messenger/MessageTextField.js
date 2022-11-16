@@ -20,7 +20,6 @@ const MessageTextField = ({ chosenChatDetails }) => {
   // 監聽onChange的event
   const handleInputAreaChange = (event) => {
     setMessageToBeSent(event.target.value);
-    console.log('輸入的東西', event.target.value);
   };
   // send Messaages to mongoDB
 

@@ -40,8 +40,7 @@ const updateChatHistoryIfChatExist = ({
       return participantsOfChat.includes(participantId);
     }
   );
-  // TODO: redux state內message抓到空值，待修
-  console.log('result in updateChatHistoryIfChatExist', result);
+
   if (result) {
     store.dispatch(setMessages(messages));
   }

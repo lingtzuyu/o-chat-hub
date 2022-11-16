@@ -14,7 +14,8 @@ const ChatBubblesCombinedContainer = styled('div')({
 });
 
 const ChatBubblesCombined = ({ chosenChatDetails, messages }) => {
-  console.log('泡泡內的', messages);
+  // console.log('泡泡內的', messages);
+  console.log('泡泡內的chosenChatDetails', chosenChatDetails);
   return (
     <>
       <ChatBubblesCombinedContainer>
