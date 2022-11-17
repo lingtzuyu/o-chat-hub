@@ -3,7 +3,9 @@ import { Avatar } from '@mui/material';
 import FakeAvatar from '../../shared/images/fake_avatar.png';
 import styled from '@emotion/styled';
 // https://mui.com/material-ui/react-checkbox/
-import { Checkbox, FormControl, Box } from '@mui/material';
+import { Checkbox } from '@mui/material';
+import { getActions } from '../../store/actions/card_actions';
+import { Connect } from 'react-redux';
 
 const ChatRoomMainWrapper = styled('div')({
   width: '75%',
@@ -123,24 +125,63 @@ const MessageLeft = ({ content, fromMe, username, date, sameTime, mapKey }) => {
   const photoURL = FakeAvatar;
   const displayName = username ? username : 'no username';
   const [selected, setSelected] = useState(false);
-  let messagesToBeTransferring = [];
+
   const handleSelected = () => {
+    let MessageCollectionArray = [];
     const selectedMessage = {
       messageId: mapKey,
       message: content,
       sender: username,
       time: date,
     };
+
     if (!selected) {
       setSelected(true);
-      messagesToBeTransferring.push(selectedMessage);
-      // TODO: 一個function將被選取的資料push進入array
+
+      // 直接存入
+      if (!window.localStorage.getItem('selectedMessagesCollection')) {
+        MessageCollectionArray.push(selectedMessage);
+        window.localStorage.setItem(
+          'selectedMessagesCollection',
+          JSON.stringify(MessageCollectionArray)
+        );
+      } else {
+        // parse localStorage內的array後，push新selected並存入
+        const messageCollectionFromLocal = JSON.parse(
+          window.localStorage.getItem('selectedMessagesCollection')
+        );
+
+        messageCollectionFromLocal.push(selectedMessage);
+        window.localStorage.setItem(
+          'selectedMessagesCollection',
+          JSON.stringify(messageCollectionFromLocal)
+        );
+      }
     } else {
       setSelected(false);
-      // TODO: 一個function將被選取的資料丟出array
+      let messageArrayToBeRemoved = JSON.parse(
+        window.localStorage.getItem('selectedMessagesCollection')
+      );
+
+      // find object and index
+
+      const removedMessage = messageArrayToBeRemoved.find(
+        (message) => message.messageId === mapKey
+      );
+      const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
+      console.log(removedIndex);
+      const updatedMessageCollection = messageArrayToBeRemoved.splice(
+        removedIndex,
+        1
+      );
+      console.log(updatedMessageCollection);
+      // window.localStorage.setItem(
+      //   'selectedMessagesCollection',
+      //   JSON.stringify(updatedMessageCollection)
+      // );
     }
   };
-  console.log(messagesToBeTransferring);
+
   return (
     // 切版
     <ChatRoomMainWrapper>
@@ -179,18 +220,22 @@ const MessageRight = ({
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
   const [selected, setSelected] = useState(false);
-  let messagesToBeTransferring = [];
+
   const handleSelected = () => {
     const selectedMessage = {
       messageId: mapKey,
-      message: content,
-      sender: username,
-      time: date,
+      meesages: {
+        message: content,
+        sender: username,
+        time: date,
+      },
     };
     if (!selected) {
       setSelected(true);
-      messagesToBeTransferring.push(selectedMessage);
-      console.log(messagesToBeTransferring);
+      console.log(selectedMessage);
+      // console.log(selectedMessage);
+      // messagesToBeTransferring.push(selectedMessage);
+
       // TODO: 一個function將被選取的資料push進入array
     } else {
       setSelected(false);
