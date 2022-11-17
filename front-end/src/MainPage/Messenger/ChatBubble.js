@@ -169,16 +169,14 @@ const MessageLeft = ({ content, fromMe, username, date, sameTime, mapKey }) => {
         (message) => message.messageId === mapKey
       );
       const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
-      console.log(removedIndex);
-      const updatedMessageCollection = messageArrayToBeRemoved.splice(
-        removedIndex,
-        1
+      console.log('被移除的index', removedIndex);
+      // 移除該index
+      messageArrayToBeRemoved.splice(removedIndex, 1);
+      console.log('更新後的', messageArrayToBeRemoved);
+      window.localStorage.setItem(
+        'selectedMessagesCollection',
+        JSON.stringify(messageArrayToBeRemoved)
       );
-      console.log(updatedMessageCollection);
-      // window.localStorage.setItem(
-      //   'selectedMessagesCollection',
-      //   JSON.stringify(updatedMessageCollection)
-      // );
     }
   };
 
@@ -222,24 +220,56 @@ const MessageRight = ({
   const [selected, setSelected] = useState(false);
 
   const handleSelected = () => {
+    let MessageCollectionArray = [];
     const selectedMessage = {
       messageId: mapKey,
-      meesages: {
-        message: content,
-        sender: username,
-        time: date,
-      },
+      message: content,
+      sender: username,
+      time: date,
     };
+
     if (!selected) {
       setSelected(true);
-      console.log(selectedMessage);
-      // console.log(selectedMessage);
-      // messagesToBeTransferring.push(selectedMessage);
 
-      // TODO: 一個function將被選取的資料push進入array
+      // 直接存入
+      if (!window.localStorage.getItem('selectedMessagesCollection')) {
+        MessageCollectionArray.push(selectedMessage);
+        window.localStorage.setItem(
+          'selectedMessagesCollection',
+          JSON.stringify(MessageCollectionArray)
+        );
+      } else {
+        // parse localStorage內的array後，push新selected並存入
+        const messageCollectionFromLocal = JSON.parse(
+          window.localStorage.getItem('selectedMessagesCollection')
+        );
+
+        messageCollectionFromLocal.push(selectedMessage);
+        window.localStorage.setItem(
+          'selectedMessagesCollection',
+          JSON.stringify(messageCollectionFromLocal)
+        );
+      }
     } else {
       setSelected(false);
-      // TODO: 一個function將被選取的資料丟出array
+      let messageArrayToBeRemoved = JSON.parse(
+        window.localStorage.getItem('selectedMessagesCollection')
+      );
+
+      // find object and index
+
+      const removedMessage = messageArrayToBeRemoved.find(
+        (message) => message.messageId === mapKey
+      );
+      const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
+      console.log('被移除的index', removedIndex);
+      // 移除該index
+      messageArrayToBeRemoved.splice(removedIndex, 1);
+      console.log('更新後的', messageArrayToBeRemoved);
+      window.localStorage.setItem(
+        'selectedMessagesCollection',
+        JSON.stringify(messageArrayToBeRemoved)
+      );
     }
   };
 
