@@ -3,27 +3,21 @@
 // type: 每個action都會有type屬性來描述state該怎麼改變。
 // payload: 在下方的範例裡，payload是一篇新文章，reducer將在之後把這篇文章加到state。
 
-export const cardActions = {
-  ADD_CARD: 'CARDS.SET_CARD',
-};
+// https://codesandbox.io/s/0vm2w0k9r0?file=/src/actions/todo.actions.js:4-10
 
-// {
-//   type: 'ADD_ARTICLE',
-//   payload: { name: 'React Redux Tutorial', id: 1 }
-// }
+export const cardActions = {
+  SHOW_SELECTE_MESSAGE_BOX: 'CARDS.SHOW_SELECTE_MESSAGE_BOX',
+};
 
 export const getActions = (dispatch) => {
   return {
-    addCard: (selectedMessages) => dispatch(addCard(selectedMessages)),
+    showSelectMessageBox: (data) => dispatch(showSelectMessageBox(data)),
   };
 };
 
 // 處理action最好的方法就是將每個action都包在function內，像這樣的function就是action creator
-export const addCard = (data) => {
-  let messagesToBeTransferring = [];
-  messagesToBeTransferring.push(data);
-  return {
-    type: cardActions.ADD_CARD,
-    messagesToBeTransferring,
-  };
-};
+export const showSelectMessageBox = (data) => ({
+  type: cardActions.SHOW_SELECTE_MESSAGE_BOX,
+  // data should be true or false
+  data,
+});

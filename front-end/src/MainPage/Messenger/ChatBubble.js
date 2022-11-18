@@ -4,8 +4,7 @@ import FakeAvatar from '../../shared/images/fake_avatar.png';
 import styled from '@emotion/styled';
 // https://mui.com/material-ui/react-checkbox/
 import { Checkbox } from '@mui/material';
-import { getActions } from '../../store/actions/card_actions';
-import { Connect } from 'react-redux';
+import { connect } from 'react-redux';
 
 const ChatRoomMainWrapper = styled('div')({
   width: '75%',
@@ -119,7 +118,16 @@ const MessageTimeStampRight = styled('div')({
 
 const DisplayName = styled('div')({ marginLeft: '20px' });
 
-const MessageLeft = ({ content, fromMe, username, date, sameTime, mapKey }) => {
+const MessageLeft = ({
+  content,
+  fromMe,
+  username,
+  date,
+  sameTime,
+  mapKey,
+  isSelectMessageBoxDisabled,
+}) => {
+  console.log('left', isSelectMessageBoxDisabled);
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
   const photoURL = FakeAvatar;
@@ -181,20 +189,18 @@ const MessageLeft = ({ content, fromMe, username, date, sameTime, mapKey }) => {
   };
 
   return (
-    // 切版
     <ChatRoomMainWrapper>
-      {/* 切版 */}
       <SaveMessageButtonContainer>
-        <Checkbox checked={selected} onChange={handleSelected} />
+        <Checkbox
+          checked={selected}
+          onChange={handleSelected}
+          disabled={isSelectMessageBoxDisabled}
+        />
       </SaveMessageButtonContainer>
-      {/* 切版 */}
+
       <MessageContentWrapper>
         <MessageRow>
-          <Avatar
-            alt={displayName}
-            // className={classes.orange}
-            src={photoURL}
-          ></Avatar>
+          <Avatar alt={displayName} src={photoURL}></Avatar>
 
           <DisplayName>{displayName}</DisplayName>
           <MessageBlue>
@@ -214,7 +220,9 @@ const MessageRight = ({
   date,
   sameTime,
   mapKey,
+  isSelectMessageBoxDisabled,
 }) => {
+  console.log('right', isSelectMessageBoxDisabled);
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
   const [selected, setSelected] = useState(false);
@@ -276,7 +284,11 @@ const MessageRight = ({
   return (
     <ChatRoomMainWrapper>
       <SaveMessageButtonContainer>
-        <Checkbox checked={selected} onChange={handleSelected} />
+        <Checkbox
+          checked={selected}
+          onChange={handleSelected}
+          disabled={isSelectMessageBoxDisabled}
+        />
       </SaveMessageButtonContainer>
       <MessageContentWrapper>
         <MessageRowRight>
@@ -297,7 +309,9 @@ export const ChatBubble = ({
   date,
   sameTime,
   mapKey,
+  isSelectMessageBoxDisabled,
 }) => {
+  console.log(isSelectMessageBoxDisabled);
   if (fromMe && sameTime) {
     return (
       <MessageRight
@@ -307,6 +321,7 @@ export const ChatBubble = ({
         date={date}
         sameTime={sameTime}
         mapKey={mapKey}
+        isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
       />
     );
   }
@@ -318,6 +333,17 @@ export const ChatBubble = ({
       date={date}
       sameTime={sameTime}
       mapKey={mapKey}
+      isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
     />
   );
 };
+
+const mapStoreStateToProps = ({ card }) => {
+  return {
+    ...card,
+  };
+};
+
+export default connect(mapStoreStateToProps)(ChatBubble);
+// connect(mapStoreStateToProps)(MessageLeft);
+// connect(mapStoreStateToProps)(MessageRight);

@@ -3,7 +3,6 @@ import { styled } from '@mui/system';
 import { connect } from 'react-redux';
 import { ChatBubble } from './ChatBubble';
 import { getDirectMessageHistroy } from '../../chat/socketConnectionClient';
-import { Checkbox } from '@mui/material';
 
 const ChatBubblesCombinedContainer = styled('div')({
   // 卷軸
@@ -15,7 +14,12 @@ const ChatBubblesCombinedContainer = styled('div')({
   alignItems: 'center',
 });
 
-const ChatBubblesCombined = ({ chosenChatDetails, messages }) => {
+const ChatBubblesCombined = ({
+  chosenChatDetails,
+  messages,
+  isSelectMessageBoxDisabled,
+}) => {
+  console.log(isSelectMessageBoxDisabled);
   // const [selected, setSelected] = useState(false);
   // const handleSelected = () => {
   //   if (!selected) {
@@ -52,6 +56,7 @@ const ChatBubblesCombined = ({ chosenChatDetails, messages }) => {
                 fromMe={sameSender}
                 date={message.date}
                 sameTime={true}
+                isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
               />
             </>
           );
@@ -62,8 +67,8 @@ const ChatBubblesCombined = ({ chosenChatDetails, messages }) => {
 };
 
 // 勾chatReducer
-const mapStoreStateToProps = ({ chat }) => {
-  return { ...chat };
+const mapStoreStateToProps = ({ chat, card }) => {
+  return { ...chat, ...card };
 };
 
 export default connect(mapStoreStateToProps)(ChatBubblesCombined);

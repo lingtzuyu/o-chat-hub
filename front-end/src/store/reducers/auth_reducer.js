@@ -12,6 +12,7 @@ const reducer = (state = initState, action) => {
         // setUserDetails 那邊來的
         userDetails: action.userDetails,
       };
+    // 不做任何修改
     default:
       return state;
   }

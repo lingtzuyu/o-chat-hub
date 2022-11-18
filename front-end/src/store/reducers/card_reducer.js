@@ -6,16 +6,18 @@ import { cardActions } from '../actions/card_actions';
 
 // 初始值為array，透過array儲存多筆
 const initState = {
-  selectedMessages: [],
+  isSelectMessageBoxDisabled: true,
 };
 
 const reducer = (state = initState, action) => {
   switch (action.type) {
-    case cardActions.ADD_CARD:
+    case cardActions.SHOW_SELECTE_MESSAGE_BOX:
       return {
-        ...state,
-        selectedMessages: action.selectedMessages,
+        // ...state,
+        // should receive true
+        isSelectMessageBoxDisabled: action.data,
       };
+
     default:
       return state;
   }

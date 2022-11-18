@@ -2,8 +2,9 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
-import SelectedChat from './SelectedChat';
 import styled from '@emotion/styled';
+import SelectedChat from './SelectedChat';
+import SaveMessageButton from './componets/SaveMessageButton';
 
 const MessageAreaTopBarContainer = styled('div')({
   width: '96%',
@@ -29,9 +30,8 @@ export default function MessageAreaTopBar() {
         }}
       >
         <ButtonGroup variant="text" aria-label="text button group">
-          <Button>Save Message</Button>
-          <Button>Set Alert</Button>
-          <Button>Set Schedule</Button>
+          <SaveMessageButton />
+          <Button>Set Reminder</Button>
         </ButtonGroup>
       </Box>
     </MessageAreaTopBarContainer>
