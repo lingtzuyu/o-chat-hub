@@ -11,6 +11,7 @@ const initState = {
   // fefault 是 全plain => 出現換成"outlined"
   isSelectedMessageBoxShown: 'plain',
   cardCategories: [],
+  transferredMessgaesNote: [],
 };
 
 const reducer = (state = initState, action) => {
