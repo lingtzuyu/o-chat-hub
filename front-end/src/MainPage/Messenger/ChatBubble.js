@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 // https://mui.com/material-ui/react-checkbox/
 import { Checkbox } from '@mui/material';
 import { connect } from 'react-redux';
+import { getActions } from '../../store/actions/card_actions';
 
 const ChatRoomMainWrapper = styled('div')({
   width: '75%',
@@ -127,7 +128,6 @@ const MessageLeft = ({
   mapKey,
   isSelectMessageBoxDisabled,
 }) => {
-  console.log('left', isSelectMessageBoxDisabled);
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
   const photoURL = FakeAvatar;
@@ -226,7 +226,6 @@ const MessageRight = ({
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
   const [selected, setSelected] = useState(false);
-
   const handleSelected = () => {
     let MessageCollectionArray = [];
     const selectedMessage = {
@@ -310,8 +309,8 @@ export const ChatBubble = ({
   sameTime,
   mapKey,
   isSelectMessageBoxDisabled,
+  saveTemporaryMessages,
 }) => {
-  console.log(isSelectMessageBoxDisabled);
   if (fromMe && sameTime) {
     return (
       <MessageRight

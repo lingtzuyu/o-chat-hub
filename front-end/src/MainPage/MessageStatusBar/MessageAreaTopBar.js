@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import styled from '@emotion/styled';
 import SelectedChat from './SelectedChat';
 import SaveMessageButton from './componets/SaveMessageButton';
+import TransferMessageButton from './componets/TransferMessageButton';
 
 const MessageAreaTopBarContainer = styled('div')({
   width: '96%',
@@ -31,6 +32,8 @@ export default function MessageAreaTopBar() {
       >
         <ButtonGroup variant="text" aria-label="text button group">
           <SaveMessageButton />
+          <TransferMessageButton />
+          {/* TODO: 這顆會在上面那顆按的時候替換 */}
           <Button>Set Reminder</Button>
         </ButtonGroup>
       </Box>

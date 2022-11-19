@@ -7,11 +7,13 @@
 
 export const cardActions = {
   SHOW_SELECTE_MESSAGE_BOX: 'CARDS.SHOW_SELECTE_MESSAGE_BOX',
+  IS_MESSAGE_CHECKBOX_SELECTED: 'CARDS.IS_MESSAGE_CHECKBOX_SELECTED',
 };
 
 export const getActions = (dispatch) => {
   return {
     showSelectMessageBox: (data) => dispatch(showSelectMessageBox(data)),
+    turnCheckboxUnchecked: (data) => dispatch(turnCheckboxUnchecked(data)),
   };
 };
 
@@ -19,5 +21,10 @@ export const getActions = (dispatch) => {
 export const showSelectMessageBox = (data) => ({
   type: cardActions.SHOW_SELECTE_MESSAGE_BOX,
   // data should be true or false
+  data,
+});
+
+export const turnCheckboxUnchecked = (data) => ({
+  type: cardActions.IS_MESSAGE_CHECKBOX_SELECTED,
   data,
 });
