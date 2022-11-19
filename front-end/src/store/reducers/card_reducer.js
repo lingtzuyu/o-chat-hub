@@ -10,6 +10,7 @@ const initState = {
   isSelectMessageBoxDisabled: true,
   // fefault 是 全plain => 出現換成"outlined"
   isSelectedMessageBoxShown: 'plain',
+  cardCategories: [],
 };
 
 const reducer = (state = initState, action) => {
@@ -20,6 +21,10 @@ const reducer = (state = initState, action) => {
         // should receive true
         isSelectMessageBoxDisabled: action.isDisabled,
         isSelectedMessageBoxShown: action.isShown,
+      };
+    case cardActions.SET_CARD_CATEGORY:
+      return {
+        cardCategories: action.categories,
       };
 
     default:

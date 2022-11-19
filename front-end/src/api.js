@@ -64,4 +64,20 @@ const checkStatusCode = (exception) => {
   }
 };
 
-export { login, signup, sendFriendRequest, acceptInvite, rejectInvite };
+// 取得當前卡片分類資料
+const fetchCardCategory = async () => {
+  try {
+    return await apiClient.post('card/category');
+  } catch (exception) {
+    return { error: true, exception };
+  }
+};
+
+export {
+  login,
+  signup,
+  sendFriendRequest,
+  acceptInvite,
+  rejectInvite,
+  fetchCardCategory,
+};

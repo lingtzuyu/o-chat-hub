@@ -18,11 +18,12 @@ export const TransferMessagePopout = ({
 }) => {
   const handleTransferAfterConfirm = () => {
     // TODO: 按下確認後，儲存至DB
+    console.log(localStorage.getItem('selectedMessagesCollection'));
     handleClosePopout();
     // 清空localStorage
     localStorage.removeItem('selectedMessagesCollection');
     showSelectMessageBox(true, 'plain');
-    // TODO: 通知反核取
+    // TODO: 通知反核取 => Bug Ticket Trello
   };
 
   const handleClosePopout = () => {
@@ -30,7 +31,7 @@ export const TransferMessagePopout = ({
     localStorage.removeItem('selectedMessagesCollection');
     showSelectMessageBox(true, 'plain');
     closePopout();
-    // TODO: 通知反核取
+    // TODO: 通知反核取 => Bug Ticket Trello
   };
 
   return (
@@ -45,7 +46,7 @@ export const TransferMessagePopout = ({
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <Typography>Please confirm messages to be saved</Typography>
+            <Typography>Select categories</Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -60,8 +61,15 @@ export const TransferMessagePopout = ({
   );
 };
 
+const mapStoreStateToPropse = ({ card }) => {
+  return { ...card };
+};
+
 const mapActionsToProps = (dispatch) => {
   return { ...getActions(dispatch) };
 };
 
-export default connect(null, mapActionsToProps)(TransferMessagePopout);
+export default connect(
+  mapStoreStateToPropse,
+  mapActionsToProps
+)(TransferMessagePopout);
