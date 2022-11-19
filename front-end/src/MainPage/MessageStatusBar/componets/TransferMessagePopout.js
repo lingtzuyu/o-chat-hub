@@ -21,14 +21,14 @@ export const TransferMessagePopout = ({
     handleClosePopout();
     // 清空localStorage
     localStorage.removeItem('selectedMessagesCollection');
-    showSelectMessageBox(true);
+    showSelectMessageBox(true, 'plain');
     // TODO: 通知反核取
   };
 
   const handleClosePopout = () => {
     // TODO: 清空localStorage，並且把核取方塊轉為ture(不能選)
     localStorage.removeItem('selectedMessagesCollection');
-    showSelectMessageBox(true);
+    showSelectMessageBox(true, 'plain');
     closePopout();
     // TODO: 通知反核取
   };

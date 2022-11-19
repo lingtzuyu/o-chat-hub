@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 function SaveMessageButton({ showSelectMessageBox }) {
   const handleSaveMessage = () => {
     // 通知核取方塊換狀態 false to true
-    showSelectMessageBox(false);
+    showSelectMessageBox(false, 'outlined');
     // 通知左上角文字換狀態
     // 通知按鍵換狀態
   };

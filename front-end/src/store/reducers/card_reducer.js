@@ -6,9 +6,10 @@ import { cardActions } from '../actions/card_actions';
 
 // 初始值為array，透過array儲存多筆
 const initState = {
+  // default 是 disabled
   isSelectMessageBoxDisabled: true,
-  // default是沒有check起來
-  isCheckboxChecked: false,
+  // fefault 是 全plain => 出現換成"outlined"
+  isSelectedMessageBoxShown: 'plain',
 };
 
 const reducer = (state = initState, action) => {
@@ -17,11 +18,8 @@ const reducer = (state = initState, action) => {
       return {
         // ...state,
         // should receive true
-        isSelectMessageBoxDisabled: action.data,
-      };
-    case cardActions.IS_MESSAGE_CHECKBOX_SELECTED:
-      return {
-        isCheckboxChecked: action.data,
+        isSelectMessageBoxDisabled: action.isDisabled,
+        isSelectedMessageBoxShown: action.isShown,
       };
 
     default:

@@ -17,22 +17,9 @@ const ChatBubblesCombinedContainer = styled('div')({
 const ChatBubblesCombined = ({
   chosenChatDetails,
   messages,
+  isSelectedMessageBoxShown,
   isSelectMessageBoxDisabled,
 }) => {
-  console.log(isSelectMessageBoxDisabled);
-  // const [selected, setSelected] = useState(false);
-  // const handleSelected = () => {
-  //   if (!selected) {
-  //     console.log(messages);
-  //     setSelected(true);
-
-  //     // TODO: 一個function將被選取的資料push進入array
-  //   } else {
-  //     setSelected(false);
-  //     // TODO: 一個function將被選取的資料丟出array
-  //   }
-  // };
-  // 點選到chosenChatDetail，渲染選中的人的歷史訊息
   useEffect(() => {
     getDirectMessageHistroy({
       receiverUserId: chosenChatDetails.id,
@@ -57,6 +44,7 @@ const ChatBubblesCombined = ({
                 date={message.date}
                 sameTime={true}
                 isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
+                isSelectedMessageBoxShown={isSelectedMessageBoxShown}
               />
             </>
           );

@@ -12,19 +12,15 @@ export const cardActions = {
 
 export const getActions = (dispatch) => {
   return {
-    showSelectMessageBox: (data) => dispatch(showSelectMessageBox(data)),
-    turnCheckboxUnchecked: (data) => dispatch(turnCheckboxUnchecked(data)),
+    showSelectMessageBox: (isDisabled, isShown) =>
+      dispatch(showSelectMessageBox(isDisabled, isShown)),
   };
 };
 
 // 處理action最好的方法就是將每個action都包在function內，像這樣的function就是action creator
-export const showSelectMessageBox = (data) => ({
+export const showSelectMessageBox = (isDisabled, isShown) => ({
   type: cardActions.SHOW_SELECTE_MESSAGE_BOX,
   // data should be true or false
-  data,
-});
-
-export const turnCheckboxUnchecked = (data) => ({
-  type: cardActions.IS_MESSAGE_CHECKBOX_SELECTED,
-  data,
+  isDisabled: isDisabled,
+  isShown: isShown,
 });

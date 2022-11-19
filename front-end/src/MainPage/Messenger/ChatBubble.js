@@ -3,9 +3,8 @@ import { Avatar } from '@mui/material';
 import FakeAvatar from '../../shared/images/fake_avatar.png';
 import styled from '@emotion/styled';
 // https://mui.com/material-ui/react-checkbox/
-import { Checkbox } from '@mui/material';
+import Checkbox from '@mui/joy/Checkbox';
 import { connect } from 'react-redux';
-import { getActions } from '../../store/actions/card_actions';
 
 const ChatRoomMainWrapper = styled('div')({
   width: '75%',
@@ -127,6 +126,7 @@ const MessageLeft = ({
   sameTime,
   mapKey,
   isSelectMessageBoxDisabled,
+  isSelectedMessageBoxShown,
 }) => {
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
@@ -192,6 +192,7 @@ const MessageLeft = ({
     <ChatRoomMainWrapper>
       <SaveMessageButtonContainer>
         <Checkbox
+          variant={isSelectedMessageBoxShown}
           checked={selected}
           onChange={handleSelected}
           disabled={isSelectMessageBoxDisabled}
@@ -221,8 +222,8 @@ const MessageRight = ({
   sameTime,
   mapKey,
   isSelectMessageBoxDisabled,
+  isSelectedMessageBoxShown,
 }) => {
-  console.log('right', isSelectMessageBoxDisabled);
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
   const [selected, setSelected] = useState(false);
@@ -283,7 +284,9 @@ const MessageRight = ({
   return (
     <ChatRoomMainWrapper>
       <SaveMessageButtonContainer>
+        {/* 我方 */}
         <Checkbox
+          variant={isSelectedMessageBoxShown}
           checked={selected}
           onChange={handleSelected}
           disabled={isSelectMessageBoxDisabled}
@@ -309,7 +312,7 @@ export const ChatBubble = ({
   sameTime,
   mapKey,
   isSelectMessageBoxDisabled,
-  saveTemporaryMessages,
+  isSelectedMessageBoxShown,
 }) => {
   if (fromMe && sameTime) {
     return (
@@ -321,6 +324,7 @@ export const ChatBubble = ({
         sameTime={sameTime}
         mapKey={mapKey}
         isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
+        isSelectedMessageBoxShown={isSelectedMessageBoxShown}
       />
     );
   }
@@ -333,6 +337,7 @@ export const ChatBubble = ({
       sameTime={sameTime}
       mapKey={mapKey}
       isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
+      isSelectedMessageBoxShown={isSelectedMessageBoxShown}
     />
   );
 };
