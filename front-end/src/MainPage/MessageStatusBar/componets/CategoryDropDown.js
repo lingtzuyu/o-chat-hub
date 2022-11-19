@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -6,8 +6,7 @@ import Select from '@mui/material/Select';
 import { connect } from 'react-redux';
 
 const CategoryDropDown = ({ cardCategories }) => {
-  console.log(cardCategories);
-  const [category, setCardCategory] = React.useState('');
+  const [category, setCardCategory] = useState('');
 
   const handleChange = (event) => {
     setCardCategory(event.target.value);
@@ -23,11 +22,10 @@ const CategoryDropDown = ({ cardCategories }) => {
         label="category"
         onChange={handleChange}
       >
-        {cardCategories.map((ele) => {
-          console.log(ele);
+        {cardCategories?.map((category) => {
           return (
-            <MenuItem value={ele} key={ele}>
-              {ele}
+            <MenuItem value={category} key={category}>
+              {category}
             </MenuItem>
           );
         })}

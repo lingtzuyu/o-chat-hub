@@ -37,7 +37,6 @@ export const fetchCardCategoryAction = () => {
   return async (dispatch) => {
     const categories = await api.fetchCardCategory();
     const categoriesArray = categories.data;
-    console.log('卡片分類', categoriesArray);
     // 儲存到全局狀態
     dispatch(setCardCategory(categoriesArray));
   };

@@ -9,6 +9,8 @@ import { Typography } from '@mui/material';
 
 import CategoryDropDown from './CategoryDropDown';
 import MainButton from '../../../shared/components/MainButton';
+import { SelectedMessagesArea } from './SelectedMessagesArea';
+
 import { getActions } from '../../../store/actions/card_actions';
 import { connect } from 'react-redux';
 
@@ -19,10 +21,10 @@ export const TransferMessagePopout = ({
 }) => {
   const handleTransferAfterConfirm = () => {
     // TODO: 按下確認後，儲存至DB
-    console.log(localStorage.getItem('selectedMessagesCollection'));
     handleClosePopout();
     // 清空localStorage
     localStorage.removeItem('selectedMessagesCollection');
+    // 將核取方塊狀態設回去
     showSelectMessageBox(true, 'plain');
     // TODO: 通知反核取 => Bug Ticket Trello
   };
@@ -51,6 +53,7 @@ export const TransferMessagePopout = ({
           </DialogContentText>
         </DialogContent>
         <CategoryDropDown />
+        <SelectedMessagesArea />
         <DialogActions>
           <MainButton
             buttonName="Transfer"
