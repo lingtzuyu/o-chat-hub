@@ -7,6 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import { Typography } from '@mui/material';
 
+import CategoryDropDown from './CategoryDropDown';
 import MainButton from '../../../shared/components/MainButton';
 import { getActions } from '../../../store/actions/card_actions';
 import { connect } from 'react-redux';
@@ -49,6 +50,7 @@ export const TransferMessagePopout = ({
             <Typography>Select categories</Typography>
           </DialogContentText>
         </DialogContent>
+        <CategoryDropDown />
         <DialogActions>
           <MainButton
             buttonName="Transfer"
