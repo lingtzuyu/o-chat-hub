@@ -8,6 +8,8 @@ const noteSchema = new Schema({
   NoteId: String, // userID補滿8位 + UNIX日期亂數
   NoteTime: Date, // contorller那生成unix間
   Author: String, // TODO:userID
+  FROM: String,
+  Category: String,
   MessageRecords: [
     {
       type: Schema.Types.ObjectId,
@@ -28,5 +30,6 @@ const fetchCardCategory = async () => {
 
 module.exports = {
   fetchCardCategory,
+  NoteDataMongo: mongoose.model('NoteDataMongo', noteSchema),
 };
-module.exports = mongoose.model('NoteDataMongo', noteSchema);
+// module.exports = mongoose.model('NoteDataMongo', noteSchema);

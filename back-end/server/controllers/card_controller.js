@@ -1,7 +1,5 @@
 require('dotenv').config();
 const Card = require('../models/card_model');
-const NoteDataMongo = require('../models/card_model');
-const MessageDataMongo = require('../models/message_model');
 
 // 返回categoryname資料庫的category array
 const fetchCardCategory = async (req, res) => {
@@ -10,7 +8,8 @@ const fetchCardCategory = async (req, res) => {
     const categories = result.map((e) => e.categoryname);
     res.status(200).send(categories);
   } catch (err) {
-    res.status.send({ err: 'Internal Error' });
+    console.log(err);
+    res.status(500).send({ err: 'Internal Error' });
   }
 };
 
@@ -18,14 +17,16 @@ const fetchCardCategory = async (req, res) => {
 const saveMessagesToNote = async (req, res) => {
   // verifiedAuth內拿的
   const author = req.user.mail;
-  const messageCollection = req.body;
-  console.log(messageCollection);
+  const { category, messagesToBeSaved } = req.body;
+  console.log('訊息info', messagesToBeSaved);
 
   try {
-    const newNote = await NoteDataMongo.create({
+    const newNote = await Card.NoteDataMongo.create({
       NoteId: null, // TODO: 之後改
       NoteTime: new Date(),
-      Author: author,
+      Category: category, //
+      Author: author, // mail，從auth來
+      FROM: null,
       Notes: null,
       Liked: false,
       Transferred: false,
@@ -39,7 +40,7 @@ const saveMessagesToNote = async (req, res) => {
     // );
     // console.log('chat存在', chatExist);
     await Promise.all(
-      messageCollection.map((message) => {
+      messagesToBeSaved.map((message) => {
         const initialNoteFinish = newNote.MessageRecords.push(
           message.messageId
         );
@@ -53,7 +54,9 @@ const saveMessagesToNote = async (req, res) => {
     console.log(noteInsertId);
 
     // 返回note編號
-    res.status(200).json({ noteId: noteInsertId });
+    res
+      .status(200)
+      .json({ systemInfo: 'save sucessful', noteId: noteInsertId });
   } catch (err) {
     console.log(err);
     res.status(500).send({ err: 'Internal Error' });
