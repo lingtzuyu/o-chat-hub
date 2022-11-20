@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import NotionLogin from '../../integration/notion/notion_login';
 
 const CardFilterMainContainer = styled('div')({
   width: '90%',
@@ -12,5 +13,9 @@ const CardFilterMainContainer = styled('div')({
 });
 
 export default function CardFilterArea() {
-  return <CardFilterMainContainer>CardArea</CardFilterMainContainer>;
+  return (
+    <CardFilterMainContainer>
+      <NotionLogin />
+    </CardFilterMainContainer>
+  );
 }
