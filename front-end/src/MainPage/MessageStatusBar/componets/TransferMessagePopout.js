@@ -18,15 +18,28 @@ export const TransferMessagePopout = ({
   isPopoutOpen,
   closePopout,
   showSelectMessageBox,
+  saveTransferredMessagesToMongo,
 }) => {
+  const messagesCollectionInString = localStorage.getItem(
+    'selectedMessagesCollection'
+  );
+  const messagesArray = JSON.parse(messagesCollectionInString);
+  const accessToken = localStorage.getItem('accessToken');
+  const messagesToBeSent = {
+    category: null,
+    messagesToBeSaved: messagesArray,
+    token: accessToken,
+  };
+
   const handleTransferAfterConfirm = () => {
-    // TODO: 按下確認後，儲存至DB以及store
+    // TODO:
+    // 1. 按下確認後，儲存至DB以及store
     // POST API (帶message ID即可)
     // store action and (帶整串，因為等等要用整串渲染右邊卡片區)
-
-    // 將核取方塊狀態設回去
-    showSelectMessageBox(true, 'plain');
-    // TODO: 通知反核取 => Bug Ticket Trello
+    saveTransferredMessagesToMongo(messagesToBeSent);
+    // // 2. 將核取方塊狀態設回去
+    // showSelectMessageBox(true, 'plain');
+    // TODO: 通知反核取 => Already issue Bug Ticket in Trello
 
     // 清空localStorage
     handleClosePopout();

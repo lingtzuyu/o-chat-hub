@@ -64,12 +64,22 @@ const checkStatusCode = (exception) => {
   }
 };
 
-// 取得當前卡片分類資料
+// 取得當前卡片分類資料 (因應未來擴充或是讓使用者自己自訂的可能性)
 const fetchCardCategory = async () => {
   try {
     return await apiClient.post('card/category');
   } catch (exception) {
     return { error: true, exception };
+  }
+};
+
+// 存資料進入mongoDB，data會是{category:"", messagesToBeSaved:[{},{},{}...]}
+const saveMessagesToNote = async (data) => {
+  try {
+    return await apiClient.post('card/notes', data);
+  } catch (err) {
+    console.log(err);
+    return { error: true, err };
   }
 };
 
@@ -80,4 +90,5 @@ export {
   acceptInvite,
   rejectInvite,
   fetchCardCategory,
+  saveMessagesToNote,
 };

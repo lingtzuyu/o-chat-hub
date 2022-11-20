@@ -11,7 +11,9 @@ const initState = {
   // fefault 是 全plain => 出現換成"outlined"
   isSelectedMessageBoxShown: 'plain',
   cardCategories: [],
+  selectedCategoryForNote: null,
   transferredMessgaesNote: [],
+  noteId: null,
 };
 
 const reducer = (state = initState, action) => {
@@ -25,7 +27,19 @@ const reducer = (state = initState, action) => {
       };
     case cardActions.SET_CARD_CATEGORY:
       return {
+        ...state,
         cardCategories: action.categories,
+      };
+    case cardActions.SET_TRANSFFERED_MESSAGES_NOTE:
+      return {
+        ...state,
+        transferredMessgaesNote: action.transfferedMessages,
+        noteId: action.noteId,
+      };
+    case cardActions.SET_SELECTED_CATEGORY_FOR_NOTE:
+      return {
+        ...state,
+        selectedCategoryForNote: action.selectedCategory,
       };
 
     default:
