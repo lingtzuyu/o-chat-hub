@@ -11,7 +11,7 @@ const updateInvitations = async (receiverMail, receiverId) => {
     const pendingInvitations = await Friends.checkPendingInvitationByReceiver(
       receiverId
     );
-    console.log(`pending邀請的資料`, pendingInvitations);
+    // console.log(`pending邀請的資料`, pendingInvitations);
     // 如果這個receiverId (現在因當初的設計錯誤改成用mail)的人在線上，則用這些資料渲染他的畫面
     // 抓global Map => connetedUsers (in serverStore.js)
     // TODO:  之後換成userID來取資料
@@ -19,7 +19,7 @@ const updateInvitations = async (receiverMail, receiverId) => {
 
     const io = serverStore.getSocketServer();
 
-    console.log('該reciever有用哪幾條socket連線', receiverSockets);
+    // console.log('該reciever有用哪幾條socket連線', receiverSockets);
     // => [ 'Ia3lKVB5d19XxsynAAAF', 'S-KhERp1enEME8CzAAAJ' ]
 
     // 發到該socket通道
@@ -42,7 +42,7 @@ const updateFriendList = async (userMail) => {
     // 確認該用戶(userMail)是否上線
     // 有哪些socket是這個用戶在連線的
     const connetedSocketsByuserMail = serverStore.getOnlineUsers(userMail);
-    console.log('updateFriendList來的', connetedSocketsByuserMail);
+    // console.log('updateFriendList來的', connetedSocketsByuserMail);
 
     // 根據userId sorting 出 id, username, mail
     // [{id:1, username: test0001, mail: test0001@gmail.com},{},{}]
@@ -53,7 +53,7 @@ const updateFriendList = async (userMail) => {
     if (connetedSocketsByuserMail.length > 0) {
       // 1. 拿此id去friendship取出所有的好友id，沒好友就是空陣列
       const friendListById = await Friends.fetchFriendList(userId[0].id);
-      console.log('updateFriendList來的好友名單', friendListById);
+      // console.log('updateFriendList來的好友名單', friendListById);
       // 這邊的friendListById資料會是 [ { friend: 66 }, { friend: 68} ]
       // 2. 用id去Users的table去抓 username
       // how to use asycn in map: https://zhuanlan.zhihu.com/p/134239237
@@ -73,7 +73,7 @@ const updateFriendList = async (userMail) => {
           };
         })
       );
-      console.log('後端updateChatStatus.js送的好友資料', friendInfoList);
+      // console.log('後端updateChatStatus.js送的好友資料', friendInfoList);
 
       // 建立io server準備發送相關event
       const io = serverStore.getSocketServer();

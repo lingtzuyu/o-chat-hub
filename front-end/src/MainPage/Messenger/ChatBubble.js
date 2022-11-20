@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar } from '@mui/material';
 import FakeAvatar from '../../shared/images/fake_avatar.png';
 import styled from '@emotion/styled';
+// https://mui.com/material-ui/react-checkbox/
+import Checkbox from '@mui/joy/Checkbox';
+import { connect } from 'react-redux';
 
 const ChatRoomMainWrapper = styled('div')({
   width: '75%',
   display: 'flex',
   marginTop: '10px',
   justifyContent: 'flex-end',
+});
+
+const SaveMessageButtonContainer = styled('div')({
+  width: '10%',
+  display: 'flex',
+});
+
+const MessageContentWrapper = styled('div')({
+  width: '90%',
+  display: 'flex',
 });
 
 const MessageRow = styled('div')({
@@ -105,49 +118,202 @@ const MessageTimeStampRight = styled('div')({
 
 const DisplayName = styled('div')({ marginLeft: '20px' });
 
-const MessageLeft = ({ content, fromMe, username, date, sameTime }) => {
+const MessageLeft = ({
+  content,
+  fromMe,
+  username,
+  date,
+  sameTime,
+  mapKey,
+  isSelectMessageBoxDisabled,
+  isSelectedMessageBoxShown,
+}) => {
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
   const photoURL = FakeAvatar;
   const displayName = username ? username : 'no username';
-  // const classes = useStyles();
+  const [selected, setSelected] = useState(false);
+
+  const handleSelected = () => {
+    let MessageCollectionArray = [];
+    const selectedMessage = {
+      messageId: mapKey,
+      message: content,
+      sender: username,
+      time: date,
+    };
+
+    if (!selected) {
+      setSelected(true);
+
+      // 直接存入
+      if (!window.localStorage.getItem('selectedMessagesCollection')) {
+        MessageCollectionArray.push(selectedMessage);
+        window.localStorage.setItem(
+          'selectedMessagesCollection',
+          JSON.stringify(MessageCollectionArray)
+        );
+      } else {
+        // parse localStorage內的array後，push新selected並存入
+        const messageCollectionFromLocal = JSON.parse(
+          window.localStorage.getItem('selectedMessagesCollection')
+        );
+
+        messageCollectionFromLocal.push(selectedMessage);
+        window.localStorage.setItem(
+          'selectedMessagesCollection',
+          JSON.stringify(messageCollectionFromLocal)
+        );
+      }
+    } else {
+      setSelected(false);
+      let messageArrayToBeRemoved = JSON.parse(
+        window.localStorage.getItem('selectedMessagesCollection')
+      );
+
+      // find object and index
+
+      const removedMessage = messageArrayToBeRemoved.find(
+        (message) => message.messageId === mapKey
+      );
+      const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
+      console.log('被移除的index', removedIndex);
+      // 移除該index
+      messageArrayToBeRemoved.splice(removedIndex, 1);
+      console.log('更新後的', messageArrayToBeRemoved);
+      window.localStorage.setItem(
+        'selectedMessagesCollection',
+        JSON.stringify(messageArrayToBeRemoved)
+      );
+    }
+  };
+
   return (
     <ChatRoomMainWrapper>
-      <MessageRow>
-        <Avatar
-          alt={displayName}
-          // className={classes.orange}
-          src={photoURL}
-        ></Avatar>
+      <SaveMessageButtonContainer>
+        <Checkbox
+          variant={isSelectedMessageBoxShown}
+          checked={selected}
+          onChange={handleSelected}
+          disabled={isSelectMessageBoxDisabled}
+        />
+      </SaveMessageButtonContainer>
 
-        <DisplayName>{displayName}</DisplayName>
-        <MessageBlue>
-          <MessageContent>{message}</MessageContent>
-          <MessageTimeStampRight>{timestamp}</MessageTimeStampRight>
-        </MessageBlue>
-      </MessageRow>
+      <MessageContentWrapper>
+        <MessageRow>
+          <Avatar alt={displayName} src={photoURL}></Avatar>
+
+          <DisplayName>{displayName}</DisplayName>
+          <MessageBlue>
+            <MessageContent>{message}</MessageContent>
+            <MessageTimeStampRight>{timestamp}</MessageTimeStampRight>
+          </MessageBlue>
+        </MessageRow>
+      </MessageContentWrapper>
     </ChatRoomMainWrapper>
   );
 };
 
-const MessageRight = ({ content, fromMe, username, date, sameTime }) => {
-  // console.log('右邊', content);
-  // const classes = useStyles();
+const MessageRight = ({
+  content,
+  fromMe,
+  username,
+  date,
+  sameTime,
+  mapKey,
+  isSelectMessageBoxDisabled,
+  isSelectedMessageBoxShown,
+}) => {
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
+  const [selected, setSelected] = useState(false);
+  const handleSelected = () => {
+    let MessageCollectionArray = [];
+    const selectedMessage = {
+      messageId: mapKey,
+      message: content,
+      sender: username,
+      time: date,
+    };
+
+    if (!selected) {
+      setSelected(true);
+
+      // 直接存入
+      if (!window.localStorage.getItem('selectedMessagesCollection')) {
+        MessageCollectionArray.push(selectedMessage);
+        window.localStorage.setItem(
+          'selectedMessagesCollection',
+          JSON.stringify(MessageCollectionArray)
+        );
+      } else {
+        // parse localStorage內的array後，push新selected並存入
+        const messageCollectionFromLocal = JSON.parse(
+          window.localStorage.getItem('selectedMessagesCollection')
+        );
+
+        messageCollectionFromLocal.push(selectedMessage);
+        window.localStorage.setItem(
+          'selectedMessagesCollection',
+          JSON.stringify(messageCollectionFromLocal)
+        );
+      }
+    } else {
+      setSelected(false);
+      let messageArrayToBeRemoved = JSON.parse(
+        window.localStorage.getItem('selectedMessagesCollection')
+      );
+
+      // find object and index
+
+      const removedMessage = messageArrayToBeRemoved.find(
+        (message) => message.messageId === mapKey
+      );
+      const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
+      console.log('被移除的index', removedIndex);
+      // 移除該index
+      messageArrayToBeRemoved.splice(removedIndex, 1);
+      console.log('更新後的', messageArrayToBeRemoved);
+      window.localStorage.setItem(
+        'selectedMessagesCollection',
+        JSON.stringify(messageArrayToBeRemoved)
+      );
+    }
+  };
+
   return (
     <ChatRoomMainWrapper>
-      <MessageRowRight>
-        <MessageOrange>
-          <MessageContent>{message}</MessageContent>
-          <MessageTimeStampRight>{timestamp}</MessageTimeStampRight>
-        </MessageOrange>
-      </MessageRowRight>
+      <SaveMessageButtonContainer>
+        {/* 我方 */}
+        <Checkbox
+          variant={isSelectedMessageBoxShown}
+          checked={selected}
+          onChange={handleSelected}
+          disabled={isSelectMessageBoxDisabled}
+        />
+      </SaveMessageButtonContainer>
+      <MessageContentWrapper>
+        <MessageRowRight>
+          <MessageOrange>
+            <MessageContent>{message}</MessageContent>
+            <MessageTimeStampRight>{timestamp}</MessageTimeStampRight>
+          </MessageOrange>
+        </MessageRowRight>
+      </MessageContentWrapper>
     </ChatRoomMainWrapper>
   );
 };
 
-export const ChatBubble = ({ content, fromMe, username, date, sameTime }) => {
+export const ChatBubble = ({
+  content,
+  fromMe,
+  username,
+  date,
+  sameTime,
+  mapKey,
+  isSelectMessageBoxDisabled,
+  isSelectedMessageBoxShown,
+}) => {
   if (fromMe && sameTime) {
     return (
       <MessageRight
@@ -156,6 +322,9 @@ export const ChatBubble = ({ content, fromMe, username, date, sameTime }) => {
         fromMe={fromMe}
         date={date}
         sameTime={sameTime}
+        mapKey={mapKey}
+        isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
+        isSelectedMessageBoxShown={isSelectedMessageBoxShown}
       />
     );
   }
@@ -166,6 +335,19 @@ export const ChatBubble = ({ content, fromMe, username, date, sameTime }) => {
       fromMe={fromMe}
       date={date}
       sameTime={sameTime}
+      mapKey={mapKey}
+      isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
+      isSelectedMessageBoxShown={isSelectedMessageBoxShown}
     />
   );
 };
+
+const mapStoreStateToProps = ({ card }) => {
+  return {
+    ...card,
+  };
+};
+
+export default connect(mapStoreStateToProps)(ChatBubble);
+// connect(mapStoreStateToProps)(MessageLeft);
+// connect(mapStoreStateToProps)(MessageRight);

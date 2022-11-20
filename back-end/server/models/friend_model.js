@@ -5,7 +5,7 @@ const { sqlDB } = require('./mysqlconn');
 const checkUserExist = async (mail) => {
   const checkUserQuery = 'SELECT id FROM user WHERE mail = ?';
   const [result] = await sqlDB.query(checkUserQuery, mail);
-  console.log('model', result);
+  // console.log('model', result);
   return result;
 };
 

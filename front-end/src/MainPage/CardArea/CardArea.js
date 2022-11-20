@@ -1,23 +1,57 @@
-import React, { useRef, useEffect } from 'react';
-import { styled } from '@mui/system';
-import RecipeReviewCard from './Card';
+import React, { useEffect } from 'react';
+import styled from '@emotion/styled';
+import NoteCard from './NoteCard';
+import { getActions } from '../../store/actions/card_actions';
 
-const CardWrapper = styled('div')({
-  // 空間足夠時允許擴展
-  flexGrow: 1,
-  width: '360px',
-  backgroundColor: 'grey',
-  marginTop: '80px',
-  height: '920px',
+import { connect } from 'react-redux';
+
+const CardAreaMainContainer = styled('div')({
+  width: '90%',
+  height: '80%',
+  padding: '10px',
   display: 'flex',
+  flexDirection: 'column',
+  backgroundColor: 'grey',
+  align: 'center',
+  overflow: 'auto',
 });
 
-const CardArea = () => {
+const CardArea = ({ fetchCardHistory, cards }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  // 取得歷史紀錄並且存在store
+  useEffect(() => {
+    fetchCardHistory(accessToken);
+  }, [cards]);
   return (
-    <CardWrapper>
-      <RecipeReviewCard></RecipeReviewCard>
-    </CardWrapper>
+    <CardAreaMainContainer>
+      {cards?.map((card) => {
+        return (
+          <>
+            <NoteCard
+              key={card._id}
+              noteTime={card.NoteTime}
+              from={card.FROM}
+              category={card.Category}
+              notes={card.Notes}
+              liked={card.Liked}
+              transferred={card.Transferred}
+              deleted={card.DELETED}
+              // messageRecords到下層還要再展一次
+              messageRecords={card.MessageRecords}
+            />
+          </>
+        );
+      })}
+    </CardAreaMainContainer>
   );
 };
 
-export default CardArea;
+const mapStoreStateToProps = ({ card }) => {
+  return { ...card };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(mapStoreStateToProps, mapActionsToProps)(CardArea);
