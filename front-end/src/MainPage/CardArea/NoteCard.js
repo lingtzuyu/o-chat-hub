@@ -15,6 +15,9 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
+import { SingleMessageList } from './SingleMessageList';
+import TempIMG from '../../shared/images/chatCover.jpg';
+
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
 
@@ -46,11 +49,11 @@ const NoteCard = ({
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ marginTop: '10px' }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
+            {from}
           </Avatar>
         }
         action={
@@ -61,12 +64,17 @@ const NoteCard = ({
         title={from}
         subheader={noteTime}
       />
-      <CardMedia component="img" height="194" image="" alt="Paella dish" />
+      <Typography variant="body2" color="text.secondary">
+        {category}
+      </Typography>
+      <CardMedia component="img" height="194" image={TempIMG} alt="Test" />
       <CardContent>
         {messageRecords.map((message) => {
           return (
             <>
               <SingleMessageList
+                key={message._id}
+                id={message._id}
                 sender={message.senderMail}
                 content={message.body}
                 date={message.date}
@@ -74,9 +82,6 @@ const NoteCard = ({
             </>
           );
         })}
-        <Typography variant="body2" color="text.secondary">
-          這邊是儲存的訊息內容
-        </Typography>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">

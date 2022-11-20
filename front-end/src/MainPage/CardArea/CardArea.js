@@ -12,6 +12,7 @@ const CardAreaMainContainer = styled('div')({
   flexDirection: 'column',
   backgroundColor: 'grey',
   align: 'center',
+  overflow: 'auto',
 });
 
 const CardArea = ({ fetchCardHistory, cards }) => {
@@ -22,7 +23,7 @@ const CardArea = ({ fetchCardHistory, cards }) => {
   }, []);
   return (
     <CardAreaMainContainer>
-      {cards.map((card) => {
+      {cards?.map((card) => {
         return (
           <>
             <NoteCard
