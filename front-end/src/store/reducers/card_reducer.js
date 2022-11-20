@@ -21,7 +21,7 @@ const reducer = (state = initState, action) => {
   switch (action.type) {
     case cardActions.SHOW_SELECTE_MESSAGE_BOX:
       return {
-        // ...state,
+        ...state,
         // should receive true
         isSelectMessageBoxDisabled: action.isDisabled,
         isSelectedMessageBoxShown: action.isShown,

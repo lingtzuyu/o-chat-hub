@@ -22,7 +22,7 @@ const LeftFriendListContainer = styled('div')({
   alignItems: 'center',
   marginLeft: '36px',
   marginTop: '10px',
-  overflow: 'auto',
+  // overflow: 'scroll',
 });
 
 // check online

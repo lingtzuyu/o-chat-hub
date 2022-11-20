@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import NoteCard from './NoteCard';
 import { getActions } from '../../store/actions/card_actions';
+
 import { connect } from 'react-redux';
 
 const CardAreaMainContainer = styled('div')({
@@ -20,7 +21,7 @@ const CardArea = ({ fetchCardHistory, cards }) => {
   // 取得歷史紀錄並且存在store
   useEffect(() => {
     fetchCardHistory(accessToken);
-  }, []);
+  }, [cards]);
   return (
     <CardAreaMainContainer>
       {cards?.map((card) => {
