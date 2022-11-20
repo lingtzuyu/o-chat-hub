@@ -63,7 +63,20 @@ const saveMessagesToNote = async (req, res) => {
   }
 };
 
+const fetchCardHistory = async (req, res) => {
+  try {
+    const { userMail } = req.body;
+    const response = await Card.fetchCardHistoryByMail(userMail);
+    console.log(response);
+    res.status(200).send(response);
+  } catch (err) {
+    console.log('controller', err);
+    res.status(500).send({ err: 'Internal Error' });
+  }
+};
+
 module.exports = {
   fetchCardCategory,
   saveMessagesToNote,
+  fetchCardHistory,
 };

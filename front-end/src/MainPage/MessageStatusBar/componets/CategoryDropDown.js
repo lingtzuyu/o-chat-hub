@@ -20,7 +20,7 @@ const CategoryDropDown = ({
 
     setSelectedCategoryForNote(event.target.value);
     // TODO: 妥協作法
-    // localStorage.setItem('noteCategory', event.target.value);
+    localStorage.setItem('noteCategory', event.target.value);
     // pass the selected dropdown to state: https://stackoverflow.com/questions/65766376/in-react-how-to-pass-the-selected-dropdown-data-to-state
   };
   const handleClose = () => {

@@ -1,6 +1,7 @@
 require('dotenv').config();
-const { sqlDB } = require('./mysqlconn');
 const mongoose = require('mongoose');
+const { sqlDB } = require('./mysqlconn');
+
 const { Schema } = mongoose;
 
 // note schema
@@ -22,14 +23,24 @@ const noteSchema = new Schema({
   DELETED: Boolean,
 });
 
+const NoteDataMongo = mongoose.model('NoteDataMongo', noteSchema);
+
 const fetchCardCategory = async () => {
   const cardCategoryQuery = 'SELECT * FROM cardcategory';
   const [result] = await sqlDB.query(cardCategoryQuery);
   return result;
 };
 
+const fetchCardHistoryByMail = async (userMail) => {
+  const personalCardQuery = await NoteDataMongo.find({
+    Author: userMail,
+  }).populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
+  return personalCardQuery;
+};
+
 module.exports = {
+  fetchCardHistoryByMail,
   fetchCardCategory,
-  NoteDataMongo: mongoose.model('NoteDataMongo', noteSchema),
+  NoteDataMongo,
 };
 // module.exports = mongoose.model('NoteDataMongo', noteSchema);

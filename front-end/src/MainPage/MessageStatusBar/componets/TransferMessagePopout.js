@@ -25,13 +25,15 @@ export const TransferMessagePopout = ({
   );
   const messagesArray = JSON.parse(messagesCollectionInString);
   const accessToken = localStorage.getItem('accessToken');
+  const category = localStorage.getItem('noteCategory');
   const messagesToBeSent = {
-    category: null,
+    category: category,
     messagesToBeSaved: messagesArray,
     token: accessToken,
   };
 
   const handleTransferAfterConfirm = () => {
+    console.log(category);
     // TODO:
     // 1. 按下確認後，儲存至DB以及store
     // POST API (帶message ID即可)
@@ -48,6 +50,7 @@ export const TransferMessagePopout = ({
   const handleClosePopout = () => {
     // TODO: 清空localStorage，並且把核取方塊轉為ture(不能選)
     localStorage.removeItem('selectedMessagesCollection');
+    localStorage.removeItem('noteCategory');
     showSelectMessageBox(true, 'plain');
     closePopout();
     // TODO: 通知反核取 => Bug Ticket Trello
