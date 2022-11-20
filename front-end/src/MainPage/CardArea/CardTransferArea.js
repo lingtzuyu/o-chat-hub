@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { ExportCardMenu } from './ExportCardMenu';
 
 const CardTransferContainer = styled('div')({
   width: '90%',
@@ -12,5 +13,9 @@ const CardTransferContainer = styled('div')({
 });
 
 export default function CardTransferArea() {
-  return <CardTransferContainer>CardArea</CardTransferContainer>;
+  return (
+    <CardTransferContainer>
+      <ExportCardMenu></ExportCardMenu>
+    </CardTransferContainer>
+  );
 }
