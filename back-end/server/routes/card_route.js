@@ -16,6 +16,8 @@ router
   .post(wrapAsync(verifiedAuth), wrapAsync(saveMessagesToNote));
 
 // 取得歷史紀錄
-router.route('/card/history').get(wrapAsync(fetchCardHistory));
+router
+  .route('/card/history')
+  .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory));
 
 module.exports = router;

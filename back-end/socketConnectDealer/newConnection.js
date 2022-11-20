@@ -8,7 +8,7 @@ const newConnectionDealer = async (socket, io) => {
     // 這個userMail在auth_controller那邊解jwt token的時候會放進去
     userMail: socket.userMail,
   });
-  console.log(`可以從socket拿到userMail`, socket.userMail);
+  // console.log(`可以從socket拿到userMail`, socket.userMail);
 
   const userIdCheck = await Friend.checkUserExist(socket.userMail);
   const userId = userIdCheck[0].id;

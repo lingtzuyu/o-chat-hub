@@ -65,8 +65,8 @@ const saveMessagesToNote = async (req, res) => {
 
 const fetchCardHistory = async (req, res) => {
   try {
-    const { userMail } = req.body;
-    const response = await Card.fetchCardHistoryByMail(userMail);
+    const { mail } = req.user;
+    const response = await Card.fetchCardHistoryByMail(mail);
     console.log(response);
     res.status(200).send(response);
   } catch (err) {

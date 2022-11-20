@@ -15,6 +15,9 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
+import { getActions } from '../../store/actions/card_actions';
+import { connect } from 'react-redux';
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -26,7 +29,16 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function NoteCard() {
+const NoteCard = ({
+  noteTime,
+  from,
+  category,
+  notes,
+  liked,
+  transferred,
+  deleted,
+  messageRecords,
+}) => {
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -46,11 +58,22 @@ export default function NoteCard() {
             <MoreVertIcon />
           </IconButton>
         }
-        title="這邊是與誰對話"
-        subheader="儲存日期"
+        title={from}
+        subheader={noteTime}
       />
       <CardMedia component="img" height="194" image="" alt="Paella dish" />
       <CardContent>
+        {messageRecords.map((message) => {
+          return (
+            <>
+              <SingleMessageList
+                sender={message.senderMail}
+                content={message.body}
+                date={message.date}
+              />
+            </>
+          );
+        })}
         <Typography variant="body2" color="text.secondary">
           這邊是儲存的訊息內容
         </Typography>
@@ -74,13 +97,20 @@ export default function NoteCard() {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         {/* TODO: 這邊拿來做一條一條的note */}
         <CardContent>
-          <Typography paragraph>Note Area</Typography>
-          <Typography paragraph>Note Area</Typography>
-          <Typography paragraph>Note Area</Typography>
-          <Typography paragraph>Note Area</Typography>
+          <Typography paragraph>{notes}</Typography>
           <Typography>Buttom</Typography>
         </CardContent>
       </Collapse>
     </Card>
   );
-}
+};
+
+const mapStoreStateToPropse = ({ card }) => {
+  return { ...card };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(mapStoreStateToPropse, mapActionsToProps)(NoteCard);

@@ -33,7 +33,7 @@ export const TransferMessagePopout = ({
   };
 
   const handleTransferAfterConfirm = () => {
-    console.log(category);
+    // console.log(category);
     // TODO:
     // 1. 按下確認後，儲存至DB以及store
     // POST API (帶message ID即可)

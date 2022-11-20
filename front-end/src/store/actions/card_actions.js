@@ -8,6 +8,7 @@ export const cardActions = {
   SET_CARD_CATEGORY: 'CARDS.SET_CARD_CATEGORY',
   SET_SELECTED_CATEGORY_FOR_NOTE: 'CARDS.SET_SELECTED_CATEGORY_FOR_NOTE',
   SET_TRANSFFERED_MESSAGES_NOTE: 'CARD.SET_TRANSFFERED_MESSAGES_NOTE',
+  SET_CARDS: 'CARDS.SET_CARDS',
 };
 
 export const getActions = (dispatch) => {
@@ -28,6 +29,9 @@ export const getActions = (dispatch) => {
     },
     setSelectedCategoryForNote: (selectedCategory) => {
       dispatch(setSelectedCategoryForNote(selectedCategory));
+    },
+    fetchCardHistory: (data) => {
+      dispatch(fetchCardHistory(data));
     },
   };
 };
@@ -64,7 +68,6 @@ export const setSelectedCategoryForNote = (selectedCategory) => {
 export const saveTransferredMessagesToMongo = (data) => {
   return async (dispatch) => {
     const response = await api.saveMessagesToNote(data);
-    console.log(response);
     const noteId = response.data.noteId;
     // TODO: 發送ALERT訊息到 (用response.systemInfo)
     dispatch(setTransferredMessagesToStore(data, noteId));
@@ -78,4 +81,15 @@ export const setTransferredMessagesToStore = (data, noteId) => {
     transfferedMessages: data.messagesToBeSaved,
     noteId: noteId,
   };
+};
+
+export const fetchCardHistory = (data) => {
+  return async (dispatch) => {
+    const cardHistory = await api.getCardHistory(data);
+    dispatch(setCards(cardHistory));
+  };
+};
+
+export const setCards = (cards) => {
+  return { type: cardActions.SET_CARDS, cards };
 };

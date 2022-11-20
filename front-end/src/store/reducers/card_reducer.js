@@ -14,6 +14,7 @@ const initState = {
   selectedCategoryForNote: null,
   transferredMessgaesNote: [],
   noteId: null,
+  cards: [],
 };
 
 const reducer = (state = initState, action) => {
@@ -40,6 +41,11 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         selectedCategoryForNote: action.selectedCategory,
+      };
+    case cardActions.SET_CARDS:
+      return {
+        ...state,
+        cards: action.cards,
       };
 
     default:

@@ -67,7 +67,7 @@ const checkStatusCode = (exception) => {
 // 取得當前卡片分類資料 (因應未來擴充或是讓使用者自己自訂的可能性)
 const fetchCardCategory = async () => {
   try {
-    return await apiClient.get('card/category');
+    return await apiClient.get('/card/category');
   } catch (exception) {
     return { error: true, exception };
   }
@@ -76,13 +76,27 @@ const fetchCardCategory = async () => {
 // 存資料進入mongoDB，data會是{category:"", messagesToBeSaved:[{},{},{}...]}
 const saveMessagesToNote = async (data) => {
   try {
-    return await apiClient.post('card/notes', data);
+    return await apiClient.post('/card/notes', data);
   } catch (err) {
     console.log(err);
     return { error: true, err };
   }
 };
 
+// 取得卡片歷史紀錄，mail用token來解
+// https://masteringjs.io/tutorials/axios/get-with-data
+const getCardHistory = async (data) => {
+  try {
+    const result = await apiClient.get('/card/history', {
+      params: { token: data },
+    });
+    const cards = result.data;
+    return cards;
+  } catch (err) {
+    console.log(err);
+    return { error: true, err };
+  }
+};
 export {
   login,
   signup,
@@ -91,4 +105,5 @@ export {
   rejectInvite,
   fetchCardCategory,
   saveMessagesToNote,
+  getCardHistory,
 };
