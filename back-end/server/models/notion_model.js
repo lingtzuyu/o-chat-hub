@@ -35,7 +35,7 @@ const saveNotionTokenAndPageId = async (code, userId) => {
       data: { filter: { property: 'object', value: 'database' } },
     });
     console.log(data);
-    const notionDatabaseid = data?.results[0].id;
+    const notionDatabaseid = data?.results[0]?.id;
     console.log('後端DB ID', notionDatabaseid);
 
     // 存入SQL DB

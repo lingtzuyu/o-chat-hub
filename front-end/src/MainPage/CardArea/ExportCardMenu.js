@@ -13,13 +13,21 @@ import Select from '@mui/material/Select';
 import { styled } from '@mui/material/styles';
 import NativeSelect from '@mui/material/NativeSelect';
 import InputBase from '@mui/material/InputBase';
+import TextField from '@mui/material/TextField';
 
-export const ExportCardMenu = () => {
+import { connect } from 'react-redux';
+import { getActions } from '../../store/actions/card_actions';
+import store from '../../store/store';
+import * as api from '../../api';
+
+export const ExportCardMenu = ({ cardsToBeExporting, exportToNotion }) => {
+  // TODO: redux 改
+  const exportCard = store.getState().card.cardsToBeExporting;
   const [open, setOpen] = React.useState(false);
-  const [age, setAge] = React.useState('');
-
+  const [status, setStatus] = React.useState('');
+  const [inputValue, setInputValue] = React.useState('');
   const handleChange = (event) => {
-    setAge(Number(event.target.value) || '');
+    setStatus(event.target.value);
   };
 
   const handleClickOpen = () => {
@@ -32,57 +40,47 @@ export const ExportCardMenu = () => {
     }
   };
 
-  const BootstrapInput = styled(InputBase)(({ theme }) => ({
-    'label + &': {
-      marginTop: theme.spacing(3),
-    },
-    '& .MuiInputBase-input': {
-      borderRadius: 4,
-      position: 'relative',
-      backgroundColor: theme.palette.background.paper,
-      border: '1px solid #ced4da',
-      fontSize: 16,
-      padding: '10px 26px 10px 12px',
-      transition: theme.transitions.create(['border-color', 'box-shadow']),
-      // Use the system font instead of the default Roboto font.
-      fontFamily: [
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-      ].join(','),
-      '&:focus': {
-        borderRadius: 4,
-        borderColor: '#80bdff',
-        boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-      },
-    },
-  }));
+  const handleInput = (event) => {
+    setInputValue(event.target.value);
+  };
+  const handleExport = () => {
+    const exportedInfo = {
+      notionTitle: inputValue,
+      notionStatus: status,
+      cardsToBeExporting: exportCard,
+    };
+    console.log(exportedInfo);
+    api.exportToNotionAPI(exportedInfo);
+    // exportToNotion(exportedInfo);
+    setOpen(false);
+    console.log(1);
+  };
 
   return (
     <div>
       <Button onClick={handleClickOpen}>EXPORT TO NOTION</Button>
       <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
         <DialogTitle>Fill the form</DialogTitle>
-        <FormControl sx={{ m: 1 }} variant="standard">
+        {/* <FormControl sx={{ m: 1 }} variant="standard">
           <InputLabel htmlFor="demo-customized-textbox">
             Notion Title
           </InputLabel>
           <BootstrapInput id="demo-customized-textbox" />
-        </FormControl>
+        </FormControl> */}
+        <TextField
+          required
+          id="outlined-required"
+          label="Notion Title"
+          onChange={handleInput}
+          defaultValue={inputValue}
+        />
         <DialogContent>
           <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <InputLabel htmlFor="demo-dialog-native">Status</InputLabel>
               <Select
                 native
-                value={age}
+                value={status}
                 onChange={handleChange}
                 input={<OutlinedInput label="Age" id="demo-dialog-native" />}
               >
@@ -96,9 +94,22 @@ export const ExportCardMenu = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Ok</Button>
+          <Button onClick={handleExport}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 };
+
+const mapStoreStateToPropse = ({ card }) => {
+  return { ...card };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(
+  mapStoreStateToPropse,
+  mapActionsToProps
+)(ExportCardMenu);

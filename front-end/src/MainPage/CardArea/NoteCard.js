@@ -43,11 +43,26 @@ const NoteCard = ({
   transferred,
   deleted,
   messageRecords,
+  selecteExportCards,
 }) => {
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const handleSelected = () => {
+    const selectedCardInfo = {
+      noteTime: noteTime,
+      from: from,
+      messageRecords: messageRecords,
+      notes: notes,
+      category: category,
+    };
+
+    selecteExportCards(selectedCardInfo);
+
+    console.log(selectedCardInfo);
   };
 
   return (
@@ -60,7 +75,7 @@ const NoteCard = ({
         }
         action={
           <IconButton aria-label="settings">
-            <Checkbox {...label} />
+            <Checkbox {...label} onChange={handleSelected} />
           </IconButton>
         }
         title={from}

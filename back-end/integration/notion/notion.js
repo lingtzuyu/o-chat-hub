@@ -3,23 +3,23 @@ const { Client } = require('@notionhq/client');
 
 const notion = new Client({
   //fetch from db later
-  auth: 'secret_3dyvf7KZ0SwUIMnyoXXhlsDS38WpESm7664j5MFpqEd',
+  auth: 'secret_n6QCZEZ6kV0CLV9QtgUYtPHqYxpBqV3PZi30BzMPjfn',
 });
 
 const getDatabase = async () => {
   const response = await notion.databases.retrieve({
     //fetch from db later
-    database_id: 'b0c265b8-ab4f-4c8d-959a-54267d21a613',
+    database_id: 'f41d83e0-99bc-4945-97cf-261ed2921404',
   });
   console.log('getDB by accessToken', response);
 };
 
-// getDatabase();
+getDatabase();
 
-const createTickets = (title, category, sender, messages, notes) => {
+const createTickets = (title, category, messages) => {
   notion.pages.create({
     parent: {
-      database_id: 'b0c265b8-ab4f-4c8d-959a-54267d21a613',
+      database_id: 'f41d83e0-99bc-4945-97cf-261ed2921404',
     },
     properties: {
       title: [
@@ -46,7 +46,7 @@ const createTickets = (title, category, sender, messages, notes) => {
         {
           type: 'text',
           text: {
-            content: sender,
+            content: 'test0001@gmail.com',
           },
         },
       ],
@@ -63,7 +63,7 @@ const createTickets = (title, category, sender, messages, notes) => {
         {
           type: 'text',
           text: {
-            content: notes,
+            content: 'This is a test note',
           },
         },
       ],
@@ -71,10 +71,12 @@ const createTickets = (title, category, sender, messages, notes) => {
   });
 };
 
-createTickets(
-  'Test',
-  'test category',
-  '123@gmail.com',
-  '{This is first message}, {This is second messaage}',
-  'This is notes'
-);
+module.exports = { createTickets };
+
+// createTickets(
+//   'Test',
+//   'test category',
+//   '123@gmail.com',
+//   '{This is first message}, {This is second messaage}',
+//   'This is notes'
+// );
