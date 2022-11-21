@@ -21,7 +21,7 @@ const CardArea = ({ fetchCardHistory, cards }) => {
   // 取得歷史紀錄並且存在store
   useEffect(() => {
     fetchCardHistory(accessToken);
-  }, [cards]);
+  }, []);
   return (
     <CardAreaMainContainer>
       {cards?.map((card) => {

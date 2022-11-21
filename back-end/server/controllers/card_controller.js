@@ -18,7 +18,7 @@ const saveMessagesToNote = async (req, res) => {
   // verifiedAuth內拿的
   const author = req.user.mail;
   const { category, messagesToBeSaved } = req.body;
-  console.log('訊息info', messagesToBeSaved);
+  // console.log('訊息info', messagesToBeSaved);
 
   try {
     const newNote = await Card.NoteDataMongo.create({
@@ -51,7 +51,7 @@ const saveMessagesToNote = async (req, res) => {
     await newNote.save();
 
     const noteInsertId = newNote._id.toString();
-    console.log(noteInsertId);
+    console.log('筆記ID', noteInsertId);
 
     // 返回note編號
     res
@@ -67,7 +67,7 @@ const fetchCardHistory = async (req, res) => {
   try {
     const { mail } = req.user;
     const response = await Card.fetchCardHistoryByMail(mail);
-    console.log(response);
+    // console.log(response);
     res.status(200).send(response);
   } catch (err) {
     console.log('controller', err);
