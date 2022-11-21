@@ -97,6 +97,20 @@ const getCardHistory = async (data) => {
     return { error: true, err };
   }
 };
+
+// get notion accessToken to certain DB
+const getNotionToken = async (code) => {
+  try {
+    const response = await apiClient.get('/notion/', {
+      params: { code: code },
+    });
+    return response;
+  } catch (err) {
+    console.log(err);
+    return { error: true, err };
+  }
+};
+
 export {
   login,
   signup,
@@ -106,4 +120,5 @@ export {
   fetchCardCategory,
   saveMessagesToNote,
   getCardHistory,
+  getNotionToken,
 };

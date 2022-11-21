@@ -35,6 +35,7 @@ app.use(`/api/${API_VERSION}`, [
   require('./server/routes/trello_Route'),
   require('./server/routes/friend_Route'),
   require('./server/routes/card_Route'),
+  require('./server/routes/notion_Route'),
 ]);
 
 server.listen(SERVER_PORT, () => {

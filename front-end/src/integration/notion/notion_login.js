@@ -1,22 +1,28 @@
 // form-tool/src/App.js
-
 import { useEffect, useState } from 'react';
 
 // The OAuth client ID from the integration page!
 const oauth_client_id = 'f4d9f3a8-e20f-43d2-9f5f-cf62e2baec60';
+const accessToken = localStorage.getItem('accessToken');
 
 function NotionLogin() {
-  const [dbs, setdbs] = useState([]);
+  const [dbs, setDbs] = useState([]);
 
-  // When you open the app, this doesn't do anything, but after you sign into Notion, you'll be redirected back with a code at which point we call our backend.
   useEffect(() => {
     const params = new URL(window.document.location).searchParams;
     const code = params.get('code');
+    // 如果param沒有帶code就返回
     if (!code) return;
-    fetch(`http://localhost:3002/login/${code}`).then(async (resp) => {
-      setdbs(await resp.json());
-    });
+    // const response = getNotionToken(code);
+    // console.log('前端的response data', response.data);
+    fetch(`${process.env.REACT_APP_API_URL}/notion/${code}`).then(
+      async (res) => {
+        setDbs(await res.json());
+      }
+    );
   }, []);
+
+  console.log('前端畫面', dbs);
 
   return (
     <div>
