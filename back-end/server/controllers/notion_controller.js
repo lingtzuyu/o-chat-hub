@@ -4,14 +4,15 @@ const Friend = require('../models/friend_model');
 
 const getNotionToken = async (req, res) => {
   const { code } = req.params;
-  // const { mail } = req.user;
-
+  const { mail } = req.user;
+  // console.log(req.headers.authorization);
   try {
-    // const userId = await Friend.checkUserExist(mail);
-    const result = Notion.saveNotionTokenAndPageId(code);
+    const userIdCheck = await Friend.checkUserExist(mail);
+    const userId = userIdCheck[0].id;
+    const result = await Notion.saveNotionTokenAndPageId(code, userId);
     const notionIntegrationInfo = {
-      notionAccessToken: result.accessToken,
-      notionIntegratedDB: result.authorizedDBid,
+      result: 'notion linked',
+      userId,
     };
     res.status(200).send(notionIntegrationInfo);
   } catch (err) {

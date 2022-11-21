@@ -5,7 +5,9 @@ const { wrapAsync } = require('../../util/util');
 const { verifiedAuth } = require('../controllers/auth_controller');
 const { getNotionToken } = require('../controllers/notion_controller');
 
-router.route('/notion/:code').get(wrapAsync(getNotionToken));
+router
+  .route('/notion/:code')
+  .get(wrapAsync(verifiedAuth), wrapAsync(getNotionToken));
 
 // router.route('/notion/:code').get(async (req, res) => {
 //   const { code } = req.params;

@@ -4,7 +4,7 @@ const { sqlDB } = require('./mysqlconn');
 
 // 存入針對某notion頁面(db)的accessToken以及關連到的頁面(db) id
 
-const saveNotionTokenAndPageId = async (code) => {
+const saveNotionTokenAndPageId = async (code, userId) => {
   // 帶著code去加上webApp的驗證資料取得notion accessToken
 
   try {
@@ -40,8 +40,9 @@ const saveNotionTokenAndPageId = async (code) => {
 
     // 存入SQL DB
     const insertNotionTokenQuery =
-      'INSERT INTO notionaccess SET user_id = 66, notionAccessToken =?, relatedNotionPageId = ?';
+      'INSERT INTO notionaccess SET user_id = ?, notionAccessToken =?, relatedNotionPageId = ?';
     const [result] = await sqlDB.query(insertNotionTokenQuery, [
+      userId,
       accessToken,
       notionDatabaseid,
     ]);

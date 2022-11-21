@@ -15,11 +15,13 @@ function NotionLogin() {
     if (!code) return;
     // const response = getNotionToken(code);
     // console.log('前端的response data', response.data);
-    fetch(`${process.env.REACT_APP_API_URL}/notion/${code}`).then(
-      async (res) => {
-        setDbs(await res.json());
-      }
-    );
+    fetch(`${process.env.REACT_APP_API_URL}/notion/${code}`, {
+      headers: {
+        authorization: accessToken,
+      },
+    }).then(async (res) => {
+      setDbs(await res.json());
+    });
   }, []);
 
   console.log('前端畫面', dbs);
@@ -32,7 +34,8 @@ function NotionLogin() {
       >
         Connect to Notion
       </a>
-      {dbs.map((db) => (
+
+      {/* {dbs.map((db) => (
         <div
           style={{
             display: 'inline-flex',
@@ -43,7 +46,7 @@ function NotionLogin() {
         >
           {JSON.stringify(db, null, 2)}
         </div>
-      ))}
+      ))} */}
     </div>
   );
 }
