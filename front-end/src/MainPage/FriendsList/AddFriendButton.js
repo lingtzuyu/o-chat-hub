@@ -1,3 +1,5 @@
+// 這個無用了，已經改成icon
+
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import AddFriendPopout from './AddFriendPopout';
@@ -21,9 +23,7 @@ const AddFriendButton = () => {
     <>
       <Button
         style={{
-          marginTop: '30px',
-          marginLeft: '6px',
-          width: '80%',
+          width: '100%',
           height: '64px',
           background: 'grey',
           backgroundColor: 'grey',

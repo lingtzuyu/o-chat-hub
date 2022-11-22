@@ -1,3 +1,5 @@
+// 會被SingleMessageBox取代
+
 import React, { useState } from 'react';
 import { Avatar } from '@mui/material';
 import FakeAvatar from '../../shared/images/fake_avatar.png';

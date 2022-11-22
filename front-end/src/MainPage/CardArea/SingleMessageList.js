@@ -11,7 +11,13 @@ import FakeAvatar from '../../shared/images/fake_avatar.png';
 export const SingleMessageList = ({ sender, content, date, id }) => {
   const myMail = localStorage.getItem('userMail');
   return (
-    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <List
+      sx={{
+        width: '100%',
+        maxWidth: 360,
+        bgcolor: 'background.paper',
+      }}
+    >
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
           <Avatar key={id} alt={sender} src={FakeAvatar} />

@@ -7,11 +7,21 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
 const LeftTopIconTabsContainer = styled('div')({
-  width: '96%',
+  width: '100%',
   height: '10%',
-  align: 'center',
-  marginLeft: '36px',
-  marginTop: '16px',
+  justifyContent: 'center',
+  alignItems: 'center',
+  dispaly: 'flex',
+  backgroundColor: 'grey',
+});
+
+const TestContainer = styled('div')({
+  width: '100%',
+  height: '100%',
+  marginTop: '10px',
+  justifyContent: 'center',
+  alignItems: 'center',
+  dispaly: 'flex',
 });
 
 export default function MessgaeTopIcon() {
@@ -23,27 +33,30 @@ export default function MessgaeTopIcon() {
 
   return (
     <LeftTopIconTabsContainer>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        aria-label="icon position tabs example"
-      >
-        <Tab
-          icon={<InsertCommentIcon sx={{ color: '#1363DF' }} />}
-          iconPosition="top"
-          label="MyChat"
-        />
-        <Tab
-          icon={<WhatsAppIcon sx={{ color: '#1363DF' }} />}
-          iconPosition="top"
-          label="WhatsApp"
-        />
-        <Tab
-          icon={<AddIcon sx={{ color: '#1363DF' }} />}
-          iconPosition="top"
-          label="Add more"
-        />
-      </Tabs>
+      <TestContainer>
+        <Tabs
+          centered="true"
+          value={value}
+          onChange={handleChange}
+          aria-label="icon position tabs example"
+        >
+          <Tab
+            icon={<InsertCommentIcon sx={{ color: '#1363DF' }} />}
+            iconPosition="top"
+            label="MyChat"
+          />
+          <Tab
+            icon={<WhatsAppIcon sx={{ color: '#1363DF' }} />}
+            iconPosition="top"
+            label="WhatsApp"
+          />
+          <Tab
+            icon={<AddIcon sx={{ color: '#1363DF' }} />}
+            iconPosition="top"
+            label="Add more"
+          />
+        </Tabs>
+      </TestContainer>
     </LeftTopIconTabsContainer>
   );
 }

@@ -12,7 +12,7 @@ import './App.css';
 import LoginPage from './authPages/LoginPage/LoginPage';
 import SignupPage from './authPages/SignupPage/SignupPage';
 import MainPage from './MainPage/MainPage';
-import AlertMessage from './shared/components/AlertMessage';
+
 
 // 有點像是API的route
 function App() {
