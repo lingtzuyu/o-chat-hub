@@ -3,7 +3,12 @@ const router = require('express').Router();
 const axios = require('axios');
 const { wrapAsync } = require('../../util/util');
 const { verifiedAuth } = require('../controllers/auth_controller');
-const { getNotionToken } = require('../controllers/notion_controller');
+const {
+  getNotionToken,
+  exportToNotion,
+} = require('../controllers/notion_controller');
+
+router.route('/notion/export/card').post(wrapAsync(exportToNotion));
 
 router
   .route('/notion/:code')

@@ -8,6 +8,15 @@ const apiClient = axios.create({
   timeout: 30000,
 });
 
+// export to notion route
+const exportToNotionAPI = async (data) => {
+  try {
+    return await apiClient.post('/notion/export/card', data);
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
 // login request (這邊是公開route)
 const login = async (data) => {
   try {
@@ -121,4 +130,5 @@ export {
   saveMessagesToNote,
   getCardHistory,
   getNotionToken,
+  exportToNotionAPI,
 };

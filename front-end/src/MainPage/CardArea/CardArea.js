@@ -18,7 +18,7 @@ const CardAreaMainContainer = styled('div')({
 
 const CardArea = ({ fetchCardHistory, cards }) => {
   const accessToken = localStorage.getItem('accessToken');
-  // 取得歷史紀錄並且存在store
+  // 取得歷史紀錄並且存在store (這邊放cards會無窮迴圈)
   useEffect(() => {
     fetchCardHistory(accessToken);
   }, []);

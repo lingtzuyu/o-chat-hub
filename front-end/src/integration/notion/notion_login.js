@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 const oauth_client_id = 'f4d9f3a8-e20f-43d2-9f5f-cf62e2baec60';
 const accessToken = localStorage.getItem('accessToken');
 
+// TODO: 限制只能一個帳號只有一個看板
 function NotionLogin() {
   const [dbs, setDbs] = useState([]);
 

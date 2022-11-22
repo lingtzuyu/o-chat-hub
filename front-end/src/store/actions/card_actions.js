@@ -9,6 +9,9 @@ export const cardActions = {
   SET_SELECTED_CATEGORY_FOR_NOTE: 'CARDS.SET_SELECTED_CATEGORY_FOR_NOTE',
   SET_TRANSFFERED_MESSAGES_NOTE: 'CARD.SET_TRANSFFERED_MESSAGES_NOTE',
   SET_CARDS: 'CARDS.SET_CARDS',
+  SET_EXPORTING_CARD: 'CARDS.SET_EXPORTING_CARD',
+  EXPORT_TO_NOTION: 'CARDS.EXPORT_TO_NOTION',
+  SET_EXPORTED_CARD: 'CARDS.SET_EXPORTED_CARD',
 };
 
 export const getActions = (dispatch) => {
@@ -33,8 +36,34 @@ export const getActions = (dispatch) => {
     fetchCardHistory: (data) => {
       dispatch(fetchCardHistory(data));
     },
+    selecteExportCards: (cardsToBeExporting) => {
+      dispatch(selecteExportCards(cardsToBeExporting));
+    },
+    exportToNotion: (data) => {
+      dispatch(exportToNotion(data));
+    },
   };
 };
+
+// 傳送至notion
+export const exportToNotion = (data) => {
+  return async (dispatch) => {
+    console.log('1');
+    api.exportToNotionAPI(data);
+    dispatch(setExportedCard(data));
+  };
+};
+
+export const setExportedCard = (data) => ({
+  type: cardActions.SET_EXPORTED_CARD,
+  exportedCards: data,
+});
+
+// 把卡片區的資訊狀態帶到輸出區，並且準備輸出
+export const selecteExportCards = (cardsToBeExporting) => ({
+  type: cardActions.SET_EXPORTING_CARD,
+  cardsToBeExporting: cardsToBeExporting,
+});
 
 // 處理action最好的方法就是將每個action都包在function內，像這樣的function就是action creator
 export const showSelectMessageBox = (isDisabled, isShown) => ({

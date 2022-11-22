@@ -15,6 +15,8 @@ const initState = {
   transferredMessgaesNote: [],
   noteId: null,
   cards: [],
+  cardsToBeExporting: [],
+  exportedCards: [],
 };
 
 const reducer = (state = initState, action) => {
@@ -46,6 +48,11 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         cards: action.cards,
+      };
+    case cardActions.SET_EXPORTING_CARD:
+      return {
+        ...state,
+        cardsToBeExporting: action.cardsToBeExporting,
       };
 
     default:

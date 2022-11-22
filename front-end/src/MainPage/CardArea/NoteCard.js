@@ -13,13 +13,15 @@ import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Checkbox from '@mui/material/Checkbox';
 
 import { SingleMessageList } from './SingleMessageList';
 import TempIMG from '../../shared/images/chatCover.jpg';
 
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -41,11 +43,26 @@ const NoteCard = ({
   transferred,
   deleted,
   messageRecords,
+  selecteExportCards,
 }) => {
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const handleSelected = () => {
+    const selectedCardInfo = {
+      noteTime: noteTime,
+      from: from,
+      messageRecords: messageRecords,
+      notes: notes,
+      category: category,
+    };
+
+    selecteExportCards(selectedCardInfo);
+
+    console.log(selectedCardInfo);
   };
 
   return (
@@ -58,7 +75,7 @@ const NoteCard = ({
         }
         action={
           <IconButton aria-label="settings">
-            <MoreVertIcon />
+            <Checkbox {...label} onChange={handleSelected} />
           </IconButton>
         }
         title={from}
