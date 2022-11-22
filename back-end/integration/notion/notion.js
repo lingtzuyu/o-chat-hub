@@ -9,7 +9,7 @@ const notion = new Client({
 const getDatabase = async () => {
   const response = await notion.databases.retrieve({
     //fetch from db later
-    database_id: 'f41d83e0-99bc-4945-97cf-261ed2921404',
+    database_id: '9a091268-eec3-4d12-af9b-e1dbffdec36b',
   });
   console.log('getDB by accessToken', response);
 };
@@ -19,7 +19,7 @@ getDatabase();
 const createTickets = (title, category, messages) => {
   notion.pages.create({
     parent: {
-      database_id: 'f41d83e0-99bc-4945-97cf-261ed2921404',
+      database_id: '9a091268-eec3-4d12-af9b-e1dbffdec36b',
     },
     properties: {
       title: [
@@ -75,7 +75,7 @@ module.exports = { createTickets };
 
 // createTickets(
 //   'Test',
-//   'test category',
+//   'test category123',
 //   '123@gmail.com',
 //   '{This is first message}, {This is second messaage}',
 //   'This is notes'
