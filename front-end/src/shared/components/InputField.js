@@ -7,7 +7,7 @@ const InputWrapper = styled('div')({
   display: 'flex',
   justifyContent: 'center',
   flexDirection: 'column',
-  width: '100%',
+  width: '80%',
 });
 
 const FieldName = styled('p')({

@@ -128,11 +128,12 @@ function TopBarContent({ name }) {
             </IconButton>
           </Tooltip> */}
           <SaveMessageButton />
-          <Tooltip placement="bottom" title={'Transfer selected messages'}>
+          <TransferMessageButton />
+          {/* <Tooltip placement="bottom" title={'Transfer selected messages'}>
             <IconButton color="primary">
               <InputIcon />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip placement="bottom" title={'Set a reminder'}>
             <IconButton color="primary">
               <AccessAlarmsIcon />

@@ -25,8 +25,8 @@ const MessengerContent = ({ chosenChatDetails }) => {
 };
 
 // chat: chatReducer
-const mapStoreStateToProps = ({ chat }) => {
-  return { ...chat };
+const mapStoreStateToProps = ({ card, chat }) => {
+  return { ...chat, ...card };
 };
 
 export default connect(mapStoreStateToProps)(MessengerContent);

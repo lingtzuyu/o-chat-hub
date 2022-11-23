@@ -19,6 +19,8 @@ export const TransferMessagePopout = ({
   closePopout,
   showSelectMessageBox,
   saveTransferredMessagesToMongo,
+  setTransferButtonDisabled,
+  setSaveMessageButtonDisabled,
 }) => {
   const messagesCollectionInString = localStorage.getItem(
     'selectedMessagesCollection'
@@ -40,8 +42,10 @@ export const TransferMessagePopout = ({
     // store action and (帶整串，因為等等要用整串渲染右邊卡片區)
     saveTransferredMessagesToMongo(messagesToBeSent);
     // // 2. 將核取方塊狀態設回去
+    setTransferButtonDisabled(true);
+    setSaveMessageButtonDisabled(false);
     // showSelectMessageBox(true, 'plain');
-    // TODO: 通知反核取 => Already issue Bug Ticket in Trello
+    showSelectMessageBox();
 
     // 清空localStorage
     handleClosePopout();
@@ -52,7 +56,7 @@ export const TransferMessagePopout = ({
     localStorage.removeItem('selectedMessagesCollection');
     localStorage.removeItem('noteCategory');
     showSelectMessageBox(true, 'plain');
-    closePopout();
+    closePopout(true, 'hidden');
     // TODO: 通知反核取 => Bug Ticket Trello
   };
 

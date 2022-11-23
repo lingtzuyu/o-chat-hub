@@ -5,11 +5,13 @@ import TransferMessagePopout from './TransferMessagePopout';
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
 
-function SaveMessageButton({
+function TransferMessageButton({
   showSelectMessageBox,
   fetchCardCategoryAction,
   saveTransferredMessagesToMongo,
   setSaveMessageButtonDisabled,
+  setTransferButtonDisabled,
+  isTransferButtonDisabled,
 }) {
   // 彈窗後的轉換訊息到卡片的動作
   const [isPopoutOpen, setIsPopoutOpen] = useState(false);
@@ -36,7 +38,7 @@ function SaveMessageButton({
         title={'Transfer selected messages'}
         onClick={handleTransferMessage}
       >
-        <IconButton color="primary">
+        <IconButton color="primary" disabled={isTransferButtonDisabled}>
           <InputIcon />
         </IconButton>
       </Tooltip>
@@ -64,4 +66,4 @@ const mapActionsToProps = (dispatch) => {
 export default connect(
   mapStoreStateToPropse,
   mapActionsToProps
-)(SaveMessageButton);
+)(TransferMessageButton);

@@ -9,7 +9,7 @@ const initState = {
   // default 是 disabled
   isSelectMessageBoxDisabled: 'hidden',
   // fefault 是 全plain => 出現換成"outlined"
-  isSelectedMessageBoxShown: 'plain',
+  isSelectedMessageBoxShown: 'hidden',
   cardCategories: [],
   selectedCategoryForNote: null,
   transferredMessgaesNote: [],
@@ -18,6 +18,7 @@ const initState = {
   cardsToBeExporting: [],
   exportedCards: [],
   isSavedButtonDisabled: false,
+  isTransferButtonDisabled: true,
 };
 
 const reducer = (state = initState, action) => {
@@ -57,6 +58,11 @@ const reducer = (state = initState, action) => {
       };
     case cardActions.SET_SAVEMESSAGE_BUTTON_DISABLED:
       return { ...state, isSavedButtonDisabled: action.isSavedButtonDisabled };
+    case cardActions.SET_TRANSFER_BUTTON_DISABLED:
+      return {
+        ...state,
+        isTransferButtonDisabled: action.isTransferButtonDisabled,
+      };
 
     default:
       return state;

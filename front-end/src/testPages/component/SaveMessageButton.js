@@ -8,6 +8,7 @@ function SaveMessageButton({
   showSelectMessageBox,
   isSavedButtonDisabled,
   setSaveMessageButtonDisabled,
+  setTransferButtonDisabled,
 }) {
   // 按下去後，選取的時候需要disable該button
 
@@ -17,7 +18,12 @@ function SaveMessageButton({
     setSaveMessageButtonDisabled(true);
     // 通知核取方塊換狀態 hidden 轉 visible
     showSelectMessageBox(false, 'visible');
+    // 可以選取transfer Button
+    // TODO: 但如果沒有選取訊息前不能傳
+    setTransferButtonDisabled(false);
   };
+
+  // TODO: 如果選擇到了好友，才能按，從store拿chosenChatDetail
   return (
     <>
       <Tooltip

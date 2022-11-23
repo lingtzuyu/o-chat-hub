@@ -88,6 +88,7 @@ const MessageRight = ({
   const [selected, setSelected] = useState(false);
 
   // select以及unselect的行為
+  // TODO: 這邊的select也該用redux store控制來清掉
   const handleSelected = () => {
     let MessageCollectionArray = [];
     const selectedMessage = {
@@ -152,7 +153,7 @@ const MessageRight = ({
       <Checkbox
         // 用message save是否按下來控制visibility
 
-        sx={{ marginRight: '20px', visibility: isSelectMessageBoxDisabled }}
+        sx={{ marginRight: '20px', visibility: isSelectedMessageBoxShown }}
         checked={selected}
         onChange={handleSelected}
         icon={<BookmarkBorderIcon />}
@@ -283,7 +284,7 @@ const MessageLeft = ({
       <Checkbox
         // 用message save是否按下來控制visibility
 
-        sx={{ marginRight: '20px', visibility: isSelectMessageBoxDisabled }}
+        sx={{ marginRight: '20px', visibility: isSelectedMessageBoxShown }}
         checked={selected}
         onChange={handleSelected}
         icon={<BookmarkBorderIcon />}
@@ -378,10 +379,8 @@ const SingleChatBubble = ({
   );
 };
 
-const mapStoreStateToProps = ({ card }) => {
-  return {
-    ...card,
-  };
+const mapStoreStateToProps = ({ chat, card }) => {
+  return { ...chat, ...card };
 };
 
 export default connect(mapStoreStateToProps)(SingleChatBubble);

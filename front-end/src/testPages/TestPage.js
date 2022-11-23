@@ -8,6 +8,8 @@ import SidebarContent from './SideBarContent';
 import ChatContent from './ChatContent';
 import MessengerContent from './MessengerContent';
 
+import CardList from './CardPage/CardList';
+
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 
 import { MeesageIfNoChosenContact } from './component/MessageIfNoChosenContact';
@@ -29,6 +31,7 @@ import { connectSocketBackend } from '../chat/socketConnectionClient';
 import { connect } from 'react-redux';
 import { getActions } from '../store/actions/auth_actions';
 import { setChosenChatDetails } from '../store/actions/chat_actions';
+import CardTopBar from './CardPage/CardTopBar';
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
@@ -45,13 +48,32 @@ const Sidebar = styled(Box)(
 `
 );
 
-const ChatWindow = styled(Box)(
+const WorkSpaceWrapper = styled(Box)(
   () => `
         width: 100%;
         height: 100%;
         display: flex;
+        
+`
+);
+
+const ChatWindow = styled(Box)(
+  () => `
+        width: 65%;
+        height: 100%;
+        display: flex;
         flex-direction: column;
-        flex: 1;
+        
+`
+);
+
+const CardWindow = styled(Box)(
+  () => `
+        width: 35%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        
 `
 );
 
@@ -59,6 +81,14 @@ const ChatTopBar = styled(Box)(
   ({ theme }) => `
         background: ${theme.colors.alpha.white[100]};
         border-bottom: ${theme.colors.alpha.black[10]} solid 1px;
+        padding: ${theme.spacing(2)};
+        align-items: center;
+`
+);
+
+const ChatTopBarContainer = styled(Box)(
+  ({ theme }) => `
+        background: ${theme.colors.alpha.white[100]};
         padding: ${theme.spacing(2)};
         align-items: center;
 `
@@ -125,45 +155,77 @@ function ApplicationsMessenger({ setUserDetails, chosenChatDetails }) {
             <SidebarContent />
           </Scrollbar>
         </DrawerWrapperMobile>
-
-        <Sidebar
-          sx={{
-            display: { xs: 'none', lg: 'inline-block' },
-          }}
-        >
-          <Scrollbar>
-            <SidebarContent />
-          </Scrollbar>
-        </Sidebar>
-        <ChatWindow>
-          <ChatTopBar
+        <WorkSpaceWrapper>
+          <Sidebar
             sx={{
-              display: { xs: 'flex', lg: 'inline-block' },
+              display: { xs: 'none', lg: 'inline-block' },
             }}
           >
-            <IconButtonToggle
-              sx={{
-                display: { lg: 'none', xs: 'flex' },
-                mr: 2,
-              }}
-              color="primary"
-              onClick={handleDrawerToggle}
-              size="small"
-            >
-              <MenuTwoToneIcon />
-            </IconButtonToggle>
-
-            <TopBarContent />
-          </ChatTopBar>
-          <Box flex={1}>
             <Scrollbar>
-              <MessengerContent />
+              <SidebarContent />
             </Scrollbar>
-          </Box>
-          <Divider />
-          <BottomBarContent />
-        </ChatWindow>
-        {/* <ChatWindow>CardArea</ChatWindow> */}
+          </Sidebar>
+
+          <ChatWindow>
+            <ChatTopBar
+              sx={{
+                display: { xs: 'flex', lg: 'inline-block' },
+              }}
+            >
+              <IconButtonToggle
+                sx={{
+                  display: { lg: 'none', xs: 'flex' },
+                  mr: 2,
+                }}
+                color="primary"
+                onClick={handleDrawerToggle}
+                size="small"
+              >
+                <MenuTwoToneIcon />
+              </IconButtonToggle>
+
+              <TopBarContent />
+            </ChatTopBar>
+            <Box flex={1}>
+              <Scrollbar>
+                <MessengerContent />
+              </Scrollbar>
+            </Box>
+            <Divider />
+            <BottomBarContent />
+          </ChatWindow>
+          <CardWindow>
+            <ChatTopBarContainer
+              sx={{
+                display: { xs: 'flex', lg: 'inline-block' },
+              }}
+            >
+              <IconButtonToggle
+                sx={{
+                  display: { lg: 'none', xs: 'flex' },
+                  mr: 2,
+                }}
+                color="primary"
+                onClick={handleDrawerToggle}
+                size="small"
+              >
+                <MenuTwoToneIcon />
+              </IconButtonToggle>
+
+              {/* 之後去改這個TopBarContent */}
+              <CardTopBar />
+            </ChatTopBarContainer>
+            <Box flex={1}>
+              <Scrollbar>
+                {/* 改成卡片內容 */}
+                <CardList />
+              </Scrollbar>
+            </Box>
+            <Divider />
+            {/* 改成轉換按鈕 */}
+            <BottomBarContent />
+          </CardWindow>
+        </WorkSpaceWrapper>
       </RootWrapper>
     </>
   );
