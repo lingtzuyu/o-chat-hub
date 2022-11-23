@@ -6,7 +6,7 @@ const OfflineIndicator = () => {
   return (
     <Box
       sx={{
-        color: 'red',
+        color: '#223354',
         display: 'flex',
         alignItems: 'center',
         position: 'absolute',

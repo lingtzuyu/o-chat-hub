@@ -8,6 +8,10 @@ import { LeftBarSearchBar } from '../../MainPage/FriendsList/LeftBarSearchBar';
 
 import LeftBarFriendList from '../../MainPage/FriendsList/LeftBarFriendList';
 
+import { LeftBarPendingListTitle } from '../../MainPage/FriendsList/LeftBarPendingListTitle';
+
+import LeftBarPendingInvitationList from '../../MainPage/FriendsList/LeftBarPendingInvitationList';
+
 import PendingInvitationList from '../../MainPage/FriendsList/PendingInvitationList';
 import MessageAreaTopBar from '../../MainPage/MessageStatusBar/MessageAreaTopBar';
 import { MessageContentArea } from '../../MainPage/Messenger/MessageContentArea';
@@ -50,8 +54,9 @@ export default function MainBody() {
         <LeftBarProfileIcon />
         <LeftBarSearchBar />
         <LeftBarFriendList />
+        <LeftBarPendingListTitle />
 
-        <PendingInvitationList />
+        <LeftBarPendingInvitationList />
       </LeftFriendBarContainer>
       <MiddleMessageBarContainer>
         <MessageAreaTopBar />

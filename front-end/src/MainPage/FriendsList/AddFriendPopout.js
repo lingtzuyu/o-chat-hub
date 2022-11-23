@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-// https://mui.com/material-ui/react-dialog/
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
+import TextField from '@mui/material/TextField';
 
 import MainButton from '../../shared/components/MainButton';
 import { validateInputMail } from '../../shared/utils/validators';
@@ -25,6 +25,8 @@ const AddFriendPopout = ({
   sendFriendRequest = () => {},
 }) => {
   const [mail, setMail] = useState('');
+  // TODO: 之後存進DB並且渲染
+  const [invitationMessage, setInvitationMessage] = useState('');
   const [isMailValid, setIsMailValid] = useState('');
 
   const handleInvitationSent = () => {
@@ -37,14 +39,13 @@ const AddFriendPopout = ({
   };
 
   const handleClosePopout = () => {
-    // 關掉popout並且setMail
     closePopout();
     setMail('');
+    setInvitationMessage('');
   };
 
   useEffect(() => {
-    // 檢查mail是否valid
-    // 必須先過util來的email validator
+    // 檢查mail是否valid才點亮按鈕
     setIsMailValid(validateInputMail(mail));
   }, [mail, setIsMailValid]);
 
@@ -56,15 +57,20 @@ const AddFriendPopout = ({
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <Typography>Please enter a mail to invite friend</Typography>
+            Please enter a mail to invite friend
           </DialogContentText>
           <InputField
-            fieldname="Mail"
             type="text"
             // {mail} from state
             value={mail}
             setValue={setMail}
             placeholder="Please enter a valid mail"
+          ></InputField>
+          <InputField
+            type="text"
+            value={invitationMessage}
+            setValue={setInvitationMessage}
+            placeholder="Your invitatoin message"
           ></InputField>
         </DialogContent>
         <DialogActions>

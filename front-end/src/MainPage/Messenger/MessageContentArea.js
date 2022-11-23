@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import MessageTextField from './MessageTextField';
+import MiddleBarInputArea from './MiddleBarInputArea';
 import ChatBubblesCombined from './ChatBubblesCombined';
 import Messenger from './Messenger';
 import { getDirectMessageHistroy } from '../../chat/socketConnectionClient';
@@ -39,6 +40,7 @@ export const MessageContentArea = ({ chosenChatDetails }) => {
       <MessageAreaContainer>
         <Messenger />
       </MessageAreaContainer>
+      {/* <MiddleBarInputArea /> */}
       <MessageTextField />
     </MessageContentAreaMainContainer>
   );

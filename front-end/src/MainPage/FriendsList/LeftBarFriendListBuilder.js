@@ -44,7 +44,7 @@ import { connect } from 'react-redux';
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
-        padding: ${theme.spacing(2.5)};
+        padding: ${theme.spacing(0.5)};
   `
 );
 
@@ -69,37 +69,33 @@ export const LeftBarFriendListBuilder = ({
   };
 
   return (
-    <RootWrapper>
-      {/* ListItemWrapper後面可以+屬性"SELECTED"變成選取狀態 */}
-      <List button={true}>
-        <Box mt={2}>
-          <ListItemWrapper>
-            <ListItemAvatar>
-              <Avatar src="/static/images/avatars/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              onClick={openConversation}
-              sx={{
-                mr: 1,
-              }}
-              primaryTypographyProps={{
-                color: 'textPrimary',
-                variant: 'h5',
-                noWrap: true,
-              }}
-              secondaryTypographyProps={{
-                color: 'textSecondary',
-                noWrap: true,
-              }}
-              primary={username}
-              // TODO: demo這邊可以用成假文字
-              secondary={id}
-            />
-            {isOnline ? <OnlineIndicator /> : <OfflineIndicator />}
-          </ListItemWrapper>
-        </Box>
-      </List>
-    </RootWrapper>
+    // 使List變成可以按的Button
+    <List button={true} disablePadding component="div">
+      <ListItemWrapper>
+        <ListItemAvatar>
+          <Avatar src="/static/images/avatars/1.jpg" alt={username} />
+        </ListItemAvatar>
+        <ListItemText
+          onClick={openConversation}
+          sx={{
+            mr: 1,
+          }}
+          primaryTypographyProps={{
+            color: 'textPrimary',
+            variant: 'h5',
+            noWrap: true,
+          }}
+          secondaryTypographyProps={{
+            color: 'textSecondary',
+            noWrap: true,
+          }}
+          primary={username}
+          // TODO: demo這邊可以用成假文字
+          secondary={id}
+        />
+        {isOnline ? <OnlineIndicator /> : <OfflineIndicator />}
+      </ListItemWrapper>
+    </List>
   );
 };
 

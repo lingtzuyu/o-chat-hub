@@ -45,44 +45,44 @@ export const LeftBarProfileIcon = () => {
   const user = { name: userMail, mail: userMail };
 
   return (
-    <RootWrapper>
-      <Box display="flex" alignItems="flex-start">
-        <Avatar alt={user.name} src={ProfilePhoto} />
+    // <RootWrapper>
+    <Box display="flex" alignItems="flex-start">
+      <Avatar alt={user.name} src={ProfilePhoto} />
+      <Box
+        sx={{
+          ml: 1.5,
+          flex: 1,
+        }}
+      >
         <Box
-          sx={{
-            ml: 1.5,
-            flex: 1,
-          }}
+          display="flex"
+          alignItems="flex-start"
+          justifyContent="space-between"
         >
-          <Box
-            display="flex"
-            alignItems="flex-start"
-            justifyContent="space-between"
-          >
-            <Box>
-              <Typography variant="h5" noWrap>
-                {/* 使用者名稱 */}
-                {user.name}
-              </Typography>
-              <Typography variant="subtitle1" noWrap>
-                {/* 使用者信箱，之後也可以改成職位或是暱稱 */}
-                {user.mail}
-              </Typography>
-            </Box>
-
-            {/* TODO: 修改setting齒輪 */}
-            <IconButton
-              sx={{
-                p: 1,
-              }}
-              size="small"
-              color="primary"
-            >
-              <SettingsTwoToneIcon fontSize="small" />
-            </IconButton>
+          <Box>
+            <Typography variant="h5" noWrap>
+              {/* 使用者名稱 */}
+              {user.name}
+            </Typography>
+            <Typography variant="subtitle1" noWrap>
+              {/* 使用者信箱，之後也可以改成職位或是暱稱 */}
+              {user.mail}
+            </Typography>
           </Box>
+
+          {/* TODO: 修改setting齒輪 */}
+          <IconButton
+            sx={{
+              p: 1,
+            }}
+            size="small"
+            color="primary"
+          >
+            <SettingsTwoToneIcon fontSize="small" />
+          </IconButton>
         </Box>
       </Box>
-    </RootWrapper>
+    </Box>
+    // </RootWrapper>
   );
 };

@@ -8,28 +8,32 @@ import {
   Navigate,
 } from 'react-router-dom';
 import './App.css';
+import ThemeProvider from './theme/ThemeProvider';
 
 import LoginPage from './authPages/LoginPage/LoginPage';
 import SignupPage from './authPages/SignupPage/SignupPage';
 import MainPage from './MainPage/MainPage';
-
+import TestPage from './testPages/TestPage';
 
 // 有點像是API的route
 function App() {
   return (
-    <>
+    <ThemeProvider>
       <Router>
         {/* switch 在 v6中被Routes取代的，以下皆是v6的寫法: https://reactrouter.com/en/v6.3.0/upgrading/v5#remove-redirects-inside-switch */}
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/homepage" element={<MainPage />} />
+
+          <Route path="/test" element={<TestPage />} />
+
           {/* Navigate is like Redirect */}
           <Route path="*" element={<Navigate to="/homepage" replace />} />
         </Routes>
       </Router>
       {/* <AlertMessage /> */}
-    </>
+    </ThemeProvider>
   );
 }
 

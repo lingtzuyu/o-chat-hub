@@ -41,11 +41,11 @@ import { connect } from 'react-redux';
 const FriedListWrapper = styled('div')({
   overflow: 'auto',
   flexGrow: 1,
-  width: '100%',
+  width: '90%',
 });
 
 const MainContainer = styled('div')({
-  width: '60%',
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -65,21 +65,21 @@ const checkOnline = (friends = [], onlineUsers = []) => {
 const LeftBarFriendList = ({ friends, onlineUsers }) => {
   console.log('UserList', friends);
   return (
-    <MainContainer>
-      <FriedListWrapper>
-        {checkOnline(friends, onlineUsers).map((ele, index) => (
-          <LeftBarFriendListBuilder
-            // FriendDataItems會製造擺放這些key, username, id的元素
-            index={index}
-            key={ele.id}
-            username={ele.username}
-            id={ele.id}
-            // 如果mail跟socket廣播onlineUsers資料中任何一個相符合的話，就代表online
-            isOnline={ele.isOnline}
-          />
-        ))}
-      </FriedListWrapper>
-    </MainContainer>
+    // <MainContainer>
+    <FriedListWrapper>
+      {checkOnline(friends, onlineUsers).map((ele, index) => (
+        <LeftBarFriendListBuilder
+          // FriendDataItems會製造擺放這些key, username, id的元素
+          index={index}
+          key={ele.id}
+          username={ele.username}
+          id={ele.id}
+          // 如果mail跟socket廣播onlineUsers資料中任何一個相符合的話，就代表online
+          isOnline={ele.isOnline}
+        />
+      ))}
+    </FriedListWrapper>
+    // </MainContainer>
   );
 };
 

@@ -19,6 +19,7 @@ export const AddFriendIcon = () => {
       <IconButton
         style={{
           color: '#47B5FF',
+          marginTop: '10px',
         }}
         onClick={handleOpenPopout}
       >
