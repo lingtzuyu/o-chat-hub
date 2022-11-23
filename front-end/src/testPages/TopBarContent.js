@@ -37,6 +37,9 @@ import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone';
 import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 
+import TransferMessageButton from './component/TransferMessageButton';
+import SaveMessageButton from './component/SaveMessageButton';
+
 import { connect } from 'react-redux';
 
 const RootWrapper = styled(Box)(
@@ -119,11 +122,12 @@ function TopBarContent({ name }) {
           }}
         >
           {/* TODO: 轉換成可動作按鈕 */}
-          <Tooltip placement="bottom" title={'Start saving Message'}>
+          {/* <Tooltip placement="bottom" title={'Start saving Message'}>
             <IconButton color="primary">
               <SaveAltIcon />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
+          <SaveMessageButton />
           <Tooltip placement="bottom" title={'Transfer selected messages'}>
             <IconButton color="primary">
               <InputIcon />

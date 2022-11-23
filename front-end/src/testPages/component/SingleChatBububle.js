@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
-import { Box, Avatar, Typography, Card, styled, Divider } from '@mui/material';
-import Checkbox from '@mui/joy/Checkbox';
+import {
+  Box,
+  Avatar,
+  Typography,
+  Card,
+  styled,
+  Divider,
+  Checkbox,
+} from '@mui/material';
+
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+
 import {
   formatDistance,
   format,
@@ -70,6 +81,9 @@ const MessageRight = ({
   const photoURL = FakeProfilePic;
   const displayName = username ? username : 'no username';
 
+  // console.log('來自於我sameTime', sameTime);
+  // console.log('來自於我date', date);
+  // console.log('來自於我fromMe', fromMe);
   // checkbox是否被select到
   const [selected, setSelected] = useState(false);
 
@@ -132,24 +146,24 @@ const MessageRight = ({
     <Box
       display="flex"
       alignItems="flex-start"
-      justifyContent="flex-start"
+      justifyContent="flex-end"
       py={3}
     >
-      <Avatar
-        variant="rounded"
-        sx={{
-          width: 50,
-          height: 50,
-        }}
-        alt={displayName}
-        src={photoURL}
+      <Checkbox
+        // 用message save是否按下來控制visibility
+
+        sx={{ marginRight: '20px', visibility: isSelectMessageBoxDisabled }}
+        checked={selected}
+        onChange={handleSelected}
+        icon={<BookmarkBorderIcon />}
+        checkedIcon={<BookmarkIcon />}
       />
       <Box
         display="flex"
-        alignItems="flex-start"
+        alignItems="flex-end"
         flexDirection="column"
-        justifyContent="flex-start"
-        ml={2}
+        justifyContent="flex-end"
+        mr={2}
       >
         <CardWrapperPrimary>{message}</CardWrapperPrimary>
         <Typography
@@ -168,11 +182,20 @@ const MessageRight = ({
           />
           {/* TODO: 研究怎麼顯示 */}
           {/* {formatDistance(subHours(new Date(), 115), new Date(), {
-            addSuffix: true,
-          })} */}
+          addSuffix: true,
+        })} */}
           {timestamp}
         </Typography>
       </Box>
+      <Avatar
+        variant="rounded"
+        sx={{
+          width: 50,
+          height: 50,
+        }}
+        alt={displayName}
+        src={TempProfilePic}
+      />
     </Box>
   );
 };
@@ -257,6 +280,15 @@ const MessageLeft = ({
       justifyContent="flex-start"
       py={3}
     >
+      <Checkbox
+        // 用message save是否按下來控制visibility
+
+        sx={{ marginRight: '20px', visibility: isSelectMessageBoxDisabled }}
+        checked={selected}
+        onChange={handleSelected}
+        icon={<BookmarkBorderIcon />}
+        checkedIcon={<BookmarkIcon />}
+      />
       <Avatar
         variant="rounded"
         sx={{

@@ -12,6 +12,7 @@ export const cardActions = {
   SET_EXPORTING_CARD: 'CARDS.SET_EXPORTING_CARD',
   EXPORT_TO_NOTION: 'CARDS.EXPORT_TO_NOTION',
   SET_EXPORTED_CARD: 'CARDS.SET_EXPORTED_CARD',
+  SET_SAVEMESSAGE_BUTTON_DISABLED: 'CARDS.SET_SAVEMESSAGE_BUTTON_DISABLED',
 };
 
 export const getActions = (dispatch) => {
@@ -42,8 +43,17 @@ export const getActions = (dispatch) => {
     exportToNotion: (data) => {
       dispatch(exportToNotion(data));
     },
+    setSaveMessageButtonDisabled: (data) => {
+      dispatch(setSaveMessageButtonDisabled(data));
+    },
   };
 };
+
+// saveMessageButton的顯示
+export const setSaveMessageButtonDisabled = (data) => ({
+  type: cardActions.SET_SAVEMESSAGE_BUTTON_DISABLED,
+  isSavedButtonDisabled: data,
+});
 
 // 傳送至notion
 export const exportToNotion = (data) => {

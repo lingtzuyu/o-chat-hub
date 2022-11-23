@@ -110,7 +110,11 @@ function BottomBarContent({ chosenChatDetails }) {
             </IconButton>
           </label>
         </Tooltip> */}
-        <Button startIcon={<SendTwoToneIcon />} variant="contained">
+        <Button
+          startIcon={<SendTwoToneIcon />}
+          variant="contained"
+          onClick={sendMessages}
+        >
           {'Send'}
         </Button>
       </Box>

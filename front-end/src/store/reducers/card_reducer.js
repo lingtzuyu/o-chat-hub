@@ -7,7 +7,7 @@ import { cardActions } from '../actions/card_actions';
 // 初始值為array，透過array儲存多筆
 const initState = {
   // default 是 disabled
-  isSelectMessageBoxDisabled: true,
+  isSelectMessageBoxDisabled: 'hidden',
   // fefault 是 全plain => 出現換成"outlined"
   isSelectedMessageBoxShown: 'plain',
   cardCategories: [],
@@ -17,6 +17,7 @@ const initState = {
   cards: [],
   cardsToBeExporting: [],
   exportedCards: [],
+  isSavedButtonDisabled: false,
 };
 
 const reducer = (state = initState, action) => {
@@ -54,6 +55,8 @@ const reducer = (state = initState, action) => {
         ...state,
         cardsToBeExporting: action.cardsToBeExporting,
       };
+    case cardActions.SET_SAVEMESSAGE_BUTTON_DISABLED:
+      return { ...state, isSavedButtonDisabled: action.isSavedButtonDisabled };
 
     default:
       return state;

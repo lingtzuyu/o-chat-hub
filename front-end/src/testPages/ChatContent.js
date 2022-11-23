@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Box, Avatar, Typography, Card, styled, Divider } from '@mui/material';
 import { connect } from 'react-redux';
 
@@ -63,6 +63,14 @@ function ChatContent({
     });
   }, [chosenChatDetails]);
 
+  const messageToEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messageToEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(scrollToBottom, [messages]);
+
   return (
     <Box p={3}>
       {messages.map((message, index) => {
@@ -83,6 +91,7 @@ function ChatContent({
           />
         );
       })}
+      <div ref={messageToEndRef} />
     </Box>
   );
 }
