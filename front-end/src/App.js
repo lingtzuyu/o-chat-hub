@@ -14,6 +14,7 @@ import LoginPage from './authPages/LoginPage/LoginPage';
 import SignupPage from './authPages/SignupPage/SignupPage';
 import MainPage from './MainPage/MainPage';
 import TestPage from './testPages/TestPage';
+import CardPage from './testPages/CardPage/CardPage';
 
 // 有點像是API的route
 function App() {
@@ -27,6 +28,8 @@ function App() {
           <Route path="/homepage" element={<MainPage />} />
 
           <Route path="/test" element={<TestPage />} />
+
+          <Route path="/card" element={<CardPage />} />
 
           {/* Navigate is like Redirect */}
           <Route path="*" element={<Navigate to="/homepage" replace />} />

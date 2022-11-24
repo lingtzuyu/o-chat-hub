@@ -14,11 +14,13 @@ function TransferMessageButton({
   setSaveMessageButtonDisabled,
   setTransferButtonDisabled,
   isTransferButtonDisabled,
+  chosenChatDetails,
 }) {
   // 彈窗後的轉換訊息到卡片的動作
   const [isPopoutOpen, setIsPopoutOpen] = useState(false);
 
   const handleTransferMessage = () => {
+    console.log('chosenChatDetails', chosenChatDetails.name);
     // 1. 彈出視窗
     setIsPopoutOpen(true);
     // 2. 取得分類訊息並儲存在store中
@@ -46,6 +48,7 @@ function TransferMessageButton({
       </Tooltip>
 
       <TransferPopOutTable
+        chosenChatDetails={chosenChatDetails}
         showSelectMessageBox={showSelectMessageBox}
         isPopoutOpen={isPopoutOpen}
         closePopout={handleClosePopout}
@@ -64,8 +67,8 @@ function TransferMessageButton({
   );
 }
 
-const mapStoreStateToPropse = ({ card }) => {
-  return { ...card };
+const mapStoreStateToPropse = ({ card, chat }) => {
+  return { ...card, ...chat };
 };
 
 const mapActionsToProps = (dispatch) => {

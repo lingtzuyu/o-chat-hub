@@ -10,6 +10,8 @@ const noteSchema = new Schema({
   NoteTime: Date, // contorller那生成unix間
   Author: String, // TODO:userID
   FROM: String,
+  FromId: Number,
+  FromMail: String,
   Tags: [],
   Title: String,
   Category: String,

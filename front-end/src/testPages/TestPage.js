@@ -221,9 +221,9 @@ function ApplicationsMessenger({ setUserDetails, chosenChatDetails }) {
                 <CardList />
               </Scrollbar>
             </Box>
-            <Divider />
+            {/* <Divider /> */}
             {/* 改成轉換按鈕 */}
-            <BottomBarContent />
+            {/* <BottomBarContent /> */}
           </CardWindow>
         </WorkSpaceWrapper>
       </RootWrapper>

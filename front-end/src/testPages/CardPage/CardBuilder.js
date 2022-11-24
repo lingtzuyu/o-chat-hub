@@ -13,8 +13,9 @@ import {
   useTheme,
   styled,
   Checkbox,
+  IconButton,
 } from '@mui/material';
-
+import Label from '../../shared/components/Lable';
 import Text from '../../shared/components/Text';
 
 import AutoAwesomeMosaicTwoToneIcon from '@mui/icons-material/AutoAwesomeMosaicTwoTone';
@@ -32,6 +33,8 @@ import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
@@ -69,27 +72,32 @@ const CardBuilderWork = ({
     console.log(selectedCardInfo);
   };
   return (
-    <>
+    <Box sx={{ backgroundColor: '#EAF6F6' }}>
       <ListItem
         sx={{
           alignItems: 'flex-start',
           p: 2,
         }}
       >
-        <Checkbox {...label} size="small" />
-        <ListItemAvatar
-          sx={{
-            mr: 2,
-            display: 'flex',
-            alignItems: 'center',
-            minWidth: 0,
-          }}
-        >
-          <WorkIcon />
-        </ListItemAvatar>
+        {/* <Checkbox {...label} size="small" /> */}
+        <Box alignSelf="center" display="flex" flexDirection="column">
+          <ListItemAvatar
+            sx={{
+              mr: 2,
+              display: 'flex',
+              alignItems: 'center',
+              minWidth: 0,
+              marginRight: '60px',
+            }}
+          >
+            <WorkIcon />
+          </ListItemAvatar>
+        </Box>
+
         {/* 與誰的訊息 */}
+
         <ListItemText
-          primary={<Typography variant="h4">{title}</Typography>}
+          primary={<Typography variant="h4"> {title}</Typography>}
           secondary={
             <div
               dangerouslySetInnerHTML={{
@@ -98,20 +106,49 @@ const CardBuilderWork = ({
             />
           }
         />
-        <Box alignSelf="center">
+
+        <Box alignSelf="center" display="flex">
           <Checkbox
             {...label}
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
+            style={{ color: '#223354' }}
           />
-          <Typography variant="h4">
-            {/* 裡面包含幾條訊息 */}
-            <Text color="success">{messageRecords.length}</Text>
-          </Typography>
+          <IconButton>
+            <DeleteOutlineIcon
+              style={{
+                color: '#223354',
+              }}
+            />
+          </IconButton>
+          <IconButton>
+            <Box
+              mt={0.5}
+              marginTop="7px"
+              marginLeft="3px"
+              marginBottom={'10px'}
+            >
+              <Label color="secondary">
+                <b>{messageRecords.length}</b>
+              </Label>
+            </Box>
+          </IconButton>
         </Box>
+        {/* <Box
+          alignSelf="center"
+          marginLeft="30px"
+          display="flex"
+          flexDirection="column"
+        >
+          <Box mt={0.5}>
+            <Label color="secondary">
+              <b>{messageRecords.length}</b>
+            </Label>
+          </Box>
+        </Box> */}
       </ListItem>
       <Divider />
-    </>
+    </Box>
   );
 };
 

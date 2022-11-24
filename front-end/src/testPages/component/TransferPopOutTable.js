@@ -72,10 +72,12 @@ function TransferPopOutTable({
   saveTransferredMessagesToMongo,
   setSaveMessageButtonDisabled,
   setTransferButtonDisabled,
+  chosenChatDetails,
 }) {
   const [cardTitle, setCardTitle] = useState('');
   const [cardNotes, setCardNotes] = useState('');
 
+  console.log(chosenChatDetails);
   // 帶著accessToken認證欲儲存的訊息
   const messagesCollectionInString = localStorage.getItem(
     'selectedMessagesCollection'
@@ -90,6 +92,8 @@ function TransferPopOutTable({
     category: category,
     messagesToBeSaved: messagesArray,
     token: accessToken,
+    From: chosenChatDetails?.name,
+    FromId: chosenChatDetails?.id,
   };
 
   // useEffect(() => {

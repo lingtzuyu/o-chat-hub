@@ -23,7 +23,9 @@ export const TransferMessagePopout = ({
   saveTransferredMessagesToMongo,
   setSaveMessageButtonDisabled,
   setTransferButtonDisabled,
+  chosenChatDetails,
 }) => {
+  console.log('不是按鈕內', chosenChatDetails.name);
   const [cardTitle, setCardTitle] = useState('write a good title');
   const [cardNotes, setCardNotes] = useState('write a good note');
   // 帶著accessToken認證欲儲存的訊息
@@ -80,6 +82,7 @@ export const TransferMessagePopout = ({
 
   const handleClosePopout = () => {
     // 清空localStorage，並且把核取方塊轉為hidden(不能選)
+
     localStorage.removeItem('selectedMessagesCollection');
     localStorage.removeItem('noteCategory');
     showSelectMessageBox(true, 'hidden');
@@ -140,8 +143,8 @@ export const TransferMessagePopout = ({
   );
 };
 
-const mapStoreStateToPropse = ({ card }) => {
-  return { ...card };
+const mapStoreStateToPropse = ({ card, chat }) => {
+  return { ...card, ...chat };
 };
 
 const mapActionsToProps = (dispatch) => {
