@@ -45,6 +45,7 @@ const CardBuilderLife = ({
   noteTime,
   from,
   category,
+  title,
   notes,
   liked,
   transferred,
@@ -88,11 +89,13 @@ const CardBuilderLife = ({
         </ListItemAvatar>
         {/* 與誰的訊息 */}
         <ListItemText
-          primary={<Typography variant="h4">{from}</Typography>}
+          primary={<Typography variant="h4">{title}</Typography>}
           secondary={
-            <Typography noWrap variant="subtitle2">
-              {notes}
-            </Typography>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: notes,
+              }}
+            />
           }
         />
         <Box alignSelf="center">

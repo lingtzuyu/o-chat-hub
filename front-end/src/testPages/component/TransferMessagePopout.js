@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import { Box } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
@@ -24,6 +24,8 @@ export const TransferMessagePopout = ({
   setSaveMessageButtonDisabled,
   setTransferButtonDisabled,
 }) => {
+  const [cardTitle, setCardTitle] = useState('write a good title');
+  const [cardNotes, setCardNotes] = useState('write a good note');
   // 帶著accessToken認證欲儲存的訊息
   const messagesCollectionInString = localStorage.getItem(
     'selectedMessagesCollection'
@@ -33,20 +35,37 @@ export const TransferMessagePopout = ({
   const category = localStorage.getItem('noteCategory');
   // 即將存進mongoDB的json 5p4ux,4
 
-  //TODO:　新增標題
   const messagesToBeSent = {
     category: category,
     messagesToBeSaved: messagesArray,
     token: accessToken,
   };
 
-  const handleTransferAfterConfirm = () => {
+  // useEffect(() => {
+  //   messagesToBeSent['Title'] = cardTitle;
+
+  //   console.log('messagesToBeSent.Title', messagesToBeSent.Title);
+  // }, [cardTitle]);
+
+  // useEffect(() => {
+  //   messagesToBeSent['Notes'] = cardNotes;
+  //   console.log('test effect222', messagesToBeSent.Notes);
+  // }, [cardNotes]);
+
+  const handleTransferAfterConfirm = useCallback(() => {
     // console.log(category);
+
+    // 記住object re-render的雷
+    messagesToBeSent.Title = cardTitle;
+    messagesToBeSent.Notes = cardNotes;
+
+    // console.log('堂新民', messagesToBeSent);
     // TODO:
     // 1. 按下確認後，儲存至DB以及store
     // POST API (帶message ID即可)
     // store action and (帶整串，因為等等要用整串渲染右邊卡片區)
     saveTransferredMessagesToMongo(messagesToBeSent);
+    console.log(messagesToBeSent);
     // // 2. 將核取方塊狀態設回去
     setTransferButtonDisabled(true);
     setSaveMessageButtonDisabled(false);
@@ -55,8 +74,9 @@ export const TransferMessagePopout = ({
 
     // 清空localStorage
     setCardTitle('');
+    setCardNotes('');
     handleClosePopout();
-  };
+  }, [cardTitle, cardNotes]);
 
   const handleClosePopout = () => {
     // 清空localStorage，並且把核取方塊轉為hidden(不能選)
@@ -66,8 +86,6 @@ export const TransferMessagePopout = ({
     setCardTitle('');
     closePopout();
   };
-
-  const [cardTitle, setCardTitle] = useState('');
 
   return (
     <div>
@@ -87,15 +105,25 @@ export const TransferMessagePopout = ({
             <CategoryDropDown />
           </DialogContent>
           <DialogContent>
-            <DialogContentText>
+            {/* <DialogContentText>
               <Typography>Input Card Title</Typography>
-            </DialogContentText>
-            <InputField
-              type="text"
-              value={cardTitle}
-              setValue={setCardTitle}
-              placeholder="Card Title"
-            ></InputField>
+            </DialogContentText> */}
+            <>
+              <InputField
+                type="text"
+                value={cardTitle}
+                setValue={setCardTitle}
+                placeholder="Card Title"
+              ></InputField>
+            </>
+            <>
+              <InputField
+                type="text"
+                value={cardNotes}
+                setValue={setCardNotes}
+                placeholder="Notes"
+              ></InputField>
+            </>
           </DialogContent>
 
           <SelectedMessagesArea />

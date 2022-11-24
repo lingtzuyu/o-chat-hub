@@ -47,6 +47,7 @@ const CardBuilderKnowledge = ({
   category,
   notes,
   liked,
+  title,
   transferred,
   deleted,
   messageRecords,
@@ -88,11 +89,16 @@ const CardBuilderKnowledge = ({
         </ListItemAvatar>
         {/* 與誰的訊息 */}
         <ListItemText
-          primary={<Typography variant="h4">{from}</Typography>}
+          primary={<Typography variant="h4">{title}</Typography>}
           secondary={
-            <Typography noWrap variant="subtitle2">
-              {notes}
-            </Typography>
+            // <Typography noWrap variant="subtitle2">
+            //   {notes}
+            // </Typography>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: notes,
+              }}
+            />
           }
         />
         <Box alignSelf="center">

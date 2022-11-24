@@ -17,7 +17,7 @@ const fetchCardCategory = async (req, res) => {
 const saveMessagesToNote = async (req, res) => {
   // verifiedAuth內拿的
   const author = req.user.mail;
-  const { category, messagesToBeSaved } = req.body;
+  const { category, messagesToBeSaved, Title, Notes } = req.body;
   // console.log('訊息info', messagesToBeSaved);
 
   try {
@@ -26,8 +26,9 @@ const saveMessagesToNote = async (req, res) => {
       NoteTime: new Date(),
       Category: category, //
       Author: author, // mail，從auth來
+      Title,
       FROM: null,
-      Notes: null,
+      Notes,
       Liked: false,
       Transferred: false,
       DELETED: false,

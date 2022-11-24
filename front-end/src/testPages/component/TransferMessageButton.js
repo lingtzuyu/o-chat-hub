@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import InputIcon from '@mui/icons-material/Input';
 import TransferMessagePopout from './TransferMessagePopout';
+import TransferPopOutTable from './TransferPopOutTable';
+
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
 
@@ -43,14 +45,21 @@ function TransferMessageButton({
         </IconButton>
       </Tooltip>
 
-      <TransferMessagePopout
-        // 下一層關閉視窗的時候我要隱藏checkbox
+      <TransferPopOutTable
         showSelectMessageBox={showSelectMessageBox}
         isPopoutOpen={isPopoutOpen}
         closePopout={handleClosePopout}
         saveTransferredMessagesToMongo={saveTransferredMessagesToMongo}
         setSaveMessageButtonDisabled={setSaveMessageButtonDisabled}
       />
+      {/* <TransferMessagePopout
+        // 下一層關閉視窗的時候我要隱藏checkbox
+        showSelectMessageBox={showSelectMessageBox}
+        isPopoutOpen={isPopoutOpen}
+        closePopout={handleClosePopout}
+        saveTransferredMessagesToMongo={saveTransferredMessagesToMongo}
+        setSaveMessageButtonDisabled={setSaveMessageButtonDisabled}
+      /> */}
     </>
   );
 }

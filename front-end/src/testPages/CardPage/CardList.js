@@ -72,10 +72,11 @@ function CardList({ fetchCardHistory, cards }) {
           }}
         >
           {cards?.map((card) => {
-            if (card.Category === 'life') {
+            if (card.Category === 'work') {
               return (
                 <CardBuilder
                   key={card._id}
+                  title={card.Title}
                   noteTime={card.NoteTime}
                   from={card.FROM}
                   category={card.Category}
@@ -91,6 +92,7 @@ function CardList({ fetchCardHistory, cards }) {
               return (
                 <CardBuilderKnowledge
                   key={card._id}
+                  title={card.Title}
                   noteTime={card.NoteTime}
                   from={card.FROM}
                   category={card.Category}
@@ -106,6 +108,7 @@ function CardList({ fetchCardHistory, cards }) {
               return (
                 <CardBuilderLife
                   key={card._id}
+                  title={card.Title}
                   noteTime={card.NoteTime}
                   from={card.FROM}
                   category={card.Category}
