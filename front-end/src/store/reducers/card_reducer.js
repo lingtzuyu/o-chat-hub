@@ -19,6 +19,7 @@ const initState = {
   exportedCards: [],
   isSavedButtonDisabled: false,
   isTransferButtonDisabled: true,
+  isMessageViewOpen: false,
 };
 
 const reducer = (state = initState, action) => {
@@ -62,6 +63,11 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         isTransferButtonDisabled: action.isTransferButtonDisabled,
+      };
+    case cardActions.SET_MESSAGEVIEW_OPEN:
+      return {
+        ...state,
+        isMessageViewOpen: action.isMessageViewOpen,
       };
 
     default:

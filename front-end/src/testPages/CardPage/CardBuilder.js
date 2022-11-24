@@ -39,6 +39,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
 import Work from '@mui/icons-material/Work';
+import QuickMessageView from './QuickMessageView';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -55,9 +56,20 @@ const CardBuilderWork = ({
   deleted,
   messageRecords,
   selecteExportCards,
+  isMessageViewOpen,
+  setMessageView,
 }) => {
   const theme = useTheme();
 
+  const handleOpenMessageView = () => {
+    setMessageView(true);
+  };
+
+  const handleCloseMessageView = () => {
+    setMessageView(false);
+  };
+
+  // TODO: 之後notion正式點起來的時候使用
   const handleSelected = () => {
     const selectedCardInfo = {
       noteTime: noteTime,
@@ -71,6 +83,7 @@ const CardBuilderWork = ({
     selecteExportCards(selectedCardInfo);
     console.log(selectedCardInfo);
   };
+
   return (
     <Box sx={{ backgroundColor: '#EAF6F6' }}>
       <ListItem
@@ -121,7 +134,8 @@ const CardBuilderWork = ({
               }}
             />
           </IconButton>
-          <IconButton>
+          {/* 按了之後就打開紀錄的訊息 */}
+          <IconButton onClick={handleOpenMessageView}>
             <Box
               mt={0.5}
               marginTop="7px"
@@ -133,6 +147,8 @@ const CardBuilderWork = ({
               </Label>
             </Box>
           </IconButton>
+          {/* 拿messageRecords到下層渲染 */}
+          <QuickMessageView messageRecords={messageRecords} />
         </Box>
         {/* <Box
           alignSelf="center"
