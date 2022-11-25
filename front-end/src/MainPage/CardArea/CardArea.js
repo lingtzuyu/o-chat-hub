@@ -9,11 +9,15 @@ const CardAreaMainContainer = styled('div')({
   width: '90%',
   height: '80%',
   padding: '10px',
+  overflow: 'auto',
   display: 'flex',
   flexDirection: 'column',
   backgroundColor: 'grey',
   align: 'center',
-  overflow: 'auto',
+});
+
+const TestContainer = styled('div')({
+  height: '100%',
 });
 
 const CardArea = ({ fetchCardHistory, cards }) => {
@@ -24,24 +28,26 @@ const CardArea = ({ fetchCardHistory, cards }) => {
   }, []);
   return (
     <CardAreaMainContainer>
-      {cards?.map((card) => {
-        return (
-          <>
-            <NoteCard
-              key={card._id}
-              noteTime={card.NoteTime}
-              from={card.FROM}
-              category={card.Category}
-              notes={card.Notes}
-              liked={card.Liked}
-              transferred={card.Transferred}
-              deleted={card.DELETED}
-              // messageRecords到下層還要再展一次
-              messageRecords={card.MessageRecords}
-            />
-          </>
-        );
-      })}
+      <TestContainer>
+        {cards?.map((card) => {
+          return (
+            <>
+              <NoteCard
+                key={card._id}
+                noteTime={card.NoteTime}
+                from={card.FROM}
+                category={card.Category}
+                notes={card.Notes}
+                liked={card.Liked}
+                transferred={card.Transferred}
+                deleted={card.DELETED}
+                // messageRecords到下層還要再展一次
+                messageRecords={card.MessageRecords}
+              />
+            </>
+          );
+        })}
+      </TestContainer>
     </CardAreaMainContainer>
   );
 };

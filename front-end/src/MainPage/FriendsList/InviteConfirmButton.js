@@ -21,14 +21,14 @@ const InviteConfirmButton = ({
   return (
     <Box sx={{ display: 'flex' }}>
       <IconButton
-        style={{ color: 'grey' }}
+        style={{ color: '#5569ff' }}
         disabled={disabled}
         onClick={handleAcceptInivte}
       >
         <GiConfirmed />
       </IconButton>
       <IconButton
-        style={{ color: 'grey' }}
+        style={{ color: '#5569ff' }}
         disabled={disabled}
         onClick={handleRejectInivte}
       >

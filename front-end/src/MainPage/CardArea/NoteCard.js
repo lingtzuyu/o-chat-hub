@@ -66,7 +66,7 @@ const NoteCard = ({
   };
 
   return (
-    <Card sx={{ marginTop: '10px' }}>
+    <Card sx={{ marginTop: '10px', overflow: 'auto' }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">

@@ -12,6 +12,9 @@ export const cardActions = {
   SET_EXPORTING_CARD: 'CARDS.SET_EXPORTING_CARD',
   EXPORT_TO_NOTION: 'CARDS.EXPORT_TO_NOTION',
   SET_EXPORTED_CARD: 'CARDS.SET_EXPORTED_CARD',
+  SET_SAVEMESSAGE_BUTTON_DISABLED: 'CARDS.SET_SAVEMESSAGE_BUTTON_DISABLED',
+  SET_TRANSFER_BUTTON_DISABLED: 'CARDS.SET_TRANSFER_BUTTON_DISABLED',
+  SET_MESSAGEVIEW_OPEN: 'CARDS.SET_MESSAGEVIEW_OPEN',
 };
 
 export const getActions = (dispatch) => {
@@ -42,8 +45,35 @@ export const getActions = (dispatch) => {
     exportToNotion: (data) => {
       dispatch(exportToNotion(data));
     },
+    setSaveMessageButtonDisabled: (data) => {
+      dispatch(setSaveMessageButtonDisabled(data));
+    },
+    setTransferButtonDisabled: (data) => {
+      dispatch(setTransferButtonDisabled(data));
+    },
+    setMessageView: (data) => {
+      dispatch(setMessageView(data));
+    },
   };
 };
+
+// 關閉記錄訊息快速瀏覽 boolean
+export const setMessageView = (data) => ({
+  type: cardActions.SET_MESSAGEVIEW_OPEN,
+  isMessageViewOpen: data,
+});
+
+// transferMessageButton顯示
+export const setTransferButtonDisabled = (data) => ({
+  type: cardActions.SET_TRANSFER_BUTTON_DISABLED,
+  isTransferButtonDisabled: data,
+});
+
+// saveMessageButton的顯示
+export const setSaveMessageButtonDisabled = (data) => ({
+  type: cardActions.SET_SAVEMESSAGE_BUTTON_DISABLED,
+  isSavedButtonDisabled: data,
+});
 
 // 傳送至notion
 export const exportToNotion = (data) => {

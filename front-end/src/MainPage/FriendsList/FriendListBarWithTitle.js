@@ -5,31 +5,47 @@ import { connect } from 'react-redux';
 import { Typography } from '@mui/material';
 import FriendsListLabel from './FriendsListLabel';
 import { AddFriendIcon } from '../../MainPage/FriendsList/AddFriendIcon';
+import List from '@mui/joy/List';
+
+// MainContainer
+const MainContainer = styled('div')({
+  width: '60%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+});
 
 // Top Title
 const LeftFriendListTitleContainer = styled('div')({
   width: '96%',
-  height: '8%',
+  height: '20%',
   marginLeft: '20px',
   marginTop: '16px',
   display: 'flex',
-  justifyContent: 'space-around',
+  justifyContent: 'center',
 });
+
+const LeftFriendLabelSubContainer = styled('div')({
+  height: '100%',
+  display: 'flex',
+});
+
 // Friend List container
 const LeftFriendListContainer = styled('div')({
   width: '96%',
-  height: '52%',
+  height: '80%',
   alignItems: 'center',
   marginLeft: '36px',
   marginTop: '10px',
   // overflow: 'scroll',
 });
 
-// check online
+const LeftFriendListSubContainer = styled('div')({ height: '100%' });
+
+// check online by interating friends frist time
+// TODO: 改成小賴建議的資料型態 (socket那邊)
 const checkOnline = (friends = [], onlineUsers = []) => {
-  // iterate每個朋友檢查他是否online
   friends.forEach((friend) => {
-    // find找到就停止的特性效率上會比較好
     const isOnline = onlineUsers.find((ele) => ele.userMail === friend.mail);
     // 新增一個欄位 isOnline (1 online, 0 offline)
     friend.isOnline = isOnline ? 1 : 0;
@@ -42,28 +58,33 @@ const checkOnline = (friends = [], onlineUsers = []) => {
 const FriedListBarWithTitle = ({ friends, onlineUsers }) => {
   // console.log("UserList", friends);
   return (
-    <>
+    <MainContainer>
       <LeftFriendListTitleContainer>
-        <FriendsListLabel sx={{ alignItems: 'center' }} label="Friends" />
-        <AddFriendIcon />
+        <LeftFriendLabelSubContainer>
+          <FriendsListLabel sx={{ alignItems: 'center' }} label="Friends" />
+          <AddFriendIcon />
+        </LeftFriendLabelSubContainer>
       </LeftFriendListTitleContainer>
       <LeftFriendListContainer>
-        {/* 拆解出來渲染 */}
+        <LeftFriendListSubContainer>
+          {/* 拆解出來渲染 */}
 
-        {/* !!! forEach()方法不会返回执行结果，而是undefined。 forEach() 被调用时，不会改变原数组，也就是调用它的数组（尽管callback 函数在被调用时可能会改变原数组）。 map()方法会分配内存空间存储新数组并返回，map 不修改调用它的原数组本身（当然可以在callback 执行时改变原数组 !!!*/}
-        {/* 用chekOnline生出來的新friends取代原本直接拿backend來的friends資料 */}
-        {checkOnline(friends, onlineUsers).map((ele) => (
-          <FriendDataItems
-            // FriendDataItems會製造擺放這些key, username, id的元素
-            key={ele.id}
-            username={ele.username}
-            id={ele.id}
-            // 如果mail跟socket廣播onlineUsers資料中任何一個相符合的話，就代表online
-            isOnline={ele.isOnline}
-          />
-        ))}
+          {/* !!! forEach()方法不会返回执行结果，而是undefined。 forEach() 被调用时，不会改变原数组，也就是调用它的数组（尽管callback 函数在被调用时可能会改变原数组）。 map()方法会分配内存空间存储新数组并返回，map 不修改调用它的原数组本身（当然可以在callback 执行时改变原数组 !!!*/}
+          {/* 用chekOnline生出來的新friends取代原本直接拿backend來的friends資料 */}
+          {checkOnline(friends, onlineUsers).map((ele, index) => (
+            <FriendDataItems
+              // FriendDataItems會製造擺放這些key, username, id的元素
+              index={index}
+              key={ele.id}
+              username={ele.username}
+              id={ele.id}
+              // 如果mail跟socket廣播onlineUsers資料中任何一個相符合的話，就代表online
+              isOnline={ele.isOnline}
+            />
+          ))}
+        </LeftFriendListSubContainer>
       </LeftFriendListContainer>
-    </>
+    </MainContainer>
   );
 };
 

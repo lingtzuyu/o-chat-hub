@@ -1,5 +1,6 @@
 require('dotenv').config();
 const Card = require('../models/card_model');
+const Friend = require('../models/friend_model');
 
 // 返回categoryname資料庫的category array
 const fetchCardCategory = async (req, res) => {
@@ -17,17 +18,22 @@ const fetchCardCategory = async (req, res) => {
 const saveMessagesToNote = async (req, res) => {
   // verifiedAuth內拿的
   const author = req.user.mail;
-  const { category, messagesToBeSaved } = req.body;
+  const { category, messagesToBeSaved, Title, Notes, From, FromId } = req.body;
   // console.log('訊息info', messagesToBeSaved);
 
   try {
+    const { userInfo } = await Friend.checkUserInfoById(FromId);
+
     const newNote = await Card.NoteDataMongo.create({
       NoteId: null, // TODO: 之後改
       NoteTime: new Date(),
       Category: category, //
       Author: author, // mail，從auth來
-      FROM: null,
-      Notes: null,
+      Title,
+      FROM: From,
+      FromId,
+      FromMail: userInfo.mail,
+      Notes,
       Liked: false,
       Transferred: false,
       DELETED: false,

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-// 製造一個可以塞name進來的字串元件
 const FriendsListLabel = ({ label }) => {
   return (
     <Typography
