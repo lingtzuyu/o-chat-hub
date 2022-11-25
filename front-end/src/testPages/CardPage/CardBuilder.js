@@ -62,6 +62,7 @@ const CardBuilderWork = ({
   const theme = useTheme();
 
   const handleOpenMessageView = () => {
+    console.log(messageRecords);
     setMessageView(true);
   };
 
@@ -83,7 +84,7 @@ const CardBuilderWork = ({
     selecteExportCards(selectedCardInfo);
     console.log(selectedCardInfo);
   };
-
+  console.log('messageRecords', messageRecords);
   return (
     <Box sx={{ backgroundColor: '#EAF6F6' }}>
       <ListItem
@@ -135,20 +136,25 @@ const CardBuilderWork = ({
             />
           </IconButton>
           {/* 按了之後就打開紀錄的訊息 */}
-          <IconButton onClick={handleOpenMessageView}>
-            <Box
-              mt={0.5}
-              marginTop="7px"
-              marginLeft="3px"
-              marginBottom={'10px'}
+          <>
+            <IconButton
+              messageRecords={messageRecords}
+              onClick={handleOpenMessageView}
             >
-              <Label color="secondary">
-                <b>{messageRecords.length}</b>
-              </Label>
-            </Box>
-          </IconButton>
-          {/* 拿messageRecords到下層渲染 */}
-          <QuickMessageView messageRecords={messageRecords} />
+              <Box
+                mt={0.5}
+                marginTop="7px"
+                marginLeft="3px"
+                marginBottom={'10px'}
+              >
+                <Label color="secondary">
+                  <b>{messageRecords.length}</b>
+                </Label>
+              </Box>
+            </IconButton>
+            {/* 拿messageRecords到下層渲染 */}
+            <QuickMessageView messageRecords={messageRecords} />
+          </>
         </Box>
         {/* <Box
           alignSelf="center"

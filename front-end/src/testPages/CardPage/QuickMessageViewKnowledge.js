@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Box,
@@ -34,13 +34,11 @@ const ListWrapper = styled(List)(
   `
 );
 
-function QuickMessageView({
+function QuickMessageViewKnowledge({
   messageRecords,
   isMessageViewOpen,
   setMessageView,
 }) {
-  // console.log('最底層', messageRecords);
-
   const theme = useTheme();
 
   const handleCloseThisDialog = () => {
@@ -69,34 +67,30 @@ function QuickMessageView({
         >
           <Scrollbar>
             <ListWrapper disablePadding>
-              {messageRecords.map((ele) => {
-                return (
-                  <>
-                    <React.Fragment key={ele._id}>
-                      <Divider />
-                      <ListItem>
-                        <ListItemAvatar>
-                          {/* TODO: 目前沒有AVATAR */}
-                          <Avatar alt="User R" src={''} />
-                        </ListItemAvatar>
-                        <ListItemText
-                          // TODO: 改成吃username
-                          primary={<Text color="black">{ele.sender}</Text>}
-                          primaryTypographyProps={{
-                            variant: 'h5',
-                            // noWrap: true,
-                          }}
-                          secondary={ele.body}
-                          secondaryTypographyProps={{
-                            variant: 'subtitle2',
-                            // noWrap: true,
-                          }}
-                        />
-                      </ListItem>
-                    </React.Fragment>
-                  </>
-                );
-              })}
+              {messageRecords.map((ele) => (
+                <React.Fragment key={ele._id}>
+                  <Divider />
+                  <ListItem>
+                    <ListItemAvatar>
+                      {/* TODO: 目前沒有AVATAR */}
+                      <Avatar alt="User R" src={''} />
+                    </ListItemAvatar>
+                    <ListItemText
+                      // TODO: 改成吃username
+                      primary={<Text color="black">{ele.sender}</Text>}
+                      primaryTypographyProps={{
+                        variant: 'h5',
+                        // noWrap: true,
+                      }}
+                      secondary={ele.body}
+                      secondaryTypographyProps={{
+                        variant: 'subtitle2',
+                        // noWrap: true,
+                      }}
+                    />
+                  </ListItem>
+                </React.Fragment>
+              ))}
             </ListWrapper>
           </Scrollbar>
         </Box>
@@ -134,4 +128,4 @@ const mapActionsToProps = (dispatch) => {
 export default connect(
   mapStoreStateToProps,
   mapActionsToProps
-)(QuickMessageView);
+)(QuickMessageViewKnowledge);

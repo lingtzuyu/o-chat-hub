@@ -19,6 +19,8 @@ import {
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Text from '../../shared/components/Text';
 
+import QuickMessageViewKnowledge from './QuickMessageViewKnowledge';
+
 import AutoAwesomeMosaicTwoToneIcon from '@mui/icons-material/AutoAwesomeMosaicTwoTone';
 import CardTravelTwoToneIcon from '@mui/icons-material/CardTravelTwoTone';
 import ContactPhoneTwoToneIcon from '@mui/icons-material/ContactPhoneTwoTone';
@@ -29,7 +31,7 @@ import WorkIcon from '@mui/icons-material/Work';
 
 // stands for knowledge
 import SchoolIcon from '@mui/icons-material/School';
-
+import QuickMessageView from './QuickMessageView';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
@@ -54,9 +56,18 @@ const CardBuilderKnowledge = ({
   deleted,
   messageRecords,
   selecteExportCards,
+  isMessageViewOpen,
+  setMessageView,
 }) => {
   const theme = useTheme();
 
+  const handleOpenMessageView = () => {
+    setMessageView(true);
+  };
+
+  const handleCloseMessageView = () => {
+    setMessageView(false);
+  };
   const handleSelected = () => {
     const selectedCardInfo = {
       noteTime: noteTime,
@@ -120,7 +131,7 @@ const CardBuilderKnowledge = ({
               }}
             />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={handleOpenMessageView}>
             <Box
               mt={0.5}
               marginTop="7px"
@@ -132,6 +143,7 @@ const CardBuilderKnowledge = ({
               </Label>
             </Box>
           </IconButton>
+          <QuickMessageViewKnowledge messageRecords={messageRecords} />
         </Box>
         {/* <Box
           alignSelf="center"
