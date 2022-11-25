@@ -5,6 +5,7 @@ const {
   fetchCardCategory,
   saveMessagesToNote,
   fetchCardHistory,
+  deleteCardById,
 } = require('../controllers/card_controller');
 
 // 取得category資料
@@ -19,5 +20,10 @@ router
 router
   .route('/card/history')
   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory));
+
+// 刪除卡片資料
+router
+  .route('card/delete')
+  .post(wrapAsync(verifiedAuth), wrapAsync(deleteCardById));
 
 module.exports = router;

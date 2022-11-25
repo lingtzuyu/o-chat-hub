@@ -40,12 +40,14 @@ import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
 import Work from '@mui/icons-material/Work';
 import QuickMessageView from './QuickMessageView';
+import DeleteAlertMessage from './DeleteAlertMessage';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 // stands for life
 
 const CardBuilderWork = ({
+  cardId,
   noteTime,
   from,
   category,
@@ -58,12 +60,19 @@ const CardBuilderWork = ({
   selecteExportCards,
   isMessageViewOpen,
   setMessageView,
+  setDeleteAlert,
 }) => {
   const theme = useTheme();
 
   const handleOpenMessageView = () => {
     console.log(messageRecords);
     setMessageView(true);
+  };
+
+  const handleOpenDeleteAlert = () => {
+    // set true 打開  delete Alert
+    setDeleteAlert(true);
+    console.log('open delete alert');
   };
 
   const handleCloseMessageView = () => {
@@ -128,13 +137,15 @@ const CardBuilderWork = ({
             checkedIcon={<Favorite />}
             style={{ color: '#223354' }}
           />
-          <IconButton>
+          {/* 按了之後打開確認popout */}
+          <IconButton onClick={handleOpenDeleteAlert}>
             <DeleteOutlineIcon
               style={{
                 color: '#223354',
               }}
             />
           </IconButton>
+          <DeleteAlertMessage cardId={cardId} />
           {/* 按了之後就打開紀錄的訊息 */}
           <>
             <IconButton

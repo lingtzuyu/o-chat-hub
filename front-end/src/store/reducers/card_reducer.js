@@ -20,6 +20,7 @@ const initState = {
   isSavedButtonDisabled: false,
   isTransferButtonDisabled: true,
   isMessageViewOpen: false,
+  isDeleteAlertOpen: false,
 };
 
 const reducer = (state = initState, action) => {
@@ -68,6 +69,11 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         isMessageViewOpen: action.isMessageViewOpen,
+      };
+    case cardActions.SET_DELETE_ALERT_OPEN:
+      return {
+        ...state,
+        isDeleteAlertOpen: action.isDeleteAlertOpen,
       };
 
     default:

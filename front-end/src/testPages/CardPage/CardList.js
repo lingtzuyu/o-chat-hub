@@ -75,6 +75,7 @@ function CardList({ fetchCardHistory, cards }) {
             if (card.Category === 'work') {
               return (
                 <CardBuilder
+                  cardId={card._id}
                   key={card._id}
                   title={card.Title}
                   noteTime={card.NoteTime}

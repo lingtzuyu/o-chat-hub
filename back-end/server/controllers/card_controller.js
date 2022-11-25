@@ -2,6 +2,18 @@ require('dotenv').config();
 const Card = require('../models/card_model');
 const Friend = require('../models/friend_model');
 
+// delete card by its id
+const deleteCardById = async (req, res) => {
+  try {
+    const author = req.user.mail;
+    const { cardId } = req.body;
+    const result = await Card.deleteCardById(cardId, author);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ err: 'Internal Error' });
+  }
+};
+
 // 返回categoryname資料庫的category array
 const fetchCardCategory = async (req, res) => {
   try {
@@ -85,4 +97,5 @@ module.exports = {
   fetchCardCategory,
   saveMessagesToNote,
   fetchCardHistory,
+  deleteCardById,
 };

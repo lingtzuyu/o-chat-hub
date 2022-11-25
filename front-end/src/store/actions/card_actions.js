@@ -15,6 +15,7 @@ export const cardActions = {
   SET_SAVEMESSAGE_BUTTON_DISABLED: 'CARDS.SET_SAVEMESSAGE_BUTTON_DISABLED',
   SET_TRANSFER_BUTTON_DISABLED: 'CARDS.SET_TRANSFER_BUTTON_DISABLED',
   SET_MESSAGEVIEW_OPEN: 'CARDS.SET_MESSAGEVIEW_OPEN',
+  SET_DELETE_ALERT_OPEN: 'CARDS.SET_DELETE_ALERT_OPEN',
 };
 
 export const getActions = (dispatch) => {
@@ -54,8 +55,17 @@ export const getActions = (dispatch) => {
     setMessageView: (data) => {
       dispatch(setMessageView(data));
     },
+    setDeleteAlert: (data) => {
+      dispatch(setDeleteAlert(data));
+    },
   };
 };
+
+// 關閉確認刪除紀錄 boolean
+export const setDeleteAlert = (data) => ({
+  type: cardActions.SET_DELETE_ALERT_OPEN,
+  isDeleteAlertOpen: data,
+});
 
 // 關閉記錄訊息快速瀏覽 boolean
 export const setMessageView = (data) => ({

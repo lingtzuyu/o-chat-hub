@@ -42,9 +42,20 @@ const fetchCardHistoryByMail = async (userMail) => {
   return personalCardQuery;
 };
 
+// author確認 (前方token傳回來)才能刪除，不然報錯
+const deleteCardById = async (cardId, userMail) => {
+  const deleteCardQuery = await NoteDataMongo.deleteOne({
+    _id: cardId,
+    Author: userMail,
+  });
+  console.log('card deleted by CardId');
+  return deleteCardQuery;
+};
+
 module.exports = {
   fetchCardHistoryByMail,
   fetchCardCategory,
   NoteDataMongo,
+  deleteCardById,
 };
 // module.exports = mongoose.model('NoteDataMongo', noteSchema);
