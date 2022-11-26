@@ -9,19 +9,22 @@ const notion = new Client({
 const getDatabase = async () => {
   const response = await notion.databases.retrieve({
     //fetch from db later
-    database_id: '9a091268-eec3-4d12-af9b-e1dbffdec36b',
+    database_id: 'aa19bb73-6ecf-4f0c-9f33-097ef6f3ff15',
   });
   console.log('getDB by accessToken', response);
 };
 
-getDatabase();
+// getDatabase();
 
-const createTickets = (title, category, messages) => {
+const createTickets = (title, category, messages, notes) => {
   notion.pages.create({
     parent: {
-      database_id: '9a091268-eec3-4d12-af9b-e1dbffdec36b',
+      // 指定哪個db id要創建
+      type: 'database_id',
+      database_id: 'aa19bb73-6ecf-4f0c-9f33-097ef6f3ff15',
     },
     properties: {
+      // page的標題
       title: [
         {
           type: 'text',
@@ -50,7 +53,7 @@ const createTickets = (title, category, messages) => {
           },
         },
       ],
-      // Messages
+      // Messages，之後改成在block內
       nrgP: [
         {
           type: 'text',
@@ -59,6 +62,7 @@ const createTickets = (title, category, messages) => {
           },
         },
       ],
+      // notes，之後改成在block內
       '%7Dcjh': [
         {
           type: 'text',
@@ -67,9 +71,95 @@ const createTickets = (title, category, messages) => {
           },
         },
       ],
+      // due date，格式待確認
+      'z.OF': [
+        {
+          date: '2022-12-22',
+        },
+      ],
     },
+    children: [
+      {
+        object: 'block',
+        heading_1: {
+          rich_text: [
+            {
+              text: {
+                content: 'Messages',
+              },
+            },
+          ],
+        },
+      },
+      {
+        object: 'block',
+        paragraph: {
+          rich_text: [
+            {
+              text: {
+                content: messages,
+                link: { url: 'www.google.com' },
+              },
+            },
+          ],
+        },
+      },
+      {
+        object: 'block',
+        heading_1: {
+          rich_text: [
+            {
+              text: {
+                content: 'Notes',
+              },
+            },
+          ],
+        },
+      },
+      {
+        object: 'block',
+        paragraph: {
+          rich_text: [
+            {
+              text: {
+                content: notes,
+                link: { url: 'www.google.com' },
+              },
+            },
+          ],
+        },
+      },
+      {
+        object: 'block',
+        heading_1: {
+          rich_text: [
+            {
+              text: {
+                content: 'TO-DO List',
+              },
+            },
+          ],
+        },
+      },
+
+      // 這邊可以用server side來打包
+      {
+        object: 'block',
+        to_do: {
+          rich_text: [
+            {
+              text: {
+                content: 'test',
+              },
+            },
+          ],
+        },
+      },
+    ],
   });
 };
+
+createTickets('Test title', 'test category', 'test messages', 'test content');
 
 module.exports = { createTickets };
 

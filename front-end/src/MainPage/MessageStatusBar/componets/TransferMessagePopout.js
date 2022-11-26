@@ -68,7 +68,7 @@ export const TransferMessagePopout = ({
         onClose={handleClosePopout}
       >
         <DialogTitle>
-          <Typography>Transferring Messages</Typography>
+          <Typography>Transfer Messages</Typography>
         </DialogTitle>
         <DialogContent>
           <DialogContentText>

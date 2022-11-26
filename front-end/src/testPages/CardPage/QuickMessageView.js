@@ -35,7 +35,6 @@ const ListWrapper = styled(List)(
 );
 
 function QuickMessageView({
-  messageRecords,
   isMessageViewOpen,
   setMessageView,
   messagesInQuickView,
@@ -45,6 +44,7 @@ function QuickMessageView({
   const theme = useTheme();
 
   const handleCloseThisDialog = () => {
+    console.log('這有啥', messagesInQuickView);
     setMessageView(false);
   };
 
@@ -78,7 +78,7 @@ function QuickMessageView({
                       <ListItem>
                         <ListItemAvatar>
                           {/* TODO: 目前沒有AVATAR */}
-                          <Avatar alt="User R" src={''} />
+                          <Avatar alt="User" src={''} />
                         </ListItemAvatar>
                         <ListItemText
                           // TODO: 改成吃username
@@ -114,7 +114,7 @@ function QuickMessageView({
             size="small"
             onClick={handleCloseThisDialog}
           >
-            {'Close'}
+            {'CClose'}
           </Button>
         </Box>
       </Card>

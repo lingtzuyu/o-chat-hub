@@ -14,9 +14,11 @@ import {
   styled,
   Checkbox,
   IconButton,
+  Tooltip,
 } from '@mui/material';
 import Label from '../../shared/components/Lable';
 import Text from '../../shared/components/Text';
+import ExportIconList from './Component/ExportIconList';
 
 import AutoAwesomeMosaicTwoToneIcon from '@mui/icons-material/AutoAwesomeMosaicTwoTone';
 import CardTravelTwoToneIcon from '@mui/icons-material/CardTravelTwoTone';
@@ -149,7 +151,7 @@ const CardBuilderWork = ({
     selecteExportCards(selectedCardInfo);
     console.log(selectedCardInfo);
   };
-  console.log('messageRecords', messageRecords);
+
   return (
     <Box sx={{ backgroundColor: '#EAF6F6' }}>
       <ListItem
@@ -187,44 +189,61 @@ const CardBuilderWork = ({
         />
 
         <Box alignSelf="center" display="flex">
-          <Checkbox
-            {...label}
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite />}
-            checked={selected}
-            onChange={handleLiked}
-            style={{ color: '#223354' }}
-          />
-          {/* 按了之後打開確認popout */}
-          <IconButton onClick={handleOpenDeleteAlert}>
-            <DeleteOutlineIcon
-              style={{
-                color: '#223354',
-              }}
+          <Tooltip title="Like">
+            <Checkbox
+              {...label}
+              icon={<FavoriteBorder />}
+              checkedIcon={<Favorite />}
+              checked={selected}
+              onChange={handleLiked}
+              style={{ color: '#223354' }}
             />
-          </IconButton>
+          </Tooltip>
+          {/* 按了之後打開確認popout */}
+          <Tooltip title="Delete">
+            <IconButton onClick={handleOpenDeleteAlert}>
+              <DeleteOutlineIcon
+                style={{
+                  color: '#223354',
+                }}
+              />
+            </IconButton>
+          </Tooltip>
+
+          <Box alignSelf="center" display="flex">
+            <ExportIconList />
+          </Box>
           {/* <DeleteAlertMessage cardId={cardId} /> */}
           {/* 按了之後就打開紀錄的訊息 */}
           <>
-            <IconButton
-              messageRecords={messageRecords}
-              onClick={handleOpenMessageView}
-            >
-              <Box
-                mt={0.5}
-                marginTop="7px"
-                marginLeft="3px"
-                marginBottom={'10px'}
+            <Tooltip title="Messages">
+              <IconButton
+                // messageRecords={messageRecords}
+                onClick={handleOpenMessageView}
               >
-                <Label color="secondary">
-                  <b>{messageRecords.length}</b>
-                </Label>
-              </Box>
-            </IconButton>
+                <Box
+                  mt={0.5}
+                  marginTop="7px"
+                  marginLeft="3px"
+                  marginBottom={'10px'}
+                >
+                  <Label color="secondary">
+                    <b
+                      style={{
+                        color: '#223354',
+                      }}
+                    >
+                      {messageRecords.length}
+                    </b>
+                  </Label>
+                </Box>
+              </IconButton>
+            </Tooltip>
             {/* 拿messageRecords到下層渲染 */}
-            <QuickMessageView messageRecords={messageRecords} />
+            <QuickMessageView />
           </>
         </Box>
+
         {/* <Box
           alignSelf="center"
           marginLeft="30px"
