@@ -21,10 +21,16 @@ const initState = {
   isTransferButtonDisabled: true,
   isMessageViewOpen: false,
   isDeleteAlertOpen: false,
+  messagesInQuickView: [],
 };
 
 const reducer = (state = initState, action) => {
   switch (action.type) {
+    case cardActions.SET_MESSAGES_IN_QUICK_VIEW:
+      return {
+        ...state,
+        messagesInQuickView: action.messagesInQuickView,
+      };
     case cardActions.SHOW_SELECTE_MESSAGE_BOX:
       return {
         ...state,

@@ -26,9 +26,6 @@ import MainButton from './MainButton';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
 const EditorWrapper = styled(Box)(
   ({ theme }) => `
 
@@ -121,7 +118,7 @@ function TransferPopOutTable({
     // 1. 按下確認後，儲存至DB以及store
     // POST API (帶message ID即可)
     // store action and (帶整串，因為等等要用整串渲染右邊卡片區)
-    toast('Messages saved', { autoCloase: 3000 });
+
     saveTransferredMessagesToMongo(messagesToBeSent);
     console.log(messagesToBeSent);
     // // 2. 將核取方塊狀態設回去

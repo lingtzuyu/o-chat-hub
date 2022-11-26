@@ -38,6 +38,7 @@ function QuickMessageView({
   messageRecords,
   isMessageViewOpen,
   setMessageView,
+  messagesInQuickView,
 }) {
   // console.log('最底層', messageRecords);
 
@@ -69,7 +70,7 @@ function QuickMessageView({
         >
           <Scrollbar>
             <ListWrapper disablePadding>
-              {messageRecords.map((ele) => {
+              {messagesInQuickView.map((ele) => {
                 return (
                   <>
                     <React.Fragment key={ele._id}>

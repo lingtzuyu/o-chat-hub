@@ -16,6 +16,7 @@ export const cardActions = {
   SET_TRANSFER_BUTTON_DISABLED: 'CARDS.SET_TRANSFER_BUTTON_DISABLED',
   SET_MESSAGEVIEW_OPEN: 'CARDS.SET_MESSAGEVIEW_OPEN',
   SET_DELETE_ALERT_OPEN: 'CARDS.SET_DELETE_ALERT_OPEN',
+  SET_MESSAGES_IN_QUICK_VIEW: 'CARDS.SET_MESSAGES_IN_QUICK_VIEW',
 };
 
 export const getActions = (dispatch) => {
@@ -55,11 +56,21 @@ export const getActions = (dispatch) => {
     setMessageView: (data) => {
       dispatch(setMessageView(data));
     },
+    // TODO: 待刪除
     setDeleteAlert: (data) => {
       dispatch(setDeleteAlert(data));
     },
+    setMessagesArrayInQuickView: (data) => {
+      dispatch(setMessagesArrayInQuickView(data));
+    },
   };
 };
+
+// 設定state內的messages陣列
+export const setMessagesArrayInQuickView = (data) => ({
+  type: cardActions.SET_MESSAGES_IN_QUICK_VIEW,
+  messagesInQuickView: data,
+});
 
 // 關閉確認刪除紀錄 boolean
 export const setDeleteAlert = (data) => ({
@@ -119,13 +130,6 @@ export const fetchCardCategoryAction = () => {
     const categoriesArray = categories.data;
     // 儲存到全局狀態，之後其他頁面要修改狀態可以從這邊拿
     dispatch(setCardCategory(categoriesArray));
-  };
-};
-
-// 刪除卡片
-export const deleteSelectedCard = (data) => {
-  return async (dispatch) => {
-    const deletedCard = await api.deleteCard(data);
   };
 };
 

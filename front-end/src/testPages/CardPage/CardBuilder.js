@@ -25,7 +25,7 @@ import EvStationTwoToneIcon from '@mui/icons-material/EvStationTwoTone';
 import NightlifeIcon from '@mui/icons-material/Nightlife';
 // stands for work
 import WorkIcon from '@mui/icons-material/Work';
-
+import Swal from 'sweetalert2';
 // stands for knowledge
 import SchoolIcon from '@mui/icons-material/School';
 
@@ -44,6 +44,17 @@ import DeleteAlertMessage from './DeleteAlertMessage';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  // onOpen: (toast) => {
+  //   toast.addEventListener('mouseenter', Swal.stopTimer);
+  //   toast.addEventListener('mouseleave', Swal.resumeTimer);
+  // },
+});
+
 // TODO: 這邊變數名稱待改 CardBuilder
 
 const CardBuilderWork = ({
@@ -61,21 +72,43 @@ const CardBuilderWork = ({
   isMessageViewOpen,
   setMessageView,
   setDeleteAlert,
+  setMessagesArrayInQuickView,
 }) => {
   const accessToken = localStorage.getItem('accessToken');
   const handleCardInfo = { token: accessToken, cardId: cardId };
   const theme = useTheme();
-  const [selected, setSelected] = useState(false);
+  const [selected, setSelected] = useState(liked);
 
   const handleOpenMessageView = () => {
+    // 把值傳到state去做渲染
+    setMessagesArrayInQuickView(messageRecords);
     console.log(messageRecords);
     setMessageView(true);
   };
 
   const handleOpenDeleteAlert = () => {
     // set true 打開  delete Alert
-    setDeleteAlert(true);
-    console.log('open delete alert');
+    // setDeleteAlert(true);
+    // console.log('open delete alert');
+    const deletedCardInfo = { token: accessToken, cardId: cardId };
+    Swal.fire({
+      title: 'Are you sure?',
+      html: `<p>The following card will be deleted forever!<p><b>Title:</b> ${title}</p><p><b>Card Id:</b> ${cardId}</p>`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Delete',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const result = await api.deleteCard(deletedCardInfo);
+        Toast.fire({
+          icon: 'success',
+          title: `${result.data.message}`,
+        });
+        // Swal.fire(`${result.data.message}`);
+      }
+    });
   };
 
   const handleCloseMessageView = () => {
@@ -86,11 +119,18 @@ const CardBuilderWork = ({
   const handleLiked = async () => {
     if (selected === true) {
       setSelected(false);
+      Toast.fire({
+        icon: 'success',
+        title: 'Remove from liked！',
+      });
       await api.dislikeCard(handleCardInfo);
     }
     if (selected === false) {
       setSelected(true);
-      // 打出api到 /card/dislike
+      Toast.fire({
+        icon: 'success',
+        title: 'Add to liked！',
+      });
       await api.likeCard(handleCardInfo);
     }
   };
@@ -163,7 +203,7 @@ const CardBuilderWork = ({
               }}
             />
           </IconButton>
-          <DeleteAlertMessage cardId={cardId} />
+          {/* <DeleteAlertMessage cardId={cardId} /> */}
           {/* 按了之後就打開紀錄的訊息 */}
           <>
             <IconButton

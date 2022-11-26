@@ -15,9 +15,6 @@ import CategoryDropDown from './CategoryDropDown';
 import MainButton from './MainButton';
 import { SelectedMessagesArea } from './SelectedMessagesArea';
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
 
