@@ -6,9 +6,17 @@ const { verifiedAuth } = require('../controllers/auth_controller');
 const {
   getNotionToken,
   exportToNotion,
+  checkNotionToken,
 } = require('../controllers/notion_controller');
 
-router.route('/notion/export/card').post(wrapAsync(exportToNotion));
+// 1. mail 2.解token並拿id確認notion相關token 3. save
+router
+  .route('/notion/export')
+  .post(
+    wrapAsync(verifiedAuth),
+    wrapAsync(checkNotionToken),
+    wrapAsync(exportToNotion)
+  );
 
 router
   .route('/notion/:code')

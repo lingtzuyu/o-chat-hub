@@ -1,27 +1,35 @@
 require('dotenv').config();
 const { Client } = require('@notionhq/client');
 
+const {
+  NOTION_CATEGORY_ID,
+  NOTION_DUE_DATE_ID,
+  NOTION_STATUS_ID,
+  NOTION_FROM_ID,
+  NOTION_PRIORITY_ID,
+} = process.env;
+
 const notion = new Client({
   //fetch from db later
-  auth: 'secret_n6QCZEZ6kV0CLV9QtgUYtPHqYxpBqV3PZi30BzMPjfn',
+  auth: 'secret_2u7llUpX7woZ12iGcS6ZijfEzuvUUSu9Po1SDPvnoxl',
 });
 
 const getDatabase = async () => {
   const response = await notion.databases.retrieve({
     //fetch from db later
-    database_id: 'aa19bb73-6ecf-4f0c-9f33-097ef6f3ff15',
+    database_id: '27bc20b1-085d-423c-a494-b43985e10d60',
   });
   console.log('getDB by accessToken', response);
 };
 
 // getDatabase();
 
-const createTickets = (title, category, messages, notes) => {
+const createTickets = (title, messages, notes) => {
   notion.pages.create({
     parent: {
       // 指定哪個db id要創建
       type: 'database_id',
-      database_id: 'aa19bb73-6ecf-4f0c-9f33-097ef6f3ff15',
+      database_id: '27bc20b1-085d-423c-a494-b43985e10d60',
     },
     properties: {
       // page的標題
@@ -34,14 +42,7 @@ const createTickets = (title, category, messages, notes) => {
         },
       ],
       // category
-      '%7CX_j': [
-        {
-          type: 'text',
-          text: {
-            content: category,
-          },
-        },
-      ],
+      '%7CX_j': { name: 'Knowledge' },
       // status
       '3E6J': { name: 'Backlog' },
       // from (sender)
@@ -54,29 +55,33 @@ const createTickets = (title, category, messages, notes) => {
         },
       ],
       // Messages，之後改成在block內
-      nrgP: [
-        {
-          type: 'text',
-          text: {
-            content: messages,
-          },
-        },
-      ],
+      // nrgP: [
+      //   {
+      //     type: 'text',
+      //     text: {
+      //       content: messages,
+      //     },
+      //   },
+      // ],
       // notes，之後改成在block內
-      '%7Dcjh': [
-        {
-          type: 'text',
-          text: {
-            content: 'This is a test note',
-          },
-        },
-      ],
+      // '%7Dcjh': [
+      //   {
+      //     type: 'text',
+      //     text: {
+      //       content: 'This is a test note',
+      //     },
+      //   },
+      // ],
+
+      //優先 Low, Medium, High
+      "'Hr%40": { name: 'Low' },
+
       // due date，格式待確認
-      'z.OF': [
-        {
-          date: '2022-12-22',
-        },
-      ],
+      // 'z.OF': [
+      //   {
+      //     date: { start: null, end: '2022-12-22' },
+      //   },
+      // ],
     },
     children: [
       {
@@ -159,7 +164,7 @@ const createTickets = (title, category, messages, notes) => {
   });
 };
 
-createTickets('Test title', 'test category', 'test messages', 'test content');
+createTickets('Test title', 'test messages', 'test content');
 
 module.exports = { createTickets };
 

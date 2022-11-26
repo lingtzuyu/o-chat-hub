@@ -1,12 +1,19 @@
 require('dotenv').config();
 const axios = require('axios');
 const { sqlDB } = require('./mysqlconn');
+const { Client } = require('@notionhq/client');
+
+// notion token check，是否SQL內已經有accessToken
+const notionTokenCheck = async (userId) => {
+  const notionTokenCheckQuery = 'SELECT * FROM notionaccess WHERE user_id = ?';
+  const [result] = await sqlDB.query(notionTokenCheckQuery, [userId]);
+  return result;
+};
 
 // 存入針對某notion頁面(db)的accessToken以及關連到的頁面(db) id
 
 const saveNotionTokenAndPageId = async (code, userId) => {
   // 帶著code去加上webApp的驗證資料取得notion accessToken
-
   try {
     const response = await axios({
       method: 'POST',
@@ -54,4 +61,149 @@ const saveNotionTokenAndPageId = async (code, userId) => {
   }
 };
 
-module.exports = { saveNotionTokenAndPageId };
+// 存入notion資料
+const createPageInNotion = async (
+  notionAccessToken,
+  relatedNotionPageId,
+  title,
+  category,
+  status,
+  priority,
+  from,
+  messages,
+  notes,
+  todoArray
+) => {
+  // 建立notion連線
+  const notion = new Client({
+    //fetch from db later
+    auth: notionAccessToken,
+  });
+
+  const response = notion.pages.create({
+    parent: {
+      // 指定哪個db id要創建
+      type: 'database_id',
+      database_id: relatedNotionPageId,
+    },
+    properties: {
+      // page的標題
+      title: [
+        {
+          type: 'text',
+          text: {
+            content: title,
+          },
+        },
+      ],
+      // category
+      '%7CX_j': { name: category },
+      // status
+      '3E6J': { name: status },
+      // from (sender)
+      'VHx%7B': [
+        {
+          type: 'text',
+          text: {
+            content: from,
+          },
+        },
+      ],
+
+      // 優先 Low, Medium, High
+      "'Hr%40": { name: priority },
+
+      // due date，格式待確認
+      // 'z.OF': [
+      //   {
+      //     date: { start: null, end: '2022-12-22' },
+      //   },
+      // ],
+    },
+    children: [
+      {
+        object: 'block',
+        heading_1: {
+          rich_text: [
+            {
+              text: {
+                content: 'Messages',
+              },
+            },
+          ],
+        },
+      },
+      {
+        object: 'block',
+        paragraph: {
+          rich_text: [
+            {
+              text: {
+                content: messages,
+                link: { url: 'www.take-notes.chat' },
+              },
+            },
+          ],
+        },
+      },
+      {
+        object: 'block',
+        heading_1: {
+          rich_text: [
+            {
+              text: {
+                content: 'Notes',
+              },
+            },
+          ],
+        },
+      },
+      {
+        object: 'block',
+        paragraph: {
+          rich_text: [
+            {
+              text: {
+                content: notes,
+              },
+            },
+          ],
+        },
+      },
+      {
+        object: 'block',
+        heading_1: {
+          rich_text: [
+            {
+              text: {
+                content: 'TO-DO List',
+              },
+            },
+          ],
+        },
+      },
+
+      // 這邊可以用server side來打包
+      {
+        object: 'block',
+        to_do: {
+          rich_text: [
+            {
+              text: {
+                content: todoArray,
+              },
+            },
+          ],
+        },
+      },
+    ],
+  });
+  // 拿到該頁連結
+  return response;
+};
+
+module.exports = {
+  saveNotionTokenAndPageId,
+  notionTokenCheck,
+  createPageInNotion,
+};

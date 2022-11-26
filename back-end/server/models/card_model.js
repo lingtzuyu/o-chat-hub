@@ -25,6 +25,8 @@ const noteSchema = new Schema({
   Liked: Boolean,
   Transferred: Boolean,
   DELETED: Boolean,
+  ExportLink: String,
+  ExportTo: String,
 });
 
 const NoteDataMongo = mongoose.model('NoteDataMongo', noteSchema);
@@ -79,6 +81,19 @@ const deleteCardById = async (cardId, userMail) => {
   return deleteCardQuery;
 };
 
+// update notion link to mongoDB
+const updateLinkToNote = async (cardId, notionLink) => {
+  try {
+    const result = await NoteDataMongo.findByIdAndUpdate(cardId, {
+      ExportLink: notionLink,
+      ExportTo: 'notion',
+    });
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   fetchCardHistoryByMail,
   fetchCardCategory,
@@ -87,5 +102,6 @@ module.exports = {
   setLikeById,
   setDislikeById,
   checkCardExist,
+  updateLinkToNote,
 };
 // module.exports = mongoose.model('NoteDataMongo', noteSchema);
