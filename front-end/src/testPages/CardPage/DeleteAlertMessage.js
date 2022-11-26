@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Swal from 'sweetalert2';
 
 import {
   Box,
@@ -39,12 +40,12 @@ const accessToken = localStorage.getItem('accessToken');
 function DeleteAlertMessage({ isDeleteAlertOpen, setDeleteAlert, cardId }) {
   // console.log('最底層', messageRecords);
 
-  const deletedCardInfo = { accessToken: accessToken, cardId: cardId };
+  const deletedCardInfo = { token: accessToken, cardId: cardId };
 
   const theme = useTheme();
 
-  const handleConfirmDelete = () => {
-    api.deleteCard(deletedCardInfo);
+  const handleConfirmDelete = async () => {
+    await api.deleteCard(deletedCardInfo);
     setDeleteAlert(false);
   };
 

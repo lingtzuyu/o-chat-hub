@@ -35,7 +35,7 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-
+import * as api from '../../api';
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
 import Work from '@mui/icons-material/Work';
@@ -44,7 +44,7 @@ import DeleteAlertMessage from './DeleteAlertMessage';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-// stands for life
+// TODO: 這邊變數名稱待改 CardBuilder
 
 const CardBuilderWork = ({
   cardId,
@@ -62,7 +62,10 @@ const CardBuilderWork = ({
   setMessageView,
   setDeleteAlert,
 }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  const handleCardInfo = { token: accessToken, cardId: cardId };
   const theme = useTheme();
+  const [selected, setSelected] = useState(false);
 
   const handleOpenMessageView = () => {
     console.log(messageRecords);
@@ -77,6 +80,19 @@ const CardBuilderWork = ({
 
   const handleCloseMessageView = () => {
     setMessageView(false);
+  };
+
+  // Like以及unlike的onchange
+  const handleLiked = async () => {
+    if (selected === true) {
+      setSelected(false);
+      await api.dislikeCard(handleCardInfo);
+    }
+    if (selected === false) {
+      setSelected(true);
+      // 打出api到 /card/dislike
+      await api.likeCard(handleCardInfo);
+    }
   };
 
   // TODO: 之後notion正式點起來的時候使用
@@ -135,6 +151,8 @@ const CardBuilderWork = ({
             {...label}
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
+            checked={selected}
+            onChange={handleLiked}
             style={{ color: '#223354' }}
           />
           {/* 按了之後打開確認popout */}

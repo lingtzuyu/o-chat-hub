@@ -2,12 +2,55 @@ require('dotenv').config();
 const Card = require('../models/card_model');
 const Friend = require('../models/friend_model');
 
+// check card 存在，且author符合auth過後的mail，則可以做後續動作
+const checkCardExist = async (req, res, next) => {
+  try {
+    const author = req.user.mail;
+    const { cardId } = req.body;
+    const result = await Card.checkCardExist(cardId, author);
+    if (!result) {
+      return res.status(400).send({ message: 'Card not exist' });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ err: 'Interanl Error' });
+  }
+  return next();
+};
+
+// like
+const setLikeById = async (req, res) => {
+  try {
+    const { cardId } = req.body;
+    const result = await Card.setLikeById(cardId);
+    res.status(200).send({ message: 'Like card' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ err: 'Internal Error' });
+  }
+};
+
+// dislike
+const setDislikeById = async (req, res) => {
+  try {
+    const { cardId } = req.body;
+    const result = await Card.setDislikeById(cardId);
+    res.status(200).send({ message: 'Dislike card' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ err: 'Internal Error' });
+  }
+};
+
 // delete card by its id
 const deleteCardById = async (req, res) => {
   try {
     const author = req.user.mail;
+    console.log(author);
     const { cardId } = req.body;
+    console.log(cardId);
     const result = await Card.deleteCardById(cardId, author);
+    res.status(200).send({ message: 'Card deleted!' });
   } catch (err) {
     console.log(err);
     res.status(500).send({ err: 'Internal Error' });
@@ -98,4 +141,7 @@ module.exports = {
   saveMessagesToNote,
   fetchCardHistory,
   deleteCardById,
+  checkCardExist,
+  setLikeById,
+  setDislikeById,
 };

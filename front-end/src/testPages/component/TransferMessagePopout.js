@@ -1,3 +1,5 @@
+// 廢棄嚕，請用popout
+
 import React, { useEffect, useState, useCallback } from 'react';
 
 import { Box } from '@mui/material';
@@ -12,6 +14,9 @@ import InputField from '../../shared/components/InputField';
 import CategoryDropDown from './CategoryDropDown';
 import MainButton from './MainButton';
 import { SelectedMessagesArea } from './SelectedMessagesArea';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
@@ -67,7 +72,7 @@ export const TransferMessagePopout = ({
     // POST API (帶message ID即可)
     // store action and (帶整串，因為等等要用整串渲染右邊卡片區)
     saveTransferredMessagesToMongo(messagesToBeSent);
-    console.log(messagesToBeSent);
+
     // // 2. 將核取方塊狀態設回去
     setTransferButtonDisabled(true);
     setSaveMessageButtonDisabled(false);

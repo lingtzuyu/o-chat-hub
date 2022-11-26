@@ -122,6 +122,13 @@ export const fetchCardCategoryAction = () => {
   };
 };
 
+// 刪除卡片
+export const deleteSelectedCard = (data) => {
+  return async (dispatch) => {
+    const deletedCard = await api.deleteCard(data);
+  };
+};
+
 export const setCardCategory = (categoriesArray) => {
   return { type: cardActions.SET_CARD_CATEGORY, categories: categoriesArray };
 };
