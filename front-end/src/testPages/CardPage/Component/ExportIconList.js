@@ -22,6 +22,8 @@ import {
   useTheme,
 } from '@mui/material';
 import Text from '../../../shared/components/Text';
+import { getActions } from '../../../store/actions/card_actions';
+import { connect } from 'react-redux';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import Scrollbar from '../../../shared/components/Scrollbar';
@@ -31,6 +33,7 @@ import IosShareTwoToneIcon from '@mui/icons-material/IosShareTwoTone';
 
 import NotionIcon from '../../../shared/images/notion-icon.png';
 import TrelloIcon from '../../../shared/images/trello-icon.png';
+import ExportPopoutTable from './ExportPopoutTable';
 
 const AvatarGradient = styled(Avatar)(
   ({ theme }) => `
@@ -76,12 +79,33 @@ const IconButtonWrapper = styled(IconButton)(
 `
 );
 
-function ExportIconList() {
+function ExportIconList({
+  cardId,
+  noteTime,
+  from,
+  category,
+  title,
+  notes,
+  messageRecords,
+  setIsExportPopoutOpen,
+  isExportTableOpen,
+}) {
   const theme = useTheme();
 
   const ref = useRef(null);
   const [isOpen, setOpen] = useState(false);
+  const [isPopoutOpen, setIsPopoutOpen] = useState(false);
 
+  const handleExport = () => {
+    console.log('handle export button');
+    // 打開ExportPopout
+    setIsPopoutOpen(true);
+  };
+  const handleCloseExportPopout = () => {
+    setIsPopoutOpen(false);
+  };
+
+  // export那個按鈕的open以及close
   const handleOpen = () => {
     setOpen(true);
   };
@@ -95,11 +119,13 @@ function ExportIconList() {
       id: 1,
       name: 'Notion',
       avatar: NotionIcon,
+      connected: 1,
     },
     {
       id: 2,
       name: 'Trello',
       avatar: TrelloIcon,
+      connected: 0,
     },
   ];
 
@@ -120,7 +146,7 @@ function ExportIconList() {
             },
           }}
         >
-          <IosShareTwoToneIcon fontSize="small" />
+          <IosShareTwoToneIcon fontSize="medium" />
         </IconButtonWrapper>
       </Tooltip>
       <Popover
@@ -160,6 +186,7 @@ function ExportIconList() {
                       secondaryAction={
                         // TODO: 改成transferSwal彈出視窗
                         <Button
+                          onClick={handleExport}
                           size="small"
                           variant="text"
                           color="secondary"
@@ -229,7 +256,7 @@ function ExportIconList() {
                               }}
                               variant="body1"
                             >
-                              <Text color="success">{'Online'}</Text>
+                              <Text color="success">{'Connected'}</Text>
                             </Typography>
                           </Box>
                         }
@@ -260,8 +287,30 @@ function ExportIconList() {
           </Box> */}
         </Box>
       </Popover>
+      <ExportPopoutTable
+        isPopoutOpen={isPopoutOpen}
+        closePopout={handleCloseExportPopout}
+        cardId={cardId}
+        noteTime={noteTime}
+        from={from}
+        category={category}
+        title={title}
+        notes={notes}
+        messageRecords={messageRecords}
+        exportApp={items.name}
+      />
     </>
   );
 }
+const mapStoreStateToPropse = ({ card }) => {
+  return { ...card };
+};
 
-export default ExportIconList;
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(
+  mapStoreStateToPropse,
+  mapActionsToProps
+)(ExportIconList);

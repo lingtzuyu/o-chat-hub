@@ -14,15 +14,15 @@ const FieldName = styled('p')({
   color: 'white',
   textTransform: 'uppercase',
   fontWeight: '800',
-  fontSize: '20px',
+  fontSize: '16px',
 });
 
 const Input = styled('input')({
-  fontSize: '20px',
+  fontSize: '16px',
   flexGrow: 1,
-  height: '60px',
-  border: '1px solid black',
-  borderRadius: '5px',
+  height: '50px',
+  border: '1px solid #D3D3D3',
+  borderRadius: '8px',
   color: 'black',
   background: 'white',
   margin: 0,

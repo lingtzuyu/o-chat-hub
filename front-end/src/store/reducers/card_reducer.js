@@ -22,6 +22,7 @@ const initState = {
   isMessageViewOpen: false,
   isDeleteAlertOpen: false,
   messagesInQuickView: [],
+  isExportTableOpen: false,
 };
 
 const reducer = (state = initState, action) => {
@@ -80,6 +81,11 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         isDeleteAlertOpen: action.isDeleteAlertOpen,
+      };
+    case cardActions.SET_EXPORT_TABLE:
+      return {
+        ...state,
+        isExportTableOpen: action.isExportTableOpen,
       };
 
     default:

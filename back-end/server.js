@@ -29,6 +29,9 @@ const { mongo } = require('./server/models/mongodbcon');
 mongo();
 // TODO: mysql 為何不用
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // API routes
 app.use(`/api/${API_VERSION}`, [
   require('./server/routes/auth_Route'),
@@ -38,10 +41,15 @@ app.use(`/api/${API_VERSION}`, [
   require('./server/routes/notion_Route'),
 ]);
 
-server.listen(SERVER_PORT, () => {
-  // TODO: remove after production published
-  console.log(`Server is running on ${SERVER_PORT}`);
+app.use(function (err, req, res, next) {
+  console.log(err);
+  res.status(500).send('Internal Server Error');
 });
 
 // WS server 建立
 Socket.initialSocketServer(server);
+
+server.listen(SERVER_PORT, () => {
+  // TODO: remove after production published
+  console.log(`Server is running on ${SERVER_PORT}`);
+});

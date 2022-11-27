@@ -210,8 +210,17 @@ const CardBuilderWork = ({
             </IconButton>
           </Tooltip>
 
-          <Box alignSelf="center" display="flex">
-            <ExportIconList />
+          {/* export到第三方 */}
+          <Box marginTop="50px" marginLeft="8px">
+            <ExportIconList
+              cardId={cardId}
+              noteTime={noteTime}
+              from={from}
+              category={category}
+              title={title}
+              notes={notes}
+              messageRecords={messageRecords}
+            />
           </Box>
           {/* <DeleteAlertMessage cardId={cardId} /> */}
           {/* 按了之後就打開紀錄的訊息 */}

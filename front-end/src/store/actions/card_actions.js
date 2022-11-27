@@ -17,6 +17,7 @@ export const cardActions = {
   SET_MESSAGEVIEW_OPEN: 'CARDS.SET_MESSAGEVIEW_OPEN',
   SET_DELETE_ALERT_OPEN: 'CARDS.SET_DELETE_ALERT_OPEN',
   SET_MESSAGES_IN_QUICK_VIEW: 'CARDS.SET_MESSAGES_IN_QUICK_VIEW',
+  SET_EXPORT_TABLE: 'CARDS.SET_EXPORT_TABLE',
 };
 
 export const getActions = (dispatch) => {
@@ -63,8 +64,17 @@ export const getActions = (dispatch) => {
     setMessagesArrayInQuickView: (data) => {
       dispatch(setMessagesArrayInQuickView(data));
     },
+    setIsExportPopoutOpen: (data) => {
+      dispatch(setIsExportPopoutOpen(data));
+    },
   };
 };
+
+// export 相關的table是否open，接true false
+export const setIsExportPopoutOpen = (data) => ({
+  type: cardActions.SET_EXPORT_TABLE,
+  isExportTableOpen: data,
+});
 
 // 設定state內的messages陣列
 export const setMessagesArrayInQuickView = (data) => ({

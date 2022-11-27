@@ -114,7 +114,7 @@ function QuickMessageView({
             size="small"
             onClick={handleCloseThisDialog}
           >
-            {'CClose'}
+            {'Close'}
           </Button>
         </Box>
       </Card>
