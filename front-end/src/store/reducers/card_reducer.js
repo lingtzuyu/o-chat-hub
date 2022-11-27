@@ -23,6 +23,8 @@ const initState = {
   isDeleteAlertOpen: false,
   messagesInQuickView: [],
   isExportTableOpen: false,
+  notionStatus: null,
+  notionPriority: null,
 };
 
 const reducer = (state = initState, action) => {
@@ -86,6 +88,16 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         isExportTableOpen: action.isExportTableOpen,
+      };
+    case cardActions.SET_NOTOIN_STATUS:
+      return {
+        ...state,
+        notionStatus: action.notionStatus,
+      };
+    case cardActions.SET_NOTOIN_PRIORITY:
+      return {
+        ...state,
+        notionPriority: action.notionPriority,
       };
 
     default:

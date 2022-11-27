@@ -8,6 +8,15 @@ const apiClient = axios.create({
   timeout: 30000,
 });
 
+// export to Notion (正式)
+const exportToNotion = async (data) => {
+  try {
+    return await apiClient.post('/notion/export', data);
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
 // delete Card By Id, data帶著id過來
 const deleteCard = async (data) => {
   try {
@@ -160,4 +169,5 @@ export {
   deleteCard,
   likeCard,
   dislikeCard,
+  exportToNotion,
 };

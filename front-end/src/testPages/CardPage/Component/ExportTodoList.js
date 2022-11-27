@@ -1,80 +1,141 @@
+import { Fragment } from 'react';
+
 import {
   Box,
+  ListItemAvatar,
+  ListItemText,
+  Divider,
+  List,
+  ListItem,
   Card,
   Typography,
   IconButton,
-  ListItemText,
-  ListItem,
-  Avatar,
-  List,
   Button,
-  ListItemAvatar,
-  Divider,
-  alpha,
+  Avatar,
   styled,
   useTheme,
 } from '@mui/material';
 
+import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
+
 import Scrollbar from '../../../shared/components/Scrollbar';
+import Text from '../../../shared/components/Text';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
-import AutoAwesomeMosaicTwoToneIcon from '@mui/icons-material/AutoAwesomeMosaicTwoTone';
-import ContactPhoneTwoToneIcon from '@mui/icons-material/ContactPhoneTwoTone';
-import EvStationTwoToneIcon from '@mui/icons-material/EvStationTwoTone';
-import KeyboardArrowRightTwoToneIcon from '@mui/icons-material/KeyboardArrowRightTwoTone';
-import OndemandVideoTwoToneIcon from '@mui/icons-material/OndemandVideoTwoTone';
 
-const IconButtonWrapper = styled(IconButton)(
+const CardActions = styled(Box)(
   ({ theme }) => `
-    border-radius: 100px;
-    width: ${theme.spacing(6)};
-    height: ${theme.spacing(6)};
+    position: absolute;
+    right: ${theme.spacing(1.5)};
+    top: ${theme.spacing(1.5)};
+    z-index: 7;
+  `
+);
 
-    .MuiSvgIcon-root {
-        transform-origin: center;
-        transform: scale(1);
-        transition: ${theme.transitions.create(['transform'])};
-    }
-
-    &:hover {
-        .MuiSvgIcon-root {
-            transform: scale(1.4);
-        }
+const ListWrapper = styled(List)(
+  () => `
+    .MuiDivider-root:first-of-type {
+        display: none;
     }
   `
 );
 
-const LabelWrapper = styled(Box)(
-  ({ theme }) => `
-    font-size: ${theme.typography.pxToRem(10)};
-    font-weight: bold;
-    text-transform: uppercase;
-    border-radius: ${theme.general.borderRadiusSm};
-    padding: ${theme.spacing(0.5, 1)};
-  `
-);
-
-function ExportTodo() {
+function ExportTodoList({ todoArray }) {
   const theme = useTheme();
 
+  const items = [
+    {
+      id: 1,
+      username: 'Shanelle Wynn',
+      jobtitle: 'UI Engineer, Apple Inc.',
+      avatar: '/static/images/avatars/1.jpg',
+    },
+    {
+      id: 2,
+      username: 'Akeem Griffith',
+      jobtitle: 'Manager, Google Inc.',
+      avatar: '/static/images/avatars/2.jpg',
+    },
+    {
+      id: 3,
+      username: 'Abigayle Hicks',
+      jobtitle: 'Project Manager, Spotify',
+      avatar: '/static/images/avatars/3.jpg',
+    },
+    {
+      id: 4,
+      username: 'Reece Corbett',
+      jobtitle: 'Senior Designer, Amazon Inc.',
+      avatar: '/static/images/avatars/4.jpg',
+    },
+    {
+      id: 5,
+      username: 'Zain Baptista',
+      jobtitle: 'Senior Accountant, Microsoft',
+      avatar: '/static/images/avatars/5.jpg',
+    },
+  ];
+
   return (
-    <Box>
-      <Typography
-        variant="caption"
-        fontWeight="bold"
+    <>
+      <Box
         sx={{
-          fontSize: `${theme.typography.pxToRem(12)}`,
+          height: 150,
+          width: 600,
         }}
       >
-        {/* 改成Export to Notion 根據上一層變動 */}
-        {'To do list'}
-      </Typography>
-      {/* 改成Title */}
-      <Box>
-        <Typography variant="h4">#{'Todo 1'}</Typography>
-        <Typography variant="subtitle2">{'TODO 2'}</Typography>
+        <Scrollbar>
+          <ListWrapper disablePadding>
+            {todoArray.map((item, index) => (
+              <Fragment key={index}>
+                <Divider />
+                <ListItem
+                  sx={{
+                    py: 2,
+                    px: 2.5,
+                  }}
+                >
+                  {/* <ListItemAvatar
+                    sx={{
+                      mr: 0,
+                    }}
+                  >
+                    <Avatar alt={index} src={index} />
+                  </ListItemAvatar> */}
+                  <ListItemText
+                    primary={<Text color="black">{item}</Text>}
+                    primaryTypographyProps={{
+                      variant: 'h5',
+                      noWrap: true,
+                    }}
+                    // secondary={item.jobtitle}
+                    // secondaryTypographyProps={{
+                    //   variant: 'subtitle2',
+                    //   noWrap: true,
+                    // }}
+                  />
+                  <Button
+                    variant="text"
+                    color="secondary"
+                    sx={{
+                      backgroundColor: `${theme.colors.secondary.lighter}`,
+                      '&:hover': {
+                        backgroundColor: `${theme.colors.secondary.main}`,
+                        color: `${theme.palette.getContrastText(
+                          theme.colors.secondary.main
+                        )}`,
+                      },
+                    }}
+                  >
+                    {'Remove'}
+                  </Button>
+                </ListItem>
+              </Fragment>
+            ))}
+          </ListWrapper>
+        </Scrollbar>
       </Box>
-    </Box>
+    </>
   );
 }
 
-export default ExportTodo;
+export default ExportTodoList;

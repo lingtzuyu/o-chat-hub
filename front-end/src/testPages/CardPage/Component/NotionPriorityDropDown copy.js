@@ -4,14 +4,18 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import { getActions } from '../../../store/actions/card_actions';
+import { connect } from 'react-redux';
+
 const notionPriority = ['Low', 'Medium', 'High'];
 
-const NotioinPriorityDropDown = () => {
+const NotioinPriorityDropDown = ({ setNotionPriority }) => {
   const [priority, setPriority] = useState('');
   const [open, setOpen] = React.useState(false);
 
   const handleChange = (event) => {
     setPriority(event.target.value);
+    setNotionPriority(event.target.value);
 
     // setSelectedCategoryForNote(event.target.value);
     // TODO: 妥協作法
@@ -58,4 +62,15 @@ const NotioinPriorityDropDown = () => {
   );
 };
 
-export default NotioinPriorityDropDown;
+const mapStoreStateToProps = ({ card }) => {
+  return { ...card };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(
+  mapStoreStateToProps,
+  mapActionsToProps
+)(NotioinPriorityDropDown);

@@ -70,8 +70,7 @@ const exportToNotion = async (req, res) => {
       priority,
       from,
       messages,
-      notes,
-      todoArray
+      notes
     );
 
     console.log('notion response', notionPageLink.url);
@@ -83,7 +82,9 @@ const exportToNotion = async (req, res) => {
     if (!result) {
       return res.status(400).send('Please check if the export format correct');
     }
-    res.status(200).send('Export to Notion successfully');
+    res
+      .status(200)
+      .json({ msg: 'Export to Notion successfully', link: result });
   } catch (err) {
     console.log(err);
     return res.status(500).send('Internal Error, please check connection');

@@ -23,9 +23,9 @@ import {
   Input,
   Tooltip,
 } from '@mui/material';
+import ExportTodoList from './ExportTodoList';
 import Scrollbar from '../../../shared/components/Scrollbar';
 import TempAvatar from '../../../shared/images/fake_avatar.png';
-import ExportTodo from './ExportTodoList';
 import InputField from '../../../shared/components/InputField';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
@@ -39,6 +39,8 @@ import { connect } from 'react-redux';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import NotionIcon from '../../../shared/images/notion-icon.png';
 import TrelloIcon from '../../../shared/images/trello-icon.png';
+import * as api from '../../../api';
+import Swal from 'sweetalert2';
 
 const AvatarGradient = styled(Avatar)(
   ({ theme }) => `
@@ -74,6 +76,16 @@ const ListWrapper = styled(List)(
       }
   `
 );
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  // onOpen: (toast) => {
+  //   toast.addEventListener('mouseenter', Swal.stopTimer);
+  //   toast.addEventListener('mouseleave', Swal.resumeTimer);
+  // },
+});
 
 function ExportPopoutTable({
   closePopout,
@@ -88,8 +100,40 @@ function ExportPopoutTable({
   notes,
   messageRecords,
   exportApp,
+  notionStatus,
+  notionPriority,
 }) {
   const theme = useTheme();
+  const accessToken = localStorage.getItem('accessToken');
+  const [todoArray, setTodoArray] = useState(['this', 'us', 'them']);
+  const [inputTodo, setInputTodo] = useState('');
+
+  const notionExportData = {
+    token: accessToken,
+    title: title,
+    category: category,
+    status: notionStatus,
+    priority: notionPriority,
+    from: from,
+    messages: JSON.stringify(messageRecords.toString()),
+    notes: notes,
+    cardId: cardId,
+  };
+
+  const exportToNotion = async () => {
+    const result = await api.exportToNotion(notionExportData);
+    console.log(result);
+    await Toast.fire({
+      icon: 'success',
+      title: `Export to Notion!`,
+    });
+    closePopout();
+  };
+
+  const inputTodoChange = (e) => {
+    setInputTodo(e.target.value);
+    console.log(e.target.value);
+  };
 
   const handleCancel = () => {
     setIsExportPopoutOpen(false);
@@ -187,25 +231,41 @@ function ExportPopoutTable({
             }}
           >
             <Box>
-              <Typography variant="h4">
-                Please choose status and priority
-              </Typography>
+              <Typography variant="h4">Notion Properties</Typography>
             </Box>
-            <Box display="flex">
+            <Box display="flex" alignItems={'center'}>
               <NotioinStatusDropDown />
               <NotioinPriorityDropDown />
+              {/* TODO: 之後再把todo list開起來 */}
+              {/* <Box
+                display="flex"
+                width="200px"
+                marginBottom="32px"
+                marginLeft="30px"
+              >
+                <InputField
+                  value={inputTodo}
+                  onChange={inputTodoChange}
+                  setValue={setInputTodo}
+                  placeholder="Add to-do"
+                ></InputField>
+                <IconButton sx={{ marginTop: '30px' }}>
+                  <AddCircleOutlineIcon></AddCircleOutlineIcon>
+                </IconButton>
+              </Box> */}
             </Box>
+
+            {/* <Box>
+              <ExportTodoList todoArray={todoArray}></ExportTodoList>
+            </Box> */}
           </Box>
           <Divider />
-
-          {/* 這個box刪除或是移到下方呈現check checkbox要打什麼 */}
-          {/* Status及priority的下拉選單 */}
 
           <Divider />
           <Box
             sx={{
               width: 600,
-              height: 250,
+              height: 200,
             }}
           >
             <Box
@@ -295,7 +355,7 @@ function ExportPopoutTable({
             }}
             p={2}
           >
-            <Box marginRight="10px">
+            {/* <Box marginRight="10px">
               <Button
                 size="small"
                 color="primary"
@@ -305,11 +365,12 @@ function ExportPopoutTable({
               >
                 {'Cancel'}
               </Button>
-            </Box>
-            <Box marginLeft="10px">
+            </Box> */}
+            <Box marginLeft="10px" marginTop="20px">
               <Button
                 size="small"
                 color="primary"
+                onClick={exportToNotion}
                 variant="contained"
                 endIcon={<ArrowForwardTwoToneIcon />}
               >

@@ -4,14 +4,18 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import { getActions } from '../../../store/actions/card_actions';
+import { connect } from 'react-redux';
+
 const notionStatus = ['Backlog', 'To Do', 'In Progress', 'Done'];
 
-const NotioinStatusDropDown = () => {
+const NotioinStatusDropDown = ({ setNotionStatus }) => {
   const [status, setStatus] = useState('');
   const [open, setOpen] = React.useState(false);
 
   const handleChange = (event) => {
     setStatus(event.target.value);
+    setNotionStatus(event.target.value);
 
     // setSelectedCategoryForNote(event.target.value);
     // TODO: 妥協作法
@@ -58,4 +62,15 @@ const NotioinStatusDropDown = () => {
   );
 };
 
-export default NotioinStatusDropDown;
+const mapStoreStateToProps = ({ card }) => {
+  return { ...card };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(
+  mapStoreStateToProps,
+  mapActionsToProps
+)(NotioinStatusDropDown);

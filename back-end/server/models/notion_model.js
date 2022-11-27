@@ -71,8 +71,7 @@ const createPageInNotion = async (
   priority,
   from,
   messages,
-  notes,
-  todoArray
+  notes
 ) => {
   // 建立notion連線
   const notion = new Client({
@@ -184,18 +183,18 @@ const createPageInNotion = async (
       },
 
       // 這邊可以用server side來打包
-      {
-        object: 'block',
-        to_do: {
-          rich_text: [
-            {
-              text: {
-                content: todoArray,
-              },
-            },
-          ],
-        },
-      },
+      // {
+      //   object: 'block',
+      //   to_do: {
+      //     rich_text: [
+      //       {
+      //         text: {
+      //           content: todoArray,
+      //         },
+      //       },
+      //     ],
+      //   },
+      // },
     ],
   });
   // 拿到該頁連結
