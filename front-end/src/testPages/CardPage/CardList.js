@@ -93,6 +93,7 @@ function CardList({ fetchCardHistory, cards }) {
             } else if (card.Category === 'knowledge') {
               return (
                 <CardBuilderKnowledge
+                  cardId={card._id}
                   key={card._id}
                   title={card.Title}
                   noteTime={card.NoteTime}
@@ -109,6 +110,7 @@ function CardList({ fetchCardHistory, cards }) {
             } else if (card.Category === 'life') {
               return (
                 <CardBuilderLife
+                  cardId={card._id}
                   key={card._id}
                   title={card.Title}
                   noteTime={card.NoteTime}

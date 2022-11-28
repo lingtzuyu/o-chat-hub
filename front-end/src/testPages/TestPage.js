@@ -7,6 +7,8 @@ import BottomBarContent from './BottomBarContent';
 import SidebarContent from './SideBarContent';
 import ChatContent from './ChatContent';
 import MessengerContent from './MessengerContent';
+import TopNavigationBar from './TopNavigationBar/TopNavigationBar';
+import PageTitleWrapper from './TopNavigationBar/PageTitleWrapper';
 
 import CardList from './CardPage/CardList';
 
@@ -141,6 +143,7 @@ function ApplicationsMessenger({ setUserDetails, chosenChatDetails }) {
       {/* <Helmet>
         <title>Messenger - Applications</title>
       </Helmet> */}
+      <PageTitleWrapper></PageTitleWrapper>
       <RootWrapper className="Mui-FixedWrapper">
         <DrawerWrapperMobile
           sx={{
@@ -155,6 +158,7 @@ function ApplicationsMessenger({ setUserDetails, chosenChatDetails }) {
             <SidebarContent />
           </Scrollbar>
         </DrawerWrapperMobile>
+
         <WorkSpaceWrapper>
           <Sidebar
             sx={{

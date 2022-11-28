@@ -123,15 +123,22 @@ function ExportPopoutTable({
 
   const exportToNotion = async () => {
     const result = await api.exportToNotion(notionExportData);
-    console.log(result);
-    if (result) {
+    console.log('這個是啥', result);
+    if (!result) {
       closePopout();
       handleCloseExportPopout();
       await Toast.fire({
-        icon: 'success',
-        title: `Export to Notion!`,
+        icon: 'warning',
+        title: `Please check notion connectoin`,
       });
     }
+
+    closePopout();
+    handleCloseExportPopout();
+    await Toast.fire({
+      icon: 'success',
+      title: `Export to Notion!`,
+    });
   };
 
   const inputTodoChange = (e) => {

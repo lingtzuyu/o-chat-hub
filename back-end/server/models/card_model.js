@@ -85,6 +85,7 @@ const deleteCardById = async (cardId, userMail) => {
 const updateLinkToNote = async (cardId, notionLink) => {
   try {
     const result = await NoteDataMongo.findByIdAndUpdate(cardId, {
+      Transferred: true,
       ExportLink: notionLink,
       ExportTo: 'notion',
     });
