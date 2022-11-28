@@ -5,7 +5,7 @@ import MainLogo from './Components/MainLogo';
 
 const PageTitle = styled(Box)(
   ({ theme }) => `
-        padding: ${theme.spacing(4)};
+        padding: ${theme.spacing(1)};
       
 `
 );

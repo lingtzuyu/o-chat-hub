@@ -1,3 +1,5 @@
+// 報廢
+
 import React from 'react';
 import MainButton from '../../shared/components/MainButton';
 import RedirectPopInfo from '../../shared/components/RedirectPopInfo';

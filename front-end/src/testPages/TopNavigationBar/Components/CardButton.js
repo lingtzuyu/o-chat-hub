@@ -108,7 +108,7 @@ function CardButton() {
       <Tooltip arrow title={'Notifications'}>
         <IconButtonPrimary color="primary" ref={ref} onClick={handleOpen}>
           <NotificationsBadge
-            badgeContent={2}
+            badgeContent={0}
             anchorOrigin={{
               vertical: 'top',
               horizontal: 'right',

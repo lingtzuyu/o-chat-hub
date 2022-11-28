@@ -15,6 +15,9 @@ import SignupPage from './authPages/SignupPage/SignupPage';
 import MainPage from './MainPage/MainPage';
 import TestPage from './testPages/TestPage';
 import CardPage from './testPages/CardPage/CardPage';
+import ProfilePage from './testPages/ProfilePage/ProfilePage';
+import TestElement from './testPages/TestElement';
+import SignInSIde from './authPages/LoginPage/SignInSIde';
 
 // 有點像是API的route
 function App() {
@@ -23,13 +26,15 @@ function App() {
       <Router>
         {/* switch 在 v6中被Routes取代的，以下皆是v6的寫法: https://reactrouter.com/en/v6.3.0/upgrading/v5#remove-redirects-inside-switch */}
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<SignInSIde />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/homepage" element={<TestPage />} />
 
           <Route path="/test" element={<MainPage />} />
 
           <Route path="/card" element={<CardPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/testpage" element={<TestElement />} />
 
           {/* Navigate is like Redirect */}
           <Route path="*" element={<Navigate to="/homepage" replace />} />

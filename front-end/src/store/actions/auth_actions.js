@@ -32,7 +32,8 @@ const login = (userDetails, forwardTo) => {
     if (response.error) {
       console.log(response?.exception?.response?.data);
       // show error message from API in alert, error是從login apis那邊的exception來的
-      dispatch(showAlert(response?.exception?.response?.data));
+      // dispatch(showAlert(response?.exception?.response?.data));
+      return response?.exception?.response?.data;
     } else {
       // TODO: 把API回來的資料存在local storage
       // if the return is null, userDetails會變成undefined
@@ -43,7 +44,9 @@ const login = (userDetails, forwardTo) => {
 
       // 改變store state (redux)
       dispatch(setUserDetails(userDetails));
-      forwardTo('/profile');
+
+      forwardTo('/homepage');
+      return response.status;
     }
   };
 };

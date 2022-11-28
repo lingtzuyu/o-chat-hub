@@ -1,3 +1,5 @@
+// 報廢
+
 import React from 'react';
 import { Typography } from '@mui/material';
 import logo from '../../shared/images/Logo2.png';

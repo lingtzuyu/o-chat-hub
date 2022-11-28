@@ -1,3 +1,5 @@
+// 報廢
+
 import React, { useState, useEffect } from 'react';
 import LoginArea from '../../shared/components/LoginArea';
 import LoginPageHeader from './LoginPageHeader';
