@@ -59,7 +59,7 @@ const WorkSpaceWrapper = styled(Box)(
 
 const ChatWindow = styled(Box)(
   () => `
-        width: 65%;
+        width: 64%;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -69,7 +69,7 @@ const ChatWindow = styled(Box)(
 
 const CardWindow = styled(Box)(
   () => `
-        width: 35%;
+        width: 36%;
         height: 100%;
         display: flex;
         flex-direction: column;

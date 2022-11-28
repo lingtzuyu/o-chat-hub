@@ -20,10 +20,20 @@ const initState = {
   isSavedButtonDisabled: false,
   isTransferButtonDisabled: true,
   isMessageViewOpen: false,
+  isDeleteAlertOpen: false,
+  messagesInQuickView: [],
+  isExportTableOpen: false,
+  notionStatus: null,
+  notionPriority: null,
 };
 
 const reducer = (state = initState, action) => {
   switch (action.type) {
+    case cardActions.SET_MESSAGES_IN_QUICK_VIEW:
+      return {
+        ...state,
+        messagesInQuickView: action.messagesInQuickView,
+      };
     case cardActions.SHOW_SELECTE_MESSAGE_BOX:
       return {
         ...state,
@@ -68,6 +78,26 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         isMessageViewOpen: action.isMessageViewOpen,
+      };
+    case cardActions.SET_DELETE_ALERT_OPEN:
+      return {
+        ...state,
+        isDeleteAlertOpen: action.isDeleteAlertOpen,
+      };
+    case cardActions.SET_EXPORT_TABLE:
+      return {
+        ...state,
+        isExportTableOpen: action.isExportTableOpen,
+      };
+    case cardActions.SET_NOTOIN_STATUS:
+      return {
+        ...state,
+        notionStatus: action.notionStatus,
+      };
+    case cardActions.SET_NOTOIN_PRIORITY:
+      return {
+        ...state,
+        notionPriority: action.notionPriority,
       };
 
     default:

@@ -25,6 +25,8 @@ const noteSchema = new Schema({
   Liked: Boolean,
   Transferred: Boolean,
   DELETED: Boolean,
+  ExportLink: String,
+  ExportTo: String,
 });
 
 const NoteDataMongo = mongoose.model('NoteDataMongo', noteSchema);
@@ -42,9 +44,64 @@ const fetchCardHistoryByMail = async (userMail) => {
   return personalCardQuery;
 };
 
+// check if card exist
+const checkCardExist = async (cardId, userMail) => {
+  const result = await NoteDataMongo.findOne({
+    _id: cardId,
+    Author: userMail,
+  });
+  return result;
+};
+
+// set like
+const setLikeById = async (cardId) => {
+  const likeCard = await NoteDataMongo.findByIdAndUpdate(cardId, {
+    Liked: true,
+  });
+  console.log('card liked');
+  return likeCard;
+};
+// set dislike
+const setDislikeById = async (cardId) => {
+  const dislikeCard = await NoteDataMongo.findByIdAndUpdate(cardId, {
+    Liked: false,
+  });
+  console.log('dislike後', dislikeCard);
+  console.log('card disliked');
+  return dislikeCard;
+};
+
+// author確認 (前方token傳回來)才能刪除，不然報錯
+const deleteCardById = async (cardId, userMail) => {
+  const deleteCardQuery = await NoteDataMongo.deleteOne({
+    _id: cardId,
+    Author: userMail,
+  });
+  console.log('card deleted by CardId');
+  return deleteCardQuery;
+};
+
+// update notion link to mongoDB
+const updateLinkToNote = async (cardId, notionLink) => {
+  try {
+    const result = await NoteDataMongo.findByIdAndUpdate(cardId, {
+      ExportLink: notionLink,
+      ExportTo: 'notion',
+    });
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   fetchCardHistoryByMail,
   fetchCardCategory,
   NoteDataMongo,
+  deleteCardById,
+  setLikeById,
+  setDislikeById,
+  checkCardExist,
+  updateLinkToNote,
 };
 // module.exports = mongoose.model('NoteDataMongo', noteSchema);

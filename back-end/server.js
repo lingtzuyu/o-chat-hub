@@ -29,19 +29,27 @@ const { mongo } = require('./server/models/mongodbcon');
 mongo();
 // TODO: mysql 為何不用
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // API routes
 app.use(`/api/${API_VERSION}`, [
-  require('./server/routes/auth_Route'),
-  require('./server/routes/trello_Route'),
-  require('./server/routes/friend_Route'),
-  require('./server/routes/card_Route'),
-  require('./server/routes/notion_Route'),
+  require('./server/routes/auth_route'),
+  require('./server/routes/trello_route'),
+  require('./server/routes/friend_route'),
+  require('./server/routes/card_route'),
+  require('./server/routes/notion_route'),
 ]);
+
+app.use(function (err, req, res, next) {
+  console.log(err);
+  res.status(500).send('Internal Server Error');
+});
+
+// WS server 建立
+Socket.initialSocketServer(server);
 
 server.listen(SERVER_PORT, () => {
   // TODO: remove after production published
   console.log(`Server is running on ${SERVER_PORT}`);
 });
-
-// WS server 建立
-Socket.initialSocketServer(server);

@@ -38,6 +38,7 @@ function QuickMessageViewKnowledge({
   messageRecords,
   isMessageViewOpen,
   setMessageView,
+  messagesInQuickView,
 }) {
   const theme = useTheme();
 
@@ -67,7 +68,7 @@ function QuickMessageViewKnowledge({
         >
           <Scrollbar>
             <ListWrapper disablePadding>
-              {messageRecords.map((ele) => (
+              {messagesInQuickView.map((ele) => (
                 <React.Fragment key={ele._id}>
                   <Divider />
                   <ListItem>

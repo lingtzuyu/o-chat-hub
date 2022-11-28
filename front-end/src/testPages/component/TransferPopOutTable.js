@@ -77,7 +77,6 @@ function TransferPopOutTable({
   const [cardTitle, setCardTitle] = useState('');
   const [cardNotes, setCardNotes] = useState('');
 
-  console.log(chosenChatDetails);
   // 帶著accessToken認證欲儲存的訊息
   const messagesCollectionInString = localStorage.getItem(
     'selectedMessagesCollection'
@@ -119,6 +118,7 @@ function TransferPopOutTable({
     // 1. 按下確認後，儲存至DB以及store
     // POST API (帶message ID即可)
     // store action and (帶整串，因為等等要用整串渲染右邊卡片區)
+
     saveTransferredMessagesToMongo(messagesToBeSent);
     console.log(messagesToBeSent);
     // // 2. 將核取方塊狀態設回去

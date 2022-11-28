@@ -15,6 +15,11 @@ export const cardActions = {
   SET_SAVEMESSAGE_BUTTON_DISABLED: 'CARDS.SET_SAVEMESSAGE_BUTTON_DISABLED',
   SET_TRANSFER_BUTTON_DISABLED: 'CARDS.SET_TRANSFER_BUTTON_DISABLED',
   SET_MESSAGEVIEW_OPEN: 'CARDS.SET_MESSAGEVIEW_OPEN',
+  SET_DELETE_ALERT_OPEN: 'CARDS.SET_DELETE_ALERT_OPEN',
+  SET_MESSAGES_IN_QUICK_VIEW: 'CARDS.SET_MESSAGES_IN_QUICK_VIEW',
+  SET_EXPORT_TABLE: 'CARDS.SET_EXPORT_TABLE',
+  SET_NOTOIN_STATUS: 'CARDS.SET_NOTION_STATUS',
+  SET_NOTOIN_PRIORITY: 'CARDS.SET_NOTION_PRIORITY',
 };
 
 export const getActions = (dispatch) => {
@@ -54,8 +59,53 @@ export const getActions = (dispatch) => {
     setMessageView: (data) => {
       dispatch(setMessageView(data));
     },
+    // TODO: 待刪除
+    setDeleteAlert: (data) => {
+      dispatch(setDeleteAlert(data));
+    },
+    setMessagesArrayInQuickView: (data) => {
+      dispatch(setMessagesArrayInQuickView(data));
+    },
+    setIsExportPopoutOpen: (data) => {
+      dispatch(setIsExportPopoutOpen(data));
+    },
+    setNotionStatus: (data) => {
+      dispatch(setNotionStatus(data));
+    },
+    setNotionPriority: (data) => {
+      dispatch(setNotionPriority(data));
+    },
   };
 };
+
+// set Notion status
+export const setNotionStatus = (data) => ({
+  type: cardActions.SET_NOTOIN_STATUS,
+  notionStatus: data,
+});
+
+export const setNotionPriority = (data) => ({
+  type: cardActions.SET_NOTOIN_PRIORITY,
+  notionPriority: data,
+});
+
+// export 相關的table是否open，接true false
+export const setIsExportPopoutOpen = (data) => ({
+  type: cardActions.SET_EXPORT_TABLE,
+  isExportTableOpen: data,
+});
+
+// 設定state內的messages陣列
+export const setMessagesArrayInQuickView = (data) => ({
+  type: cardActions.SET_MESSAGES_IN_QUICK_VIEW,
+  messagesInQuickView: data,
+});
+
+// 關閉確認刪除紀錄 boolean
+export const setDeleteAlert = (data) => ({
+  type: cardActions.SET_DELETE_ALERT_OPEN,
+  isDeleteAlertOpen: data,
+});
 
 // 關閉記錄訊息快速瀏覽 boolean
 export const setMessageView = (data) => ({

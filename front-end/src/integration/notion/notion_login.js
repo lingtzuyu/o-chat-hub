@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 // The OAuth client ID from the integration page!
-const oauth_client_id = 'f4d9f3a8-e20f-43d2-9f5f-cf62e2baec60';
+const oauth_client_id = process.env.REACT_APP_NOTION_OAUTHID;
 const accessToken = localStorage.getItem('accessToken');
 
 // TODO: 限制只能一個帳號只有一個看板
@@ -16,6 +16,8 @@ function NotionLogin() {
     if (!code) return;
     // const response = getNotionToken(code);
     // console.log('前端的response data', response.data);
+
+    // 拿code打後端api儲存
     fetch(`${process.env.REACT_APP_API_URL}/notion/${code}`, {
       headers: {
         authorization: accessToken,
@@ -24,8 +26,6 @@ function NotionLogin() {
       setDbs(await res.json());
     });
   }, []);
-
-  console.log('前端畫面', dbs);
 
   return (
     <div>

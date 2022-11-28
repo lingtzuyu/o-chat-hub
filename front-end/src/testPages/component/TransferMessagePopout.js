@@ -1,3 +1,5 @@
+// 廢棄嚕，請用popout
+
 import React, { useEffect, useState, useCallback } from 'react';
 
 import { Box } from '@mui/material';
@@ -67,7 +69,7 @@ export const TransferMessagePopout = ({
     // POST API (帶message ID即可)
     // store action and (帶整串，因為等等要用整串渲染右邊卡片區)
     saveTransferredMessagesToMongo(messagesToBeSent);
-    console.log(messagesToBeSent);
+
     // // 2. 將核取方塊狀態設回去
     setTransferButtonDisabled(true);
     setSaveMessageButtonDisabled(false);

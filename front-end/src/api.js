@@ -8,6 +8,24 @@ const apiClient = axios.create({
   timeout: 30000,
 });
 
+// export to Notion (正式)
+const exportToNotion = async (data) => {
+  try {
+    return await apiClient.post('/notion/export', data);
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
+// delete Card By Id, data帶著id過來
+const deleteCard = async (data) => {
+  try {
+    return await apiClient.post('/card/remove', data);
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
 // export to notion route
 const exportToNotionAPI = async (data) => {
   try {
@@ -120,6 +138,23 @@ const getNotionToken = async (code) => {
   }
 };
 
+// like or dislike card
+const likeCard = async (data) => {
+  try {
+    return await apiClient.post('/card/like', data);
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
+const dislikeCard = async (data) => {
+  try {
+    return await apiClient.post('/card/dislike', data);
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
 export {
   login,
   signup,
@@ -131,4 +166,8 @@ export {
   getCardHistory,
   getNotionToken,
   exportToNotionAPI,
+  deleteCard,
+  likeCard,
+  dislikeCard,
+  exportToNotion,
 };
