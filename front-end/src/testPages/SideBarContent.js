@@ -31,7 +31,7 @@ import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
 import AlarmTwoToneIcon from '@mui/icons-material/AlarmTwoTone';
 import { Link as RouterLink } from 'react-router-dom';
 
-import TempProfilePic from '../shared/images/ProfilePhoto.jpg';
+import TempProfilePic from '../shared/images/kd.jpg';
 
 import LeftBarFriendListBuilder from '../MainPage/FriendsList/LeftBarFriendListBuilder';
 
