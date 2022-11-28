@@ -46,17 +46,8 @@ const checkNotionToken = async (req, res, next) => {
 };
 
 const exportToNotion = async (req, res) => {
-  const {
-    title,
-    category,
-    status,
-    priority,
-    from,
-    messages,
-    notes,
-    todoArray,
-    cardId,
-  } = req.body;
+  const { title, category, status, priority, from, messages, notes, cardId } =
+    req.body;
   const { notionAccessToken, relatedNotionPageId } = req.notion;
   console.log('下一個controller', relatedNotionPageId);
 

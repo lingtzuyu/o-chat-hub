@@ -73,6 +73,7 @@ function CardList({ fetchCardHistory, cards }) {
         >
           {cards.map((card) => {
             if (card.Category === 'work') {
+              console.log('card', card);
               return (
                 <CardBuilder
                   cardId={card._id}
