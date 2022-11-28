@@ -1,6 +1,5 @@
 require('dotenv').config();
 const router = require('express').Router();
-const axios = require('axios');
 const { wrapAsync } = require('../../util/util');
 const { verifiedAuth } = require('../controllers/auth_controller');
 const {
