@@ -35,10 +35,10 @@ app.use(express.urlencoded({ extended: true }));
 // API routes
 //讓我push吧上帝
 app.use(`/api/${API_VERSION}`, [
-  require('./server/routes/auth_route'),
-  require('./server/routes/friend_route'),
-  require('./server/routes/card_route'),
-  require('./server/routes/notion_route'),
+  require('./server/routes/auth_route copy'),
+  require('./server/routes/friend_route copy'),
+  require('./server/routes/card_route copy'),
+  require('./server/routes/notion_route copy'),
 ]);
 
 app.use(function (err, req, res, next) {
