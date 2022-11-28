@@ -57,7 +57,7 @@ const register = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(500).send('Error, please check input format');
+    res.status(400).send('Error, please check input format');
   }
 };
 
