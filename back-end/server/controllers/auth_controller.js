@@ -65,6 +65,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { mail, password } = req.body;
+    console.log('mail', mail);
 
     if (!mail || !password) {
       return res.status(400).send({
@@ -73,6 +74,7 @@ const login = async (req, res) => {
     }
 
     const result = await User.signIn(mail, password);
+    console.log(result);
     const loginReturnData = {
       accessToken: result.user.accesstoken,
       lastLogin: result.user.lastlogin,
@@ -82,6 +84,7 @@ const login = async (req, res) => {
     };
     return res.status(200).send(loginReturnData);
   } catch (err) {
+    console.log(err);
     res.status(500).send('Internal Error');
   }
 };
