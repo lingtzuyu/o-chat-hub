@@ -3,7 +3,7 @@ const router = require('express').Router();
 const validator = require('express-joi-validation').createValidator({});
 const { wrapAsync } = require('../../util/util');
 
-// TODO: 用來verify Token
+// TODO: 用來verify Token .
 const { verifiedAuth } = require('../controllers/auth_controller');
 const {
   invitationSchema,

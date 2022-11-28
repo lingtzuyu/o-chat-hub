@@ -10,7 +10,7 @@ const {
   verifiedAuth,
 } = require('../controllers/auth_controller');
 
-// register route
+// register route .
 router
   .route('/register')
   .post(validator.body(registerSchema), wrapAsync(register));
