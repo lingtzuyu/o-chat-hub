@@ -34,11 +34,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // API routes
 app.use(`/api/${API_VERSION}`, [
-  require('./server/routes/auth_Route'),
-  require('./server/routes/trello_Route'),
-  require('./server/routes/friend_Route'),
-  require('./server/routes/card_Route'),
-  require('./server/routes/notion_Route'),
+  require('./server/routes/auth_route'),
+  require('./server/routes/trello_route'),
+  require('./server/routes/friend_route'),
+  require('./server/routes/card_route'),
+  require('./server/routes/notion_route'),
 ]);
 
 app.use(function (err, req, res, next) {
