@@ -91,6 +91,7 @@ function ExportPopoutTable({
   closePopout,
   isPopoutOpen,
   setIsExportPopoutOpen,
+  handleCloseExportPopout,
   isExportTableOpen,
   cardId,
   noteTime,
@@ -123,11 +124,14 @@ function ExportPopoutTable({
   const exportToNotion = async () => {
     const result = await api.exportToNotion(notionExportData);
     console.log(result);
-    await Toast.fire({
-      icon: 'success',
-      title: `Export to Notion!`,
-    });
-    closePopout();
+    if (result) {
+      closePopout();
+      handleCloseExportPopout();
+      await Toast.fire({
+        icon: 'success',
+        title: `Export to Notion!`,
+      });
+    }
   };
 
   const inputTodoChange = (e) => {
@@ -145,7 +149,7 @@ function ExportPopoutTable({
 
   return (
     <Box p={3}>
-      <Dialog open={isPopoutOpen} onClose={handleClosePopout}>
+      <Dialog open={isPopoutOpen} onClose={handleCloseExportPopout}>
         <Card>
           <Box
             display="flex"

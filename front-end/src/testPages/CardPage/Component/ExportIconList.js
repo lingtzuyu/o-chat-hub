@@ -99,6 +99,7 @@ function ExportIconList({
   const handleExport = () => {
     console.log('handle export button');
     // 打開ExportPopout
+    handleClose();
     setIsPopoutOpen(true);
   };
   const handleCloseExportPopout = () => {
@@ -288,6 +289,7 @@ function ExportIconList({
         </Box>
       </Popover>
       <ExportPopoutTable
+        handleCloseExportPopout={handleCloseExportPopout}
         isPopoutOpen={isPopoutOpen}
         closePopout={handleCloseExportPopout}
         cardId={cardId}
