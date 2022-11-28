@@ -33,7 +33,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API routes
-//讓我push吧上帝
 app.use(`/api/${API_VERSION}`, [
   require('./server/routes/auth_route'),
   require('./server/routes/friend_route'),

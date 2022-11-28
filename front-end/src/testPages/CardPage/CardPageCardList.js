@@ -1,4 +1,3 @@
-// 用CardBuilder map卡片資料組成
 import React, { useEffect } from 'react';
 import {
   Box,
@@ -14,9 +13,9 @@ import {
   styled,
 } from '@mui/material';
 
-import CardBuilder from './CardBuilder';
-import CardBuilderKnowledge from './CardBuilderKnowledge';
-import CardBuilderLife from './CardBuilderLife';
+import CardBuilderSingleWork from './CardPageSingle/CardBuilderSingleWork';
+import CardBuilderSingleLife from './CardPageSingle/CardBuilderSingleLife';
+import CardBuilderSingleKnowledge from './CardPageSingle/CardBuilderSingleKnowledge';
 
 import Text from '../../shared/components/Text';
 
@@ -75,7 +74,7 @@ function CardList({ fetchCardHistory, cards }) {
             if (card.Category === 'work') {
               console.log('card', card);
               return (
-                <CardBuilder
+                <CardBuilderSingleWork
                   cardId={card._id}
                   key={card._id}
                   title={card.Title}
@@ -92,7 +91,7 @@ function CardList({ fetchCardHistory, cards }) {
               );
             } else if (card.Category === 'knowledge') {
               return (
-                <CardBuilderKnowledge
+                <CardBuilderSingleKnowledge
                   cardId={card._id}
                   key={card._id}
                   title={card.Title}
@@ -109,7 +108,7 @@ function CardList({ fetchCardHistory, cards }) {
               );
             } else if (card.Category === 'life') {
               return (
-                <CardBuilderLife
+                <CardBuilderSingleLife
                   cardId={card._id}
                   key={card._id}
                   title={card.Title}
