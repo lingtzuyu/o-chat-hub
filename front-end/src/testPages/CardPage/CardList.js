@@ -71,7 +71,7 @@ function CardList({ fetchCardHistory, cards }) {
             py: 0,
           }}
         >
-          {cards?.map((card) => {
+          {cards.map((card) => {
             if (card.Category === 'work') {
               return (
                 <CardBuilder
