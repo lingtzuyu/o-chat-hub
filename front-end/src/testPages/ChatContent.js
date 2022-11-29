@@ -66,7 +66,7 @@ function ChatContent({
   const messageToEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messageToEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    messageToEndRef.current.scrollIntoView({ behavior: 'auto' });
   };
 
   useEffect(scrollToBottom, [messages]);

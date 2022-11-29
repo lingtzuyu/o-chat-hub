@@ -129,7 +129,7 @@ const fetchCardHistory = async (req, res) => {
     const { mail } = req.user;
     const response = await Card.fetchCardHistoryByMail(mail);
     // console.log(response);
-    res.status(200).send(response);
+    return res.status(200).send(response);
   } catch (err) {
     console.log('controller', err);
     res.status(500).send({ err: 'Internal Error' });
