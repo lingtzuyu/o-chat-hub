@@ -157,6 +157,7 @@ const RegisterSide = ({ signup }) => {
                 required
                 fullWidth
                 id="email"
+                placeholder="Please provide a valid email address"
                 label="Email Address"
                 name="email"
                 // autoComplete="current-email"
@@ -173,28 +174,25 @@ const RegisterSide = ({ signup }) => {
                 name="username"
                 label="username"
                 id="username"
+                placeholder="Username shown in app, at least 3 characters"
                 // autoComplete="current-username"
                 value={username}
                 setValue={setUsername}
               />
-              <Tooltip
-                title="Your password must be at least 8 characters"
-                arrow
-                open={password?.length < 8 ? true : false}
-              >
-                <SignupInputField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  // autoComplete="current-password"
-                  value={password}
-                  setValue={setPassword}
-                />
-              </Tooltip>
+
+              <SignupInputField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                placeholder="Password, at least 8 characters"
+                // autoComplete="current-password"
+                value={password}
+                setValue={setPassword}
+              />
 
               <SignupButton
                 type="submit"

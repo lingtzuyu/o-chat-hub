@@ -12,7 +12,7 @@ const { TOKEN_SECRET } = process.env;
 // 1. 8~20位數的username以及password
 // 2. mail foprmat
 const registerSchema = Joi.object({
-  username: Joi.string().min(8).max(20).required(),
+  username: Joi.string().min(3).max(20).required(),
   password: Joi.string().min(8).max(20).required(),
   mail: Joi.string().email().required(),
 });

@@ -14,7 +14,7 @@ import ThemeProvider from './theme/ThemeProvider';
 import SignupPage from './authPages/SignupPage/SignupPage';
 import MainPage from './MainPage/MainPage';
 import TestPage from './testPages/TestPage';
-import CardPage from './testPages/CardPage/CardPage';
+import CardPage from './testPages/CardPage/CardPageSingle/CardPage';
 import ProfilePage from './testPages/ProfilePage/ProfilePage';
 import TestElement from './testPages/TestElement';
 import SignInSIde from './authPages/LoginPage/SignInSIde';

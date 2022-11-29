@@ -2,7 +2,8 @@ import React from 'react';
 import TextField from '@mui/material/TextField';
 
 const SignupInputField = (props) => {
-  const { value, setValue, id, label, name, autoComplete, type } = props;
+  const { value, setValue, id, label, name, autoComplete, type, placeholder } =
+    props;
 
   const valueChangeHandler = (event) => {
     setValue(event.target.value);
@@ -19,6 +20,7 @@ const SignupInputField = (props) => {
       label={label}
       name={name}
       autoComplete={autoComplete}
+      placeholder={placeholder}
       autoFocus
       type={type}
     />
