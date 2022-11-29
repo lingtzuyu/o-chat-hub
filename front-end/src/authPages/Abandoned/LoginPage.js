@@ -23,9 +23,6 @@ const LoginPage = ({ login }) => {
     const loginData = { mail, password };
     // 掛上API後，就可以把login()這邊掛上去 (看auth_actions那邊的login() function)
     login(loginData, forwardTo);
-    console.log(mail);
-    console.log(password);
-    console.log('login');
   };
 
   // 製作 useEffect 來控制輸入的格式有無相符合
