@@ -56,6 +56,8 @@ function ChatContent({
   isSelectedMessageBoxShown,
   isSelectMessageBoxDisabled,
 }) {
+  const userId = window.localStorage.getItem('userId');
+  console.log(userId);
   // 選中某個id的時後的第一次渲染
   useEffect(() => {
     getDirectMessageHistroy({
@@ -74,8 +76,10 @@ function ChatContent({
   return (
     <Box p={3}>
       {messages.map((message, index) => {
-        const sameSender =
-          index > 0 && messages[index].sender === messages[index - 1].sender;
+        console.log(parseInt(userId));
+        console.log(message.sender);
+        const sameSender = message.sender === parseInt(userId);
+        console.log('sameSender', sameSender);
 
         return (
           <SingleChatBububle
