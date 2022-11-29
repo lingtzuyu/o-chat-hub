@@ -42,7 +42,7 @@ function CardList({ fetchCardHistory, cards }) {
   // 取得歷史紀錄並且存在store (這邊放cards會無窮迴圈)
   useEffect(() => {
     fetchCardHistory(accessToken);
-  }, [cards]);
+  }, []);
 
   const theme = useTheme();
 
