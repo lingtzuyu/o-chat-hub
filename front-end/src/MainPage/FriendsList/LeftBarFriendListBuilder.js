@@ -1,4 +1,4 @@
-// 取代FriendDataItem.js
+// 取代FriendDataItem.js，要留，重構要移到testPage區域
 
 import React from 'react';
 import {
@@ -62,10 +62,10 @@ export const LeftBarFriendListBuilder = ({
   isOnline,
   setChosenChatDetails,
 }) => {
-  // 取得username渲染上方
+  // 取得username渲染上方，並點亮save Button
   const openConversation = () => {
-    setChosenChatDetails({ id: id, name: username }, chatTypes.DIRECT);
-    console.log('openConversation內的', username);
+    setChosenChatDetails({ id: id, name: username }, chatTypes.DIRECT, false);
+    // 要將saveButton的disable設false
   };
 
   return (
@@ -73,7 +73,7 @@ export const LeftBarFriendListBuilder = ({
     <List button={true} disablePadding component="div">
       <ListItemWrapper>
         <ListItemAvatar>
-          <Avatar src="/static/images/avatars/1.jpg" alt={username} />
+          <Avatar src="" alt={username} />
         </ListItemAvatar>
         <ListItemText
           onClick={openConversation}

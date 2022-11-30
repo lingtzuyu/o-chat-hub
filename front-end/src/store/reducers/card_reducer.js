@@ -1,4 +1,5 @@
 import { cardActions } from '../actions/card_actions';
+import { chatActions } from '../actions/chat_actions';
 
 //初始化state，避免最開始取得的state是undefined
 // 設定reducer function，第一個參數為state，第二個參數為action
@@ -17,7 +18,7 @@ const initState = {
   cards: [],
   cardsToBeExporting: [],
   exportedCards: [],
-  isSavedButtonDisabled: false,
+  isSavedButtonDisabled: true,
   isTransferButtonDisabled: true,
   isMessageViewOpen: false,
   isDeleteAlertOpen: false,
@@ -26,6 +27,7 @@ const initState = {
   notionStatus: null,
   notionPriority: null,
   addOrDeleteCardChange: 'test',
+  isCancelButtonDisabeld: true,
 };
 
 const reducer = (state = initState, action) => {
@@ -112,6 +114,19 @@ const reducer = (state = initState, action) => {
         cards: [action.addCard, ...state.cards],
         addOrDeleteCardChange: action.setCardChange,
       };
+    // 選完人頭後，save Button才能亮起來
+    case chatActions.SET_CHOSEN_CHAT_DETAILS: {
+      return {
+        ...state,
+        isSavedButtonDisabled: action.isSavedButtonDisabled,
+      };
+    }
+    case cardActions.SET_CANCEL_BUTTON_DISABLED: {
+      return {
+        ...state,
+        isCancelButtonDisabeld: action.isCancelButtonDisabeld,
+      };
+    }
 
     default:
       return state;

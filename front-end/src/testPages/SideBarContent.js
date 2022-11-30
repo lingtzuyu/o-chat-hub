@@ -229,6 +229,7 @@ function SidebarContent({ friends, onlineUsers, pendingInvitation }) {
         >
           {'Contact'}
         </Typography>
+        {/* 加好友圖示 */}
         <AddFriendIcon />
       </Box>
 

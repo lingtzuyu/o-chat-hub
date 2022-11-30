@@ -22,6 +22,7 @@ export const cardActions = {
   SET_NOTOIN_PRIORITY: 'CARDS.SET_NOTION_PRIORITY',
   SET_CARDS_BY_CATEGORY: 'CARDS.SET_CARDS_BY_CATEGORY',
   ADD_DELETE_CARD_CHANGE: 'CARDS.ADD_DELETE_CARD_CHANGE',
+  SET_CANCEL_BUTTON_DISABLED: 'CARDS.SET_CANCEL_BUTTON_DISABLED',
 };
 
 export const getActions = (dispatch) => {
@@ -83,8 +84,17 @@ export const getActions = (dispatch) => {
     addOrDeleteCard: (data) => {
       dispatch(addOrDeleteCard(data));
     },
+    setCancelButtonDisable: (data) => {
+      dispatch(setCancelButtonDisable(data));
+    },
   };
 };
+
+// set cancel button disabled
+export const setCancelButtonDisable = (data) => ({
+  type: cardActions.SET_CANCEL_BUTTON_DISABLED,
+  isCancelButtonDisabeld: data,
+});
 
 // set cards list by category
 export const setCardsListByCategory = (data) => ({

@@ -48,6 +48,8 @@ const CardWrapperPrimary = styled(Card)(
       border-top-right-radius: ${theme.general.borderRadius};
       max-width: 380px;
       display: inline-flex;
+      word-break: break-all;
+      white-space: pre-wrap;
 `
 );
 
@@ -61,6 +63,8 @@ const CardWrapperSecondary = styled(Card)(
       border-top-left-radius: ${theme.general.borderRadius};
       max-width: 380px;
       display: inline-flex;
+      word-break: break-all;
+      white-space: pre-wrap;
 `
 );
 
@@ -133,10 +137,10 @@ const MessageRight = ({
         (message) => message.messageId === mapKey
       );
       const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
-      console.log('被移除的index', removedIndex);
+
       // 移除該index
       messageArrayToBeRemoved.splice(removedIndex, 1);
-      console.log('更新後的', messageArrayToBeRemoved);
+
       window.localStorage.setItem(
         'selectedMessagesCollection',
         JSON.stringify(messageArrayToBeRemoved)
@@ -217,6 +221,10 @@ const MessageLeft = ({
   const photoURL = FakeProfilePic;
   const displayName = username ? username : 'no username';
 
+  // 日期
+  const readableDate = timestamp.split('T')[0];
+  console.log(readableDate);
+
   // checkbox是否被select到
   const [selected, setSelected] = useState(false);
 
@@ -264,10 +272,10 @@ const MessageLeft = ({
         (message) => message.messageId === mapKey
       );
       const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
-      console.log('被移除的index', removedIndex);
+
       // 移除該index
       messageArrayToBeRemoved.splice(removedIndex, 1);
-      console.log('更新後的', messageArrayToBeRemoved);
+
       window.localStorage.setItem(
         'selectedMessagesCollection',
         JSON.stringify(messageArrayToBeRemoved)
@@ -285,7 +293,10 @@ const MessageLeft = ({
       <Checkbox
         // 用message save是否按下來控制visibility
 
-        sx={{ marginRight: '20px', visibility: isSelectedMessageBoxShown }}
+        sx={{
+          marginRight: '20px',
+          visibility: isSelectedMessageBoxShown,
+        }}
         checked={selected}
         onChange={handleSelected}
         icon={<BookmarkBorderIcon />}
@@ -353,7 +364,6 @@ const SingleChatBubble = ({
   isSelectedMessageBoxShown,
 }) => {
   if (fromMe) {
-    console.log('是否fromMe,應該要是', fromMe);
     return (
       <MessageRight
         content={content}
@@ -367,7 +377,6 @@ const SingleChatBubble = ({
       />
     );
   } else {
-    console.log('是否fromMe,應該要否', fromMe);
     return (
       <MessageLeft
         content={content}

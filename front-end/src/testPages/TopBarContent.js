@@ -36,9 +36,11 @@ import BlockTwoToneIcon from '@mui/icons-material/BlockTwoTone';
 import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone';
 import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 
 import TransferMessageButton from './component/TransferMessageButton';
 import SaveMessageButton from './component/SaveMessageButton';
+import CancelTransferButton from './component/CancelTransferButton';
 
 import { connect } from 'react-redux';
 
@@ -134,11 +136,12 @@ function TopBarContent({ name }) {
               <InputIcon />
             </IconButton>
           </Tooltip> */}
-          <Tooltip placement="bottom" title={'Set a reminder'}>
+          {/* <Tooltip placement="bottom" title={'Cancel'}>
             <IconButton color="primary">
-              <AccessAlarmsIcon />
+              <CancelPresentationIcon />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
+          <CancelTransferButton />
         </Box>
       </RootWrapper>
     </>

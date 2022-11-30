@@ -19,11 +19,12 @@ const getActions = (dispatch) => {
 };
 
 // 選chat大頭的時候
-const setChosenChatDetails = (chatDetails, type) => {
+const setChosenChatDetails = (chatDetails, type, data) => {
   return {
     type: chatActions.SET_CHOSEN_CHAT_DETAILS,
     chatType: type,
     chatDetails,
+    isSavedButtonDisabled: data,
   };
 };
 
