@@ -21,7 +21,7 @@ import {
   TextField,
   InputAdornment,
 } from '@mui/material';
-
+import { getActions } from '../../store/actions/card_actions';
 import { useSearchParams, useLocation } from 'react-router-dom';
 import * as api from '../../api';
 
@@ -89,7 +89,7 @@ const roles = [
   { label: 'Life', value: 'life' },
 ];
 
-function CardTopBar() {
+function CardTopBar({ setCardsListByCategory }) {
   const token = localStorage.getItem('accessToken');
   const [currentTab, setCurrentTab] = useState('all');
 
@@ -107,6 +107,7 @@ function CardTopBar() {
     // 帶著category打api
     const response = await api.fetchCardByCategory(category, token);
     console.log('api', response);
+    setCardsListByCategory(response.data);
   };
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -170,9 +171,10 @@ function CardTopBar() {
   );
 }
 
-const mapActionsToProps = (card) => {
-  return {
-    ...card,
-  };
+const mapStoreStateToPropse = ({ card }) => {
+  return { ...card };
 };
-export default connect(mapActionsToProps)(CardTopBar);
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+export default connect(mapStoreStateToPropse, mapActionsToProps)(CardTopBar);

@@ -99,6 +99,11 @@ const reducer = (state = initState, action) => {
         ...state,
         notionPriority: action.notionPriority,
       };
+    case cardActions.SET_CARDS_BY_CATEGORY:
+      return {
+        ...state,
+        cards: action.cards,
+      };
 
     default:
       return state;

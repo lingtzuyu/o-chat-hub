@@ -20,6 +20,7 @@ export const cardActions = {
   SET_EXPORT_TABLE: 'CARDS.SET_EXPORT_TABLE',
   SET_NOTOIN_STATUS: 'CARDS.SET_NOTION_STATUS',
   SET_NOTOIN_PRIORITY: 'CARDS.SET_NOTION_PRIORITY',
+  SET_CARDS_BY_CATEGORY: 'CARDS.SET_CARDS_BY_CATEGORY',
 };
 
 export const getActions = (dispatch) => {
@@ -75,8 +76,17 @@ export const getActions = (dispatch) => {
     setNotionPriority: (data) => {
       dispatch(setNotionPriority(data));
     },
+    setCardsListByCategory: (data) => {
+      dispatch(setCardsListByCategory(data));
+    },
   };
 };
+
+// set cards list by category
+export const setCardsListByCategory = (data) => ({
+  type: cardActions.SET_CARDS_BY_CATEGORY,
+  cards: data,
+});
 
 // set Notion status
 export const setNotionStatus = (data) => ({
