@@ -41,7 +41,18 @@ const fetchCardHistoryByMail = async (userMail) => {
   const personalCardQuery = await NoteDataMongo.find({
     Author: userMail,
   }).populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
+  console.log(personalCardQuery);
   return personalCardQuery;
+};
+
+const fetchCardHistoryByCategory = async (userMail, category) => {
+  console.log('userMail', userMail);
+  console.log(category);
+  const personalCardQueryByCategory = await NoteDataMongo.find({
+    Author: userMail,
+    Category: category,
+  }).populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
+  return personalCardQueryByCategory;
 };
 
 // check if card exist
@@ -104,5 +115,6 @@ module.exports = {
   setDislikeById,
   checkCardExist,
   updateLinkToNote,
+  fetchCardHistoryByCategory,
 };
 // module.exports = mongoose.model('NoteDataMongo', noteSchema);

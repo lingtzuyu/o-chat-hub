@@ -56,7 +56,7 @@ function CardDetail() {
       />
       {/* 標題 */}
       <Typography gutterBottom variant="h3">
-        Marion Devine
+        Alex Ling
       </Typography>
       {/* Tag生成，如果有需要要map出來 [tags] */}
       {/* <Box py={2}>
@@ -74,7 +74,7 @@ function CardDetail() {
         variant="subtitle2"
       >
         {
-          'High performance React template built with lots of powerful components across multiple product niches for fast & perfect apps development processes'
+          'BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO'
         }
         .
       </Typography>

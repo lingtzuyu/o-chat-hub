@@ -9,7 +9,9 @@ const {
   setLikeById,
   setDislikeById,
   checkCardExist,
+  fetchCardDetailsByCategory,
 } = require('../controllers/card_controller');
+const { fetchCardHistoryByCategory } = require('../models/card_model');
 
 // 新增至最愛 .
 router
@@ -45,5 +47,10 @@ router
 router
   .route('/card/history')
   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory));
+
+// 取得歷史紀錄by category
+router
+  .route('/card/details/:category')
+  .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardDetailsByCategory));
 
 module.exports = router;
