@@ -21,6 +21,7 @@ export const cardActions = {
   SET_NOTOIN_STATUS: 'CARDS.SET_NOTION_STATUS',
   SET_NOTOIN_PRIORITY: 'CARDS.SET_NOTION_PRIORITY',
   SET_CARDS_BY_CATEGORY: 'CARDS.SET_CARDS_BY_CATEGORY',
+  ADD_DELETE_CARD_CHANGE: 'CARDS.ADD_DELETE_CARD_CHANGE',
 };
 
 export const getActions = (dispatch) => {
@@ -78,6 +79,9 @@ export const getActions = (dispatch) => {
     },
     setCardsListByCategory: (data) => {
       dispatch(setCardsListByCategory(data));
+    },
+    addOrDeleteCard: (data) => {
+      dispatch(addOrDeleteCard(data));
     },
   };
 };
@@ -188,8 +192,11 @@ export const saveTransferredMessagesToMongo = (data) => {
   return async (dispatch) => {
     const response = await api.saveMessagesToNote(data);
     const noteId = response.data.noteId;
+    console.log('預存的筆記資料', data);
     // TODO: 發送ALERT訊息到 (用response.systemInfo)
     dispatch(setTransferredMessagesToStore(data, noteId));
+    // 再發到這邊做新增或是刪除改變的偵測
+    dispatch(addOrDeleteCard(data));
   };
 };
 
@@ -211,4 +218,13 @@ export const fetchCardHistory = (data) => {
 
 export const setCards = (cards) => {
   return { type: cardActions.SET_CARDS, cards };
+};
+
+// 新增到cards讓其渲染畫面 (轉換訊息的時候)
+export const addOrDeleteCard = (data) => {
+  return {
+    type: cardActions.ADD_DELETE_CARD_CHANGE,
+    addCard: data,
+    setCardChange: data,
+  };
 };

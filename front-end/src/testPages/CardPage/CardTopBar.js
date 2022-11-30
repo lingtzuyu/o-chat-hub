@@ -84,6 +84,7 @@ const TabsContainerWrapper = styled(Box)(
 );
 
 const roles = [
+  { label: 'All', value: 'all' },
   { label: 'Work', value: 'work' },
   { label: 'Knowledge', value: 'knowledge' },
   { label: 'Life', value: 'life' },
@@ -95,7 +96,6 @@ function CardTopBar({ setCardsListByCategory }) {
 
   const handleTabsChange = (_event, value) => {
     setCurrentTab(value);
-    console.log('按下哪個category', value);
     // 將?category= 設為該value，可以設很多種，例如keyword
     searchParams.set('category', value);
     // 改變url

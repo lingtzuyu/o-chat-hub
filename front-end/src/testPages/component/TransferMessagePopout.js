@@ -26,6 +26,7 @@ export const TransferMessagePopout = ({
   setSaveMessageButtonDisabled,
   setTransferButtonDisabled,
   chosenChatDetails,
+  addCardsAfterTransfer,
 }) => {
   console.log('不是按鈕內', chosenChatDetails.name);
   const [cardTitle, setCardTitle] = useState('write a good title');
@@ -56,7 +57,7 @@ export const TransferMessagePopout = ({
   //   console.log('test effect222', messagesToBeSent.Notes);
   // }, [cardNotes]);
 
-  const handleTransferAfterConfirm = useCallback(() => {
+  const handleTransferAfterConfirm = () => {
     // console.log(category);
 
     // 記住object re-render的雷
@@ -69,7 +70,7 @@ export const TransferMessagePopout = ({
     // POST API (帶message ID即可)
     // store action and (帶整串，因為等等要用整串渲染右邊卡片區)
     saveTransferredMessagesToMongo(messagesToBeSent);
-
+    // addCardsAfterTransfer(messagesToBeSent);
     // // 2. 將核取方塊狀態設回去
     setTransferButtonDisabled(true);
     setSaveMessageButtonDisabled(false);
@@ -80,7 +81,7 @@ export const TransferMessagePopout = ({
     setCardTitle('');
     setCardNotes('');
     handleClosePopout();
-  }, [cardTitle, cardNotes]);
+  };
 
   const handleClosePopout = () => {
     // 清空localStorage，並且把核取方塊轉為hidden(不能選)
