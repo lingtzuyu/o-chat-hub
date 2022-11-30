@@ -80,6 +80,21 @@ function ChatContent({
       {messages.map((message, index) => {
         const sameSender = message.sender === parseInt(userId);
 
+        // TODO: 分隔線待改
+        const localTime = new Date(message.date);
+        // Wed Nov 23 2022
+        const localDate = localTime.toDateString();
+        // 時間，不足兩位用pad補0
+        const localClock = `${localTime
+          .getHours()
+          .toString()
+          .padStart(2, '0')}:${localTime
+          .getMinutes()
+          .toString()
+          .padStart(2, '0')}`;
+
+        // const sameDate = index > 0 && localDate === lastLocalDate;
+
         return (
           <SingleChatBububle
             key={message._id}

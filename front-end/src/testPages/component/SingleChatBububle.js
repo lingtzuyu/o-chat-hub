@@ -80,6 +80,8 @@ const MessageRight = ({
   mapKey,
   isSelectMessageBoxDisabled,
   isSelectedMessageBoxShown,
+  localClock,
+  localDate,
 }) => {
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
@@ -190,7 +192,7 @@ const MessageRight = ({
           {/* {formatDistance(subHours(new Date(), 115), new Date(), {
           addSuffix: true,
         })} */}
-          {timestamp}
+          `{localDate}, {localClock}`
         </Typography>
       </Box>
       <Avatar
@@ -215,15 +217,13 @@ const MessageLeft = ({
   mapKey,
   isSelectMessageBoxDisabled,
   isSelectedMessageBoxShown,
+  localClock,
+  localDate,
 }) => {
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
   const photoURL = FakeProfilePic;
   const displayName = username ? username : 'no username';
-
-  // 日期
-  const readableDate = timestamp.split('T')[0];
-  console.log(readableDate);
 
   // checkbox是否被select到
   const [selected, setSelected] = useState(false);
@@ -337,7 +337,7 @@ const MessageLeft = ({
           {/* {formatDistance(subHours(new Date(), 115), new Date(), {
             addSuffix: true,
           })} */}
-          {timestamp}
+          `{localDate}, {localClock}`
         </Typography>
       </Box>
     </Box>
@@ -363,12 +363,28 @@ const SingleChatBubble = ({
   isSelectMessageBoxDisabled,
   isSelectedMessageBoxShown,
 }) => {
+  // UTC timestamp
+  const timestamp = date ? date : '';
+  // 轉換日期
+  const localTime = new Date(timestamp);
+  // Wed Nov 23 2022
+  const localDate = localTime.toDateString();
+  // 時間，不足兩位用pad補0
+  const localClock = `${localTime
+    .getHours()
+    .toString()
+    .padStart(2, '0')}:${localTime.getMinutes().toString().padStart(2, '0')}`;
+
+  // 若下一個message的localDate跟上一個不同，則加上日期分隔線
+
   if (fromMe) {
     return (
       <MessageRight
         content={content}
         username={username}
         fromMe={fromMe}
+        localDate={localDate}
+        localClock={localClock}
         date={date}
         sameTime={sameTime}
         mapKey={mapKey}
@@ -382,6 +398,7 @@ const SingleChatBubble = ({
         content={content}
         username={username}
         fromMe={fromMe}
+        localClock={localClock}
         date={date}
         sameTime={sameTime}
         mapKey={mapKey}
