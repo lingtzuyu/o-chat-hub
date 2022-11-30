@@ -125,6 +125,19 @@ const getCardHistory = async (data) => {
   }
 };
 
+// category serach API
+const fetchCardByCategory = async (category, token) => {
+  try {
+    const response = await apiClient.get(`/card/details/${category}`, {
+      params: { token: token, category: category },
+    });
+    return response;
+  } catch (err) {
+    console.log(err);
+    return { error: true, err };
+  }
+};
+
 // get notion accessToken to certain DB
 const getNotionToken = async (code) => {
   try {
@@ -170,4 +183,5 @@ export {
   likeCard,
   dislikeCard,
   exportToNotion,
+  fetchCardByCategory,
 };

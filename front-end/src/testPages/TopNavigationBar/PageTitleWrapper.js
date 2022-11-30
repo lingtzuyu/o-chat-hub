@@ -1,7 +1,7 @@
 import { Box, styled, Card, IconButton, Tooltip, alpha } from '@mui/material';
 import TopButtonGroup from './TopbuttonGroup';
 import UserIcon from './Components/UserIcon';
-import MainLogo from './Components/MainLogo';
+import MainLogo from '../../shared/images/LogoPureBlue.png';
 
 const PageTitle = styled(Box)(
   ({ theme }) => `
@@ -68,7 +68,15 @@ const PageTitleWrapper = () => {
             display="flex"
             alignItems="center"
             justifyContent="space-between"
-          ></Box>
+          >
+            <Box>
+              <img
+                src={MainLogo}
+                style={{ width: 60, borderRadius: 60 }}
+                alt="take-notes.chat"
+              />
+            </Box>
+          </Box>
           <Box
             display="flex"
             alignItems="center"

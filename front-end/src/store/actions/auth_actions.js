@@ -73,6 +73,7 @@ const signup = (userDetails, forwardTo) => {
 
       dispatch(setUserDetails(userDetails));
       forwardTo('/homepage');
+      return response.status;
     }
   };
 };

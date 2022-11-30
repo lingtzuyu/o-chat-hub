@@ -1,3 +1,4 @@
+// 留
 import React, { useState } from 'react';
 import {
   Box,
@@ -351,7 +352,8 @@ const SingleChatBubble = ({
   isSelectMessageBoxDisabled,
   isSelectedMessageBoxShown,
 }) => {
-  if (fromMe && sameTime) {
+  if (fromMe) {
+    console.log('是否fromMe,應該要是', fromMe);
     return (
       <MessageRight
         content={content}
@@ -364,19 +366,21 @@ const SingleChatBubble = ({
         isSelectedMessageBoxShown={isSelectedMessageBoxShown}
       />
     );
+  } else {
+    console.log('是否fromMe,應該要否', fromMe);
+    return (
+      <MessageLeft
+        content={content}
+        username={username}
+        fromMe={fromMe}
+        date={date}
+        sameTime={sameTime}
+        mapKey={mapKey}
+        isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
+        isSelectedMessageBoxShown={isSelectedMessageBoxShown}
+      />
+    );
   }
-  return (
-    <MessageLeft
-      content={content}
-      username={username}
-      fromMe={fromMe}
-      date={date}
-      sameTime={sameTime}
-      mapKey={mapKey}
-      isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
-      isSelectedMessageBoxShown={isSelectedMessageBoxShown}
-    />
-  );
 };
 
 const mapStoreStateToProps = ({ chat, card }) => {

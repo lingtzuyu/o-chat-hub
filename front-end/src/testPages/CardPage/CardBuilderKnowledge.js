@@ -75,6 +75,7 @@ const CardBuilderKnowledge = ({
   setMessageView,
   setDeleteAlert,
   setMessagesArrayInQuickView,
+  addOrDeleteCard,
 }) => {
   const accessToken = localStorage.getItem('accessToken');
   const handleCardInfo = { token: accessToken, cardId: cardId };
@@ -104,6 +105,7 @@ const CardBuilderKnowledge = ({
     }).then(async (result) => {
       if (result.isConfirmed) {
         const result = await api.deleteCard(deletedCardInfo);
+        addOrDeleteCard(deletedCardInfo);
         Toast.fire({
           icon: 'success',
           title: `${result.data.message}`,

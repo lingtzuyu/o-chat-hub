@@ -1,6 +1,7 @@
 import react, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { Tooltip } from '@mui/material';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -10,15 +11,14 @@ import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-
-import SignInButton from './SignInButton';
-import SigninInputField from './SigninInputField';
+import SignupInputField from './SignupInputField';
 
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import BackgroundGif from '../../shared/images/inspringDesign.gif';
 import GuideStep from '../Components/GuideStep';
 import MainLogo from '../../shared/images/LogoPureBlue.png';
+import SignupButton from './SignupButton';
 import Swal from 'sweetalert2';
 import { validateInputFormat } from '../../shared/utils/validators';
 import { connect } from 'react-redux';
@@ -51,44 +51,45 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-const SignInSide = ({ login }) => {
+const RegisterSide = ({ signup }) => {
   const forwardTo = useNavigate();
   // 設定state & hook
   const [mail, setMail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   // 控制能否按下login (過validation)
   const [isValidInput, setIsValidInput] = useState(false);
 
-  const handleLogin = async (event) => {
+  const handleSignup = async (event) => {
     event.preventDefault();
     // const data = new FormData(event.currentTarget);
     console.log({
       mail: mail,
       password: password,
+      username: username,
     });
-    const loginData = { mail, password };
+    const signupData = { mail, password, username };
     // auth action
-    const result = await login(loginData, forwardTo);
+    const result = await signup(signupData, forwardTo);
 
     console.log(result);
-
     if (result !== 200) {
       Toast.fire({
         icon: 'warning',
-        title: 'Email or Password incorrect!',
+        title: 'Email Exist',
       });
     } else {
       Toast.fire({
         icon: 'success',
-        title: 'Succesfully Login!',
+        title: 'Succesfully Signup!',
       });
     }
   };
 
   // 控制是否過validation
   useEffect(() => {
-    setIsValidInput(validateInputFormat({ mail, password }));
-  }, [mail, password, setIsValidInput]);
+    setIsValidInput(validateInputFormat({ mail, username, password }));
+  }, [mail, username, password, setIsValidInput]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -148,23 +149,38 @@ const SignInSide = ({ login }) => {
               />
             </Box>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign up
             </Typography>
             <Box component="form" noValidate sx={{ mt: 1 }}>
-              <SigninInputField
+              <SignupInputField
                 margin="normal"
                 required
                 fullWidth
                 id="email"
+                placeholder="Please provide a valid email address"
                 label="Email Address"
                 name="email"
-                // autoComplete="email"
+                // autoComplete="current-email"
                 autoFocus
                 value={mail}
                 setValue={setMail}
                 type="text"
               />
-              <SigninInputField
+
+              <SignupInputField
+                margin="normal"
+                required
+                fullWidth
+                name="username"
+                label="username"
+                id="username"
+                placeholder="Username shown in app, at least 3 characters"
+                // autoComplete="current-username"
+                value={username}
+                setValue={setUsername}
+              />
+
+              <SignupInputField
                 margin="normal"
                 required
                 fullWidth
@@ -172,21 +188,22 @@ const SignInSide = ({ login }) => {
                 label="Password"
                 type="password"
                 id="password"
+                placeholder="Password, at least 8 characters"
                 // autoComplete="current-password"
                 value={password}
                 setValue={setPassword}
               />
 
-              <SignInButton
+              <SignupButton
                 type="submit"
                 fullWidth
                 variant="contained"
-                handleLogin={handleLogin}
+                handleSignup={handleSignup}
                 isValidInput={isValidInput}
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
-              </SignInButton>
+                Sign Up
+              </SignupButton>
               <Grid container>
                 {/* <Grid item xs>
                   <Link href="#" variant="body2">
@@ -194,8 +211,8 @@ const SignInSide = ({ login }) => {
                   </Link>
                 </Grid> */}
                 <Grid item>
-                  <Link href="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                  <Link href="/login" variant="body2">
+                    {'Already have an account? Sign In'}
                   </Link>
                 </Grid>
               </Grid>
@@ -224,4 +241,4 @@ const mapActionsToProps = (dispatch) => {
   return { ...getActions(dispatch) };
 };
 
-export default connect(null, mapActionsToProps)(SignInSide);
+export default connect(null, mapActionsToProps)(RegisterSide);

@@ -1,3 +1,4 @@
+// 廢棄
 import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import NoteCard from './NoteCard';

@@ -24,7 +24,7 @@ import {
   styled,
 } from '@mui/material';
 
-import ProfilePhoto from '../../shared/images/ProfilePhoto.jpg';
+import ProfilePhoto from '../../shared/images/kd.jpg';
 
 import { formatDistance, subMinutes, subHours } from 'date-fns';
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';

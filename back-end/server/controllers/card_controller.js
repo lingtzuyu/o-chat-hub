@@ -129,11 +129,27 @@ const fetchCardHistory = async (req, res) => {
     const { mail } = req.user;
     const response = await Card.fetchCardHistoryByMail(mail);
     // console.log(response);
-    res.status(200).send(response);
+    return res.status(200).send(response);
   } catch (err) {
     console.log('controller', err);
     res.status(500).send({ err: 'Internal Error' });
   }
+};
+
+// fetch card history by Mail and category
+const fetchCardDetailsByCategory = async (req, res) => {
+  // auth過來的
+  const { mail } = req.user;
+  const category = req.params.category;
+  console.log('後端', category);
+
+  if (category === 'all') {
+    const response = await Card.fetchCardHistoryByMail(mail);
+    return res.status(200).send(response);
+  }
+
+  const response = await Card.fetchCardHistoryByCategory(mail, category);
+  res.status(200).send(response);
 };
 
 module.exports = {
@@ -144,4 +160,5 @@ module.exports = {
   checkCardExist,
   setLikeById,
   setDislikeById,
+  fetchCardDetailsByCategory,
 };

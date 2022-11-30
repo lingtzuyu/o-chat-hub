@@ -1,5 +1,6 @@
 // 用CardBuilder map卡片資料組成
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import {
   Box,
   CardHeader,
@@ -25,6 +26,7 @@ import CardTravelTwoToneIcon from '@mui/icons-material/CardTravelTwoTone';
 import ContactPhoneTwoToneIcon from '@mui/icons-material/ContactPhoneTwoTone';
 import EvStationTwoToneIcon from '@mui/icons-material/EvStationTwoTone';
 
+import * as api from '../../api';
 import { getActions } from '../../store/actions/card_actions';
 
 import { connect } from 'react-redux';
@@ -37,12 +39,35 @@ const CardWrapper = styled(Box)(
 `
 );
 
-function CardList({ fetchCardHistory, cards }) {
+function CardList({
+  fetchCardHistory,
+  cards,
+  addOrDeleteCardChange,
+  setCardsListByCategory,
+}) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const accessToken = localStorage.getItem('accessToken');
+
+  const fetchCardByCategory = async () => {
+    const category = searchParams.get('category');
+
+    const categoryParam = category ? category : 'all';
+
+    // 帶著category打api
+    const response = await api.fetchCardByCategory(categoryParam, accessToken);
+    console.log('api', response);
+    setCardsListByCategory(response.data);
+  };
+
   // 取得歷史紀錄並且存在store (這邊放cards會無窮迴圈)
+
   useEffect(() => {
     fetchCardHistory(accessToken);
   }, []);
+
+  useEffect(() => {
+    fetchCardByCategory();
+  }, [addOrDeleteCardChange]);
 
   const theme = useTheme();
 

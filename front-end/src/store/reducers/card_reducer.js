@@ -25,6 +25,7 @@ const initState = {
   isExportTableOpen: false,
   notionStatus: null,
   notionPriority: null,
+  addOrDeleteCardChange: 'test',
 };
 
 const reducer = (state = initState, action) => {
@@ -98,6 +99,18 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         notionPriority: action.notionPriority,
+      };
+    case cardActions.SET_CARDS_BY_CATEGORY:
+      return {
+        ...state,
+        cards: action.cards,
+      };
+    // 用新增的卡片以及前一次的state組成新陣列
+    case cardActions.ADD_DELETE_CARD_CHANGE:
+      return {
+        ...state,
+        cards: [action.addCard, ...state.cards],
+        addOrDeleteCardChange: action.setCardChange,
       };
 
     default:

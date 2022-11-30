@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import PageTitleWrapper from '../TopNavigationBar/PageTitleWrapper';
+import PageTitleWrapper from '../../TopNavigationBar/PageTitleWrapper';
 
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
+import CardDetail from './CardDetail';
 
-import Scrollbar from '../../shared/components/Scrollbar';
+import Scrollbar from '../../../shared/components/Scrollbar';
 
 import {
   Box,
@@ -14,8 +15,6 @@ import {
   IconButton,
   useTheme,
 } from '@mui/material';
-
-import CardPageCardList from './CardPageCardList';
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
@@ -157,7 +156,14 @@ export function CardPage() {
                 display: { xs: 'flex', lg: 'inline-block' },
               }}
             >
-              <Scrollbar>30%</Scrollbar>
+              <Scrollbar>
+                <CardDetail></CardDetail>
+                <CardDetail></CardDetail>
+                <CardDetail></CardDetail>
+                <CardDetail></CardDetail>
+                <CardDetail></CardDetail>
+                <CardDetail></CardDetail>
+              </Scrollbar>
             </Box>
           </ChatWindow>
           <Sidebar

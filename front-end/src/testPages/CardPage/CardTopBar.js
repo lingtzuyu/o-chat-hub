@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   IconButton,
@@ -21,6 +21,9 @@ import {
   TextField,
   InputAdornment,
 } from '@mui/material';
+import { getActions } from '../../store/actions/card_actions';
+import { useSearchParams, useLocation } from 'react-router-dom';
+import * as api from '../../api';
 
 import { formatDistance, subMinutes } from 'date-fns';
 import CallTwoToneIcon from '@mui/icons-material/CallTwoTone';
@@ -81,17 +84,40 @@ const TabsContainerWrapper = styled(Box)(
 );
 
 const roles = [
+  { label: 'All', value: 'all' },
   { label: 'Work', value: 'work' },
   { label: 'Knowledge', value: 'knowledge' },
   { label: 'Life', value: 'life' },
 ];
 
-function CardTopBar() {
+function CardTopBar({ setCardsListByCategory }) {
+  const token = localStorage.getItem('accessToken');
   const [currentTab, setCurrentTab] = useState('all');
 
   const handleTabsChange = (_event, value) => {
     setCurrentTab(value);
+    // 將?category= 設為該value，可以設很多種，例如keyword
+    searchParams.set('category', value);
+    // 改變url
+    setSearchParams(searchParams);
   };
+
+  const fetchCardByCategory = async () => {
+    const category = searchParams.get('category');
+    // 帶著category打api
+    const response = await api.fetchCardByCategory(category, token);
+    console.log('api', response);
+    setCardsListByCategory(response.data);
+  };
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+
+  // location改變的時候同時也fetch api (card category)
+  useEffect(() => {
+    console.log(location);
+    fetchCardByCategory();
+  }, [location]);
 
   const tabs = [
     { value: 'all', label: 'All' },
@@ -145,9 +171,10 @@ function CardTopBar() {
   );
 }
 
-const mapActionsToProps = (card) => {
-  return {
-    ...card,
-  };
+const mapStoreStateToPropse = ({ card }) => {
+  return { ...card };
 };
-export default connect(mapActionsToProps)(CardTopBar);
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+export default connect(mapStoreStateToPropse, mapActionsToProps)(CardTopBar);
