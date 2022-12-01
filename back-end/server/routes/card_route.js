@@ -10,6 +10,7 @@ const {
   setDislikeById,
   checkCardExist,
   fetchCardDetailsByCategory,
+  fetchLastFiveCards,
 } = require('../controllers/card_controller');
 const { fetchCardHistoryByCategory } = require('../models/card_model');
 
@@ -47,6 +48,11 @@ router
 router
   .route('/card/history')
   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory));
+
+// Last 5 for notification
+// router
+//   .route('/card/lastfive')
+//   .get(wrapAsync(verifiedAuth), wrapAsync(fetchLastFiveCards));
 
 // 取得歷史紀錄by category
 router

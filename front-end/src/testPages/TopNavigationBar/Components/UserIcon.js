@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import TempProfile from '../../../shared/images/ProfilePhoto.jpg';
+import { logout } from '../../../shared/utils/generalAuth';
 
 import {
   Avatar,
@@ -19,6 +20,9 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import ViewAgendaTwoToneIcon from '@mui/icons-material/ViewAgendaTwoTone';
+import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
+import QuestionAnswerTwoToneIcon from '@mui/icons-material/QuestionAnswerTwoTone';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -80,7 +84,8 @@ function UserIcon() {
       handleClose();
       // 改成logoout
       // await logout();
-      navigate('/');
+      // navigate('/');
+      logout();
     } catch (err) {
       console.error(err);
     }
@@ -144,7 +149,7 @@ function UserIcon() {
             onClick={() => {
               handleClose();
             }}
-            to={`/${location.pathname.split('/')[1]}/management/users/single/1`}
+            to={`/profile`}
             component={NavLink}
           >
             <AccountBoxTwoToneIcon fontSize="small" />
@@ -155,26 +160,22 @@ function UserIcon() {
             onClick={() => {
               handleClose();
             }}
-            to={`/${
-              location.pathname.split('/')[1]
-            }/applications/mailbox/inbox`}
+            to={`/card`}
             component={NavLink}
           >
-            <InboxTwoToneIcon fontSize="small" />
-            <ListItemText primary={'Inbox'} />
+            <DescriptionTwoToneIcon fontSize="small" />
+            <ListItemText primary={'My Notes'} />
           </ListItem>
           <ListItem
             button
             onClick={() => {
               handleClose();
             }}
-            to={`/${
-              location.pathname.split('/')[1]
-            }/applications/projects-board`}
+            to={`/homepage`}
             component={NavLink}
           >
-            <AccountTreeTwoToneIcon fontSize="small" />
-            <ListItemText primary={'Projects'} />
+            <QuestionAnswerTwoToneIcon fontSize="small" />
+            <ListItemText primary={'My Messages'} />
           </ListItem>
         </List>
         <Divider />

@@ -32,7 +32,6 @@ const MainPage = ({ setUserDetails }) => {
     const accessToken = localStorage.getItem('accessToken');
     // const userMail = localStorage.getItem('userMail');
     if (!accessToken) {
-      // TODO: logout
       window.location.pathname = '/login';
     } else {
       // store state，從authactions這邊派發，之後userEmail可以從這邊解

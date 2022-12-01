@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { logout } from './shared/utils/generalAuth';
 
-// 建立後端API連線，不要衝3000
+// 建立後端API連線
 const apiAdress = process.env.REACT_APP_API_URL;
 const apiClient = axios.create({
   baseURL: apiAdress,
@@ -124,6 +124,18 @@ const getCardHistory = async (data) => {
     return { error: true, err };
   }
 };
+
+// fetch last 5 for notification
+// const getLastFiveCard = async (data) => {
+//   try {
+//     const result = await apiClient.get('/card/lastfive', {
+//       params: { token: data },
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     return { error: true, err };
+//   }
+// };
 
 // category serach API
 const fetchCardByCategory = async (category, token) => {

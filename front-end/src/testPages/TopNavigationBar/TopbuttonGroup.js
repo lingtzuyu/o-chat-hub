@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import MessageButton from './Components/MessageButton';
+
 import CardButton from './Components/CardButton';
 
 function TopButtonGroup() {
@@ -9,7 +9,6 @@ function TopButtonGroup() {
         mr: 1,
       }}
     >
-      <MessageButton />
       <CardButton />
     </Box>
   );

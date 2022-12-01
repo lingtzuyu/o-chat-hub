@@ -136,6 +136,13 @@ const fetchCardHistory = async (req, res) => {
   }
 };
 
+// fetch last 5 card for notifiation
+// const fetchLastFiveCards = async (req, res) => {
+//   const { mail } = req.user;
+//   const response = await Card.fetchLastFiveCardHistoryByMail(mail);
+//   return res.status(200).send(response);
+// };
+
 // fetch card history by Mail and category
 const fetchCardDetailsByCategory = async (req, res) => {
   // auth過來的

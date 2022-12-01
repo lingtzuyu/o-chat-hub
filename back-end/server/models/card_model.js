@@ -37,21 +37,33 @@ const fetchCardCategory = async () => {
   return result;
 };
 
+// 上方快捷用，不用滾出messages
+// const fetchLastFiveCardHistoryByMail = async (userMail) => {
+//   const lastFiveCardQuery = await NoteDataMongo.find({
+//     Authour: userMail,
+//   })
+//     .sort({ NoteTime: -1 })
+//     .limit(5);
+//   return lastFiveCardQuery;
+// };
+
 const fetchCardHistoryByMail = async (userMail) => {
   const personalCardQuery = await NoteDataMongo.find({
     Author: userMail,
-  }).populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
-  console.log(personalCardQuery);
+  })
+    .populate({ path: 'MessageRecords', model: 'MessageDataMongo' })
+    .sort({ NoteTime: -1 });
+
   return personalCardQuery;
 };
 
 const fetchCardHistoryByCategory = async (userMail, category) => {
-  console.log('userMail', userMail);
-  console.log(category);
   const personalCardQueryByCategory = await NoteDataMongo.find({
     Author: userMail,
     Category: category,
-  }).populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
+  })
+    .sort({ NoteTime: -1 })
+    .populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
   return personalCardQueryByCategory;
 };
 

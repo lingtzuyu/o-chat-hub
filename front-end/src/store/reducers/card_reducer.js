@@ -28,6 +28,7 @@ const initState = {
   notionPriority: null,
   addOrDeleteCardChange: 'test',
   isCancelButtonDisabeld: true,
+  // lastFiveCards: [],
 };
 
 const reducer = (state = initState, action) => {
@@ -127,6 +128,12 @@ const reducer = (state = initState, action) => {
         isCancelButtonDisabeld: action.isCancelButtonDisabeld,
       };
     }
+    // case cardActions.SET_LAST_FIVE_CARDS: {
+    //   return {
+    //     ...state,
+    //     lastFiveCards: action.lastFiveCards,
+    //   };
+    // }
 
     default:
       return state;

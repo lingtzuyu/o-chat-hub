@@ -23,6 +23,7 @@ export const cardActions = {
   SET_CARDS_BY_CATEGORY: 'CARDS.SET_CARDS_BY_CATEGORY',
   ADD_DELETE_CARD_CHANGE: 'CARDS.ADD_DELETE_CARD_CHANGE',
   SET_CANCEL_BUTTON_DISABLED: 'CARDS.SET_CANCEL_BUTTON_DISABLED',
+  // SET_LAST_FIVE_CARDS: 'CARDS.SET_LAST_FIVE_CARDS',
 };
 
 export const getActions = (dispatch) => {
@@ -87,8 +88,28 @@ export const getActions = (dispatch) => {
     setCancelButtonDisable: (data) => {
       dispatch(setCancelButtonDisable(data));
     },
+    // setLastFiveCards: (data) => {
+    //   dispatch(setLastFiveCards(data));
+    // },
+    // fechLastFiveCard: (data) => {
+    //   dispatch(fechLastFiveCard(data));
+    // },
   };
 };
+
+// // 帶token
+// export const fechLastFiveCard = (data) => {
+//   return async (dispatch) => {
+//     const lastFiveCards = api.getLastFiveCard(data);
+//     dispatch(setLastFiveCards(lastFiveCards));
+//   };
+// };
+
+// // set Last five cards
+// export const setLastFiveCards = (data) => ({
+//   type: cardActions.SET_LAST_FIVE_CARDS,
+//   lastFiveCards: data,
+// });
 
 // set cancel button disabled
 export const setCancelButtonDisable = (data) => ({
@@ -152,7 +173,6 @@ export const setSaveMessageButtonDisabled = (data) => ({
 // 傳送至notion
 export const exportToNotion = (data) => {
   return async (dispatch) => {
-    console.log('1');
     api.exportToNotionAPI(data);
     dispatch(setExportedCard(data));
   };
