@@ -38,6 +38,11 @@ function BottomBarContent({ chosenChatDetails }) {
   const [messageToBeSent, setMessageToBeSent] = useState('');
   const theme = useTheme();
 
+  const isSendButtonDisabled = chosenChatDetails ? false : true;
+  const tipMessage = chosenChatDetails
+    ? 'Send your message here...'
+    : 'Please choose a contact before input...';
+
   // 監聽onChange的event
   const handleInputAreaChange = (event) => {
     setMessageToBeSent(event.target.value);
@@ -56,8 +61,6 @@ function BottomBarContent({ chosenChatDetails }) {
     }
     // setMessage空直要放在送出資料後面，不然會直接先清空
     setMessageToBeSent('');
-
-    console.log('send Message to DB successful');
   };
 
   // 按下按鍵後就執行send Message
@@ -84,8 +87,9 @@ function BottomBarContent({ chosenChatDetails }) {
           src={TempProfilePic}
         />
         <MessageInputWrapper
+          disabled={isSendButtonDisabled}
           autoFocus
-          placeholder={'Send your message here...'}
+          placeholder={tipMessage}
           fullWidth
           value={messageToBeSent}
           onChange={handleInputAreaChange}
@@ -93,15 +97,15 @@ function BottomBarContent({ chosenChatDetails }) {
         />
       </Box>
       <Box>
-        {/* 之後用套件做出來 */}
-        <Tooltip arrow placement="top" title={'Choose an emoji'}>
+        {/* TODO: 之後用套件做出來 */}
+        {/* <Tooltip arrow placement="top" title={'Choose an emoji'}>
           <IconButton
             sx={{ fontSize: theme.typography.pxToRem(16) }}
             color="primary"
           >
             😀
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
         {/* <Input accept="image/*" id="messenger-upload-file" type="file" />
         <Tooltip arrow placement="top" title={t('Attach a file')}>
           <label htmlFor="messenger-upload-file">
@@ -114,6 +118,7 @@ function BottomBarContent({ chosenChatDetails }) {
           startIcon={<SendTwoToneIcon />}
           variant="contained"
           onClick={sendMessages}
+          disabled={isSendButtonDisabled}
         >
           {'Send'}
         </Button>

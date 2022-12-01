@@ -1,14 +1,181 @@
+import React, { useState, useEffect } from 'react';
 import Footer from '../component/Footer';
-import { Grid, Box } from '@mui/material';
+import {
+  Box,
+  styled,
+  Divider,
+  Drawer,
+  IconButton,
+  useTheme,
+} from '@mui/material';
 
 import PageTitleWrapper from '../TopNavigationBar/PageTitleWrapper';
 
-function DashboardLearning() {
+import Scrollbar from '../../shared/components/Scrollbar';
+import Profile from './Profle';
+
+const RootWrapper = styled(Box)(
+  ({ theme }) => `
+       height: calc(100vh - ${theme.header.height});
+       display: flex;
+`
+);
+
+const Sidebar = styled(Box)(
+  ({ theme }) => `
+        width: 300px;
+        background: ${theme.colors.alpha.white[100]};
+        border-right: ${theme.colors.alpha.black[10]} solid 1px;
+`
+);
+
+const WorkSpaceWrapper = styled(Box)(
+  () => `
+        width: 100%;
+        height: 100%;
+        display: flex;
+        
+`
+);
+
+const ChatWindow = styled(Box)(
+  () => `
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        
+`
+);
+
+const CardWindow = styled(Box)(
+  () => `
+        width: 36%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        
+`
+);
+
+const ChatTopBar = styled(Box)(
+  ({ theme }) => `
+        background: ${theme.colors.alpha.white[100]};
+        border-bottom: ${theme.colors.alpha.black[10]} solid 1px;
+        padding: ${theme.spacing(2)};
+        align-items: center;
+`
+);
+
+const ChatTopBarContainer = styled(Box)(
+  ({ theme }) => `
+        background: ${theme.colors.alpha.white[100]};
+        padding: ${theme.spacing(2)};
+        align-items: center;
+`
+);
+
+const IconButtonToggle = styled(IconButton)(
+  ({ theme }) => `
+  width: ${theme.spacing(4)};
+  height: ${theme.spacing(4)};
+  background: ${theme.colors.alpha.white[100]};
+`
+);
+
+const DrawerWrapperMobile = styled(Drawer)(
+  () => `
+    width: 340px;
+    flex-shrink: 0;
+
+  & > .MuiPaper-root {
+        width: 340px;
+        z-index: 3;
+  }
+`
+);
+
+function DashboardProfile() {
+  const theme = useTheme();
+
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (!accessToken) {
+      window.location.pathname = '/login';
+    }
+  }, []);
   return (
-    <PageTitleWrapper>
-      <Footer />
-    </PageTitleWrapper>
+    <>
+      {/* <Helmet>
+        <title>Messenger - Applications</title>
+      </Helmet> */}
+      <PageTitleWrapper></PageTitleWrapper>
+      <RootWrapper className="Mui-FixedWrapper">
+        <DrawerWrapperMobile
+          sx={{
+            display: { lg: 'none', xs: 'inline-block' },
+          }}
+          variant="temporary"
+          anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+        >
+          <Scrollbar>Test</Scrollbar>
+        </DrawerWrapperMobile>
+
+        <WorkSpaceWrapper>
+          <Sidebar
+            sx={{
+              display: { xs: 'none', lg: 'inline-block' },
+            }}
+          >
+            Side
+          </Sidebar>
+
+          <ChatWindow>
+            <ChatTopBar
+              sx={{
+                display: { xs: 'flex', lg: 'inline-block' },
+              }}
+            >
+              TopBar，這邊放20%
+            </ChatTopBar>
+            <Box
+              alignItems={'center'}
+              flex={1}
+              sx={{
+                display: { xs: 'flex', lg: 'inline-block' },
+              }}
+            >
+              <Scrollbar>
+                <Box
+                  marginTop="5%"
+                  marginRight="5%"
+                  marginLeft="5%"
+                  marginBottom="5%"
+                >
+                  <Profile></Profile>
+                </Box>
+              </Scrollbar>
+            </Box>
+          </ChatWindow>
+          <Sidebar
+            sx={{
+              display: { xs: 'none', lg: 'inline-block' },
+            }}
+          >
+            Side
+          </Sidebar>
+        </WorkSpaceWrapper>
+      </RootWrapper>
+    </>
   );
 }
 
-export default DashboardLearning;
+export default DashboardProfile;

@@ -8,6 +8,14 @@ const apiClient = axios.create({
   timeout: 30000,
 });
 
+// save notion token
+// const saveNotionToken = async (code) => {
+//   try {
+//   } catch (err) {
+//     return { error: true, err };
+//   }
+// };
+
 // export to Notion (正式)
 const exportToNotion = async (data) => {
   try {
@@ -153,7 +161,7 @@ const fetchCardByCategory = async (category, token) => {
 // get notion accessToken to certain DB
 const getNotionToken = async (code) => {
   try {
-    const response = await apiClient.get('/notion/', {
+    const response = await apiClient.get('/notion', {
       params: { code: code },
     });
     return response;
