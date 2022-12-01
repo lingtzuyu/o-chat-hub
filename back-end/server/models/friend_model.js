@@ -9,6 +9,14 @@ const checkUserExist = async (mail) => {
   return result;
 };
 
+// 用戶資料，過auth之後的mail
+const checkUserProfile = async (mail) => {
+  const checkUserQuery = 'SELECT * FROM user WHERE mail = ?';
+  const [result] = await sqlDB.query(checkUserQuery, mail);
+  // console.log('result', result[0]);
+  return result[0];
+};
+
 const sendFriendRequest = async (senderId, receiverId) => {
   const conn = await sqlDB.getConnection();
 
@@ -157,4 +165,5 @@ module.exports = {
   insertDaulFriendship,
   deleteRejectedFriendship,
   fetchFriendList,
+  checkUserProfile,
 };

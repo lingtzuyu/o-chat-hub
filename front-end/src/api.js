@@ -188,6 +188,19 @@ const dislikeCard = async (data) => {
   }
 };
 
+const getUserProfile = async (token) => {
+  try {
+    console.log('api.js有街道嗎', token);
+    return await apiClient.get('/friend/userProfile', {
+      headers: {
+        authorization: token,
+      },
+    });
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
 export {
   login,
   signup,
@@ -204,4 +217,5 @@ export {
   dislikeCard,
   exportToNotion,
   fetchCardByCategory,
+  getUserProfile,
 };

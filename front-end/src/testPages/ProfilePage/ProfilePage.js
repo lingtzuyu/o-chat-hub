@@ -10,9 +10,11 @@ import {
 } from '@mui/material';
 
 import PageTitleWrapper from '../TopNavigationBar/PageTitleWrapper';
+import * as api from '../../api';
 
 import Scrollbar from '../../shared/components/Scrollbar';
 import Profile from './Profle';
+import { acceptInvite } from '../../api';
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
@@ -97,19 +99,29 @@ const DrawerWrapperMobile = styled(Drawer)(
 
 function DashboardProfile() {
   const theme = useTheme();
+  const accessToken = localStorage.getItem('accessToken');
+  const [user, setUser] = useState([]);
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
 
+  const getUserProfile = async (accessToken) => {
+    const response = await api.getUserProfile(accessToken);
+    setUser(response.data.result);
+    console.log(response.data.result);
+  };
+
+  useEffect(() => {
     if (!accessToken) {
       window.location.pathname = '/login';
+    } else {
+      getUserProfile(accessToken);
     }
   }, []);
+
   return (
     <>
       {/* <Helmet>
@@ -160,7 +172,7 @@ function DashboardProfile() {
                   marginLeft="5%"
                   marginBottom="5%"
                 >
-                  <Profile></Profile>
+                  <Profile user={user}></Profile>
                 </Box>
               </Scrollbar>
             </Box>

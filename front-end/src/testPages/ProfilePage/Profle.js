@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Card,
@@ -6,6 +6,7 @@ import {
   Divider,
   Stack,
   IconButton,
+  TextField,
   Avatar,
   styled,
   useTheme,
@@ -30,8 +31,9 @@ const CardActions = styled(Box)(
   `
 );
 
-function Profile() {
+function Profile({ user }) {
   const theme = useTheme();
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
     <Card
@@ -54,12 +56,27 @@ function Profile() {
           boxShadow: `0 0 0 3px #223354`,
         }}
         // 若已經Transferred顏色就改成${theme.colors.error.main}`
-        src="/static/images/avatars/2.jpg"
+        src={user.photo}
+        alt={user.username}
       />
       {/* 標題 */}
-      <Typography gutterBottom variant="h3">
-        Alex Ling
-      </Typography>
+      {/* <Typography gutterBottom variant="h3"> */}
+      {isEditing ? (
+        <TextField
+          sx={{
+            mt: 2,
+            mb: 1,
+          }}
+          size="small"
+          defaultValue={user.usernam}
+        />
+      ) : (
+        <Typography gutterBottom variant="h3">
+          {user.username}
+        </Typography>
+      )}
+      {/* // {user.username} */}
+      {/* </Typography> */}
       {/* Tag生成，如果有需要要map出來 [tags] */}
       {/* <Box py={2}>
         <Label color="info">Web developer</Label>
@@ -75,9 +92,7 @@ function Profile() {
         }}
         variant="subtitle2"
       >
-        {
-          'BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO'
-        }
+        {user.mail}
       </Typography>
       <Divider
         sx={{

@@ -174,6 +174,14 @@ const rejectFriendInvitation = async (req, res) => {
   }
 };
 
+// user Profile
+const getUserProfile = async (req, res) => {
+  const { mail } = req.user;
+  const response = await Friend.checkUserProfile(mail);
+  // console.log('controller', response);
+  res.status(200).json({ result: response });
+};
+
 module.exports = {
   invitationSchema,
   friendConfirmSchema,
@@ -181,4 +189,5 @@ module.exports = {
   sentFriendInvitation,
   accpetFriendInvitation,
   rejectFriendInvitation,
+  getUserProfile,
 };

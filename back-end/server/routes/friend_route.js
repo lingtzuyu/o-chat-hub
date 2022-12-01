@@ -12,6 +12,7 @@ const {
   sentFriendInvitation,
   accpetFriendInvitation,
   rejectFriendInvitation,
+  getUserProfile,
 } = require('../controllers/friend_controller');
 
 router
@@ -44,5 +45,10 @@ router
     validator.body(friendRejectSchema),
     wrapAsync(rejectFriendInvitation)
   );
+
+// user profile
+router
+  .route('/friend/userprofile')
+  .get(wrapAsync(verifiedAuth), wrapAsync(getUserProfile));
 
 module.exports = router;
