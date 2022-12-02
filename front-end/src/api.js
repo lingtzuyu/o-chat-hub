@@ -19,7 +19,8 @@ const apiClient = axios.create({
 // export to Notion (正式)
 const exportToNotion = async (data) => {
   try {
-    return await apiClient.post('/notion/export', data);
+    const response = await apiClient.post('/notion/export', data);
+    return response.status;
   } catch (err) {
     return { error: true, err };
   }

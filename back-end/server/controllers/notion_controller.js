@@ -42,8 +42,32 @@ const checkNotionToken = async (req, res, next) => {
   req.notion = result[0];
   console.log('middleware', req.notion);
 
+  // 已經有 token，所以會回傳東西 => 不會是undefined
   if (result[0] !== undefined) {
     return res.status(400).send('You have already linked to Notion');
+  }
+
+  return next();
+};
+
+const checkNotionTokenWhenExporting = async (req, res, next) => {
+  // 解出jwt token內的mail
+  const { mail } = req.user;
+  // check user id
+  const response = await Friend.checkUserExist(mail);
+  const userId = response[0].id;
+  console.log(userId);
+  // 用model取出sql內的notion token以及DB id
+  const result = await Notion.notionTokenCheck(userId);
+  console.log('這邊', result);
+  // result.notionAccessToken 以及result.relatedNotionPageId
+  req.notion = result[0];
+  console.log('middleware', req.notion);
+
+  if (result[0] === undefined) {
+    return res
+      .status(400)
+      .send('Please go to profile page to link notion first');
   }
 
   return next();
@@ -86,4 +110,9 @@ const exportToNotion = async (req, res) => {
   }
 };
 
-module.exports = { getNotionToken, exportToNotion, checkNotionToken };
+module.exports = {
+  getNotionToken,
+  exportToNotion,
+  checkNotionToken,
+  checkNotionTokenWhenExporting,
+};
