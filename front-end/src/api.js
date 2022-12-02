@@ -161,7 +161,7 @@ const fetchCardByCategory = async (category, token) => {
 // get notion accessToken to certain DB
 const getNotionToken = async (code) => {
   try {
-    const response = await apiClient.get('/notion', {
+    const response = await apiClient.get(`/notion/${code}`, {
       params: { code: code },
     });
     return response;

@@ -25,12 +25,11 @@ const RootWrapper = styled(Box)(
        display: flex;
 `
 );
-
+// border-right: ${theme.colors.alpha.black[10]} solid 1px;
 const Sidebar = styled(Box)(
   ({ theme }) => `
         width: 300px;
-        background: ${theme.colors.alpha.white[100]};
-        border-right: ${theme.colors.alpha.black[10]} solid 1px;
+        background: ${theme.colors.alpha.white[100]};      
 `
 );
 
@@ -66,7 +65,7 @@ const CardWindow = styled(Box)(
 const ChatTopBar = styled(Box)(
   ({ theme }) => `
         background: ${theme.colors.alpha.white[100]};
-        border-bottom: ${theme.colors.alpha.black[10]} solid 1px;
+        
         padding: ${theme.spacing(2)};
         align-items: center;
 `
@@ -151,18 +150,14 @@ function DashboardProfile({ setNewUserNameInStore }) {
             sx={{
               display: { xs: 'none', lg: 'inline-block' },
             }}
-          >
-            Side
-          </Sidebar>
+          ></Sidebar>
 
           <ChatWindow>
             <ChatTopBar
               sx={{
                 display: { xs: 'flex', lg: 'inline-block' },
               }}
-            >
-              TopBar，這邊放20%
-            </ChatTopBar>
+            ></ChatTopBar>
             <Box
               alignItems={'center'}
               flex={1}
@@ -186,9 +181,7 @@ function DashboardProfile({ setNewUserNameInStore }) {
             sx={{
               display: { xs: 'none', lg: 'inline-block' },
             }}
-          >
-            Side
-          </Sidebar>
+          ></Sidebar>
         </WorkSpaceWrapper>
       </RootWrapper>
     </>

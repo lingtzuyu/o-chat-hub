@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Box,
   Card,
+  alpha,
   Typography,
   Divider,
   Stack,
@@ -15,9 +16,14 @@ import {
   ListItemAvatar,
   ListItemText,
   Tooltip,
+  CardActionArea,
+  Grid,
+  Button,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import NotionLogin from '../../integration/notion/notion_login';
+
+import NotionIcon from '../../shared/images/notion-icon.png';
+import TrelloIcon from '../../shared/images/trello-icon.png';
 
 import Text from '../../shared/components/Text';
 import Label from '../../shared/components/Lable';
@@ -25,6 +31,11 @@ import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import Swal from 'sweetalert2';
+
+import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import ContactSupportTwoToneIcon from '@mui/icons-material/ContactSupportTwoTone';
+import AddLinkTwoToneIcon from '@mui/icons-material/AddLinkTwoTone';
+import LinkOffTwoToneIcon from '@mui/icons-material/LinkOffTwoTone';
 
 import { connect } from 'react-redux';
 import { getActions } from '../../store/actions/auth_actions';
@@ -39,6 +50,37 @@ const CardActions = styled(Box)(
   `
 );
 
+const CardActionAreaWrapper = styled(Box)(
+  ({ theme }) => `
+        text-align: center;
+        background: ${alpha(theme.colors.primary.main, 0.03)};
+
+        .MuiTouchRipple-root {
+          opacity: .2;
+        }
+  
+        .MuiCardActionArea-focusHighlight {
+          background: ${theme.colors.primary.main};
+        }
+  
+        &:hover {
+          .MuiCardActionArea-focusHighlight {
+            opacity: .05;
+          }
+        }
+  `
+);
+
+const DotLegend = styled('span')(
+  ({ theme }) => `
+    border-radius: 22px;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    margin-right: ${theme.spacing(0.5)};
+`
+);
+
 const Toast = Swal.mixin({
   toast: true,
   position: 'top-end',
@@ -47,6 +89,8 @@ const Toast = Swal.mixin({
 });
 
 function Profile({ user, userName, setNewUserNameInStore }) {
+  const notionOauthClient = process.env.REACT_APP_NOTION_OAUTHID;
+  console.log(notionOauthClient);
   const accessToken = localStorage.getItem('accessToken');
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
@@ -56,14 +100,15 @@ function Profile({ user, userName, setNewUserNameInStore }) {
   const handleCancel = () => {
     // 將editing狀態改為false
     setIsEditing(false);
+    setNewUserNameInStore(user.username);
   };
   // TODO: 空值的機制
   const handleConfirm = async () => {
-    if (userName !== null) {
+    if (userName !== null || '' || undefined) {
       setNewUserNameInStore(userName);
       setIsEditing(false);
     } else {
-      setNewUserNameInStore(user.userName);
+      setNewUserNameInStore(user.username);
     }
     // 打api更改姓名 (當前在store的)
     // 成功後就toast alert
@@ -72,7 +117,7 @@ function Profile({ user, userName, setNewUserNameInStore }) {
     if (response !== 200) {
       await Toast.fire({
         icon: 'warning',
-        title: `Something went wrong, please change your username again`,
+        title: `Something went wrong, please change your username again, your username will not be changed`,
       });
     } else if (response === 200) {
       await Toast.fire({
@@ -90,6 +135,22 @@ function Profile({ user, userName, setNewUserNameInStore }) {
     // setNewUserName(event.target.value);
     setNewUserNameInStore(event.target.value);
   };
+
+  // Notion Connect
+  const handleNotionConnect = () => {
+    console.log('test');
+  };
+
+  const lastLoginLocalDate = new Date(user.lastlogin).toDateString();
+  const lastLoginLocalTime = new Date(user.lastlogin);
+  const lastLoginLocalClock = `${lastLoginLocalTime
+    .getHours()
+    .toString()
+    .padStart(2, '0')}:${lastLoginLocalTime
+    .getMinutes()
+    .toString()
+    .padStart(2, '0')}`;
+  const joinTime = new Date(user.createddate).toDateString();
 
   // 若為空值則無法按下confirm
 
@@ -187,40 +248,179 @@ function Profile({ user, userName, setNewUserNameInStore }) {
         }}
       />
       <Box>
-        <Typography gutterBottom variant="h4">
-          {/* <Link href="#" variant="body2">
-            Notion Authentication
-          </Link> */}
-          <NotionLogin />
-        </Typography>
-        <Typography variant="subtitle2">{'Connected'}</Typography>
+        <Box p={2}>
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={6}>
+              <Card variant="outlined">
+                <CardActionAreaWrapper
+                  sx={{
+                    p: 2,
+                  }}
+                >
+                  <Box>
+                    <img
+                      src={NotionIcon}
+                      style={{ width: 60, borderRadius: 10 }}
+                      alt="take-notes.chat"
+                    />
+                  </Box>
+
+                  <Typography variant="h4">{'Notion'}</Typography>
+
+                  {/* <Typography
+                      sx={{
+                        fontSize: `${theme.typography.pxToRem(11)}`,
+                        lineHeight: 1,
+                      }}
+                      variant="subtitle2" */}
+
+                  {/* TODO: 待搬出去 */}
+
+                  {user.notionConnect === 1 ? (
+                    <Box
+                      marginTop="10px"
+                      display="flex"
+                      alignItems="flex-start"
+                      justifyContent={'center'}
+                    >
+                      <DotLegend
+                        style={{
+                          background: `${theme.colors.success.main}`,
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: `${theme.typography.pxToRem(11)}`,
+                          lineHeight: 1,
+                        }}
+                        variant="subtitle2"
+                      >
+                        <Text color="success">connected</Text>
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <Box
+                      marginTop="10px"
+                      display="flex"
+                      alignItems="flex-start"
+                      justifyContent={'center'}
+                    >
+                      <DotLegend
+                        style={{
+                          background: `${theme.colors.warning.main}`,
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: `${theme.typography.pxToRem(11)}`,
+                          lineHeight: 1,
+                        }}
+                        variant="subtitle2"
+                      >
+                        <Text color="warning">disconnected</Text>
+                      </Typography>
+                    </Box>
+                  )}
+                  {/* // <Text color="success">{user.notionConnect}</Text> */}
+                  {/* </Typography> */}
+                  <Box>
+                    {user.notionConnect === 1 ? (
+                      <Tooltip title="disconnect to Notion">
+                        <IconButton onClick={handleNotionConnect}>
+                          <LinkOffTwoToneIcon />
+                        </IconButton>
+                      </Tooltip>
+                    ) : (
+                      <Tooltip title="connect to Notion">
+                        <Link
+                          href={`https://api.notion.com/v1/oauth/authorize?client_id=${notionOauthClient}&response_type=code&owner=user`}
+                        >
+                          <IconButton onClick={handleNotionConnect}>
+                            <AddLinkTwoToneIcon />
+                          </IconButton>
+                        </Link>
+                      </Tooltip>
+                    )}
+                  </Box>
+                </CardActionAreaWrapper>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Card variant="outlined">
+                <CardActionAreaWrapper
+                  sx={{
+                    p: 2,
+                  }}
+                >
+                  <Box>
+                    <img
+                      src={TrelloIcon}
+                      style={{ width: 60, borderRadius: 10 }}
+                      alt="take-notes.chat"
+                    />
+                  </Box>
+                  {/* <Text color="success">
+                    <ContactSupportTwoToneIcon
+                      sx={{
+                        mb: 1,
+                      }}
+                    />
+                  </Text> */}
+                  <Typography variant="h4">{'Trello'}</Typography>
+                  {user.trelloConnect === 1 ? (
+                    <Box
+                      marginTop="10px"
+                      display="flex"
+                      alignItems="flex-start"
+                      justifyContent={'center'}
+                    >
+                      <DotLegend
+                        style={{
+                          background: `${theme.colors.success.main}`,
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: `${theme.typography.pxToRem(11)}`,
+                          lineHeight: 1,
+                        }}
+                        variant="subtitle2"
+                      >
+                        <Text color="success">
+                          connected (press again to disconnect)
+                        </Text>
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <Box
+                      marginTop="10px"
+                      display="flex"
+                      alignItems="flex-start"
+                      justifyContent={'center'}
+                    >
+                      <DotLegend
+                        style={{
+                          background: `${theme.colors.warning.main}`,
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: `${theme.typography.pxToRem(11)}`,
+                          lineHeight: 1,
+                        }}
+                        variant="subtitle2"
+                      >
+                        <Text color="warning">press to connect to trello</Text>
+                      </Typography>
+                    </Box>
+                  )}
+                </CardActionAreaWrapper>
+              </Card>
+            </Grid>
+          </Grid>
+        </Box>
       </Box>
-      <>
-        <React.Fragment key={123}>
-          <Divider />
-          <ListItem>
-            <ListItemAvatar>
-              {/* TODO: 目前沒有AVATAR */}
-              <Avatar alt="User" src={''} />
-            </ListItemAvatar>
-            <ListItemText
-              // TODO: 改成吃username
-              primary={<Text color="black">{'Sundar'}</Text>}
-              primaryTypographyProps={{
-                variant: 'h5',
-                // noWrap: true,
-              }}
-              secondary={
-                'This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages '
-              }
-              secondaryTypographyProps={{
-                variant: 'subtitle2',
-                // noWrap: true,
-              }}
-            />
-          </ListItem>
-        </React.Fragment>
-      </>
+
       {/* 這邊要放message from以及內文的itemList */}
       <Divider
         sx={{
@@ -239,29 +439,15 @@ function Profile({ user, userName, setNewUserNameInStore }) {
       >
         <Box>
           <Typography gutterBottom variant="h4">
-            2022-12-30
+            {lastLoginLocalDate} {lastLoginLocalClock}
           </Typography>
-          <Typography variant="subtitle2">{'新增時間'}</Typography>
+          <Typography variant="subtitle2">{'Last Login'}</Typography>
         </Box>
         <Box>
           <Typography gutterBottom variant="h4">
-            2022-12-30
+            {joinTime}
           </Typography>
-          <Typography variant="subtitle2">{'新增時間'}</Typography>
-        </Box>
-        <Box>
-          <Typography gutterBottom variant="h4">
-            Sundar Pichai
-          </Typography>
-          <Typography variant="subtitle2">{'From'}</Typography>
-        </Box>
-        <Box>
-          <Typography gutterBottom variant="h4">
-            <Link href="#" variant="body2">
-              Notion Link
-            </Link>
-          </Typography>
-          <Typography variant="subtitle2">{'Exported'}</Typography>
+          <Typography variant="subtitle2">{'Join Time'}</Typography>
         </Box>
       </Stack>
     </Card>
