@@ -8,6 +8,7 @@ const {
   registerSchema,
   loginSchema,
   verifiedAuth,
+  updateNewUsername,
 } = require('../controllers/auth_controller');
 
 // register route .
@@ -19,5 +20,7 @@ router
 router.route('/login').post(validator.body(loginSchema), wrapAsync(login));
 
 // test router => 經過verifiedAuth這個middleware for 身分驗證後才會往下pass
+
+router.route('/auth/username').post(verifiedAuth, wrapAsync(updateNewUsername));
 
 module.exports = router;

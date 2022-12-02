@@ -14,13 +14,21 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Tooltip,
 } from '@mui/material';
-
+import EditIcon from '@mui/icons-material/Edit';
 import NotionLogin from '../../integration/notion/notion_login';
 
 import Text from '../../shared/components/Text';
 import Label from '../../shared/components/Lable';
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
+import Swal from 'sweetalert2';
+
+import { connect } from 'react-redux';
+import { getActions } from '../../store/actions/auth_actions';
+import * as api from '../../api';
 
 const CardActions = styled(Box)(
   ({ theme }) => `
@@ -31,9 +39,59 @@ const CardActions = styled(Box)(
   `
 );
 
-function Profile({ user }) {
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+});
+
+function Profile({ user, userName, setNewUserNameInStore }) {
+  const accessToken = localStorage.getItem('accessToken');
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
+  // const [newUserName, setNewUserName] = useState(user.username);
+  const [isConfirmDisabled, setIsConfirmDisabled] = useState(false);
+
+  const handleCancel = () => {
+    // 將editing狀態改為false
+    setIsEditing(false);
+  };
+  // TODO: 空值的機制
+  const handleConfirm = async () => {
+    if (userName !== null) {
+      setNewUserNameInStore(userName);
+      setIsEditing(false);
+    } else {
+      setNewUserNameInStore(user.userName);
+    }
+    // 打api更改姓名 (當前在store的)
+    // 成功後就toast alert
+
+    const response = await api.updateUserName(accessToken, userName);
+    if (response !== 200) {
+      await Toast.fire({
+        icon: 'warning',
+        title: `Something went wrong, please change your username again`,
+      });
+    } else if (response === 200) {
+      await Toast.fire({
+        icon: 'success',
+        title: `Change name to "${userName}"`,
+      });
+    }
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const valueChangeHandler = (event) => {
+    // setNewUserName(event.target.value);
+    setNewUserNameInStore(event.target.value);
+  };
+
+  // 若為空值則無法按下confirm
 
   return (
     <Card
@@ -62,18 +120,47 @@ function Profile({ user }) {
       {/* 標題 */}
       {/* <Typography gutterBottom variant="h3"> */}
       {isEditing ? (
-        <TextField
-          sx={{
-            mt: 2,
-            mb: 1,
-          }}
-          size="small"
-          defaultValue={user.usernam}
-        />
+        <Box
+          display="flex"
+          justifyContent="center"
+          sx={{ alignItems: 'center', align: 'center' }}
+        >
+          <TextField
+            sx={{
+              mt: 2,
+              mb: 1,
+            }}
+            size="small"
+            // 這邊也要從store來
+            defaultValue={userName}
+            onChange={valueChangeHandler}
+            autoFocus
+            required
+          />
+          <Tooltip title="Username can not be null">
+            <span>
+              <IconButton onClick={handleConfirm} disabled={isConfirmDisabled}>
+                <CheckIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <IconButton onClick={handleCancel}>
+            <ClearIcon />
+          </IconButton>
+        </Box>
       ) : (
-        <Typography gutterBottom variant="h3">
-          {user.username}
-        </Typography>
+        <Box
+          display="flex"
+          justifyContent="center"
+          sx={{ alignItems: 'center', align: 'center' }}
+        >
+          <Typography gutterBottom variant="h3">
+            {userName}
+          </Typography>
+          <IconButton onClick={handleEdit}>
+            <EditIcon />
+          </IconButton>
+        </Box>
       )}
       {/* // {user.username} */}
       {/* </Typography> */}
@@ -181,4 +268,12 @@ function Profile({ user }) {
   );
 }
 
-export default Profile;
+const mapStoreStateToProps = ({ auth }) => {
+  return { ...auth };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(mapStoreStateToProps, mapActionsToProps)(Profile);

@@ -190,12 +190,23 @@ const dislikeCard = async (data) => {
 
 const getUserProfile = async (token) => {
   try {
-    console.log('api.js有街道嗎', token);
     return await apiClient.get('/friend/userProfile', {
       headers: {
         authorization: token,
       },
     });
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
+const updateUserName = async (accessToken, userName) => {
+  try {
+    const response = await apiClient.post('/auth/username', {
+      token: accessToken,
+      username: userName,
+    });
+    return response.status;
   } catch (err) {
     return { error: true, err };
   }
@@ -218,4 +229,5 @@ export {
   exportToNotion,
   fetchCardByCategory,
   getUserProfile,
+  updateUserName,
 };

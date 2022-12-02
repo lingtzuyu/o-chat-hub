@@ -29,6 +29,7 @@ const initState = {
   addOrDeleteCardChange: 'test',
   isCancelButtonDisabeld: true,
   // lastFiveCards: [],
+  currentCategoryParams: null,
 };
 
 const reducer = (state = initState, action) => {
@@ -128,12 +129,12 @@ const reducer = (state = initState, action) => {
         isCancelButtonDisabeld: action.isCancelButtonDisabeld,
       };
     }
-    // case cardActions.SET_LAST_FIVE_CARDS: {
-    //   return {
-    //     ...state,
-    //     lastFiveCards: action.lastFiveCards,
-    //   };
-    // }
+    case cardActions.SET_CURRENT_CATEGORY: {
+      return {
+        ...state,
+        currentCategoryParams: action.currentCategoryParams,
+      };
+    }
 
     default:
       return state;

@@ -4,6 +4,7 @@ import { showAlert } from './alert_actions';
 const authActions = {
   // 定義redux action
   SET_USER_DETAILS: 'AUTH.SET_USER_DETAILS',
+  SET_USERNAME: 'AUTH.SET_USERNAME',
 };
 
 // redux 分發
@@ -16,7 +17,14 @@ const getActions = (dispatch) => {
     setUserDetails: (userDetails) => {
       dispatch(setUserDetails(userDetails));
     },
+    setNewUserNameInStore: (userName) => {
+      dispatch(setNewUserNameInStore(userName));
+    },
   };
+};
+
+export const setNewUserNameInStore = (userName) => {
+  return { type: authActions.SET_USERNAME, userName: userName };
 };
 
 // This needs to be exported to auth_reducers later

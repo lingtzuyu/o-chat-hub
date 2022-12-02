@@ -1,5 +1,6 @@
 // 改變state的唯一方法，就是透過action
 // https://codesandbox.io/s/0vm2w0k9r0?file=/src/actions/todo.actions.js:4-10
+import { ActionTypes } from '@mui/base';
 import * as api from '../../api';
 
 export const cardActions = {
@@ -23,6 +24,7 @@ export const cardActions = {
   SET_CARDS_BY_CATEGORY: 'CARDS.SET_CARDS_BY_CATEGORY',
   ADD_DELETE_CARD_CHANGE: 'CARDS.ADD_DELETE_CARD_CHANGE',
   SET_CANCEL_BUTTON_DISABLED: 'CARDS.SET_CANCEL_BUTTON_DISABLED',
+  SET_CURRENT_CATEGORY: 'CARDS.SET_CURRETN_CATEGORY',
   // SET_LAST_FIVE_CARDS: 'CARDS.SET_LAST_FIVE_CARDS',
 };
 
@@ -88,28 +90,19 @@ export const getActions = (dispatch) => {
     setCancelButtonDisable: (data) => {
       dispatch(setCancelButtonDisable(data));
     },
-    // setLastFiveCards: (data) => {
-    //   dispatch(setLastFiveCards(data));
-    // },
+    setCurrentCategory: (category) => {
+      dispatch(setCurrentCategory(category));
+    },
     // fechLastFiveCard: (data) => {
     //   dispatch(fechLastFiveCard(data));
     // },
   };
 };
 
-// // 帶token
-// export const fechLastFiveCard = (data) => {
-//   return async (dispatch) => {
-//     const lastFiveCards = api.getLastFiveCard(data);
-//     dispatch(setLastFiveCards(lastFiveCards));
-//   };
-// };
-
-// // set Last five cards
-// export const setLastFiveCards = (data) => ({
-//   type: cardActions.SET_LAST_FIVE_CARDS,
-//   lastFiveCards: data,
-// });
+export const setCurrentCategory = (category) => ({
+  type: cardActions.SET_CURRENT_CATEGORY,
+  currentCategoryParams: category,
+});
 
 // set cancel button disabled
 export const setCancelButtonDisable = (data) => ({

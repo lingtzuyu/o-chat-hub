@@ -90,16 +90,22 @@ const roles = [
   { label: 'Life', value: 'life' },
 ];
 
-function CardTopBar({ setCardsListByCategory }) {
+function CardTopBar({
+  setCardsListByCategory,
+  setCurrentCategory,
+  currentCategoryParams,
+}) {
   const token = localStorage.getItem('accessToken');
-  const [currentTab, setCurrentTab] = useState('all');
+  const [currentTab, setCurrentTab] = useState(currentCategoryParams);
 
   const handleTabsChange = (_event, value) => {
     setCurrentTab(value);
     // 將?category= 設為該value，可以設很多種，例如keyword
+    console.log(value);
     searchParams.set('category', value);
     // 改變url
     setSearchParams(searchParams);
+    setCurrentCategory(value);
   };
 
   const fetchCardByCategory = async () => {

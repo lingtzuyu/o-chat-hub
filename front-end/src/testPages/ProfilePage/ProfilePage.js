@@ -16,6 +16,9 @@ import Scrollbar from '../../shared/components/Scrollbar';
 import Profile from './Profle';
 import { acceptInvite } from '../../api';
 
+import { getActions } from '../../store/actions/auth_actions';
+import { connect } from 'react-redux';
+
 const RootWrapper = styled(Box)(
   ({ theme }) => `
        height: calc(100vh - ${theme.header.height});
@@ -97,7 +100,7 @@ const DrawerWrapperMobile = styled(Drawer)(
 `
 );
 
-function DashboardProfile() {
+function DashboardProfile({ setNewUserNameInStore }) {
   const theme = useTheme();
   const accessToken = localStorage.getItem('accessToken');
   const [user, setUser] = useState([]);
@@ -112,6 +115,8 @@ function DashboardProfile() {
     const response = await api.getUserProfile(accessToken);
     setUser(response.data.result);
     console.log(response.data.result);
+    console.log(response.data.result.username);
+    setNewUserNameInStore(response.data.result.username);
   };
 
   useEffect(() => {
@@ -190,4 +195,8 @@ function DashboardProfile() {
   );
 }
 
-export default DashboardProfile;
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(null, mapActionsToProps)(DashboardProfile);

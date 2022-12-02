@@ -127,7 +127,26 @@ const socketAuthVerified = (socket, next) => {
   next();
 };
 
-// TODO: 這邊要過給socket.server建立連線時來用 (建立連線前驗證)
+const updateNewUsername = async (req, res) => {
+  const { mail } = req.user;
+  const { username } = req.body;
+  console.log('controller', username, 'rsdf');
+  if (!username) {
+    return res.status(400).send("username can't be null");
+  }
+  try {
+    const updateUserName = await User.upateNewUsername(username, mail);
+    console.log(updateUserName);
+    if (!updateUserName) {
+      return res.status(400).send('Internal Error');
+    }
+
+    res.status(200).json({ result: 'username updated', newUserName: username });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ err: 'Internal Erro' });
+  }
+};
 
 module.exports = {
   register,
@@ -136,4 +155,5 @@ module.exports = {
   loginSchema,
   verifiedAuth,
   socketAuthVerified,
+  updateNewUsername,
 };
