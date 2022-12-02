@@ -36,7 +36,8 @@ import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import ContactSupportTwoToneIcon from '@mui/icons-material/ContactSupportTwoTone';
 import AddLinkTwoToneIcon from '@mui/icons-material/AddLinkTwoTone';
 import LinkOffTwoToneIcon from '@mui/icons-material/LinkOffTwoTone';
-
+import InsertLinkTwoToneIcon from '@mui/icons-material/InsertLinkTwoTone';
+import LinkIcon from '@mui/icons-material/Link';
 import { connect } from 'react-redux';
 import { getActions } from '../../store/actions/auth_actions';
 import * as api from '../../api';
@@ -138,7 +139,16 @@ function Profile({ user, userName, setNewUserNameInStore }) {
 
   // Notion Connect
   const handleNotionConnect = () => {
+    // TODO: 待刪除，已經用直連代替了
     console.log('test');
+  };
+
+  const handleNotionDisconnect = () => {
+    // 清 user 以及 notion  accesst兩個資料庫
+  };
+
+  const handleGoToLinkedNotion = () => {
+    window.location.href = 'www.google.com';
   };
 
   const lastLoginLocalDate = new Date(user.lastlogin).toDateString();
@@ -323,13 +333,26 @@ function Profile({ user, userName, setNewUserNameInStore }) {
                   )}
                   {/* // <Text color="success">{user.notionConnect}</Text> */}
                   {/* </Typography> */}
-                  <Box>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                  >
                     {user.notionConnect === 1 ? (
-                      <Tooltip title="disconnect to Notion">
-                        <IconButton onClick={handleNotionConnect}>
-                          <LinkOffTwoToneIcon />
-                        </IconButton>
-                      </Tooltip>
+                      <Box>
+                        <Tooltip title="Go to linked notion">
+                          <Link href={`${user.notiondblink}`}>
+                            <IconButton>
+                              <InsertLinkTwoToneIcon />
+                            </IconButton>
+                          </Link>
+                        </Tooltip>
+                        <Tooltip title="disconnect to Notion">
+                          <IconButton onClick={handleNotionDisconnect}>
+                            <LinkOffTwoToneIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
                     ) : (
                       <Tooltip title="connect to Notion">
                         <Link

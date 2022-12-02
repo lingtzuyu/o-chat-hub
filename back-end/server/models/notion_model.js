@@ -12,6 +12,8 @@ const notionTokenCheck = async (userId) => {
 
 // 存入針對某notion頁面(db)的accessToken以及關連到的頁面(db) id
 
+// TODO:　這邊這幾個動作要加上交易
+
 const saveNotionTokenAndPageId = async (code, userId) => {
   // 帶著code去加上webApp的驗證資料取得notion accessToken
   try {
@@ -41,9 +43,10 @@ const saveNotionTokenAndPageId = async (code, userId) => {
       },
       data: { filter: { property: 'object', value: 'database' } },
     });
-    console.log(data);
+    console.log('notion回來的', data);
     const notionDatabaseid = data?.results[0]?.id;
     console.log('後端DB ID', notionDatabaseid);
+    const notionDBLink = data?.results[0]?.url;
 
     // 存入SQL DB
     const insertNotionTokenQuery =
@@ -54,8 +57,13 @@ const saveNotionTokenAndPageId = async (code, userId) => {
       notionDatabaseid,
     ]);
 
+    // 存入notion URL
+    const updateURLinUser =
+      'UPDATE user set notionConnect = 1, notiondblink = ? WHERE id = ? ';
+    await sqlDB.query(updateURLinUser, [notionDBLink, userId]);
+
     // // 返回DB id, accessToken給前端
-    return result;
+    return data?.results[0];
   } catch (err) {
     console.log('notion API error', err);
   }

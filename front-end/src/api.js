@@ -159,12 +159,14 @@ const fetchCardByCategory = async (category, token) => {
 };
 
 // get notion accessToken to certain DB
-const getNotionToken = async (code) => {
+const getNotionToken = async (code, token) => {
   try {
-    const response = await apiClient.get(`/notion/${code}`, {
-      params: { code: code },
+    const response = await apiClient.post(`/notion/token`, {
+      code: code,
+      token: token,
     });
-    return response;
+    console.log('這邊的res', response);
+    return response.status;
   } catch (err) {
     console.log(err);
     return { error: true, err };

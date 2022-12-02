@@ -18,8 +18,12 @@ router
   );
 
 router
-  .route('/notion/:code')
-  .get(wrapAsync(verifiedAuth), wrapAsync(getNotionToken));
+  .route('/notion/token')
+  .post(
+    wrapAsync(verifiedAuth),
+    wrapAsync(checkNotionToken),
+    wrapAsync(getNotionToken)
+  );
 
 // router.route('/notion/:code').get(async (req, res) => {
 //   const { code } = req.params;

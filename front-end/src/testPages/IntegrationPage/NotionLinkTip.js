@@ -61,12 +61,37 @@ const Toast = Swal.mixin({
 const NotionLinkTip = () => {
   const theme = useTheme();
   const params = new URL(window.document.location).searchParams;
+  const token = localStorage.getItem('accessToken');
   const code = params.get('code');
+  const webRoute = process.env.REACT_APP_WEB_ROUTE;
+  console.log('AAAAAAAAAAAAAA', webRoute);
 
   const handleSaveNotionToken = async () => {
-    const result = await api.getNotionToken(code);
-    console.log(code);
-    console.log(result);
+    const result = await api.getNotionToken(code, token);
+    // console.log('前端', code);
+
+    if (result !== 200) {
+      await Toast.fire({
+        icon: 'warning',
+        title:
+          'Failed to link Notion, please try again (or you have already linked)!',
+      });
+      window.location.pathname = `/profile`;
+    } else {
+      await Toast.fire({
+        icon: 'success',
+        title: 'Notion linked',
+      });
+      window.location.pathname = `/profile`;
+    }
+  };
+
+  const handleCancel = () => {
+    Toast.fire({
+      icon: 'warning',
+      title: 'Cancel connection, Notion not connected yet!',
+    });
+    window.location.pathname = `/profile`;
   };
 
   return (
@@ -102,11 +127,11 @@ const NotionLinkTip = () => {
           {'Press confirm to connect your account with Notion'}
         </Typography>
       </Box>
-      <Divider
+      {/* <Divider
         sx={{
           mt: 3,
         }}
-      />
+      /> */}
       <Stack
         sx={{
           mt: 2.5,
@@ -127,7 +152,11 @@ const NotionLinkTip = () => {
           </Button>
         </Box>
         <Box marginLeft="30px">
-          <Button startIcon={<ClearIcon />} variant="contained">
+          <Button
+            startIcon={<ClearIcon />}
+            variant="contained"
+            onClick={handleCancel}
+          >
             {'Cancel'}
           </Button>
         </Box>
