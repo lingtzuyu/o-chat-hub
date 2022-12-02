@@ -19,8 +19,7 @@ router
 // login route
 router.route('/login').post(validator.body(loginSchema), wrapAsync(login));
 
-// test router => 經過verifiedAuth這個middleware for 身分驗證後才會往下pass
-
+// update userName
 router.route('/auth/username').post(verifiedAuth, wrapAsync(updateNewUsername));
 
 module.exports = router;

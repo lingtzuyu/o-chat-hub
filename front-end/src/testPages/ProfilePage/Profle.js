@@ -37,6 +37,7 @@ import ContactSupportTwoToneIcon from '@mui/icons-material/ContactSupportTwoTone
 import AddLinkTwoToneIcon from '@mui/icons-material/AddLinkTwoTone';
 import LinkOffTwoToneIcon from '@mui/icons-material/LinkOffTwoTone';
 import InsertLinkTwoToneIcon from '@mui/icons-material/InsertLinkTwoTone';
+import AutorenewTwoToneIcon from '@mui/icons-material/AutorenewTwoTone';
 import LinkIcon from '@mui/icons-material/Link';
 import { connect } from 'react-redux';
 import { getActions } from '../../store/actions/auth_actions';
@@ -93,6 +94,7 @@ function Profile({ user, userName, setNewUserNameInStore }) {
   const notionOauthClient = process.env.REACT_APP_NOTION_OAUTHID;
   console.log(notionOauthClient);
   const accessToken = localStorage.getItem('accessToken');
+  const userId = localStorage.getItem('userId');
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
   // const [newUserName, setNewUserName] = useState(user.username);
@@ -143,12 +145,66 @@ function Profile({ user, userName, setNewUserNameInStore }) {
     console.log('test');
   };
 
-  const handleNotionDisconnect = () => {
-    // 清 user 以及 notion  accesst兩個資料庫
+  // TODO: 待改，不能從local拿，不安全
+  const handleNotionDisconnect = async () => {
+    // 改 user 狀態 以及 notionaccess狀態
+    Swal.fire({
+      title: 'Are you sure?',
+      html: `<p>The following Notion will be disconnected from your account!<p><b>Notion Link:</b> <a href = ${user.notiondblink} >${user.notiondblink}</a></p>`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Remove',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const responseCode = await api.setNotionDisconnect(userId, accessToken);
+        if (responseCode !== 200) {
+          Toast.fire({
+            icon: 'warning',
+            title: `Something went wrong, please try again`,
+          });
+        }
+        Toast.fire({
+          icon: 'success',
+          title: `${user.notiondblink} has been disconnected`,
+        });
+        window.location.pathname = '/profile';
+      }
+    });
   };
 
-  const handleGoToLinkedNotion = () => {
-    window.location.href = 'www.google.com';
+  const handleRecover = () => {
+    // 拿userId及token去回復
+    console.log(user.notiondblink);
+    Swal.fire({
+      title: 'Recover the previous notion DB',
+      html: `<p>The previous Notion will be recovered and linked to your account again!<p><b>Notion Link:</b> <a href = ${user.notiondblink} >${user.notiondblink}</a></p>`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Recover',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const responseCode = await api.recoverPreviousNotionConnect(
+          userId,
+          accessToken
+        );
+        console.log(responseCode);
+        if (responseCode !== 200) {
+          Toast.fire({
+            icon: 'warning',
+            title: `Something went wrong, please try again`,
+          });
+        }
+        Toast.fire({
+          icon: 'success',
+          title: `${user.notiondblink} has been reconnected`,
+        });
+        window.location.pathname = '/profile';
+      }
+    });
   };
 
   const lastLoginLocalDate = new Date(user.lastlogin).toDateString();
@@ -354,15 +410,22 @@ function Profile({ user, userName, setNewUserNameInStore }) {
                         </Tooltip>
                       </Box>
                     ) : (
-                      <Tooltip title="connect to Notion">
-                        <Link
-                          href={`https://api.notion.com/v1/oauth/authorize?client_id=${notionOauthClient}&response_type=code&owner=user`}
-                        >
-                          <IconButton onClick={handleNotionConnect}>
-                            <AddLinkTwoToneIcon />
+                      <Box>
+                        <Tooltip title="Recover previous linked db">
+                          <IconButton onClick={handleRecover}>
+                            <AutorenewTwoToneIcon />
                           </IconButton>
-                        </Link>
-                      </Tooltip>
+                        </Tooltip>
+                        <Tooltip title="connect to Notion (build a new linked Notion db)">
+                          <Link
+                            href={`https://api.notion.com/v1/oauth/authorize?client_id=${notionOauthClient}&response_type=code&owner=user`}
+                          >
+                            <IconButton onClick={handleNotionConnect}>
+                              <AddLinkTwoToneIcon />
+                            </IconButton>
+                          </Link>
+                        </Tooltip>
+                      </Box>
                     )}
                   </Box>
                 </CardActionAreaWrapper>

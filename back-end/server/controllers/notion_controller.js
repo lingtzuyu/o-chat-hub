@@ -3,7 +3,39 @@ const Notion = require('../models/notion_model');
 const Friend = require('../models/friend_model');
 const Card = require('../models/card_model');
 
-const oauthClientId = process.env.NOTION_CLIENT_ID;
+const recoverNotionToken = async (req, res) => {
+  const { userId } = req.body;
+  try {
+    const result = await Notion.recoverNotionConnect(userId);
+    const { recoveredDBId } = result;
+    console.log(result);
+    if (result.status === 'sucess Recovered') {
+      res.status(200).send({ result: 'recover successfully', recoveredDBId });
+    } else {
+      return res.status(500).send('Interanl Error');
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send('Internal Error');
+  }
+};
+
+const removeNotionToken = async (req, res) => {
+  const { userId } = req.body;
+  console.log(userId);
+  try {
+    const result = await Notion.removeNotionConnect(userId);
+    const removedDBId = result.removedDB;
+    if (result.status === 'sucess Removed') {
+      res.status(200).send({ result: 'remove successfully', removedDBId });
+    } else {
+      return res.status(500).send('Interanl Error');
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send('Internal Error');
+  }
+};
 
 const getNotionToken = async (req, res) => {
   const { code } = req.body;
@@ -115,4 +147,6 @@ module.exports = {
   exportToNotion,
   checkNotionToken,
   checkNotionTokenWhenExporting,
+  removeNotionToken,
+  recoverNotionToken,
 };

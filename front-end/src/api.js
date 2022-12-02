@@ -8,13 +8,33 @@ const apiClient = axios.create({
   timeout: 30000,
 });
 
-// save notion token
-// const saveNotionToken = async (code) => {
-//   try {
-//   } catch (err) {
-//     return { error: true, err };
-//   }
-// };
+// recover (change status) notion link
+const recoverPreviousNotionConnect = async (userId, token) => {
+  try {
+    const response = await apiClient.post('/notion/recover', {
+      userId: userId,
+      token: token,
+    });
+    return response.status;
+  } catch (err) {
+    console.log(err);
+    return { error: true, err };
+  }
+};
+
+// remove (change status) notoin link
+const setNotionDisconnect = async (userId, token) => {
+  try {
+    const response = await apiClient.post('/notion/removal', {
+      userId: userId,
+      token: token,
+    });
+    return response.status;
+  } catch (err) {
+    console.log(err);
+    return { error: true, err };
+  }
+};
 
 // export to Notion (正式)
 const exportToNotion = async (data) => {
@@ -191,6 +211,7 @@ const dislikeCard = async (data) => {
   }
 };
 
+// 把getUserProfile移到homepage
 const getUserProfile = async (token) => {
   try {
     return await apiClient.get('/friend/userProfile', {
@@ -233,4 +254,6 @@ export {
   fetchCardByCategory,
   getUserProfile,
   updateUserName,
+  setNotionDisconnect,
+  recoverPreviousNotionConnect,
 };

@@ -5,6 +5,7 @@ const authActions = {
   // 定義redux action
   SET_USER_DETAILS: 'AUTH.SET_USER_DETAILS',
   SET_USERNAME: 'AUTH.SET_USERNAME',
+  SET_USERINFO: 'AUTH.SET_USERINFO',
 };
 
 // redux 分發
@@ -20,7 +21,27 @@ const getActions = (dispatch) => {
     setNewUserNameInStore: (userName) => {
       dispatch(setNewUserNameInStore(userName));
     },
+    getUserInfoDetail: (token) => {
+      dispatch(getUserInfoDetail(token));
+    },
   };
+};
+
+export const getUserInfoDetail = (token) => {
+  return async (dispatch) => {
+    const response = await api.getUserProfile(token);
+    if (response.error) {
+      console.log(response?.exception?.response?.data);
+    } else {
+      console.log('getUserInfo', response.data.result);
+      dispatch(setUserInfoDetail(response.data.result));
+      return response.status;
+    }
+  };
+};
+
+export const setUserInfoDetail = (response) => {
+  return { type: authActions.SET_USERINFO, userInfoData: response };
 };
 
 export const setNewUserNameInStore = (userName) => {

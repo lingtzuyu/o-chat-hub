@@ -7,7 +7,19 @@ const {
   exportToNotion,
   checkNotionToken,
   checkNotionTokenWhenExporting,
+  removeNotionToken,
+  recoverNotionToken,
 } = require('../controllers/notion_controller');
+
+// recover notion連結
+router
+  .route('/notion/recover')
+  .post(wrapAsync(verifiedAuth), wrapAsync(recoverNotionToken));
+
+// 移除notion連結
+router
+  .route('/notion/removal')
+  .post(wrapAsync(verifiedAuth), wrapAsync(removeNotionToken));
 
 // 1. mail 2.解token並拿id確認notion相關token 3.  .save .
 router
