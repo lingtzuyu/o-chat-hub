@@ -90,6 +90,18 @@ const cardFakeData = [
     Liked: true,
     Transferred: true,
     Photo: Sundar,
+    FROM: 'Sundar Pitchai',
+    Title: 'This is note title',
+    Notes:
+      '<ol><li>Testing first</li><li>testing 2nd</li><li>testing 3rd</li></ol>',
+    MessageRecords: [
+      { sender: 'Sundar Pithchai', body: 'hahaha' },
+      { sender: 'Sundar Pithchai', body: 'hahaha2' },
+      { sender: 'Sundar Pithchai', body: 'hahaha3' },
+      { sender: 'Sundar Pithchai', body: 'hahaha4' },
+    ],
+    NoteTime: '2022-11-30',
+    NoteId: '63872693fe48de094751344a',
   },
 ];
 
@@ -697,7 +709,7 @@ function CardDetail() {
                       />
                     </Box>
 
-                    <Typography variant="h3">{'Sundar Pitchai'}</Typography>
+                    <Typography variant="h3">{cardFakeData[0].FROM}</Typography>
 
                     {/* <Typography
                       sx={{
@@ -734,7 +746,7 @@ function CardDetail() {
                     >
                       <Box>
                         <Tooltip title="Chat">
-                          <IconButton>
+                          <IconButton color="primary" size="small">
                             <SmsTwoToneIcon />
                           </IconButton>
                         </Tooltip>
@@ -748,7 +760,7 @@ function CardDetail() {
         </Box>
         {/* 標題 */}
         <Typography gutterBottom variant="h3">
-          Alex Ling
+          {cardFakeData[0].Title}
         </Typography>
         {/* Tag生成，如果有需要要map出來 [tags] */}
         {/* <Box py={2}>
@@ -759,17 +771,20 @@ function CardDetail() {
         <Label color="error">Angular</Label>
       </Box> */}
         {/* 筆記內文 */}
-        <Typography
-          sx={{
-            px: { xs: 4, md: 8 },
-          }}
-          variant="subtitle2"
-        >
-          {
-            'BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO'
-          }
-          .
-        </Typography>
+        <Box>
+          <Typography
+            sx={{
+              px: { xs: 4, md: 8 },
+            }}
+            variant="inherit"
+          >
+            <div
+              dangerouslySetInnerHTML={{
+                __html: cardFakeData[0].Notes,
+              }}
+            />
+          </Typography>
+        </Box>
         <Divider
           sx={{
             mt: 3,
@@ -778,27 +793,34 @@ function CardDetail() {
         <>
           <React.Fragment key={123}>
             <Divider />
-            <ListItem>
-              <ListItemAvatar>
-                {/* TODO: 目前沒有AVATAR */}
-                <Avatar alt="User" src={''} />
-              </ListItemAvatar>
-              <ListItemText
-                // TODO: 改成吃username
-                primary={<Text color="black">{'Sundar'}</Text>}
-                primaryTypographyProps={{
-                  variant: 'h5',
-                  // noWrap: true,
-                }}
-                secondary={
-                  'This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages '
-                }
-                secondaryTypographyProps={{
-                  variant: 'subtitle2',
-                  // noWrap: true,
-                }}
-              />
-            </ListItem>
+            <Stack spacing={2} marginTop="15px">
+              {cardFakeData[0].MessageRecords.map((message) => {
+                return (
+                  <>
+                    <Box display="flex" textAlign={'left'} padding="10px">
+                      <ListItemAvatar>
+                        {/* TODO: 目前沒有AVATAR */}
+                        <Avatar alt={message.sender} src={message.sender} />
+                      </ListItemAvatar>
+                      <ListItemText
+                        // TODO: 改成吃username
+                        primary={<Text color="black">{message.sender}</Text>}
+                        primaryTypographyProps={{
+                          variant: 'h5',
+                          // noWrap: true,
+                        }}
+                        secondary={message.body}
+                        secondaryTypographyProps={{
+                          variant: 'subtitle2',
+                          // noWrap: true,
+                        }}
+                      />
+                    </Box>
+                  </>
+                );
+              })}
+              {/*  */}
+            </Stack>
           </React.Fragment>
         </>
         {/* 這邊要放message from以及內文的itemList */}
@@ -819,29 +841,15 @@ function CardDetail() {
         >
           <Box>
             <Typography gutterBottom variant="h4">
-              2022-12-30
+              {cardFakeData[0].NoteTime}
             </Typography>
-            <Typography variant="subtitle2">{'新增時間'}</Typography>
+            <Typography variant="subtitle2">{'Note Time'}</Typography>
           </Box>
           <Box>
             <Typography gutterBottom variant="h4">
-              2022-12-30
+              {cardFakeData[0].NoteId}
             </Typography>
-            <Typography variant="subtitle2">{'新增時間'}</Typography>
-          </Box>
-          <Box>
-            <Typography gutterBottom variant="h4">
-              Sundar Pichai
-            </Typography>
-            <Typography variant="subtitle2">{'From'}</Typography>
-          </Box>
-          <Box>
-            <Typography gutterBottom variant="h4">
-              <Link href="#" variant="body2">
-                Notion Link
-              </Link>
-            </Typography>
-            <Typography variant="subtitle2">{'Exported'}</Typography>
+            <Typography variant="subtitle2">{'Note ID'}</Typography>
           </Box>
         </Stack>
       </Card>
