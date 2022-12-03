@@ -17,6 +17,9 @@ import {
   useTheme,
 } from '@mui/material';
 
+import { getActions } from '../../../store/actions/card_actions';
+import { connect } from 'react-redux';
+
 const RootWrapper = styled(Box)(
   ({ theme }) => `
        height: calc(100vh - ${theme.header.height});
@@ -98,7 +101,7 @@ const DrawerWrapperMobile = styled(Drawer)(
 `
 );
 
-export function CardPage() {
+export function CardPage({ cards }) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -158,12 +161,25 @@ export function CardPage() {
               }}
             >
               <Scrollbar>
-                <CardDetail></CardDetail>
-                <CardDetail></CardDetail>
-                <CardDetail></CardDetail>
-                <CardDetail></CardDetail>
-                <CardDetail></CardDetail>
-                <CardDetail></CardDetail>
+                {cards.map((card) => {
+                  const localNoteTime = new Date(card.NoteTime);
+                  const localDate = localNoteTime.toDateString();
+                  return (
+                    <CardDetail
+                      category={card.Category}
+                      from={card.FROM}
+                      fromMail={card.FromMail}
+                      title={card.Title}
+                      messageRecords={card.MessageRecords}
+                      notes={card.Notes}
+                      liked={card.Liked}
+                      transferred={card.Transferred}
+                      fromId={card.FromId}
+                      noteDate={localDate}
+                      mapId={card._id}
+                    />
+                  );
+                })}
               </Scrollbar>
             </Box>
           </ChatWindow>
@@ -180,4 +196,12 @@ export function CardPage() {
   );
 }
 
-export default CardPage;
+const mapStoreStateToProps = ({ auth, card }) => {
+  return { ...auth, ...card };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(mapStoreStateToProps, mapActionsToProps)(CardPage);

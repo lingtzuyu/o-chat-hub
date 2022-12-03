@@ -44,6 +44,12 @@ import SmsTwoToneIcon from '@mui/icons-material/SmsTwoTone';
 // mock
 import Sundar from '../../../shared/images/mock/sundar_head.jpg';
 
+// alt
+import AltHeadshot from '../../../shared/images/alt/alt_headshot.jpg';
+
+import { getActions } from '../../../store/actions/card_actions';
+import { connect } from 'react-redux';
+
 const CardActions = styled(Box)(
   ({ theme }) => `
     position: absolute;
@@ -105,8 +111,21 @@ const cardFakeData = [
   },
 ];
 
-function CardDetail() {
+function CardDetail({
+  category,
+  from,
+  fromMail,
+  title,
+  messageRecords,
+  notes,
+  liked,
+  transferred,
+  fromId,
+  noteDate,
+  mapId,
+}) {
   const theme = useTheme();
+  console.log(noteDate);
 
   return (
     <Box marginTop={'30px'} padding={'10px'}>
@@ -125,7 +144,7 @@ function CardDetail() {
             <Grid container spacing={4}>
               {/* 分類 */}
               <Grid item xs={12} sm={3}>
-                {cardFakeData[0].Category === 'work' ? (
+                {category === 'work' ? (
                   <Card variant="outlined" sx={{ backgroundColor: '#EAF6F6' }}>
                     <CardActionAreaWrapper
                       sx={{
@@ -221,7 +240,7 @@ function CardDetail() {
                     </CardActionAreaWrapper>
                   </Card>
                 ) : null}
-                {cardFakeData[0].Category === 'life' ? (
+                {category === 'life' ? (
                   <Card variant="outlined" sx={{ backgroundColor: '#C4DDFF' }}>
                     <CardActionAreaWrapper
                       sx={{
@@ -285,8 +304,8 @@ function CardDetail() {
                     </CardActionAreaWrapper>
                   </Card>
                 ) : null}
-                {cardFakeData[0].Category === 'knowledge' ? (
-                  <Card variant="outlined" sx={{ backgroundColor: '#EAF6F6' }}>
+                {category === 'knowledge' ? (
+                  <Card variant="outlined" sx={{ backgroundColor: '#CFF5E7' }}>
                     <CardActionAreaWrapper
                       sx={{
                         p: 2,
@@ -384,7 +403,7 @@ function CardDetail() {
               </Grid>
               {/* 喜歡 */}
               <Grid item xs={12} sm={3}>
-                {cardFakeData[0].Liked === true ? (
+                {liked === true ? (
                   <Card variant="outlined">
                     <CardActionAreaWrapper
                       sx={{
@@ -409,54 +428,28 @@ function CardDetail() {
                       variant="subtitle2" */}
 
                       {/* TODO: 待搬出去 */}
+                      <Box
+                        marginTop="10px"
+                        display="flex"
+                        alignItems="flex-start"
+                        justifyContent={'center'}
+                      >
+                        {/* <DotLegend
+                            style={{
+                              background: `${theme.colors.success.main}`,
+                            }}
+                          /> */}
+                        <Typography
+                          sx={{
+                            fontSize: `${theme.typography.pxToRem(11)}`,
+                            lineHeight: 1,
+                          }}
+                          variant="subtitle2"
+                        >
+                          <Text color="#111145">Press to remove from read</Text>
+                        </Typography>
+                      </Box>
 
-                      {cardFakeData[0].Liked === true ? (
-                        <Box
-                          marginTop="10px"
-                          display="flex"
-                          alignItems="flex-start"
-                          justifyContent={'center'}
-                        >
-                          {/* <DotLegend
-                            style={{
-                              background: `${theme.colors.success.main}`,
-                            }}
-                          /> */}
-                          <Typography
-                            sx={{
-                              fontSize: `${theme.typography.pxToRem(11)}`,
-                              lineHeight: 1,
-                            }}
-                            variant="subtitle2"
-                          >
-                            <Text color="#111145">
-                              Press to remove from read
-                            </Text>
-                          </Typography>
-                        </Box>
-                      ) : (
-                        <Box
-                          marginTop="10px"
-                          display="flex"
-                          alignItems="flex-start"
-                          justifyContent={'center'}
-                        >
-                          {/* <DotLegend
-                            style={{
-                              background: `${theme.colors.success.main}`,
-                            }}
-                          /> */}
-                          <Typography
-                            sx={{
-                              fontSize: `${theme.typography.pxToRem(11)}`,
-                              lineHeight: 1,
-                            }}
-                            variant="subtitle2"
-                          >
-                            <Text color="#111145">Press to add to like</Text>
-                          </Typography>
-                        </Box>
-                      )}
                       {/* // <Text color="success">{user.notionConnect}</Text> */}
                       {/* </Typography> */}
                       <Box
@@ -465,23 +458,13 @@ function CardDetail() {
                         alignItems="center"
                         marginTop="10px"
                       >
-                        {cardFakeData[0].Liked === true ? (
-                          <Box>
-                            <Tooltip title="Remove from read">
-                              <IconButton color="primary" size="small">
-                                <FavoriteBorderTwoToneIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Box>
-                        ) : (
-                          <Box>
-                            <Tooltip title="Add to like">
-                              <IconButton color="primary" size="small">
-                                <FavoriteTwoToneIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Box>
-                        )}
+                        <Box>
+                          <Tooltip title="Remove from read">
+                            <IconButton color="primary" size="small">
+                              <FavoriteBorderTwoToneIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
                       </Box>
                     </CardActionAreaWrapper>
                   </Card>
@@ -502,89 +485,48 @@ function CardDetail() {
 
                       <Typography variant="h3">{'Not read yet'}</Typography>
 
-                      {/* <Typography
-                  sx={{
-                    fontSize: `${theme.typography.pxToRem(11)}`,
-                    lineHeight: 1,
-                  }}
-                  variant="subtitle2" */}
-
-                      {/* TODO: 待搬出去 */}
-
-                      {cardFakeData[0].Liked === false ? (
-                        <Box
-                          marginTop="10px"
-                          display="flex"
-                          alignItems="flex-start"
-                          justifyContent={'center'}
-                        >
-                          {/* <DotLegend
+                      <Box
+                        marginTop="10px"
+                        display="flex"
+                        alignItems="flex-start"
+                        justifyContent={'center'}
+                      >
+                        {/* <DotLegend
                         style={{
                           background: `${theme.colors.success.main}`,
                         }}
                       /> */}
-                          <Typography
-                            sx={{
-                              fontSize: `${theme.typography.pxToRem(11)}`,
-                              lineHeight: 1,
-                            }}
-                            variant="subtitle2"
-                          >
-                            <Text color="#111145">Press to add to read</Text>
-                          </Typography>
-                        </Box>
-                      ) : (
-                        <Box
-                          marginTop="10px"
-                          display="flex"
-                          alignItems="flex-start"
-                          justifyContent={'center'}
+                        <Typography
+                          sx={{
+                            fontSize: `${theme.typography.pxToRem(11)}`,
+                            lineHeight: 1,
+                          }}
+                          variant="subtitle2"
                         >
-                          <Typography
-                            sx={{
-                              fontSize: `${theme.typography.pxToRem(11)}`,
-                              lineHeight: 1,
-                            }}
-                            variant="subtitle2"
-                          >
-                            <Text color="#111145">
-                              Press to remove from read
-                            </Text>
-                          </Typography>
-                        </Box>
-                      )}
-                      {/* // <Text color="success">{user.notionConnect}</Text> */}
-                      {/* </Typography> */}
+                          <Text color="#111145">Press to add to read</Text>
+                        </Typography>
+                      </Box>
+
                       <Box
                         display="flex"
                         flexDirection="column"
                         alignItems="center"
                         marginTop="10px"
                       >
-                        {cardFakeData[0].Liked === false ? (
-                          <Box>
-                            <Tooltip title="Add to read">
-                              <IconButton color="primary" size="small">
-                                <FavoriteTwoToneIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Box>
-                        ) : (
-                          <Box>
-                            <Tooltip title="Remove from read">
-                              <IconButton color="primary" size="small">
-                                <FavoriteBorderTwoToneIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Box>
-                        )}
+                        <Box>
+                          <Tooltip title="Add to read">
+                            <IconButton color="primary" size="small">
+                              <FavoriteTwoToneIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
                       </Box>
                     </CardActionAreaWrapper>
                   </Card>
                 )}
               </Grid>
               <Grid item xs={12} sm={3}>
-                {cardFakeData[0].Transferred === true ? (
+                {transferred === true ? (
                   <Card variant="outlined" sx={{ backgroundColor: '#CEF1F5' }}>
                     <CardActionAreaWrapper
                       sx={{
@@ -703,13 +645,14 @@ function CardDetail() {
                   >
                     <Box>
                       <img
-                        src={Sundar}
+                        // TODO: 這邊待處理
+                        src={from}
+                        alt={Sundar}
                         style={{ width: 60, height: 60, borderRadius: 10 }}
-                        alt="take-notes.chat"
                       />
                     </Box>
 
-                    <Typography variant="h3">{cardFakeData[0].FROM}</Typography>
+                    <Typography variant="h3">{from}</Typography>
 
                     {/* <Typography
                       sx={{
@@ -760,7 +703,7 @@ function CardDetail() {
         </Box>
         {/* 標題 */}
         <Typography gutterBottom variant="h3">
-          {cardFakeData[0].Title}
+          {title}
         </Typography>
         {/* Tag生成，如果有需要要map出來 [tags] */}
         {/* <Box py={2}>
@@ -780,7 +723,7 @@ function CardDetail() {
           >
             <div
               dangerouslySetInnerHTML={{
-                __html: cardFakeData[0].Notes,
+                __html: notes,
               }}
             />
           </Typography>
@@ -791,10 +734,10 @@ function CardDetail() {
           }}
         />
         <>
-          <React.Fragment key={123}>
+          <React.Fragment key={mapId}>
             <Divider />
             <Stack spacing={2} marginTop="15px">
-              {cardFakeData[0].MessageRecords.map((message) => {
+              {messageRecords.map((message) => {
                 return (
                   <>
                     <Box display="flex" textAlign={'left'} padding="10px">
@@ -841,13 +784,13 @@ function CardDetail() {
         >
           <Box>
             <Typography gutterBottom variant="h4">
-              {cardFakeData[0].NoteTime}
+              {noteDate}
             </Typography>
             <Typography variant="subtitle2">{'Note Time'}</Typography>
           </Box>
           <Box>
             <Typography gutterBottom variant="h4">
-              {cardFakeData[0].NoteId}
+              {mapId}
             </Typography>
             <Typography variant="subtitle2">{'Note ID'}</Typography>
           </Box>
@@ -857,4 +800,12 @@ function CardDetail() {
   );
 }
 
-export default CardDetail;
+const mapStoreStateToProps = ({ card }) => {
+  return { ...card };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(mapStoreStateToProps, mapActionsToProps)(CardDetail);
