@@ -192,7 +192,7 @@ const MessageRight = ({
           {/* {formatDistance(subHours(new Date(), 115), new Date(), {
           addSuffix: true,
         })} */}
-          `{localDate}, {localClock}`
+          {localDate}, {localClock}
         </Typography>
       </Box>
       <Avatar
@@ -337,7 +337,7 @@ const MessageLeft = ({
           {/* {formatDistance(subHours(new Date(), 115), new Date(), {
             addSuffix: true,
           })} */}
-          `{localDate}, {localClock}`
+          {localDate}, {localClock}
         </Typography>
       </Box>
     </Box>
@@ -370,6 +370,7 @@ const SingleChatBubble = ({
   // Wed Nov 23 2022
   const localDate = localTime.toDateString();
   // 時間，不足兩位用pad補0
+
   const localClock = `${localTime
     .getHours()
     .toString()
@@ -398,6 +399,7 @@ const SingleChatBubble = ({
         content={content}
         username={username}
         fromMe={fromMe}
+        localDate={localDate}
         localClock={localClock}
         date={date}
         sameTime={sameTime}
