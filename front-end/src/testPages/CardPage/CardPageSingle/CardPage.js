@@ -177,6 +177,7 @@ export function CardPage({ cards, fetchCardHistory }) {
                       fromId={card.FromId}
                       noteDate={localDate}
                       mapId={card._id}
+                      exportLink={card?.ExportLink}
                     />
                   );
                 })}

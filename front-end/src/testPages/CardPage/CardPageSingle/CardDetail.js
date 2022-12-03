@@ -44,7 +44,7 @@ import APIIcon from '../../../shared/images/Icons/api_icon.png';
 import SmsTwoToneIcon from '@mui/icons-material/SmsTwoTone';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
-
+import LockIcon from '@mui/icons-material/Lock';
 import EditIcon from '@mui/icons-material/Edit';
 
 // mock
@@ -55,6 +55,9 @@ import * as api from '../../../api';
 
 // alt
 import AltHeadshot from '../../../shared/images/alt/alt_headshot.jpg';
+
+// alert
+import Swal from 'sweetalert2';
 
 // input table
 import ReactQuill from 'react-quill';
@@ -143,26 +146,12 @@ const DotLegend = styled('span')(
 `
 );
 
-// const cardFakeData = [
-//   {
-//     Category: 'knowledge',
-//     Liked: true,
-//     Transferred: true,
-//     Photo: Sundar,
-//     FROM: 'Sundar Pitchai',
-//     Title: 'This is note title',
-//     Notes:
-//       '<ol><li>Testing first</li><li>testing 2nd</li><li>testing 3rd</li></ol>',
-//     MessageRecords: [
-//       { sender: 'Sundar Pithchai', body: 'hahaha' },
-//       { sender: 'Sundar Pithchai', body: 'hahaha2' },
-//       { sender: 'Sundar Pithchai', body: 'hahaha3' },
-//       { sender: 'Sundar Pithchai', body: 'hahaha4' },
-//     ],
-//     NoteTime: '2022-11-30',
-//     NoteId: '63872693fe48de094751344a',
-//   },
-// ];
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+});
 
 function CardDetail({
   category,
@@ -176,6 +165,7 @@ function CardDetail({
   fromId,
   noteDate,
   mapId,
+  exportLink,
 }) {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
@@ -214,13 +204,36 @@ function CardDetail({
       initialNotes,
       token
     );
-    console.log('前端更改回應', result);
+    if (result === 200) {
+      Toast.fire({
+        icon: 'success',
+        title: 'Notes and title has been modified!',
+      });
+    } else {
+      Toast.fire({
+        icon: 'warning',
+        title: 'Please try again!',
+      });
+    }
   };
 
   const handleCancelChange = () => {
     setIsEditing(false);
     setInitialNotes(notes);
     setInitialTitle(title);
+    Toast.fire({
+      icon: 'warning',
+      title: 'Cancel modification!',
+    });
+  };
+
+  const handleLockedNotes = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'This notes has been exported',
+      text: 'Single source of truth is important, please check the place where you exported this note, ex: Notion',
+      footer: `<a href=${exportLink}>Link</a>`,
+    });
   };
 
   return (
@@ -234,7 +247,48 @@ function CardDetail({
           px: 3,
         }}
       >
-        {isEditing ? (
+        {transferred ? (
+          <>
+            {/* 標題 */}
+            <Box
+              display="flex"
+              justifyContent="center"
+              sx={{ alignItems: 'center', align: 'center' }}
+            >
+              <Typography gutterBottom variant="h2">
+                {initialTitle}
+              </Typography>
+              {/* Edit 用 */}
+              <Tooltip title="The exported notes can't be modified, single source of truth is important! Please check the place you export this notes for further info!">
+                <IconButton color="primary" onClick={handleLockedNotes}>
+                  <LockIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
+            {/* 筆記內文 */}
+            <Box
+              display="flex"
+              justifyContent="center"
+              sx={{ alignItems: 'center', align: 'center' }}
+            >
+              <Typography
+                sx={{
+                  wordWrap: 'break-word',
+                  whiteSpace: 'pre-wrap',
+                  px: { xs: 4, md: 8 },
+                  fontSize: 20,
+                }}
+                variant="inherit"
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: initialNotes,
+                  }}
+                />
+              </Typography>
+            </Box>
+          </>
+        ) : isEditing ? (
           <>
             <Box
               display="flex"
