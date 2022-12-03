@@ -90,26 +90,26 @@ const DotLegend = styled('span')(
 `
 );
 
-const cardFakeData = [
-  {
-    Category: 'knowledge',
-    Liked: true,
-    Transferred: true,
-    Photo: Sundar,
-    FROM: 'Sundar Pitchai',
-    Title: 'This is note title',
-    Notes:
-      '<ol><li>Testing first</li><li>testing 2nd</li><li>testing 3rd</li></ol>',
-    MessageRecords: [
-      { sender: 'Sundar Pithchai', body: 'hahaha' },
-      { sender: 'Sundar Pithchai', body: 'hahaha2' },
-      { sender: 'Sundar Pithchai', body: 'hahaha3' },
-      { sender: 'Sundar Pithchai', body: 'hahaha4' },
-    ],
-    NoteTime: '2022-11-30',
-    NoteId: '63872693fe48de094751344a',
-  },
-];
+// const cardFakeData = [
+//   {
+//     Category: 'knowledge',
+//     Liked: true,
+//     Transferred: true,
+//     Photo: Sundar,
+//     FROM: 'Sundar Pitchai',
+//     Title: 'This is note title',
+//     Notes:
+//       '<ol><li>Testing first</li><li>testing 2nd</li><li>testing 3rd</li></ol>',
+//     MessageRecords: [
+//       { sender: 'Sundar Pithchai', body: 'hahaha' },
+//       { sender: 'Sundar Pithchai', body: 'hahaha2' },
+//       { sender: 'Sundar Pithchai', body: 'hahaha3' },
+//       { sender: 'Sundar Pithchai', body: 'hahaha4' },
+//     ],
+//     NoteTime: '2022-11-30',
+//     NoteId: '63872693fe48de094751344a',
+//   },
+// ];
 
 function CardDetail({
   category,
@@ -125,7 +125,10 @@ function CardDetail({
   mapId,
 }) {
   const theme = useTheme();
-  console.log(noteDate);
+
+  const altImageAvatar = () => {
+    return { Sundar };
+  };
 
   return (
     <Box marginTop={'30px'} padding={'10px'}>
@@ -647,7 +650,8 @@ function CardDetail({
                       <img
                         // TODO: 這邊待處理
                         src={from}
-                        alt={Sundar}
+                        onError={altImageAvatar}
+                        alt={altImageAvatar}
                         style={{ width: 60, height: 60, borderRadius: 10 }}
                       />
                     </Box>

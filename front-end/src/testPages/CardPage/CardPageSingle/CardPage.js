@@ -101,7 +101,7 @@ const DrawerWrapperMobile = styled(Drawer)(
 `
 );
 
-export function CardPage({ cards }) {
+export function CardPage({ cards, fetchCardHistory }) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -114,6 +114,8 @@ export function CardPage({ cards }) {
 
     if (!accessToken) {
       window.location.pathname = '/login';
+    } else {
+      fetchCardHistory(accessToken);
     }
   }, []);
 
@@ -141,9 +143,7 @@ export function CardPage({ cards }) {
             sx={{
               display: { xs: 'none', lg: 'inline-block' },
             }}
-          >
-            Side
-          </Sidebar>
+          ></Sidebar>
 
           <ChatWindow>
             <ChatTopBar
@@ -187,9 +187,7 @@ export function CardPage({ cards }) {
             sx={{
               display: { xs: 'none', lg: 'inline-block' },
             }}
-          >
-            Side
-          </Sidebar>
+          ></Sidebar>
         </WorkSpaceWrapper>
       </RootWrapper>
     </>
