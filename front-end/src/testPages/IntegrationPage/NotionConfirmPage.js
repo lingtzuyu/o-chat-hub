@@ -114,6 +114,7 @@ function NotionConfirmPage() {
       window.location.pathname = '/login';
     }
   }, []);
+
   useEffect(() => {
     const params = new URL(window.document.location).searchParams;
     const code = params.get('code');
@@ -139,7 +140,7 @@ function NotionConfirmPage() {
           open={mobileOpen}
           onClose={handleDrawerToggle}
         >
-          <Scrollbar>Test</Scrollbar>
+          <Scrollbar></Scrollbar>
         </DrawerWrapperMobile>
 
         <WorkSpaceWrapper>

@@ -8,12 +8,13 @@ const checkCardExist = async (req, res, next) => {
     const author = req.user.mail;
     const { cardId } = req.body;
     const result = await Card.checkCardExist(cardId, author);
-    if (!result) {
-      return res.status(400).send({ message: 'Card not exist' });
-    }
+    console.log('是否有這張', result);
+    // if (!result) {
+    //   return res.status(400).send({ message: 'Card not exist' });
+    // }
   } catch (err) {
     console.log(err);
-    res.status(500).send({ err: 'Interanl Error' });
+    return res.status(400).send({ err: 'Card not exist' });
   }
   return next();
 };
@@ -148,7 +149,6 @@ const fetchCardDetailsByCategory = async (req, res) => {
   // auth過來的
   const { mail } = req.user;
   const category = req.params.category;
-  console.log('後端', category);
 
   if (category === 'all') {
     const response = await Card.fetchCardHistoryByMail(mail);
@@ -157,6 +157,18 @@ const fetchCardDetailsByCategory = async (req, res) => {
 
   const response = await Card.fetchCardHistoryByCategory(mail, category);
   res.status(200).send(response);
+};
+
+const updateCardTitleAndNotes = async (req, res) => {
+  // 用auth來的mail驗證card author
+  const { mail } = req.user;
+  const { cardId, title, notes } = req.body;
+  const response = await Card.updateTitleAndNotes(cardId, title, notes, mail);
+  console.log(response);
+  if (response) {
+    return res.status(200).send({ result: 'update success' });
+  }
+  return res.status(500).send({ result: 'update fail' });
 };
 
 module.exports = {
@@ -168,4 +180,5 @@ module.exports = {
   setLikeById,
   setDislikeById,
   fetchCardDetailsByCategory,
+  updateCardTitleAndNotes,
 };

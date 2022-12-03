@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Card,
@@ -16,6 +16,8 @@ import {
   ListItemText,
   Grid,
   Tooltip,
+  TextField,
+  Button,
 } from '@mui/material';
 import NotionIcon from '../../../shared/images/notion-icon.png';
 import TrelloIcon from '../../../shared/images/trello-icon.png';
@@ -40,12 +42,23 @@ import UnlikeIcon from '../../../shared/images/Icons/unlike_icon.png';
 import IntegrationIcon from '../../../shared/images/Icons/integration_icon.png';
 import APIIcon from '../../../shared/images/Icons/api_icon.png';
 import SmsTwoToneIcon from '@mui/icons-material/SmsTwoTone';
+import ClearIcon from '@mui/icons-material/Clear';
+import CheckIcon from '@mui/icons-material/Check';
+
+import EditIcon from '@mui/icons-material/Edit';
 
 // mock
 import Sundar from '../../../shared/images/mock/sundar_head.jpg';
 
+// api
+import * as api from '../../../api';
+
 // alt
 import AltHeadshot from '../../../shared/images/alt/alt_headshot.jpg';
+
+// input table
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 import { getActions } from '../../../store/actions/card_actions';
 import { connect } from 'react-redux';
@@ -57,6 +70,46 @@ const CardActions = styled(Box)(
     top: ${theme.spacing(1.5)};
     z-index: 7;
   `
+);
+
+const EditorWrapper = styled(Box)(
+  ({ theme }) => `
+
+    .ql-editor {
+      min-height: 300px;
+      width: 600px;
+    }
+
+    .ql-snow .ql-picker {
+      color: ${theme.colors.alpha.black[100]};
+    }
+
+    .ql-snow .ql-stroke {
+      stroke: ${theme.colors.alpha.black[100]};
+    }
+
+    .ql-toolbar.ql-snow {
+      border-top-left-radius: ${theme.general.borderRadius};
+      border-top-right-radius: ${theme.general.borderRadius};
+    }
+
+    .ql-toolbar.ql-snow,
+    .ql-container.ql-snow {
+      border-color: ${theme.colors.alpha.black[30]};
+    }
+
+    .ql-container.ql-snow {
+      border-bottom-left-radius: ${theme.general.borderRadius};
+      border-bottom-right-radius: ${theme.general.borderRadius};
+    }
+
+    &:hover {
+      .ql-toolbar.ql-snow,
+      .ql-container.ql-snow {
+        border-color: ${theme.colors.alpha.black[50]};
+      }
+    }
+`
 );
 
 const CardActionAreaWrapper = styled(Box)(
@@ -125,9 +178,49 @@ function CardDetail({
   mapId,
 }) {
   const theme = useTheme();
+  const [isEditing, setIsEditing] = useState(false);
+  const [initialTitle, setInitialTitle] = useState(title);
+  const [initialNotes, setInitialNotes] = useState(notes);
+
+  const token = localStorage.getItem('accessToken');
 
   const altImageAvatar = () => {
     return { Sundar };
+  };
+
+  // edit 標題及內文
+  const handleEditTitle = () => {
+    setIsEditing(true);
+  };
+
+  // title value change
+  const titleChangeHandler = (event) => {
+    console.log(event.target.value);
+    setInitialTitle(event.target.value);
+  };
+
+  const notesChangeHandler = (event) => {
+    console.log(event);
+    setInitialNotes(event);
+  };
+
+  // 確認後送出api及改變資料
+  const handleSaveNotesChange = async () => {
+    setIsEditing(false);
+    // 帶著initialNotes，initialTitle，mapId打 API
+    const result = await api.modifyCardTitleAndNotes(
+      mapId,
+      initialTitle,
+      initialNotes,
+      token
+    );
+    console.log('前端更改回應', result);
+  };
+
+  const handleCancelChange = () => {
+    setIsEditing(false);
+    setInitialNotes(notes);
+    setInitialTitle(title);
   };
 
   return (
@@ -141,8 +234,117 @@ function CardDetail({
           px: 3,
         }}
       >
+        {isEditing ? (
+          <>
+            <Box
+              display="flex"
+              justifyContent="center"
+              sx={{ alignItems: 'center', align: 'center' }}
+            >
+              <TextField
+                sx={{
+                  mt: 2,
+                  mb: 1,
+                  width: '600px',
+                }}
+                size="small"
+                // 這邊也要從store來
+                lable="title"
+                defaultValue={initialTitle}
+                placeholder="title"
+                onChange={titleChangeHandler}
+                autoFocus
+                required
+              />
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              sx={{ alignItems: 'center', align: 'center' }}
+            >
+              <EditorWrapper>
+                <ReactQuill
+                  defaultValue={initialNotes}
+                  onChange={notesChangeHandler}
+                  placeholder={'Notes here...'}
+                />
+              </EditorWrapper>
+            </Box>
+            <Stack
+              sx={{
+                mt: 2.5,
+                textAlign: 'center',
+              }}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              spacing={2}
+            >
+              <Box marginRight="30px">
+                <Button
+                  startIcon={<CheckIcon />}
+                  onClick={handleSaveNotesChange}
+                  variant="contained"
+                >
+                  {'Confirm'}
+                </Button>
+              </Box>
+              <Box marginLeft="30px">
+                <Button
+                  startIcon={<ClearIcon />}
+                  variant="contained"
+                  onClick={handleCancelChange}
+                >
+                  {'Cancel'}
+                </Button>
+              </Box>
+            </Stack>
+          </>
+        ) : (
+          <>
+            {/* 標題 */}
+            <Box
+              display="flex"
+              justifyContent="center"
+              sx={{ alignItems: 'center', align: 'center' }}
+            >
+              <Typography gutterBottom variant="h2">
+                {initialTitle}
+              </Typography>
+              {/* Edit 用 */}
+              <Tooltip title="Change title or notes">
+                <IconButton color="primary" onClick={handleEditTitle}>
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
+            {/* 筆記內文 */}
+            <Box
+              display="flex"
+              justifyContent="center"
+              sx={{ alignItems: 'center', align: 'center' }}
+            >
+              <Typography
+                sx={{
+                  wordWrap: 'break-word',
+                  whiteSpace: 'pre-wrap',
+                  px: { xs: 4, md: 8 },
+                  fontSize: 20,
+                }}
+                variant="inherit"
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: initialNotes,
+                  }}
+                />
+              </Typography>
+            </Box>
+          </>
+        )}
+
         {/* 狀態 1. 分類 2. notetime 3. Transferred 4. From */}
-        <Box>
+        <Box marginTop="15px">
           <Box p={2}>
             <Grid container spacing={4}>
               {/* 分類 */}
@@ -177,11 +379,6 @@ function CardDetail({
                         alignItems="flex-start"
                         justifyContent={'center'}
                       >
-                        {/* <DotLegend
-                          style={{
-                            background: `${theme.colors.success.main}`,
-                          }}
-                        /> */}
                         <Typography
                           sx={{
                             fontSize: `${theme.typography.pxToRem(11)}`,
@@ -192,8 +389,7 @@ function CardDetail({
                           <Text color="#111145">Category</Text>
                         </Typography>
                       </Box>
-                      {/* // <Text color="success">{user.notionConnect}</Text> */}
-                      {/* </Typography> */}
+
                       <Box
                         display="flex"
                         flexDirection="column"
@@ -207,38 +403,6 @@ function CardDetail({
                             </IconButton>
                           </Tooltip>
                         </Box>
-
-                        {/* {cardFakeData.category === 1 ? (
-                          <Box>
-                            <Tooltip title="Go to linked notion">
-                              <Link href={`https://www.google.com`}>
-                                <IconButton>
-                                  <InsertLinkTwoToneIcon />
-                                </IconButton>
-                              </Link>
-                            </Tooltip>
-                            <Tooltip title="disconnect to Notion">
-                              <IconButton>
-                                <LinkOffTwoToneIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Box>
-                        ) : (
-                          <Box>
-                            <Tooltip title="Recover previous linked db">
-                              <IconButton>
-                                <AutorenewTwoToneIcon />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="connect to Notion (build a new linked Notion db)">
-                              <Link href={`https://www.google.com`}>
-                                <IconButton>
-                                  <AddLinkTwoToneIcon />
-                                </IconButton>
-                              </Link>
-                            </Tooltip>
-                          </Box>
-                        )} */}
                       </Box>
                     </CardActionAreaWrapper>
                   </Card>
@@ -260,24 +424,12 @@ function CardDetail({
 
                       <Typography variant="h3">{'Life'}</Typography>
 
-                      {/* <Typography
-                      sx={{
-                        fontSize: `${theme.typography.pxToRem(11)}`,
-                        lineHeight: 1,
-                      }}
-                      variant="subtitle2" */}
-
                       <Box
                         marginTop="10px"
                         display="flex"
                         alignItems="flex-start"
                         justifyContent={'center'}
                       >
-                        {/* <DotLegend
-                          style={{
-                            background: `${theme.colors.success.main}`,
-                          }}
-                        /> */}
                         <Typography
                           sx={{
                             fontSize: `${theme.typography.pxToRem(11)}`,
@@ -288,8 +440,7 @@ function CardDetail({
                           <Text color="#111145">Category</Text>
                         </Typography>
                       </Box>
-                      {/* // <Text color="success">{user.notionConnect}</Text> */}
-                      {/* </Typography> */}
+
                       <Box
                         display="flex"
                         flexDirection="column"
@@ -337,11 +488,6 @@ function CardDetail({
                         alignItems="flex-start"
                         justifyContent={'center'}
                       >
-                        {/* <DotLegend
-                          style={{
-                            background: `${theme.colors.success.main}`,
-                          }}
-                        /> */}
                         <Typography
                           sx={{
                             fontSize: `${theme.typography.pxToRem(11)}`,
@@ -352,8 +498,7 @@ function CardDetail({
                           <Text color="#111145">Category</Text>
                         </Typography>
                       </Box>
-                      {/* // <Text color="success">{user.notionConnect}</Text> */}
-                      {/* </Typography> */}
+
                       <Box
                         display="flex"
                         flexDirection="column"
@@ -367,38 +512,6 @@ function CardDetail({
                             </IconButton>
                           </Tooltip>
                         </Box>
-
-                        {/* {cardFakeData.category === 1 ? (
-                          <Box>
-                            <Tooltip title="Go to linked notion">
-                              <Link href={`https://www.google.com`}>
-                                <IconButton>
-                                  <InsertLinkTwoToneIcon />
-                                </IconButton>
-                              </Link>
-                            </Tooltip>
-                            <Tooltip title="disconnect to Notion">
-                              <IconButton>
-                                <LinkOffTwoToneIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Box>
-                        ) : (
-                          <Box>
-                            <Tooltip title="Recover previous linked db">
-                              <IconButton>
-                                <AutorenewTwoToneIcon />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="connect to Notion (build a new linked Notion db)">
-                              <Link href={`https://www.google.com`}>
-                                <IconButton>
-                                  <AddLinkTwoToneIcon />
-                                </IconButton>
-                              </Link>
-                            </Tooltip>
-                          </Box>
-                        )} */}
                       </Box>
                     </CardActionAreaWrapper>
                   </Card>
@@ -423,25 +536,12 @@ function CardDetail({
 
                       <Typography variant="h3">{'Read'}</Typography>
 
-                      {/* <Typography
-                      sx={{
-                        fontSize: `${theme.typography.pxToRem(11)}`,
-                        lineHeight: 1,
-                      }}
-                      variant="subtitle2" */}
-
-                      {/* TODO: 待搬出去 */}
                       <Box
                         marginTop="10px"
                         display="flex"
                         alignItems="flex-start"
                         justifyContent={'center'}
                       >
-                        {/* <DotLegend
-                            style={{
-                              background: `${theme.colors.success.main}`,
-                            }}
-                          /> */}
                         <Typography
                           sx={{
                             fontSize: `${theme.typography.pxToRem(11)}`,
@@ -453,8 +553,6 @@ function CardDetail({
                         </Typography>
                       </Box>
 
-                      {/* // <Text color="success">{user.notionConnect}</Text> */}
-                      {/* </Typography> */}
                       <Box
                         display="flex"
                         flexDirection="column"
@@ -494,11 +592,6 @@ function CardDetail({
                         alignItems="flex-start"
                         justifyContent={'center'}
                       >
-                        {/* <DotLegend
-                        style={{
-                          background: `${theme.colors.success.main}`,
-                        }}
-                      /> */}
                         <Typography
                           sx={{
                             fontSize: `${theme.typography.pxToRem(11)}`,
@@ -705,33 +798,7 @@ function CardDetail({
             </Grid>
           </Box>
         </Box>
-        {/* 標題 */}
-        <Typography gutterBottom variant="h3">
-          {title}
-        </Typography>
-        {/* Tag生成，如果有需要要map出來 [tags] */}
-        {/* <Box py={2}>
-        <Label color="info">Web developer</Label>
-        <Box component="span" px={1}>
-          <Label color="warning">Javascript</Label>
-        </Box>
-        <Label color="error">Angular</Label>
-      </Box> */}
-        {/* 筆記內文 */}
-        <Box>
-          <Typography
-            sx={{
-              px: { xs: 4, md: 8 },
-            }}
-            variant="inherit"
-          >
-            <div
-              dangerouslySetInnerHTML={{
-                __html: notes,
-              }}
-            />
-          </Typography>
-        </Box>
+
         <Divider
           sx={{
             mt: 3,

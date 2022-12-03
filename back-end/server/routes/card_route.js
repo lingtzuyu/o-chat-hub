@@ -11,6 +11,7 @@ const {
   checkCardExist,
   fetchCardDetailsByCategory,
   fetchLastFiveCards,
+  updateCardTitleAndNotes,
 } = require('../controllers/card_controller');
 const { fetchCardHistoryByCategory } = require('../models/card_model');
 
@@ -58,5 +59,14 @@ router
 router
   .route('/card/details/:category')
   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardDetailsByCategory));
+
+// 更新卡片Title以及notes
+router
+  .route('/card/modification')
+  .post(
+    verifiedAuth,
+    wrapAsync(checkCardExist),
+    wrapAsync(updateCardTitleAndNotes)
+  );
 
 module.exports = router;

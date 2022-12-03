@@ -81,7 +81,7 @@ const setLikeById = async (cardId) => {
   const likeCard = await NoteDataMongo.findByIdAndUpdate(cardId, {
     Liked: true,
   });
-  console.log('card liked');
+
   return likeCard;
 };
 // set dislike
@@ -89,8 +89,7 @@ const setDislikeById = async (cardId) => {
   const dislikeCard = await NoteDataMongo.findByIdAndUpdate(cardId, {
     Liked: false,
   });
-  console.log('dislike後', dislikeCard);
-  console.log('card disliked');
+
   return dislikeCard;
 };
 
@@ -100,7 +99,7 @@ const deleteCardById = async (cardId, userMail) => {
     _id: cardId,
     Author: userMail,
   });
-  console.log('card deleted by CardId');
+
   return deleteCardQuery;
 };
 
@@ -112,6 +111,24 @@ const updateLinkToNote = async (cardId, notionLink) => {
       ExportLink: notionLink,
       ExportTo: 'notion',
     });
+    return result;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
+
+// update title and notes after save
+const updateTitleAndNotes = async (cardId, title, notes, mail) => {
+  try {
+    const result = await NoteDataMongo.findOneAndUpdate(
+      { Author: mail, _id: cardId },
+      {
+        Notes: notes,
+        Title: title,
+      },
+      { new: true }
+    );
     return result;
   } catch (err) {
     console.log(err);
@@ -128,5 +145,6 @@ module.exports = {
   checkCardExist,
   updateLinkToNote,
   fetchCardHistoryByCategory,
+  updateTitleAndNotes,
 };
 // module.exports = mongoose.model('NoteDataMongo', noteSchema);

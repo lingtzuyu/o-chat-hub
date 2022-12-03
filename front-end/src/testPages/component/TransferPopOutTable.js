@@ -184,9 +184,12 @@ function TransferPopOutTable({
               p: 3,
             }}
           >
-            <CategoryDropDown />
+            {/* <CategoryDropDown /> */}
 
             <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <CategoryDropDown />
+              </Grid>
               <Grid item xs={12}>
                 <InputField
                   fullWidth

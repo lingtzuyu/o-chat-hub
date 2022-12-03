@@ -8,6 +8,22 @@ const apiClient = axios.create({
   timeout: 30000,
 });
 
+// modify card title and notes
+const modifyCardTitleAndNotes = async (cardId, title, notes, token) => {
+  try {
+    const response = await apiClient.post('/card/modification', {
+      cardId: cardId,
+      title: title,
+      notes: notes,
+      token: token,
+    });
+    return response.status;
+  } catch (err) {
+    console.log(err);
+    return { error: true, err };
+  }
+};
+
 // recover (change status) notion link
 const recoverPreviousNotionConnect = async (userId, token) => {
   try {
@@ -256,4 +272,5 @@ export {
   updateUserName,
   setNotionDisconnect,
   recoverPreviousNotionConnect,
+  modifyCardTitleAndNotes,
 };

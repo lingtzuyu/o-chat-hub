@@ -284,9 +284,11 @@ function Profile({ user, userName, setNewUserNameInStore }) {
           <Typography gutterBottom variant="h3">
             {userName}
           </Typography>
-          <IconButton onClick={handleEdit}>
-            <EditIcon />
-          </IconButton>
+          <Tooltip title="Change display username">
+            <IconButton onClick={handleEdit}>
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
       )}
       {/* // {user.username} */}
@@ -445,14 +447,18 @@ function Profile({ user, userName, setNewUserNameInStore }) {
                       alt="take-notes.chat"
                     />
                   </Box>
-                  {/* <Text color="success">
-                    <ContactSupportTwoToneIcon
-                      sx={{
-                        mb: 1,
-                      }}
-                    />
-                  </Text> */}
+
                   <Typography variant="h4">{'Trello'}</Typography>
+
+                  {/* <Typography
+                      sx={{
+                        fontSize: `${theme.typography.pxToRem(11)}`,
+                        lineHeight: 1,
+                      }}
+                      variant="subtitle2" */}
+
+                  {/* TODO: 待搬出去 */}
+
                   {user.trelloConnect === 1 ? (
                     <Box
                       marginTop="10px"
@@ -472,9 +478,7 @@ function Profile({ user, userName, setNewUserNameInStore }) {
                         }}
                         variant="subtitle2"
                       >
-                        <Text color="success">
-                          connected (press again to disconnect)
-                        </Text>
+                        <Text color="success">connected</Text>
                       </Typography>
                     </Box>
                   ) : (
@@ -496,10 +500,53 @@ function Profile({ user, userName, setNewUserNameInStore }) {
                         }}
                         variant="subtitle2"
                       >
-                        <Text color="warning">press to connect to trello</Text>
+                        <Text color="warning">disconnected</Text>
                       </Typography>
                     </Box>
                   )}
+                  {/* // <Text color="success">{user.notionConnect}</Text> */}
+                  {/* </Typography> */}
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                  >
+                    {user.trelloConnect === 1 ? (
+                      <Box>
+                        <Tooltip title="Go to linked trello">
+                          {/* TODO: 待改，先用# */}
+                          <Link href={`#`}>
+                            <IconButton>
+                              <InsertLinkTwoToneIcon />
+                            </IconButton>
+                          </Link>
+                        </Tooltip>
+                        <Tooltip title="disconnect to Trello">
+                          {/* TODO: 待改，先移除onClick */}
+                          <IconButton>
+                            <LinkOffTwoToneIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    ) : (
+                      <Box>
+                        <Tooltip title="Recover previous linked trello">
+                          {/* TODO: 待改，先移除onClick */}
+                          <IconButton>
+                            <AutorenewTwoToneIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="connect to Trello (build a new linked Trello account)">
+                          {/* TODO: 待改，先移除onClick */}
+                          <Link href={`#`}>
+                            <IconButton>
+                              <AddLinkTwoToneIcon />
+                            </IconButton>
+                          </Link>
+                        </Tooltip>
+                      </Box>
+                    )}
+                  </Box>
                 </CardActionAreaWrapper>
               </Card>
             </Grid>

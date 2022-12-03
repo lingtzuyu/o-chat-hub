@@ -121,15 +121,15 @@ function ExportIconList({
       id: 1,
       name: 'Notion',
       avatar: NotionIcon,
-      connected: userInfoDetail.notionConnect,
-      buttonDisabled: userInfoDetail.notionConnect === 1 ? false : true,
+      connected: userInfoDetail?.notionConnect,
+      buttonDisabled: userInfoDetail?.notionConnect === 1 ? false : true,
     },
     {
       id: 2,
       name: 'Trello',
       avatar: TrelloIcon,
-      connected: userInfoDetail.trelloConnect,
-      buttonDisabled: userInfoDetail.trelloConnect === 1 ? false : true,
+      connected: userInfoDetail?.trelloConnect,
+      buttonDisabled: userInfoDetail?.trelloConnect === 1 ? false : true,
     },
   ];
 
