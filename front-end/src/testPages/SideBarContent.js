@@ -136,6 +136,10 @@ function SidebarContent({ friends, onlineUsers, pendingInvitation }) {
     });
   };
 
+  const handleSetting = () => {
+    window.location.pathname = '/profile';
+  };
+
   // TODO: 之後做上下線判斷用
   const [currentTab, setCurrentTab] = useState('all');
 
@@ -181,6 +185,7 @@ function SidebarContent({ friends, onlineUsers, pendingInvitation }) {
               }}
               size="small"
               color="primary"
+              onClick={handleSetting}
             >
               <SettingsTwoToneIcon fontSize="small" />
             </IconButton>

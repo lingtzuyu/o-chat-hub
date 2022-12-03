@@ -6,6 +6,7 @@ import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import CardDetail from './CardDetail';
 
 import Scrollbar from '../../../shared/components/Scrollbar';
+import CardPageTopBar from './CardPageTopBar';
 
 import {
   Box,
@@ -27,7 +28,7 @@ const Sidebar = styled(Box)(
   ({ theme }) => `
         width: 300px;
         background: ${theme.colors.alpha.white[100]};
-        border-right: ${theme.colors.alpha.black[10]} solid 1px;
+        border-right: ${theme.colors.alpha.black[10]} 1px;
 `
 );
 
@@ -63,7 +64,7 @@ const CardWindow = styled(Box)(
 const ChatTopBar = styled(Box)(
   ({ theme }) => `
         background: ${theme.colors.alpha.white[100]};
-        border-bottom: ${theme.colors.alpha.black[10]} solid 1px;
+        border-bottom: ${theme.colors.alpha.black[10]}  1px;
         padding: ${theme.spacing(2)};
         align-items: center;
 `
@@ -147,7 +148,7 @@ export function CardPage() {
                 display: { xs: 'flex', lg: 'inline-block' },
               }}
             >
-              TopBar，這邊放20%
+              <CardPageTopBar />
             </ChatTopBar>
             <Box
               alignItems={'center'}

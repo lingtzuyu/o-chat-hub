@@ -77,573 +77,575 @@ function CardDetail() {
   const theme = useTheme();
 
   return (
-    <Card
-      sx={{
-        position: 'relative',
-        textAlign: 'center',
-        pt: 4,
-        pb: 3,
-        px: 3,
-      }}
-    >
-      {/* 狀態 1. 分類 2. notetime 3. Transferred 4. From */}
-      <Box>
-        <Box p={2}>
-          <Grid container spacing={4}>
-            <Grid item xs={12} sm={3}>
-              <Card variant="outlined" sx={{ backgroundColor: 'yellow' }}>
-                <CardActionAreaWrapper
-                  sx={{
-                    p: 2,
-                  }}
-                >
-                  <Box>
-                    <img
-                      src={NotionIcon}
-                      style={{ width: 60, borderRadius: 10 }}
-                      alt="take-notes.chat"
-                    />
-                  </Box>
+    <Box marginTop={'30px'} padding={'10px'}>
+      <Card
+        sx={{
+          position: 'relative',
+          textAlign: 'center',
+          pt: 4,
+          pb: 3,
+          px: 3,
+        }}
+      >
+        {/* 狀態 1. 分類 2. notetime 3. Transferred 4. From */}
+        <Box>
+          <Box p={2}>
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={3}>
+                <Card variant="outlined" sx={{ backgroundColor: 'yellow' }}>
+                  <CardActionAreaWrapper
+                    sx={{
+                      p: 2,
+                    }}
+                  >
+                    <Box>
+                      <img
+                        src={NotionIcon}
+                        style={{ width: 60, borderRadius: 10 }}
+                        alt="take-notes.chat"
+                      />
+                    </Box>
 
-                  <Typography variant="h4">{'Notion'}</Typography>
+                    <Typography variant="h4">{'Notion'}</Typography>
 
-                  {/* <Typography
+                    {/* <Typography
                       sx={{
                         fontSize: `${theme.typography.pxToRem(11)}`,
                         lineHeight: 1,
                       }}
                       variant="subtitle2" */}
 
-                  {/* TODO: 待搬出去 */}
+                    {/* TODO: 待搬出去 */}
 
-                  {cardFakeData.category === 1 ? (
-                    <Box
-                      marginTop="10px"
-                      display="flex"
-                      alignItems="flex-start"
-                      justifyContent={'center'}
-                    >
-                      <DotLegend
-                        style={{
-                          background: `${theme.colors.success.main}`,
-                        }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: `${theme.typography.pxToRem(11)}`,
-                          lineHeight: 1,
-                        }}
-                        variant="subtitle2"
-                      >
-                        <Text color="success">connected</Text>
-                      </Typography>
-                    </Box>
-                  ) : (
-                    <Box
-                      marginTop="10px"
-                      display="flex"
-                      alignItems="flex-start"
-                      justifyContent={'center'}
-                    >
-                      <DotLegend
-                        style={{
-                          background: `${theme.colors.warning.main}`,
-                        }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: `${theme.typography.pxToRem(11)}`,
-                          lineHeight: 1,
-                        }}
-                        variant="subtitle2"
-                      >
-                        <Text color="warning">disconnected</Text>
-                      </Typography>
-                    </Box>
-                  )}
-                  {/* // <Text color="success">{user.notionConnect}</Text> */}
-                  {/* </Typography> */}
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                  >
                     {cardFakeData.category === 1 ? (
-                      <Box>
-                        <Tooltip title="Go to linked notion">
-                          <Link href={`https://www.google.com`}>
-                            <IconButton>
-                              <InsertLinkTwoToneIcon />
-                            </IconButton>
-                          </Link>
-                        </Tooltip>
-                        <Tooltip title="disconnect to Notion">
-                          <IconButton>
-                            <LinkOffTwoToneIcon />
-                          </IconButton>
-                        </Tooltip>
+                      <Box
+                        marginTop="10px"
+                        display="flex"
+                        alignItems="flex-start"
+                        justifyContent={'center'}
+                      >
+                        <DotLegend
+                          style={{
+                            background: `${theme.colors.success.main}`,
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: `${theme.typography.pxToRem(11)}`,
+                            lineHeight: 1,
+                          }}
+                          variant="subtitle2"
+                        >
+                          <Text color="success">connected</Text>
+                        </Typography>
                       </Box>
                     ) : (
-                      <Box>
-                        <Tooltip title="Recover previous linked db">
-                          <IconButton>
-                            <AutorenewTwoToneIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="connect to Notion (build a new linked Notion db)">
-                          <Link href={`https://www.google.com`}>
-                            <IconButton>
-                              <AddLinkTwoToneIcon />
-                            </IconButton>
-                          </Link>
-                        </Tooltip>
+                      <Box
+                        marginTop="10px"
+                        display="flex"
+                        alignItems="flex-start"
+                        justifyContent={'center'}
+                      >
+                        <DotLegend
+                          style={{
+                            background: `${theme.colors.warning.main}`,
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: `${theme.typography.pxToRem(11)}`,
+                            lineHeight: 1,
+                          }}
+                          variant="subtitle2"
+                        >
+                          <Text color="warning">disconnected</Text>
+                        </Typography>
                       </Box>
                     )}
-                  </Box>
-                </CardActionAreaWrapper>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <Card variant="outlined">
-                <CardActionAreaWrapper
-                  sx={{
-                    p: 2,
-                  }}
-                >
-                  <Box>
-                    <img
-                      src={NotionIcon}
-                      style={{ width: 60, borderRadius: 10 }}
-                      alt="take-notes.chat"
-                    />
-                  </Box>
+                    {/* // <Text color="success">{user.notionConnect}</Text> */}
+                    {/* </Typography> */}
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                    >
+                      {cardFakeData.category === 1 ? (
+                        <Box>
+                          <Tooltip title="Go to linked notion">
+                            <Link href={`https://www.google.com`}>
+                              <IconButton>
+                                <InsertLinkTwoToneIcon />
+                              </IconButton>
+                            </Link>
+                          </Tooltip>
+                          <Tooltip title="disconnect to Notion">
+                            <IconButton>
+                              <LinkOffTwoToneIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      ) : (
+                        <Box>
+                          <Tooltip title="Recover previous linked db">
+                            <IconButton>
+                              <AutorenewTwoToneIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="connect to Notion (build a new linked Notion db)">
+                            <Link href={`https://www.google.com`}>
+                              <IconButton>
+                                <AddLinkTwoToneIcon />
+                              </IconButton>
+                            </Link>
+                          </Tooltip>
+                        </Box>
+                      )}
+                    </Box>
+                  </CardActionAreaWrapper>
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <Card variant="outlined">
+                  <CardActionAreaWrapper
+                    sx={{
+                      p: 2,
+                    }}
+                  >
+                    <Box>
+                      <img
+                        src={NotionIcon}
+                        style={{ width: 60, borderRadius: 10 }}
+                        alt="take-notes.chat"
+                      />
+                    </Box>
 
-                  <Typography variant="h4">{'Notion'}</Typography>
+                    <Typography variant="h4">{'Notion'}</Typography>
 
-                  {/* <Typography
+                    {/* <Typography
                       sx={{
                         fontSize: `${theme.typography.pxToRem(11)}`,
                         lineHeight: 1,
                       }}
                       variant="subtitle2" */}
 
-                  {/* TODO: 待搬出去 */}
+                    {/* TODO: 待搬出去 */}
 
-                  {cardFakeData.category === 1 ? (
-                    <Box
-                      marginTop="10px"
-                      display="flex"
-                      alignItems="flex-start"
-                      justifyContent={'center'}
-                    >
-                      <DotLegend
-                        style={{
-                          background: `${theme.colors.success.main}`,
-                        }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: `${theme.typography.pxToRem(11)}`,
-                          lineHeight: 1,
-                        }}
-                        variant="subtitle2"
-                      >
-                        <Text color="success">connected</Text>
-                      </Typography>
-                    </Box>
-                  ) : (
-                    <Box
-                      marginTop="10px"
-                      display="flex"
-                      alignItems="flex-start"
-                      justifyContent={'center'}
-                    >
-                      <DotLegend
-                        style={{
-                          background: `${theme.colors.warning.main}`,
-                        }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: `${theme.typography.pxToRem(11)}`,
-                          lineHeight: 1,
-                        }}
-                        variant="subtitle2"
-                      >
-                        <Text color="warning">disconnected</Text>
-                      </Typography>
-                    </Box>
-                  )}
-                  {/* // <Text color="success">{user.notionConnect}</Text> */}
-                  {/* </Typography> */}
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                  >
                     {cardFakeData.category === 1 ? (
-                      <Box>
-                        <Tooltip title="Go to linked notion">
-                          <Link href={`https://www.google.com`}>
-                            <IconButton>
-                              <InsertLinkTwoToneIcon />
-                            </IconButton>
-                          </Link>
-                        </Tooltip>
-                        <Tooltip title="disconnect to Notion">
-                          <IconButton>
-                            <LinkOffTwoToneIcon />
-                          </IconButton>
-                        </Tooltip>
+                      <Box
+                        marginTop="10px"
+                        display="flex"
+                        alignItems="flex-start"
+                        justifyContent={'center'}
+                      >
+                        <DotLegend
+                          style={{
+                            background: `${theme.colors.success.main}`,
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: `${theme.typography.pxToRem(11)}`,
+                            lineHeight: 1,
+                          }}
+                          variant="subtitle2"
+                        >
+                          <Text color="success">connected</Text>
+                        </Typography>
                       </Box>
                     ) : (
-                      <Box>
-                        <Tooltip title="Recover previous linked db">
-                          <IconButton>
-                            <AutorenewTwoToneIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="connect to Notion (build a new linked Notion db)">
-                          <Link href={`https://www.google.com`}>
-                            <IconButton>
-                              <AddLinkTwoToneIcon />
-                            </IconButton>
-                          </Link>
-                        </Tooltip>
+                      <Box
+                        marginTop="10px"
+                        display="flex"
+                        alignItems="flex-start"
+                        justifyContent={'center'}
+                      >
+                        <DotLegend
+                          style={{
+                            background: `${theme.colors.warning.main}`,
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: `${theme.typography.pxToRem(11)}`,
+                            lineHeight: 1,
+                          }}
+                          variant="subtitle2"
+                        >
+                          <Text color="warning">disconnected</Text>
+                        </Typography>
                       </Box>
                     )}
-                  </Box>
-                </CardActionAreaWrapper>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <Card variant="outlined">
-                <CardActionAreaWrapper
-                  sx={{
-                    p: 2,
-                  }}
-                >
-                  <Box>
-                    <img
-                      src={NotionIcon}
-                      style={{ width: 60, borderRadius: 10 }}
-                      alt="take-notes.chat"
-                    />
-                  </Box>
+                    {/* // <Text color="success">{user.notionConnect}</Text> */}
+                    {/* </Typography> */}
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                    >
+                      {cardFakeData.category === 1 ? (
+                        <Box>
+                          <Tooltip title="Go to linked notion">
+                            <Link href={`https://www.google.com`}>
+                              <IconButton>
+                                <InsertLinkTwoToneIcon />
+                              </IconButton>
+                            </Link>
+                          </Tooltip>
+                          <Tooltip title="disconnect to Notion">
+                            <IconButton>
+                              <LinkOffTwoToneIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      ) : (
+                        <Box>
+                          <Tooltip title="Recover previous linked db">
+                            <IconButton>
+                              <AutorenewTwoToneIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="connect to Notion (build a new linked Notion db)">
+                            <Link href={`https://www.google.com`}>
+                              <IconButton>
+                                <AddLinkTwoToneIcon />
+                              </IconButton>
+                            </Link>
+                          </Tooltip>
+                        </Box>
+                      )}
+                    </Box>
+                  </CardActionAreaWrapper>
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <Card variant="outlined">
+                  <CardActionAreaWrapper
+                    sx={{
+                      p: 2,
+                    }}
+                  >
+                    <Box>
+                      <img
+                        src={NotionIcon}
+                        style={{ width: 60, borderRadius: 10 }}
+                        alt="take-notes.chat"
+                      />
+                    </Box>
 
-                  <Typography variant="h4">{'Notion'}</Typography>
+                    <Typography variant="h4">{'Notion'}</Typography>
 
-                  {/* <Typography
+                    {/* <Typography
                       sx={{
                         fontSize: `${theme.typography.pxToRem(11)}`,
                         lineHeight: 1,
                       }}
                       variant="subtitle2" */}
 
-                  {/* TODO: 待搬出去 */}
+                    {/* TODO: 待搬出去 */}
 
-                  {cardFakeData.category === 1 ? (
-                    <Box
-                      marginTop="10px"
-                      display="flex"
-                      alignItems="flex-start"
-                      justifyContent={'center'}
-                    >
-                      <DotLegend
-                        style={{
-                          background: `${theme.colors.success.main}`,
-                        }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: `${theme.typography.pxToRem(11)}`,
-                          lineHeight: 1,
-                        }}
-                        variant="subtitle2"
-                      >
-                        <Text color="success">connected</Text>
-                      </Typography>
-                    </Box>
-                  ) : (
-                    <Box
-                      marginTop="10px"
-                      display="flex"
-                      alignItems="flex-start"
-                      justifyContent={'center'}
-                    >
-                      <DotLegend
-                        style={{
-                          background: `${theme.colors.warning.main}`,
-                        }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: `${theme.typography.pxToRem(11)}`,
-                          lineHeight: 1,
-                        }}
-                        variant="subtitle2"
-                      >
-                        <Text color="warning">disconnected</Text>
-                      </Typography>
-                    </Box>
-                  )}
-                  {/* // <Text color="success">{user.notionConnect}</Text> */}
-                  {/* </Typography> */}
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                  >
                     {cardFakeData.category === 1 ? (
-                      <Box>
-                        <Tooltip title="Go to linked notion">
-                          <Link href={`https://www.google.com`}>
-                            <IconButton>
-                              <InsertLinkTwoToneIcon />
-                            </IconButton>
-                          </Link>
-                        </Tooltip>
-                        <Tooltip title="disconnect to Notion">
-                          <IconButton>
-                            <LinkOffTwoToneIcon />
-                          </IconButton>
-                        </Tooltip>
+                      <Box
+                        marginTop="10px"
+                        display="flex"
+                        alignItems="flex-start"
+                        justifyContent={'center'}
+                      >
+                        <DotLegend
+                          style={{
+                            background: `${theme.colors.success.main}`,
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: `${theme.typography.pxToRem(11)}`,
+                            lineHeight: 1,
+                          }}
+                          variant="subtitle2"
+                        >
+                          <Text color="success">connected</Text>
+                        </Typography>
                       </Box>
                     ) : (
-                      <Box>
-                        <Tooltip title="Recover previous linked db">
-                          <IconButton>
-                            <AutorenewTwoToneIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="connect to Notion (build a new linked Notion db)">
-                          <Link href={`https://www.google.com`}>
-                            <IconButton>
-                              <AddLinkTwoToneIcon />
-                            </IconButton>
-                          </Link>
-                        </Tooltip>
+                      <Box
+                        marginTop="10px"
+                        display="flex"
+                        alignItems="flex-start"
+                        justifyContent={'center'}
+                      >
+                        <DotLegend
+                          style={{
+                            background: `${theme.colors.warning.main}`,
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: `${theme.typography.pxToRem(11)}`,
+                            lineHeight: 1,
+                          }}
+                          variant="subtitle2"
+                        >
+                          <Text color="warning">disconnected</Text>
+                        </Typography>
                       </Box>
                     )}
-                  </Box>
-                </CardActionAreaWrapper>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <Card variant="outlined">
-                <CardActionAreaWrapper
-                  sx={{
-                    p: 2,
-                  }}
-                >
-                  <Box>
-                    <img
-                      src={NotionIcon}
-                      style={{ width: 60, borderRadius: 10 }}
-                      alt="take-notes.chat"
-                    />
-                  </Box>
+                    {/* // <Text color="success">{user.notionConnect}</Text> */}
+                    {/* </Typography> */}
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                    >
+                      {cardFakeData.category === 1 ? (
+                        <Box>
+                          <Tooltip title="Go to linked notion">
+                            <Link href={`https://www.google.com`}>
+                              <IconButton>
+                                <InsertLinkTwoToneIcon />
+                              </IconButton>
+                            </Link>
+                          </Tooltip>
+                          <Tooltip title="disconnect to Notion">
+                            <IconButton>
+                              <LinkOffTwoToneIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      ) : (
+                        <Box>
+                          <Tooltip title="Recover previous linked db">
+                            <IconButton>
+                              <AutorenewTwoToneIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="connect to Notion (build a new linked Notion db)">
+                            <Link href={`https://www.google.com`}>
+                              <IconButton>
+                                <AddLinkTwoToneIcon />
+                              </IconButton>
+                            </Link>
+                          </Tooltip>
+                        </Box>
+                      )}
+                    </Box>
+                  </CardActionAreaWrapper>
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <Card variant="outlined">
+                  <CardActionAreaWrapper
+                    sx={{
+                      p: 2,
+                    }}
+                  >
+                    <Box>
+                      <img
+                        src={NotionIcon}
+                        style={{ width: 60, borderRadius: 10 }}
+                        alt="take-notes.chat"
+                      />
+                    </Box>
 
-                  <Typography variant="h4">{'Notion'}</Typography>
+                    <Typography variant="h4">{'Notion'}</Typography>
 
-                  {/* <Typography
+                    {/* <Typography
                       sx={{
                         fontSize: `${theme.typography.pxToRem(11)}`,
                         lineHeight: 1,
                       }}
                       variant="subtitle2" */}
 
-                  {/* TODO: 待搬出去 */}
+                    {/* TODO: 待搬出去 */}
 
-                  {cardFakeData.category === 1 ? (
-                    <Box
-                      marginTop="10px"
-                      display="flex"
-                      alignItems="flex-start"
-                      justifyContent={'center'}
-                    >
-                      <DotLegend
-                        style={{
-                          background: `${theme.colors.success.main}`,
-                        }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: `${theme.typography.pxToRem(11)}`,
-                          lineHeight: 1,
-                        }}
-                        variant="subtitle2"
-                      >
-                        <Text color="success">connected</Text>
-                      </Typography>
-                    </Box>
-                  ) : (
-                    <Box
-                      marginTop="10px"
-                      display="flex"
-                      alignItems="flex-start"
-                      justifyContent={'center'}
-                    >
-                      <DotLegend
-                        style={{
-                          background: `${theme.colors.warning.main}`,
-                        }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: `${theme.typography.pxToRem(11)}`,
-                          lineHeight: 1,
-                        }}
-                        variant="subtitle2"
-                      >
-                        <Text color="warning">disconnected</Text>
-                      </Typography>
-                    </Box>
-                  )}
-                  {/* // <Text color="success">{user.notionConnect}</Text> */}
-                  {/* </Typography> */}
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                  >
                     {cardFakeData.category === 1 ? (
-                      <Box>
-                        <Tooltip title="Go to linked notion">
-                          <Link href={`https://www.google.com`}>
-                            <IconButton>
-                              <InsertLinkTwoToneIcon />
-                            </IconButton>
-                          </Link>
-                        </Tooltip>
-                        <Tooltip title="disconnect to Notion">
-                          <IconButton>
-                            <LinkOffTwoToneIcon />
-                          </IconButton>
-                        </Tooltip>
+                      <Box
+                        marginTop="10px"
+                        display="flex"
+                        alignItems="flex-start"
+                        justifyContent={'center'}
+                      >
+                        <DotLegend
+                          style={{
+                            background: `${theme.colors.success.main}`,
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: `${theme.typography.pxToRem(11)}`,
+                            lineHeight: 1,
+                          }}
+                          variant="subtitle2"
+                        >
+                          <Text color="success">connected</Text>
+                        </Typography>
                       </Box>
                     ) : (
-                      <Box>
-                        <Tooltip title="Recover previous linked db">
-                          <IconButton>
-                            <AutorenewTwoToneIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="connect to Notion (build a new linked Notion db)">
-                          <Link href={`https://www.google.com`}>
-                            <IconButton>
-                              <AddLinkTwoToneIcon />
-                            </IconButton>
-                          </Link>
-                        </Tooltip>
+                      <Box
+                        marginTop="10px"
+                        display="flex"
+                        alignItems="flex-start"
+                        justifyContent={'center'}
+                      >
+                        <DotLegend
+                          style={{
+                            background: `${theme.colors.warning.main}`,
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: `${theme.typography.pxToRem(11)}`,
+                            lineHeight: 1,
+                          }}
+                          variant="subtitle2"
+                        >
+                          <Text color="warning">disconnected</Text>
+                        </Typography>
                       </Box>
                     )}
-                  </Box>
-                </CardActionAreaWrapper>
-              </Card>
+                    {/* // <Text color="success">{user.notionConnect}</Text> */}
+                    {/* </Typography> */}
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                    >
+                      {cardFakeData.category === 1 ? (
+                        <Box>
+                          <Tooltip title="Go to linked notion">
+                            <Link href={`https://www.google.com`}>
+                              <IconButton>
+                                <InsertLinkTwoToneIcon />
+                              </IconButton>
+                            </Link>
+                          </Tooltip>
+                          <Tooltip title="disconnect to Notion">
+                            <IconButton>
+                              <LinkOffTwoToneIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      ) : (
+                        <Box>
+                          <Tooltip title="Recover previous linked db">
+                            <IconButton>
+                              <AutorenewTwoToneIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="connect to Notion (build a new linked Notion db)">
+                            <Link href={`https://www.google.com`}>
+                              <IconButton>
+                                <AddLinkTwoToneIcon />
+                              </IconButton>
+                            </Link>
+                          </Tooltip>
+                        </Box>
+                      )}
+                    </Box>
+                  </CardActionAreaWrapper>
+                </Card>
+              </Grid>
             </Grid>
-          </Grid>
+          </Box>
         </Box>
-      </Box>
-      {/* 標題 */}
-      <Typography gutterBottom variant="h3">
-        Alex Ling
-      </Typography>
-      {/* Tag生成，如果有需要要map出來 [tags] */}
-      {/* <Box py={2}>
+        {/* 標題 */}
+        <Typography gutterBottom variant="h3">
+          Alex Ling
+        </Typography>
+        {/* Tag生成，如果有需要要map出來 [tags] */}
+        {/* <Box py={2}>
         <Label color="info">Web developer</Label>
         <Box component="span" px={1}>
           <Label color="warning">Javascript</Label>
         </Box>
         <Label color="error">Angular</Label>
       </Box> */}
-      {/* 筆記內文 */}
-      <Typography
-        sx={{
-          px: { xs: 4, md: 8 },
-        }}
-        variant="subtitle2"
-      >
-        {
-          'BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO'
-        }
-        .
-      </Typography>
-      <Divider
-        sx={{
-          mt: 3,
-        }}
-      />
-      <>
-        <React.Fragment key={123}>
-          <Divider />
-          <ListItem>
-            <ListItemAvatar>
-              {/* TODO: 目前沒有AVATAR */}
-              <Avatar alt="User" src={''} />
-            </ListItemAvatar>
-            <ListItemText
-              // TODO: 改成吃username
-              primary={<Text color="black">{'Sundar'}</Text>}
-              primaryTypographyProps={{
-                variant: 'h5',
-                // noWrap: true,
-              }}
-              secondary={
-                'This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages '
-              }
-              secondaryTypographyProps={{
-                variant: 'subtitle2',
-                // noWrap: true,
-              }}
-            />
-          </ListItem>
-        </React.Fragment>
-      </>
-      {/* 這邊要放message from以及內文的itemList */}
-      <Divider
-        sx={{
-          mt: 3,
-        }}
-      />
-      <Stack
-        sx={{
-          mt: 2.5,
-          textAlign: 'center',
-        }}
-        direction="row"
-        justifyContent="space-evenly"
-        alignItems="center"
-        spacing={2}
-      >
-        <Box>
-          <Typography gutterBottom variant="h4">
-            2022-12-30
-          </Typography>
-          <Typography variant="subtitle2">{'新增時間'}</Typography>
-        </Box>
-        <Box>
-          <Typography gutterBottom variant="h4">
-            2022-12-30
-          </Typography>
-          <Typography variant="subtitle2">{'新增時間'}</Typography>
-        </Box>
-        <Box>
-          <Typography gutterBottom variant="h4">
-            Sundar Pichai
-          </Typography>
-          <Typography variant="subtitle2">{'From'}</Typography>
-        </Box>
-        <Box>
-          <Typography gutterBottom variant="h4">
-            <Link href="#" variant="body2">
-              Notion Link
-            </Link>
-          </Typography>
-          <Typography variant="subtitle2">{'Exported'}</Typography>
-        </Box>
-      </Stack>
-    </Card>
+        {/* 筆記內文 */}
+        <Typography
+          sx={{
+            px: { xs: 4, md: 8 },
+          }}
+          variant="subtitle2"
+        >
+          {
+            'BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO BAGANONONONONONONONONONONONONO'
+          }
+          .
+        </Typography>
+        <Divider
+          sx={{
+            mt: 3,
+          }}
+        />
+        <>
+          <React.Fragment key={123}>
+            <Divider />
+            <ListItem>
+              <ListItemAvatar>
+                {/* TODO: 目前沒有AVATAR */}
+                <Avatar alt="User" src={''} />
+              </ListItemAvatar>
+              <ListItemText
+                // TODO: 改成吃username
+                primary={<Text color="black">{'Sundar'}</Text>}
+                primaryTypographyProps={{
+                  variant: 'h5',
+                  // noWrap: true,
+                }}
+                secondary={
+                  'This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages This is test messages '
+                }
+                secondaryTypographyProps={{
+                  variant: 'subtitle2',
+                  // noWrap: true,
+                }}
+              />
+            </ListItem>
+          </React.Fragment>
+        </>
+        {/* 這邊要放message from以及內文的itemList */}
+        <Divider
+          sx={{
+            mt: 3,
+          }}
+        />
+        <Stack
+          sx={{
+            mt: 2.5,
+            textAlign: 'center',
+          }}
+          direction="row"
+          justifyContent="space-evenly"
+          alignItems="center"
+          spacing={2}
+        >
+          <Box>
+            <Typography gutterBottom variant="h4">
+              2022-12-30
+            </Typography>
+            <Typography variant="subtitle2">{'新增時間'}</Typography>
+          </Box>
+          <Box>
+            <Typography gutterBottom variant="h4">
+              2022-12-30
+            </Typography>
+            <Typography variant="subtitle2">{'新增時間'}</Typography>
+          </Box>
+          <Box>
+            <Typography gutterBottom variant="h4">
+              Sundar Pichai
+            </Typography>
+            <Typography variant="subtitle2">{'From'}</Typography>
+          </Box>
+          <Box>
+            <Typography gutterBottom variant="h4">
+              <Link href="#" variant="body2">
+                Notion Link
+              </Link>
+            </Typography>
+            <Typography variant="subtitle2">{'Exported'}</Typography>
+          </Box>
+        </Stack>
+      </Card>
+    </Box>
   );
 }
 
