@@ -154,6 +154,20 @@ const fetchFriendList = async (userId) => {
   }
 };
 
+// JOIN取得好友username
+const getFriendUserName = async (userId, friendId) => {
+  try {
+    const friendNameQuery =
+      'SELECT user.id, user.username FROM user JOIN friendship ON user.id = friendship.friend WHERE friendship.user = ? AND friendship.friend = ?';
+    const [result] = await sqlDB.query(friendNameQuery, [userId, friendId]);
+    console.log('model', result);
+    return result;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
+
 module.exports = {
   checkUserInfoById,
   checkPendingInvitationByReceiver,
@@ -166,4 +180,5 @@ module.exports = {
   deleteRejectedFriendship,
   fetchFriendList,
   checkUserProfile,
+  getFriendUserName,
 };

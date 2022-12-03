@@ -73,6 +73,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 import { getActions } from '../../../store/actions/card_actions';
+import { setChosenChatDetails } from '../../../store/actions/chat_actions';
 import { connect } from 'react-redux';
 
 const CardActions = styled(Box)(
@@ -184,6 +185,7 @@ function CardDetail({
   mapId,
   exportLink,
   userInfoDetail,
+  setChosenChatDetails,
 }) {
   const theme = useTheme();
   const ref = useRef(null);
@@ -243,6 +245,7 @@ function CardDetail({
   const [initialCategory, setInitialCategory] = useState(category);
 
   const token = localStorage.getItem('accessToken');
+  const userId = localStorage.getItem('userId');
 
   const altImageAvatar = () => {
     return { Sundar };
@@ -382,6 +385,22 @@ function CardDetail({
         icon: 'warning',
         title: 'Please try again',
       });
+    }
+  };
+
+  const getFriendUserNameAndForward = async () => {
+    const result = await api.getFriendUserName(fromId, userId, token);
+    if (result.status !== 200) {
+      Toast.fire({
+        icon: 'warning',
+        title: 'Please try again',
+      });
+    } else {
+      // 設定target的id及username
+      const targetId = result.data.target.id;
+      const targetUserName = result.data.target.username;
+      const chatDetails = { id: targetId, name: targetUserName };
+      setChosenChatDetails(chatDetails, 'DIRECT', false);
     }
   };
 
@@ -1521,7 +1540,9 @@ function CardDetail({
                       <Box>
                         <Tooltip title="Chat">
                           <IconButton color="primary" size="small">
-                            <SmsTwoToneIcon />
+                            <SmsTwoToneIcon
+                              onClick={getFriendUserNameAndForward}
+                            />
                           </IconButton>
                         </Tooltip>
                       </Box>

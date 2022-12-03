@@ -1,6 +1,3 @@
-// 改變state的唯一方法，就是透過action
-// https://codesandbox.io/s/0vm2w0k9r0?file=/src/actions/todo.actions.js:4-10
-import { ActionTypes } from '@mui/base';
 import * as api from '../../api';
 
 export const cardActions = {
@@ -98,6 +95,13 @@ export const getActions = (dispatch) => {
     // },
   };
 };
+
+// export const forwardToTarget = (targetId, targetUserName) => {
+//   const chatDetails = { id: targetId, name: targetUserName };
+//   return async (dispatch) => {
+//     dispatch(setChosenChatDetails(chatDetails, 'DIRECT', false));
+//   };
+// };
 
 export const setCurrentCategory = (category) => ({
   type: cardActions.SET_CURRENT_CATEGORY,
@@ -251,3 +255,6 @@ export const addOrDeleteCard = (data) => {
     setCardChange: data,
   };
 };
+
+// 跳轉回去
+export const forwardToChatTarget = (userId) => {};

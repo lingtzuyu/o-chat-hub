@@ -28,7 +28,6 @@ export const TransferMessagePopout = ({
   chosenChatDetails,
   addCardsAfterTransfer,
 }) => {
-  console.log('不是按鈕內', chosenChatDetails.name);
   const [cardTitle, setCardTitle] = useState('write a good title');
   const [cardNotes, setCardNotes] = useState('write a good note');
   // 帶著accessToken認證欲儲存的訊息

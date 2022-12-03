@@ -265,6 +265,19 @@ const updateCategory = async (accessToken, cardId, category) => {
   }
 };
 
+const getFriendUserName = async (friendId, userId, accessToken) => {
+  try {
+    const result = await apiClient.get('/friend/username', {
+      params: { token: accessToken, userId: userId, friendId: friendId },
+    });
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.log(err);
+    return { error: true, err };
+  }
+};
+
 export {
   login,
   signup,
@@ -287,4 +300,5 @@ export {
   recoverPreviousNotionConnect,
   modifyCardTitleAndNotes,
   updateCategory,
+  getFriendUserName,
 };
