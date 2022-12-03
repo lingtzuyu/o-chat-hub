@@ -171,6 +171,17 @@ const updateCardTitleAndNotes = async (req, res) => {
   return res.status(500).send({ result: 'update fail' });
 };
 
+const updateCategory = async (req, res) => {
+  const { mail } = req.user;
+  const { cardId, category } = req.body;
+  const response = await Card.updateCategory(cardId, category, mail);
+  console.log(response);
+  if (response) {
+    return res.status(200).send({ result: 'update success' });
+  }
+  return res.status(500).send({ result: 'update fail' });
+};
+
 module.exports = {
   fetchCardCategory,
   saveMessagesToNote,
@@ -181,4 +192,5 @@ module.exports = {
   setDislikeById,
   fetchCardDetailsByCategory,
   updateCardTitleAndNotes,
+  updateCategory,
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, Fragment } from 'react';
 import {
   Box,
   Card,
@@ -18,11 +18,16 @@ import {
   Tooltip,
   TextField,
   Button,
+  Popover,
+  List,
 } from '@mui/material';
 import NotionIcon from '../../../shared/images/notion-icon.png';
 import TrelloIcon from '../../../shared/images/trello-icon.png';
 import Text from '../../../shared/components/Text';
 import Label from '../../../shared/components/Lable';
+import Scrollbar from '../../../shared/components/Scrollbar';
+import ExportPopoutTable from '../Component/ExportPopoutTable';
+
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
 import AddLinkTwoToneIcon from '@mui/icons-material/AddLinkTwoTone';
 import LinkOffTwoToneIcon from '@mui/icons-material/LinkOffTwoTone';
@@ -32,15 +37,19 @@ import BorderColorTwoToneIcon from '@mui/icons-material/BorderColorTwoTone';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import FavoriteBorderTwoToneIcon from '@mui/icons-material/FavoriteBorderTwoTone';
 import ImportExportTwoToneIcon from '@mui/icons-material/ImportExportTwoTone';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import DraftsTwoToneIcon from '@mui/icons-material/DraftsTwoTone';
+import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone';
 
 // category icons
 import WorkIcon from '../../../shared/images/Icons/work_icon.png';
 import KnowledgeIcon from '../../../shared/images/Icons/bachelor_icon.png';
 import LifeIcon from '../../../shared/images/Icons/bar_icon.png';
-import LikeIcon from '../../../shared/images/Icons/like_icon.png';
-import UnlikeIcon from '../../../shared/images/Icons/unlike_icon.png';
+import LikeIcon from '../../../shared/images/Icons/read_icon.png';
+import UnlikeIcon from '../../../shared/images/Icons/notread_icon.png';
 import IntegrationIcon from '../../../shared/images/Icons/integration_icon.png';
 import APIIcon from '../../../shared/images/Icons/api_icon.png';
+
 import SmsTwoToneIcon from '@mui/icons-material/SmsTwoTone';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
@@ -115,6 +124,14 @@ const EditorWrapper = styled(Box)(
 `
 );
 
+const ListWrapper = styled(List)(
+  () => `
+    .MuiListItem-root:last-of-type + .MuiDivider-root {
+        display: none;
+    }
+`
+);
+
 const CardActionAreaWrapper = styled(Box)(
   ({ theme }) => `
         text-align: center;
@@ -166,11 +183,64 @@ function CardDetail({
   noteDate,
   mapId,
   exportLink,
+  userInfoDetail,
 }) {
   const theme = useTheme();
+  const ref = useRef(null);
+
+  const items = [
+    {
+      id: 1,
+      name: 'Notion',
+      avatar: NotionIcon,
+      connected: userInfoDetail?.notionConnect,
+      buttonDisabled: userInfoDetail?.notionConnect === 1 ? false : true,
+    },
+    {
+      id: 2,
+      name: 'Trello',
+      avatar: TrelloIcon,
+      connected: userInfoDetail?.trelloConnect,
+      buttonDisabled: userInfoDetail?.trelloConnect === 1 ? false : true,
+    },
+  ];
+
+  const categoryData = [
+    {
+      id: 1,
+      name: 'work',
+      avatar: WorkIcon,
+    },
+    {
+      id: 2,
+      name: 'life',
+      avatar: LifeIcon,
+    },
+    {
+      id: 3,
+      name: 'knowledge',
+      avatar: KnowledgeIcon,
+    },
+  ];
+
+  // notes & title
   const [isEditing, setIsEditing] = useState(false);
+  // state
+  const [isEditingState, setIsEditingState] = useState(true);
+
   const [initialTitle, setInitialTitle] = useState(title);
   const [initialNotes, setInitialNotes] = useState(notes);
+  // 是否已閱讀，從liked來
+  const [initailLiked, setInitailLiked] = useState(liked);
+  // 此頁面的popover
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  // export頁面
+  const [isPopoutOpen, setIsPopoutOpen] = useState(false);
+
+  const [isTransferred, setIsTransferred] = useState(transferred);
+
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [initialCategory, setInitialCategory] = useState(category);
 
   const token = localStorage.getItem('accessToken');
 
@@ -232,8 +302,87 @@ function CardDetail({
       icon: 'error',
       title: 'This notes has been exported',
       text: 'Single source of truth is important, please check the place where you exported this note, ex: Notion',
-      footer: `<a href=${exportLink}>Link</a>`,
+      footer: `<a href=${exportLink}>Exported Link</a>`,
     });
+  };
+
+  // 將已閱讀改為未閱讀
+  const handleRemoveFromRead = async () => {
+    setInitailLiked(false);
+    const response = await api.dislikeCard({ token: token, cardId: mapId });
+    if (response.status === 200) {
+      Toast.fire({
+        icon: 'success',
+        title: 'Remove from read!',
+      });
+    } else {
+      Toast.fire({
+        icon: 'warning',
+        title: 'Please try again!',
+      });
+    }
+  };
+
+  // 將未閱讀改為已閱讀
+  const handleAddToRead = async () => {
+    setInitailLiked(true);
+    const response = await api.likeCard({ token: token, cardId: mapId });
+    if (response.status === 200) {
+      Toast.fire({
+        icon: 'success',
+        title: 'Add to read!',
+      });
+    } else {
+      Toast.fire({
+        icon: 'warning',
+        title: 'Please try again!',
+      });
+    }
+  };
+
+  const handleClosePopover = () => {
+    setIsPopoverOpen(false);
+  };
+
+  const handleExport = () => {
+    handleClosePopover();
+    setIsPopoutOpen(true);
+  };
+
+  const handleOpenPopover = () => {
+    setIsPopoverOpen(true);
+  };
+
+  const handleCloseExportPopout = () => {
+    setIsPopoutOpen(false);
+  };
+
+  const openCategoryChangePopout = () => {
+    setIsCategoryOpen(true);
+  };
+
+  const handleCloseCategoryPopout = () => {
+    setIsCategoryOpen(false);
+  };
+
+  const handleChangeCategory = async (e) => {
+    const categoryChange = e.target.value;
+    console.log(categoryChange);
+    const response = await api.updateCategory(token, mapId, categoryChange);
+    setIsCategoryOpen(false);
+    console.log(response);
+    if (response.status === 200) {
+      Toast.fire({
+        icon: 'success',
+        title: `Change category to ${categoryChange}`,
+      });
+      setInitialCategory(categoryChange);
+    } else {
+      Toast.fire({
+        icon: 'warning',
+        title: 'Please try again',
+      });
+    }
   };
 
   return (
@@ -403,7 +552,7 @@ function CardDetail({
             <Grid container spacing={4}>
               {/* 分類 */}
               <Grid item xs={12} sm={3}>
-                {category === 'work' ? (
+                {initialCategory === 'work' ? (
                   <Card variant="outlined" sx={{ backgroundColor: '#EAF6F6' }}>
                     <CardActionAreaWrapper
                       sx={{
@@ -453,15 +602,128 @@ function CardDetail({
                         <Box>
                           <Tooltip title="Change Category">
                             <IconButton color="primary" size="small">
-                              <BorderColorTwoToneIcon />
+                              <BorderColorTwoToneIcon
+                                ref={ref}
+                                onClick={openCategoryChangePopout}
+                              />
                             </IconButton>
                           </Tooltip>
                         </Box>
+                        <Popover
+                          disableScrollLock
+                          anchorEl={ref.current}
+                          open={isCategoryOpen}
+                          onClose={handleCloseCategoryPopout}
+                          anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                          transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                        >
+                          <Box minWidth={360} maxWidth={360}>
+                            {/* 最上方的Box */}
+
+                            {/* 這邊未來可以做成串接用 */}
+                            <Box
+                              sx={{
+                                height: 200,
+                              }}
+                            >
+                              <Scrollbar>
+                                <ListWrapper disablePadding>
+                                  {categoryData.map((item) => (
+                                    <Fragment key={item.id}>
+                                      <ListItem
+                                        sx={{
+                                          py: 1.5,
+                                          '&:hover': {
+                                            background: `${theme.colors.alpha.black[5]}`,
+                                          },
+                                        }}
+                                        secondaryAction={
+                                          // TODO: 改成transferSwal彈出視窗
+                                          <Button
+                                            value={item.name}
+                                            onClick={handleChangeCategory}
+                                            size="small"
+                                            variant="text"
+                                            color="secondary"
+                                            sx={{
+                                              alignSelf: 'center',
+                                              padding: `${theme.spacing(
+                                                0.5,
+                                                1.5
+                                              )}`,
+                                              backgroundColor: `${theme.colors.secondary.lighter}`,
+                                              textTransform: 'uppercase',
+                                              fontSize: `${theme.typography.pxToRem(
+                                                11
+                                              )}`,
+                                              '&:hover': {
+                                                backgroundColor: `${theme.colors.secondary.main}`,
+                                                color: `${theme.palette.getContrastText(
+                                                  theme.colors.secondary.main
+                                                )}`,
+                                              },
+                                            }}
+                                          >
+                                            {'Change'}
+                                          </Button>
+                                        }
+                                      >
+                                        {/* notion app icon */}
+                                        <ListItemAvatar
+                                          sx={{
+                                            minWidth: 38,
+                                            mr: 1,
+                                          }}
+                                        >
+                                          <Avatar
+                                            sx={{
+                                              width: 38,
+                                              height: 38,
+                                            }}
+                                            alt={item.name}
+                                            src={item.avatar}
+                                          />
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                          sx={{
+                                            flexGrow: 0,
+                                            maxWidth: '50%',
+                                            flexBasis: '50%',
+                                          }}
+                                          disableTypography
+                                          primary={
+                                            <Typography
+                                              sx={{
+                                                pb: 0.6,
+                                              }}
+                                              color="text.primary"
+                                              variant="h5"
+                                            >
+                                              {item.name}
+                                            </Typography>
+                                          }
+                                        />
+                                      </ListItem>
+                                      <Divider />
+                                    </Fragment>
+                                  ))}
+                                </ListWrapper>
+                              </Scrollbar>
+                            </Box>
+                            <Divider />
+                          </Box>
+                        </Popover>
                       </Box>
                     </CardActionAreaWrapper>
                   </Card>
                 ) : null}
-                {category === 'life' ? (
+                {initialCategory === 'life' ? (
                   <Card variant="outlined" sx={{ backgroundColor: '#C4DDFF' }}>
                     <CardActionAreaWrapper
                       sx={{
@@ -504,15 +766,128 @@ function CardDetail({
                         <Box>
                           <Tooltip title="Change Category">
                             <IconButton color="primary" size="small">
-                              <BorderColorTwoToneIcon />
+                              <BorderColorTwoToneIcon
+                                ref={ref}
+                                onClick={openCategoryChangePopout}
+                              />
                             </IconButton>
                           </Tooltip>
                         </Box>
+                        <Popover
+                          disableScrollLock
+                          anchorEl={ref.current}
+                          open={isCategoryOpen}
+                          onClose={handleCloseCategoryPopout}
+                          anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                          transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                        >
+                          <Box minWidth={360} maxWidth={360}>
+                            {/* 最上方的Box */}
+
+                            {/* 這邊未來可以做成串接用 */}
+                            <Box
+                              sx={{
+                                height: 200,
+                              }}
+                            >
+                              <Scrollbar>
+                                <ListWrapper disablePadding>
+                                  {categoryData.map((item) => (
+                                    <Fragment key={item.id}>
+                                      <ListItem
+                                        sx={{
+                                          py: 1.5,
+                                          '&:hover': {
+                                            background: `${theme.colors.alpha.black[5]}`,
+                                          },
+                                        }}
+                                        secondaryAction={
+                                          // TODO: 改成transferSwal彈出視窗
+                                          <Button
+                                            value={item.name}
+                                            onClick={handleChangeCategory}
+                                            size="small"
+                                            variant="text"
+                                            color="secondary"
+                                            sx={{
+                                              alignSelf: 'center',
+                                              padding: `${theme.spacing(
+                                                0.5,
+                                                1.5
+                                              )}`,
+                                              backgroundColor: `${theme.colors.secondary.lighter}`,
+                                              textTransform: 'uppercase',
+                                              fontSize: `${theme.typography.pxToRem(
+                                                11
+                                              )}`,
+                                              '&:hover': {
+                                                backgroundColor: `${theme.colors.secondary.main}`,
+                                                color: `${theme.palette.getContrastText(
+                                                  theme.colors.secondary.main
+                                                )}`,
+                                              },
+                                            }}
+                                          >
+                                            {'Change'}
+                                          </Button>
+                                        }
+                                      >
+                                        {/* notion app icon */}
+                                        <ListItemAvatar
+                                          sx={{
+                                            minWidth: 38,
+                                            mr: 1,
+                                          }}
+                                        >
+                                          <Avatar
+                                            sx={{
+                                              width: 38,
+                                              height: 38,
+                                            }}
+                                            alt={item.name}
+                                            src={item.avatar}
+                                          />
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                          sx={{
+                                            flexGrow: 0,
+                                            maxWidth: '50%',
+                                            flexBasis: '50%',
+                                          }}
+                                          disableTypography
+                                          primary={
+                                            <Typography
+                                              sx={{
+                                                pb: 0.6,
+                                              }}
+                                              color="text.primary"
+                                              variant="h5"
+                                            >
+                                              {item.name}
+                                            </Typography>
+                                          }
+                                        />
+                                      </ListItem>
+                                      <Divider />
+                                    </Fragment>
+                                  ))}
+                                </ListWrapper>
+                              </Scrollbar>
+                            </Box>
+                            <Divider />
+                          </Box>
+                        </Popover>
                       </Box>
                     </CardActionAreaWrapper>
                   </Card>
                 ) : null}
-                {category === 'knowledge' ? (
+                {initialCategory === 'knowledge' ? (
                   <Card variant="outlined" sx={{ backgroundColor: '#CFF5E7' }}>
                     <CardActionAreaWrapper
                       sx={{
@@ -562,18 +937,131 @@ function CardDetail({
                         <Box>
                           <Tooltip title="Change Category">
                             <IconButton color="primary" size="small">
-                              <BorderColorTwoToneIcon />
+                              <BorderColorTwoToneIcon
+                                ref={ref}
+                                onClick={openCategoryChangePopout}
+                              />
                             </IconButton>
                           </Tooltip>
                         </Box>
+                        <Popover
+                          disableScrollLock
+                          anchorEl={ref.current}
+                          open={isCategoryOpen}
+                          onClose={handleCloseCategoryPopout}
+                          anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                          transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                        >
+                          <Box minWidth={360} maxWidth={360}>
+                            {/* 最上方的Box */}
+
+                            {/* 這邊未來可以做成串接用 */}
+                            <Box
+                              sx={{
+                                height: 200,
+                              }}
+                            >
+                              <Scrollbar>
+                                <ListWrapper disablePadding>
+                                  {categoryData.map((item) => (
+                                    <Fragment key={item.id}>
+                                      <ListItem
+                                        sx={{
+                                          py: 1.5,
+                                          '&:hover': {
+                                            background: `${theme.colors.alpha.black[5]}`,
+                                          },
+                                        }}
+                                        secondaryAction={
+                                          // TODO: 改成transferSwal彈出視窗
+                                          <Button
+                                            value={item.name}
+                                            onClick={handleChangeCategory}
+                                            size="small"
+                                            variant="text"
+                                            color="secondary"
+                                            sx={{
+                                              alignSelf: 'center',
+                                              padding: `${theme.spacing(
+                                                0.5,
+                                                1.5
+                                              )}`,
+                                              backgroundColor: `${theme.colors.secondary.lighter}`,
+                                              textTransform: 'uppercase',
+                                              fontSize: `${theme.typography.pxToRem(
+                                                11
+                                              )}`,
+                                              '&:hover': {
+                                                backgroundColor: `${theme.colors.secondary.main}`,
+                                                color: `${theme.palette.getContrastText(
+                                                  theme.colors.secondary.main
+                                                )}`,
+                                              },
+                                            }}
+                                          >
+                                            {'Change'}
+                                          </Button>
+                                        }
+                                      >
+                                        {/* notion app icon */}
+                                        <ListItemAvatar
+                                          sx={{
+                                            minWidth: 38,
+                                            mr: 1,
+                                          }}
+                                        >
+                                          <Avatar
+                                            sx={{
+                                              width: 38,
+                                              height: 38,
+                                            }}
+                                            alt={item.name}
+                                            src={item.avatar}
+                                          />
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                          sx={{
+                                            flexGrow: 0,
+                                            maxWidth: '50%',
+                                            flexBasis: '50%',
+                                          }}
+                                          disableTypography
+                                          primary={
+                                            <Typography
+                                              sx={{
+                                                pb: 0.6,
+                                              }}
+                                              color="text.primary"
+                                              variant="h5"
+                                            >
+                                              {item.name}
+                                            </Typography>
+                                          }
+                                        />
+                                      </ListItem>
+                                      <Divider />
+                                    </Fragment>
+                                  ))}
+                                </ListWrapper>
+                              </Scrollbar>
+                            </Box>
+                            <Divider />
+                          </Box>
+                        </Popover>
                       </Box>
                     </CardActionAreaWrapper>
                   </Card>
                 ) : null}
               </Grid>
-              {/* 喜歡 */}
+              {/* 喜歡，改成已閱讀，true代表已閱讀 */}
               <Grid item xs={12} sm={3}>
-                {liked === true ? (
+                {initailLiked === true ? (
                   <Card variant="outlined">
                     <CardActionAreaWrapper
                       sx={{
@@ -615,8 +1103,12 @@ function CardDetail({
                       >
                         <Box>
                           <Tooltip title="Remove from read">
-                            <IconButton color="primary" size="small">
-                              <FavoriteBorderTwoToneIcon />
+                            <IconButton
+                              color="primary"
+                              size="small"
+                              onClick={handleRemoveFromRead}
+                            >
+                              <EmailTwoToneIcon />
                             </IconButton>
                           </Tooltip>
                         </Box>
@@ -624,7 +1116,7 @@ function CardDetail({
                     </CardActionAreaWrapper>
                   </Card>
                 ) : (
-                  <Card variant="outlined">
+                  <Card variant="outlined" sx={{ backgroundColor: '#FFCAC8' }}>
                     <CardActionAreaWrapper
                       sx={{
                         p: 2,
@@ -665,8 +1157,12 @@ function CardDetail({
                       >
                         <Box>
                           <Tooltip title="Add to read">
-                            <IconButton color="primary" size="small">
-                              <FavoriteTwoToneIcon />
+                            <IconButton
+                              color="primary"
+                              size="small"
+                              onClick={handleAddToRead}
+                            >
+                              <DraftsTwoToneIcon />
                             </IconButton>
                           </Tooltip>
                         </Box>
@@ -676,8 +1172,8 @@ function CardDetail({
                 )}
               </Grid>
               <Grid item xs={12} sm={3}>
-                {transferred === true ? (
-                  <Card variant="outlined" sx={{ backgroundColor: '#CEF1F5' }}>
+                {isTransferred === true ? (
+                  <Card variant="outlined">
                     <CardActionAreaWrapper
                       sx={{
                         p: 2,
@@ -723,16 +1219,18 @@ function CardDetail({
                       >
                         <Box>
                           <Tooltip title="Go to linked page">
-                            <IconButton color="primary" size="small">
-                              <InsertLinkTwoToneIcon />
-                            </IconButton>
+                            <Link href={`${exportLink}`}>
+                              <IconButton color="primary" size="small">
+                                <InsertLinkTwoToneIcon />
+                              </IconButton>
+                            </Link>
                           </Tooltip>
                         </Box>
                       </Box>
                     </CardActionAreaWrapper>
                   </Card>
                 ) : (
-                  <Card variant="outlined" sx={{ backgroundColor: '#E7EBC1' }}>
+                  <Card variant="outlined" sx={{ backgroundColor: '#FFCAC8' }}>
                     <CardActionAreaWrapper
                       sx={{
                         p: 2,
@@ -746,7 +1244,7 @@ function CardDetail({
                         />
                       </Box>
 
-                      <Typography variant="h3">{'Not expoted'}</Typography>
+                      <Typography variant="h3">{'Not exported'}</Typography>
                       <Box
                         marginTop="10px"
                         display="flex"
@@ -776,11 +1274,193 @@ function CardDetail({
                       >
                         <Box>
                           <Tooltip title="Press to export">
-                            <IconButton color="primary" size="small">
+                            <IconButton
+                              color="primary"
+                              size="small"
+                              onClick={handleOpenPopover}
+                              ref={ref}
+                            >
                               <ImportExportTwoToneIcon />
                             </IconButton>
                           </Tooltip>
                         </Box>
+
+                        {/* 彈出視窗  */}
+                        <Popover
+                          disableScrollLock
+                          anchorEl={ref.current}
+                          onClose={handleClosePopover}
+                          open={isPopoverOpen}
+                          anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                          transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                        >
+                          <Box minWidth={360} maxWidth={360}>
+                            {/* 最上方的Box */}
+
+                            {/* 這邊未來可以做成串接用 */}
+                            <Box
+                              sx={{
+                                height: 130,
+                              }}
+                            >
+                              <Scrollbar>
+                                <ListWrapper disablePadding>
+                                  {items.map((item) => (
+                                    <Fragment key={item.id}>
+                                      <ListItem
+                                        sx={{
+                                          py: 1.5,
+                                          '&:hover': {
+                                            background: `${theme.colors.alpha.black[5]}`,
+                                          },
+                                        }}
+                                        secondaryAction={
+                                          // TODO: 改成transferSwal彈出視窗
+                                          <Button
+                                            onClick={handleExport}
+                                            size="small"
+                                            variant="text"
+                                            color="secondary"
+                                            disabled={item.buttonDisabled}
+                                            sx={{
+                                              alignSelf: 'center',
+                                              padding: `${theme.spacing(
+                                                0.5,
+                                                1.5
+                                              )}`,
+                                              backgroundColor: `${theme.colors.secondary.lighter}`,
+                                              textTransform: 'uppercase',
+                                              fontSize: `${theme.typography.pxToRem(
+                                                11
+                                              )}`,
+                                              '&:hover': {
+                                                backgroundColor: `${theme.colors.secondary.main}`,
+                                                color: `${theme.palette.getContrastText(
+                                                  theme.colors.secondary.main
+                                                )}`,
+                                              },
+                                            }}
+                                          >
+                                            {'Export'}
+                                          </Button>
+                                        }
+                                      >
+                                        {/* notion app icon */}
+                                        <ListItemAvatar
+                                          sx={{
+                                            minWidth: 38,
+                                            mr: 1,
+                                          }}
+                                        >
+                                          <Avatar
+                                            sx={{
+                                              width: 38,
+                                              height: 38,
+                                            }}
+                                            alt={item.name}
+                                            src={item.avatar}
+                                          />
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                          sx={{
+                                            flexGrow: 0,
+                                            maxWidth: '50%',
+                                            flexBasis: '50%',
+                                          }}
+                                          disableTypography
+                                          primary={
+                                            <Typography
+                                              sx={{
+                                                pb: 0.6,
+                                              }}
+                                              color="text.primary"
+                                              variant="h5"
+                                            >
+                                              {item.name}
+                                            </Typography>
+                                          }
+                                          secondary={
+                                            <Box
+                                              display="flex"
+                                              alignItems="flex-start"
+                                            >
+                                              {item.connected === 1 ? (
+                                                <>
+                                                  <DotLegend
+                                                    style={{
+                                                      background: `${theme.colors.success.main}`,
+                                                    }}
+                                                  />
+                                                  <Typography
+                                                    sx={{
+                                                      fontSize: `${theme.typography.pxToRem(
+                                                        11
+                                                      )}`,
+                                                      lineHeight: 1,
+                                                    }}
+                                                    variant="body1"
+                                                  >
+                                                    <Text color="success">
+                                                      {'Connected'}
+                                                    </Text>
+                                                  </Typography>
+                                                </>
+                                              ) : (
+                                                <>
+                                                  <DotLegend
+                                                    style={{
+                                                      background: `${theme.colors.warning.main}`,
+                                                    }}
+                                                  />
+                                                  <Typography
+                                                    sx={{
+                                                      fontSize: `${theme.typography.pxToRem(
+                                                        11
+                                                      )}`,
+                                                      lineHeight: 1,
+                                                    }}
+                                                    variant="body1"
+                                                  >
+                                                    <Text color="warning">
+                                                      {'Disconnected'}
+                                                    </Text>
+                                                  </Typography>
+                                                </>
+                                              )}
+                                            </Box>
+                                          }
+                                        />
+                                      </ListItem>
+                                      <Divider />
+                                    </Fragment>
+                                  ))}
+                                </ListWrapper>
+                              </Scrollbar>
+                            </Box>
+                            <Divider />
+                          </Box>
+                        </Popover>
+                        {/* Notino彈窗 */}
+                        <ExportPopoutTable
+                          setIsTransferred={setIsTransferred}
+                          handleCloseExportPopout={handleCloseExportPopout}
+                          isPopoutOpen={isPopoutOpen}
+                          closePopout={handleCloseExportPopout}
+                          cardId={mapId}
+                          noteTime={noteDate}
+                          from={from}
+                          category={category}
+                          title={title}
+                          notes={notes}
+                          messageRecords={messageRecords}
+                          exportApp={items.name}
+                        />
                       </Box>
                     </CardActionAreaWrapper>
                   </Card>
@@ -925,8 +1605,8 @@ function CardDetail({
   );
 }
 
-const mapStoreStateToProps = ({ card }) => {
-  return { ...card };
+const mapStoreStateToProps = ({ card, auth }) => {
+  return { ...card, ...auth };
 };
 
 const mapActionsToProps = (dispatch) => {

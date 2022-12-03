@@ -12,6 +12,7 @@ const {
   fetchCardDetailsByCategory,
   fetchLastFiveCards,
   updateCardTitleAndNotes,
+  updateCategory,
 } = require('../controllers/card_controller');
 const { fetchCardHistoryByCategory } = require('../models/card_model');
 
@@ -68,5 +69,9 @@ router
     wrapAsync(checkCardExist),
     wrapAsync(updateCardTitleAndNotes)
   );
+// 更新卡片category
+router
+  .route('/card/changecategory')
+  .post(verifiedAuth, wrapAsync(checkCardExist), wrapAsync(updateCategory));
 
 module.exports = router;

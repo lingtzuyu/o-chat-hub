@@ -35,14 +35,15 @@ export const TransferMessagePopout = ({
   const messagesCollectionInString = localStorage.getItem(
     'selectedMessagesCollection'
   );
-  const messagesArray = JSON.parse(messagesCollectionInString);
+  // const messagesArray = JSON.parse(messagesCollectionInString);
   const accessToken = localStorage.getItem('accessToken');
   const category = localStorage.getItem('noteCategory');
   // 即將存進mongoDB的json 5p4ux,4
 
+  // TODO: 待改message傳送方式
   const messagesToBeSent = {
     category: category,
-    messagesToBeSaved: messagesArray,
+    messagesToBeSaved: messagesCollectionInString,
     token: accessToken,
   };
 

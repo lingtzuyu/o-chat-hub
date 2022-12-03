@@ -56,7 +56,7 @@ const setNotionDisconnect = async (userId, token) => {
 const exportToNotion = async (data) => {
   try {
     const response = await apiClient.post('/notion/export', data);
-    return response.status;
+    return response;
   } catch (err) {
     return { error: true, err };
   }
@@ -252,6 +252,19 @@ const updateUserName = async (accessToken, userName) => {
   }
 };
 
+const updateCategory = async (accessToken, cardId, category) => {
+  try {
+    const response = await apiClient.post('/card/changecategory', {
+      token: accessToken,
+      category: category,
+      cardId: cardId,
+    });
+    return response;
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
 export {
   login,
   signup,
@@ -273,4 +286,5 @@ export {
   setNotionDisconnect,
   recoverPreviousNotionConnect,
   modifyCardTitleAndNotes,
+  updateCategory,
 };

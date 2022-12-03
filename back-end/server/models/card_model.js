@@ -135,6 +135,22 @@ const updateTitleAndNotes = async (cardId, title, notes, mail) => {
   }
 };
 
+// update category
+const updateCategory = async (cardId, category, mail) => {
+  try {
+    const result = await NoteDataMongo.findOneAndUpdate(
+      { Author: mail, _id: cardId },
+      {
+        Category: category,
+      },
+      { new: true }
+    );
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   fetchCardHistoryByMail,
   fetchCardCategory,
@@ -146,5 +162,6 @@ module.exports = {
   updateLinkToNote,
   fetchCardHistoryByCategory,
   updateTitleAndNotes,
+  updateCategory,
 };
 // module.exports = mongoose.model('NoteDataMongo', noteSchema);
