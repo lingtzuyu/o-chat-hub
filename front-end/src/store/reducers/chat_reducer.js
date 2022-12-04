@@ -1,4 +1,5 @@
 import { chatActions } from '../actions/chat_actions';
+import { cardActions } from '../actions/card_actions';
 
 const initState = {
   chosenChatDetails: null,
@@ -24,6 +25,13 @@ const reducer = (state = initState, action) => {
         ...state,
         messages: action.messages,
       };
+    case cardActions.SET_FORWARDED_TARGET:
+      return {
+        ...state,
+        chosenChatDetails: action.chosenChatDetails,
+        chatType: action.chatType,
+      };
+
     default:
       return state;
   }

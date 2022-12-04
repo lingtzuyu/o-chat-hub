@@ -1,4 +1,5 @@
 import * as api from '../../api';
+import { setChosenChatDetails } from './chat_actions';
 
 export const cardActions = {
   SHOW_SELECTE_MESSAGE_BOX: 'CARDS.SHOW_SELECTE_MESSAGE_BOX',
@@ -22,7 +23,7 @@ export const cardActions = {
   ADD_DELETE_CARD_CHANGE: 'CARDS.ADD_DELETE_CARD_CHANGE',
   SET_CANCEL_BUTTON_DISABLED: 'CARDS.SET_CANCEL_BUTTON_DISABLED',
   SET_CURRENT_CATEGORY: 'CARDS.SET_CURRETN_CATEGORY',
-  // SET_LAST_FIVE_CARDS: 'CARDS.SET_LAST_FIVE_CARDS',
+  SET_FORWARDED_TARGET: 'CARDS.SET_FORWARDED_TARGET',
 };
 
 export const getActions = (dispatch) => {
@@ -90,9 +91,9 @@ export const getActions = (dispatch) => {
     setCurrentCategory: (category) => {
       dispatch(setCurrentCategory(category));
     },
-    // fechLastFiveCard: (data) => {
-    //   dispatch(fechLastFiveCard(data));
-    // },
+    forwardToTarget: (chatDetails, chatType, saveButtonOn) => {
+      dispatch(forwardToTarget(chatDetails, chatType, saveButtonOn));
+    },
   };
 };
 
@@ -178,6 +179,14 @@ export const exportToNotion = (data) => {
 export const setExportedCard = (data) => ({
   type: cardActions.SET_EXPORTED_CARD,
   exportedCards: data,
+});
+
+// forward 到該聊天
+export const forwardToTarget = (chatDetails, chatType, saveButtonOn) => ({
+  type: cardActions.SET_FORWARDED_TARGET,
+  chosenChatDetails: chatDetails,
+  chatType: chatType,
+  saveButtonShow: saveButtonOn,
 });
 
 // 把卡片區的資訊狀態帶到輸出區，並且準備輸出

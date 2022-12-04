@@ -135,6 +135,12 @@ const reducer = (state = initState, action) => {
         currentCategoryParams: action.currentCategoryParams,
       };
     }
+    case cardActions.SET_FORWARDED_TARGET: {
+      return {
+        ...state,
+        isSavedButtonDisabled: action.saveButtonShow,
+      };
+    }
 
     default:
       return state;

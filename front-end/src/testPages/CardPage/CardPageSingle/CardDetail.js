@@ -1,4 +1,5 @@
 import React, { useState, useRef, Fragment } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -186,9 +187,11 @@ function CardDetail({
   exportLink,
   userInfoDetail,
   setChosenChatDetails,
+  forwardToTarget,
 }) {
   const theme = useTheme();
   const ref = useRef(null);
+  const forwardTo = useNavigate();
 
   const items = [
     {
@@ -397,10 +400,12 @@ function CardDetail({
       });
     } else {
       // 設定target的id及username
+      // TODO: 目前這邊無用，跳轉過去帶不了狀態
       const targetId = result.data.target.id;
       const targetUserName = result.data.target.username;
       const chatDetails = { id: targetId, name: targetUserName };
-      setChosenChatDetails(chatDetails, 'DIRECT', false);
+      await forwardToTarget(chatDetails, 'DIRECT', false);
+      forwardTo('/homepage');
     }
   };
 
@@ -1149,7 +1154,7 @@ function CardDetail({
                         />
                       </Box>
 
-                      <Typography variant="h3">{'Not read yet'}</Typography>
+                      <Typography variant="h3">{'Unread'}</Typography>
 
                       <Box
                         marginTop="10px"
