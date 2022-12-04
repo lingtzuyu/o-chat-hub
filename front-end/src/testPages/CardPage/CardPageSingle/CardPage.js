@@ -4,6 +4,7 @@ import PageTitleWrapper from '../../TopNavigationBar/PageTitleWrapper';
 
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import CardDetail from './CardDetail';
+import CategoryState from './CategoryState';
 
 import Scrollbar from '../../../shared/components/Scrollbar';
 import CardPageTopBar from './CardPageTopBar';
@@ -15,7 +16,10 @@ import {
   Drawer,
   IconButton,
   useTheme,
+  Grid,
 } from '@mui/material';
+
+import UnreadStatic from './UnreadStatic';
 
 import { getActions } from '../../../store/actions/card_actions';
 import { connect } from 'react-redux';
@@ -125,6 +129,21 @@ export function CardPage({ cards, fetchCardHistory }) {
         <title>Messenger - Applications</title>
       </Helmet> */}
       <PageTitleWrapper></PageTitleWrapper>
+      <Box marginTop="50px" paddingLeft={'300px'} paddingRight={'300px'}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={4}
+        >
+          <CategoryState />
+          {/* <Grid item sm={6} md={3} lg={6} xs={6}>
+            <UnreadStatic />
+          </Grid>
+          <Grid item sm={6} md={3} lg={6} xs={6}></Grid> */}
+        </Grid>
+      </Box>
       <RootWrapper className="Mui-FixedWrapper">
         <DrawerWrapperMobile
           sx={{
@@ -148,6 +167,7 @@ export function CardPage({ cards, fetchCardHistory }) {
           <ChatWindow>
             <ChatTopBar
               sx={{
+                marginTop: '20px',
                 display: { xs: 'flex', lg: 'inline-block' },
               }}
             >

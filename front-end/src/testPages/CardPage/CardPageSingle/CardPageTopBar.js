@@ -88,25 +88,6 @@ export default function CardPageTopBar() {
         }}
       >
         <Grid alignItems="center" container spacing={3}>
-          {/* <Grid item xs={12} lg={7} md={6}>
-            <TextField
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchTwoToneIcon />
-                  </InputAdornment>
-                ),
-              }}
-              sx={{
-                m: 0,
-              }}
-              onChange={handleQueryChange}
-              placeholder={'Search invoices by client name ...'}
-              value={query}
-              fullWidth
-              variant="outlined"
-            />
-          </Grid> */}
           <Grid item xs={12} lg={4} md={4}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>{'Category'}</InputLabel>
