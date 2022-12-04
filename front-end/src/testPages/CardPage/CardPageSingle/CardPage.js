@@ -4,8 +4,10 @@ import PageTitleWrapper from '../../TopNavigationBar/PageTitleWrapper';
 
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import CardDetail from './CardDetail';
+import CategoryState from './CategoryState';
 
 import Scrollbar from '../../../shared/components/Scrollbar';
+import CardPageTopBar from './CardPageTopBar';
 
 import {
   Box,
@@ -14,7 +16,13 @@ import {
   Drawer,
   IconButton,
   useTheme,
+  Grid,
 } from '@mui/material';
+
+import UnreadStatic from './UnreadStatic';
+
+import { getActions } from '../../../store/actions/card_actions';
+import { connect } from 'react-redux';
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
@@ -27,7 +35,7 @@ const Sidebar = styled(Box)(
   ({ theme }) => `
         width: 300px;
         background: ${theme.colors.alpha.white[100]};
-        border-right: ${theme.colors.alpha.black[10]} solid 1px;
+        border-right: ${theme.colors.alpha.black[10]} 1px;
 `
 );
 
@@ -63,7 +71,7 @@ const CardWindow = styled(Box)(
 const ChatTopBar = styled(Box)(
   ({ theme }) => `
         background: ${theme.colors.alpha.white[100]};
-        border-bottom: ${theme.colors.alpha.black[10]} solid 1px;
+        border-bottom: ${theme.colors.alpha.black[10]}  1px;
         padding: ${theme.spacing(2)};
         align-items: center;
 `
@@ -97,7 +105,12 @@ const DrawerWrapperMobile = styled(Drawer)(
 `
 );
 
-export function CardPage() {
+export function CardPage({
+  cards,
+  fetchCardHistory,
+  filteredCards,
+  setFilteredCards,
+}) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -110,6 +123,9 @@ export function CardPage() {
 
     if (!accessToken) {
       window.location.pathname = '/login';
+    } else {
+      fetchCardHistory(accessToken);
+      setFilteredCards(cards);
     }
   }, []);
 
@@ -119,6 +135,21 @@ export function CardPage() {
         <title>Messenger - Applications</title>
       </Helmet> */}
       <PageTitleWrapper></PageTitleWrapper>
+      <Box marginTop="50px" paddingLeft={'300px'} paddingRight={'300px'}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={4}
+        >
+          <CategoryState />
+          {/* <Grid item sm={6} md={3} lg={6} xs={6}>
+            <UnreadStatic />
+          </Grid>
+          <Grid item sm={6} md={3} lg={6} xs={6}></Grid> */}
+        </Grid>
+      </Box>
       <RootWrapper className="Mui-FixedWrapper">
         <DrawerWrapperMobile
           sx={{
@@ -137,17 +168,16 @@ export function CardPage() {
             sx={{
               display: { xs: 'none', lg: 'inline-block' },
             }}
-          >
-            Side
-          </Sidebar>
+          ></Sidebar>
 
           <ChatWindow>
             <ChatTopBar
               sx={{
+                marginTop: '20px',
                 display: { xs: 'flex', lg: 'inline-block' },
               }}
             >
-              TopBar，這邊放20%
+              <CardPageTopBar />
             </ChatTopBar>
             <Box
               alignItems={'center'}
@@ -157,12 +187,26 @@ export function CardPage() {
               }}
             >
               <Scrollbar>
-                <CardDetail></CardDetail>
-                <CardDetail></CardDetail>
-                <CardDetail></CardDetail>
-                <CardDetail></CardDetail>
-                <CardDetail></CardDetail>
-                <CardDetail></CardDetail>
+                {filteredCards.map((card) => {
+                  const localNoteTime = new Date(card.NoteTime);
+                  const localDate = localNoteTime.toDateString();
+                  return (
+                    <CardDetail
+                      category={card.Category}
+                      from={card.FROM}
+                      fromMail={card.FromMail}
+                      title={card.Title}
+                      messageRecords={card.MessageRecords}
+                      notes={card.Notes}
+                      liked={card.Liked}
+                      transferred={card.Transferred}
+                      fromId={card.FromId}
+                      noteDate={localDate}
+                      mapId={card._id}
+                      exportLink={card?.ExportLink}
+                    />
+                  );
+                })}
               </Scrollbar>
             </Box>
           </ChatWindow>
@@ -170,13 +214,19 @@ export function CardPage() {
             sx={{
               display: { xs: 'none', lg: 'inline-block' },
             }}
-          >
-            Side
-          </Sidebar>
+          ></Sidebar>
         </WorkSpaceWrapper>
       </RootWrapper>
     </>
   );
 }
 
-export default CardPage;
+const mapStoreStateToProps = ({ auth, card }) => {
+  return { ...auth, ...card };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(mapStoreStateToProps, mapActionsToProps)(CardPage);

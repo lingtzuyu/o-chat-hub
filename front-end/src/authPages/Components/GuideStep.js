@@ -9,6 +9,8 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+import OperationButton from '../../shared/images/GuideStep.png';
+import ExportIcon from '../../shared/images/exportIcon.png';
 
 const steps = [
   {
@@ -16,13 +18,15 @@ const steps = [
     description: `Take-notes.chat is a messenging app grants you productivity and collaboration, whcih differentiate it from any other messenging apps in the market`,
   },
   {
-    label: 'Record an inpiring moment',
+    label: 'Record an inpiring moment through these buttons simply',
     description:
       'An inspring moment frequently happens when you chat with your freinds, colleagues or love ones, to just let it go is a waste! Record these moments and transform them into true productivity!',
+    pic: OperationButton,
   },
   {
     label: 'Export to collaboration platfom',
     description: `Export your ideas to the third party platform with your partners, share your insights and impress your team`,
+    pic: ExportIcon,
   },
 ];
 
@@ -70,6 +74,14 @@ export default function GuideStep() {
               </StepLabel>
               <StepContent>
                 <Typography>{step.description}</Typography>
+                <Box>
+                  <img
+                    src={step.pic}
+                    style={{ width: '60%', borderRadius: 60 }}
+                    alt=""
+                  />
+                </Box>
+
                 <Box sx={{ mb: 2 }}>
                   <div>
                     <Button

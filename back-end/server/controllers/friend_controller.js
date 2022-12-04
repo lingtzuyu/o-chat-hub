@@ -174,6 +174,28 @@ const rejectFriendInvitation = async (req, res) => {
   }
 };
 
+// user Profile
+const getUserProfile = async (req, res) => {
+  const { mail } = req.user;
+  const response = await Friend.checkUserProfile(mail);
+  // console.log('controller', response);
+  res.status(200).json({ result: response });
+};
+
+// friend username
+const getFriendUserName = async (req, res) => {
+  const { userId, friendId } = req.query;
+
+  const [response] = await Friend.getFriendUserName(userId, friendId);
+  console.log(response);
+  if (response === undefined || null) {
+    return res
+      .status(400)
+      .send('frined id or user id wrong, maybe you are not friends');
+  }
+  return res.status(200).json({ target: response });
+};
+
 module.exports = {
   invitationSchema,
   friendConfirmSchema,
@@ -181,4 +203,6 @@ module.exports = {
   sentFriendInvitation,
   accpetFriendInvitation,
   rejectFriendInvitation,
+  getUserProfile,
+  getFriendUserName,
 };

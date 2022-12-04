@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import TempProfile from '../../../shared/images/ProfilePhoto.jpg';
+import { logout } from '../../../shared/utils/generalAuth';
 
 import {
   Avatar,
@@ -19,6 +20,12 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import ViewAgendaTwoToneIcon from '@mui/icons-material/ViewAgendaTwoTone';
+import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
+import QuestionAnswerTwoToneIcon from '@mui/icons-material/QuestionAnswerTwoTone';
+
+import { getActions } from '../../../store/actions/auth_actions';
+import { connect } from 'react-redux';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -60,7 +67,8 @@ const UserBoxDescription = styled(Typography)(
 `
 );
 
-function UserIcon() {
+function UserIcon({ userInfoDetail, userName, organizationInStore }) {
+  console.log('profile葉面', userName);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -80,7 +88,8 @@ function UserIcon() {
       handleClose();
       // 改成logoout
       // await logout();
-      navigate('/');
+      // navigate('/');
+      logout();
     } catch (err) {
       console.error(err);
     }
@@ -94,7 +103,7 @@ function UserIcon() {
       }}
     >
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar alt={'name'} src={TempProfile} />
+        <Avatar alt={'name'} src={userInfoDetail?.photo} />
         <ExpandMoreTwoToneIcon
           fontSize="small"
           sx={{
@@ -124,8 +133,12 @@ function UserIcon() {
         >
           <Avatar variant="rounded" alt={'name'} src={TempProfile} />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{'name'}</UserBoxLabel>
-            <UserBoxDescription variant="body2">{'CEO'}</UserBoxDescription>
+            <UserBoxLabel variant="body1">
+              {userInfoDetail?.username}
+            </UserBoxLabel>
+            <UserBoxDescription variant="body2">
+              {userInfoDetail?.organization}
+            </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
         <Divider
@@ -144,7 +157,7 @@ function UserIcon() {
             onClick={() => {
               handleClose();
             }}
-            to={`/${location.pathname.split('/')[1]}/management/users/single/1`}
+            to={`/profile`}
             component={NavLink}
           >
             <AccountBoxTwoToneIcon fontSize="small" />
@@ -155,26 +168,22 @@ function UserIcon() {
             onClick={() => {
               handleClose();
             }}
-            to={`/${
-              location.pathname.split('/')[1]
-            }/applications/mailbox/inbox`}
+            to={`/card`}
             component={NavLink}
           >
-            <InboxTwoToneIcon fontSize="small" />
-            <ListItemText primary={'Inbox'} />
+            <DescriptionTwoToneIcon fontSize="small" />
+            <ListItemText primary={'My Notes'} />
           </ListItem>
           <ListItem
             button
             onClick={() => {
               handleClose();
             }}
-            to={`/${
-              location.pathname.split('/')[1]
-            }/applications/projects-board`}
+            to={`/homepage`}
             component={NavLink}
           >
-            <AccountTreeTwoToneIcon fontSize="small" />
-            <ListItemText primary={'Projects'} />
+            <QuestionAnswerTwoToneIcon fontSize="small" />
+            <ListItemText primary={'My Messages'} />
           </ListItem>
         </List>
         <Divider />
@@ -193,4 +202,12 @@ function UserIcon() {
   );
 }
 
-export default UserIcon;
+const mapStoreStateToProps = ({ auth }) => {
+  return { ...auth };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(mapStoreStateToProps, mapActionsToProps)(UserIcon);

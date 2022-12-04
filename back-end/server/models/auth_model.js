@@ -3,7 +3,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const { sqlDB } = require('./mysqlconn');
+
 const salt = parseInt(process.env.BCRYPT_SALT);
+
 const { TOKEN_EXPIRE, TOKEN_SECRET } = process.env; // 30 days by seconds
 
 // register的body需要含有
@@ -105,4 +107,15 @@ const signIn = async (email, password) => {
   }
 };
 
-module.exports = { signUp, signIn };
+const upateNewUsername = async (username, organization, mail) => {
+  const updateUserNameQuery =
+    'UPDATE user SET username = ?, organization = ? WHERE mail = ? ';
+  const response = await sqlDB.query(updateUserNameQuery, [
+    username,
+    organization,
+    mail,
+  ]);
+  return response;
+};
+
+module.exports = { signUp, signIn, upateNewUsername };

@@ -13,6 +13,7 @@ import {
   Divider,
   useTheme,
   styled,
+  Link,
 } from '@mui/material';
 
 import CardBuilder from './CardBuilder';
@@ -80,14 +81,16 @@ function CardList({
           }}
           disableTypography
           title={
-            <Typography
-              variant="h4"
-              sx={{
-                fontSize: `${theme.typography.pxToRem(16)}`,
-              }}
-            >
-              {'Note Cards'}
-            </Typography>
+            <Link color="#223354" href="/card">
+              <Typography
+                variant="h4"
+                sx={{
+                  fontSize: `${theme.typography.pxToRem(16)}`,
+                }}
+              >
+                {'Note Cards'}
+              </Typography>
+            </Link>
           }
         />
         <Divider />

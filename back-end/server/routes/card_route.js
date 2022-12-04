@@ -10,6 +10,9 @@ const {
   setDislikeById,
   checkCardExist,
   fetchCardDetailsByCategory,
+  fetchLastFiveCards,
+  updateCardTitleAndNotes,
+  updateCategory,
 } = require('../controllers/card_controller');
 const { fetchCardHistoryByCategory } = require('../models/card_model');
 
@@ -48,9 +51,27 @@ router
   .route('/card/history')
   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory));
 
+// Last 5 for notification
+// router
+//   .route('/card/lastfive')
+//   .get(wrapAsync(verifiedAuth), wrapAsync(fetchLastFiveCards));
+
 // 取得歷史紀錄by category
 router
   .route('/card/details/:category')
   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardDetailsByCategory));
+
+// 更新卡片Title以及notes
+router
+  .route('/card/modification')
+  .post(
+    verifiedAuth,
+    wrapAsync(checkCardExist),
+    wrapAsync(updateCardTitleAndNotes)
+  );
+// 更新卡片category
+router
+  .route('/card/changecategory')
+  .post(verifiedAuth, wrapAsync(checkCardExist), wrapAsync(updateCategory));
 
 module.exports = router;

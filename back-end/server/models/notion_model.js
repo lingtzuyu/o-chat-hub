@@ -10,7 +10,69 @@ const notionTokenCheck = async (userId) => {
   return result;
 };
 
+// recover
+const recoverNotionConnect = async (userId) => {
+  const conn = await sqlDB.getConnection();
+  try {
+    await conn.query('START TRANSACTION');
+    const changeUserNotionStatusQuery =
+      'UPDATE user SET notionConnect = ? WHERE id = ?';
+    await conn.query(changeUserNotionStatusQuery, [1, userId]);
+    const removeNotionAccessQuery =
+      'UPDATE notionaccess SET isRemoved = ? WHERE user_id = ?';
+    await conn.query(removeNotionAccessQuery, [0, userId]);
+
+    const recoveredDBIdQuery =
+      'SELECT relatedNotionPageId FROM notionaccess WHERE user_id = ?';
+    const recoveredResult = await conn.query(recoveredDBIdQuery, [userId]);
+    const recoveredDBId = recoveredResult[0][0].relatedNotionPageId;
+
+    await conn.query('COMMIT');
+    return { status: 'sucess Recovered', recoveredDBId };
+  } catch (err) {
+    console.log(err);
+    await conn.query('ROLLBACK');
+  } finally {
+    await conn.release();
+  }
+};
+
+// 刪除notion連線 (user那邊狀態改為0，notionAccess isRemoved改為1)
+const removeNotionConnect = async (userId) => {
+  const conn = await sqlDB.getConnection();
+  try {
+    await conn.query('START TRANSACTION');
+    const changeUserNotionStatusQuery =
+      'UPDATE user SET notionConnect = 0 WHERE id = ?';
+    const changeUserNotionStatus = await conn.query(
+      changeUserNotionStatusQuery,
+      [userId]
+    );
+
+    const removeNotionAccessQuery =
+      'UPDATE notionaccess SET isRemoved = ? WHERE user_id = ?';
+    const removeResult = await conn.query(removeNotionAccessQuery, [1, userId]);
+
+    const removedDBIdQuery =
+      'SELECT relatedNotionPageId FROM notionaccess WHERE user_id = ?';
+    const removedResult = await conn.query(removedDBIdQuery, [userId]);
+    console.log(removedResult);
+    const removedDBId = removedResult[0][0].relatedNotionPageId;
+    console.log(removedDBId);
+
+    await conn.query('COMMIT');
+    return { status: 'sucess Removed', removedDB: removedDBId };
+  } catch (err) {
+    console.log(err);
+    await conn.query('ROLLBACK');
+  } finally {
+    await conn.release();
+  }
+};
+
 // 存入針對某notion頁面(db)的accessToken以及關連到的頁面(db) id
+
+// TODO:　這邊這幾個動作要加上交易
 
 const saveNotionTokenAndPageId = async (code, userId) => {
   // 帶著code去加上webApp的驗證資料取得notion accessToken
@@ -41,9 +103,10 @@ const saveNotionTokenAndPageId = async (code, userId) => {
       },
       data: { filter: { property: 'object', value: 'database' } },
     });
-    console.log(data);
+    console.log('notion回來的', data);
     const notionDatabaseid = data?.results[0]?.id;
     console.log('後端DB ID', notionDatabaseid);
+    const notionDBLink = data?.results[0]?.url;
 
     // 存入SQL DB
     const insertNotionTokenQuery =
@@ -54,8 +117,13 @@ const saveNotionTokenAndPageId = async (code, userId) => {
       notionDatabaseid,
     ]);
 
+    // 存入notion URL
+    const updateURLinUser =
+      'UPDATE user set notionConnect = 1, notiondblink = ? WHERE id = ? ';
+    await sqlDB.query(updateURLinUser, [notionDBLink, userId]);
+
     // // 返回DB id, accessToken給前端
-    return result;
+    return data?.results[0];
   } catch (err) {
     console.log('notion API error', err);
   }
@@ -205,4 +273,6 @@ module.exports = {
   saveNotionTokenAndPageId,
   notionTokenCheck,
   createPageInNotion,
+  removeNotionConnect,
+  recoverNotionConnect,
 };

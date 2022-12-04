@@ -19,6 +19,8 @@ import {
 import Label from '../../shared/components/Lable';
 import Text from '../../shared/components/Text';
 import ExportIconList from './Component/ExportIconList';
+import EmailIcon from '@mui/icons-material/Email';
+import DraftsIcon from '@mui/icons-material/Drafts';
 
 import AutoAwesomeMosaicTwoToneIcon from '@mui/icons-material/AutoAwesomeMosaicTwoTone';
 import CardTravelTwoToneIcon from '@mui/icons-material/CardTravelTwoTone';
@@ -125,7 +127,7 @@ const CardBuilderKnowledge = ({
       setSelected(false);
       Toast.fire({
         icon: 'success',
-        title: 'Remove from liked！',
+        title: 'Unread it！',
       });
       await api.dislikeCard(handleCardInfo);
     }
@@ -133,7 +135,7 @@ const CardBuilderKnowledge = ({
       setSelected(true);
       Toast.fire({
         icon: 'success',
-        title: 'Add to liked！',
+        title: 'Add to read！',
       });
       await api.likeCard(handleCardInfo);
     }
@@ -155,10 +157,9 @@ const CardBuilderKnowledge = ({
   };
 
   return (
-    <Box sx={{ backgroundColor: '#C4DDFF' }}>
+    <Box sx={{ backgroundColor: '#C4DDFF', justifyContent: 'space-between' }}>
       <ListItem
         sx={{
-          alignItems: 'flex-start',
           p: 2,
         }}
       >
@@ -170,7 +171,7 @@ const CardBuilderKnowledge = ({
               display: 'flex',
               alignItems: 'center',
               minWidth: 0,
-              marginRight: '60px',
+              marginRight: '20px',
             }}
           >
             <NightlifeIcon />
@@ -178,30 +179,39 @@ const CardBuilderKnowledge = ({
         </Box>
 
         {/* 與誰的訊息 */}
+        <Box display="flex" alignItems={'center'}>
+          <ListItemText
+            sx={{ marginTop: '8%' }}
+            primary={<Typography variant="h4"> {title}</Typography>}
+            secondary={
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: notes,
+                }}
+              />
+            }
+          />
+        </Box>
 
-        <ListItemText
-          primary={<Typography variant="h4"> {title}</Typography>}
-          secondary={
-            <div
-              dangerouslySetInnerHTML={{
-                __html: notes,
-              }}
-            />
-          }
-        />
-
-        <Box alignSelf="center" display="flex">
-          <Tooltip title="Like">
+        <Box
+          alignSelf="center"
+          display="flex"
+          flexDirection="column"
+          marginLeft="20px"
+        >
+          <Tooltip title="Read">
             <Checkbox
               {...label}
-              icon={<FavoriteBorder />}
-              checkedIcon={<Favorite />}
+              icon={<EmailIcon />}
+              checkedIcon={<DraftsIcon />}
               checked={selected}
               onChange={handleLiked}
               style={{ color: '#223354' }}
             />
           </Tooltip>
+
           {/* 按了之後打開確認popout */}
+
           <Tooltip title="Delete">
             <IconButton onClick={handleOpenDeleteAlert}>
               <DeleteOutlineIcon
@@ -213,7 +223,7 @@ const CardBuilderKnowledge = ({
           </Tooltip>
 
           {/* export到第三方 */}
-          <Box marginTop="50px" marginLeft="8px">
+          <Box marginLeft="9px" marginTop="2px">
             <ExportIconList
               cardId={cardId}
               noteTime={noteTime}
@@ -254,19 +264,6 @@ const CardBuilderKnowledge = ({
             <QuickMessageView />
           </>
         </Box>
-
-        {/* <Box
-          alignSelf="center"
-          marginLeft="30px"
-          display="flex"
-          flexDirection="column"
-        >
-          <Box mt={0.5}>
-            <Label color="secondary">
-              <b>{messageRecords.length}</b>
-            </Label>
-          </Box>
-        </Box> */}
       </ListItem>
       <Divider />
     </Box>

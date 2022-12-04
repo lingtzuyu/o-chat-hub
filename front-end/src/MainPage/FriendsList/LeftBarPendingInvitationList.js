@@ -1,3 +1,5 @@
+// 這個是準備廢棄的
+
 import React from 'react';
 import { styled } from '@mui/system';
 import LeftBarPendingListBuilder from './LeftBarPendingListBuilder';
@@ -30,6 +32,7 @@ const PendingInvitationList = ({ pendingInvitation }) => {
             key={ele.sender_user_id}
             id={ele.sender_user_id}
             username={ele.username}
+            photo={ele.photo}
             mail={ele.mail}
           />
         ))}

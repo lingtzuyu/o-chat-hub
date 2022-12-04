@@ -32,11 +32,16 @@ const Input = styled('input')({
   display: 'none',
 });
 
-function BottomBarContent({ chosenChatDetails }) {
+function BottomBarContent({ chosenChatDetails, userInfoDetail }) {
   // TODO: 要改透過redux拿到
   const userMail = localStorage.getItem('userMail');
   const [messageToBeSent, setMessageToBeSent] = useState('');
   const theme = useTheme();
+
+  const isSendButtonDisabled = chosenChatDetails ? false : true;
+  const tipMessage = chosenChatDetails
+    ? 'Send your message here...'
+    : 'Please choose a contact before input...';
 
   // 監聽onChange的event
   const handleInputAreaChange = (event) => {
@@ -56,8 +61,6 @@ function BottomBarContent({ chosenChatDetails }) {
     }
     // setMessage空直要放在送出資料後面，不然會直接先清空
     setMessageToBeSent('');
-
-    console.log('send Message to DB successful');
   };
 
   // 按下按鍵後就執行send Message
@@ -81,11 +84,12 @@ function BottomBarContent({ chosenChatDetails }) {
           sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }}
           alt={userMail}
           // TODO: change later for real image
-          src={TempProfilePic}
+          src={userInfoDetail?.photo}
         />
         <MessageInputWrapper
+          disabled={isSendButtonDisabled}
           autoFocus
-          placeholder={'Send your message here...'}
+          placeholder={tipMessage}
           fullWidth
           value={messageToBeSent}
           onChange={handleInputAreaChange}
@@ -93,7 +97,7 @@ function BottomBarContent({ chosenChatDetails }) {
         />
       </Box>
       <Box>
-        {/* 之後用套件做出來 */}
+        {/* TODO: 之後用套件做出來 */}
         <Tooltip arrow placement="top" title={'Choose an emoji'}>
           <IconButton
             sx={{ fontSize: theme.typography.pxToRem(16) }}
@@ -114,6 +118,7 @@ function BottomBarContent({ chosenChatDetails }) {
           startIcon={<SendTwoToneIcon />}
           variant="contained"
           onClick={sendMessages}
+          disabled={isSendButtonDisabled}
         >
           {'Send'}
         </Button>
@@ -122,8 +127,8 @@ function BottomBarContent({ chosenChatDetails }) {
   );
 }
 
-const mapStoreStateToProps = ({ chat }) => {
-  return { ...chat };
+const mapStoreStateToProps = ({ chat, auth }) => {
+  return { ...chat, ...auth };
 };
 
 export default connect(mapStoreStateToProps)(BottomBarContent);

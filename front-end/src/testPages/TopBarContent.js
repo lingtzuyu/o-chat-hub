@@ -36,9 +36,11 @@ import BlockTwoToneIcon from '@mui/icons-material/BlockTwoTone';
 import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone';
 import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 
 import TransferMessageButton from './component/TransferMessageButton';
 import SaveMessageButton from './component/SaveMessageButton';
+import CancelTransferButton from './component/CancelTransferButton';
 
 import { connect } from 'react-redux';
 
@@ -93,7 +95,7 @@ const AccordionSummaryWrapper = styled(AccordionSummary)(
 `
 );
 
-function TopBarContent({ name }) {
+function TopBarContent({ chosenChatDetails }) {
   return (
     <>
       <RootWrapper>
@@ -104,15 +106,13 @@ function TopBarContent({ name }) {
               width: 48,
               height: 48,
             }}
-            alt={name}
-            src={FakeProfilePic}
+            alt={chosenChatDetails?.name}
+            src={chosenChatDetails?.photo}
           />
           <Box ml={1}>
-            <Typography variant="h4">{name}</Typography>
+            <Typography variant="h4">{chosenChatDetails?.name}</Typography>
             <Typography variant="subtitle1">
-              {formatDistance(subMinutes(new Date(), 8), new Date(), {
-                addSuffix: true,
-              })}
+              {chosenChatDetails?.organization}
             </Typography>
           </Box>
         </Box>
@@ -134,20 +134,25 @@ function TopBarContent({ name }) {
               <InputIcon />
             </IconButton>
           </Tooltip> */}
-          <Tooltip placement="bottom" title={'Set a reminder'}>
+          {/* <Tooltip placement="bottom" title={'Cancel'}>
             <IconButton color="primary">
-              <AccessAlarmsIcon />
+              <CancelPresentationIcon />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
+          <CancelTransferButton />
         </Box>
       </RootWrapper>
     </>
   );
 }
 
-const mapActionsToProps = (state) => {
-  return {
-    name: state.chat.chosenChatDetails?.name,
-  };
+const mapStoreStateToProps = ({ chat }) => {
+  return { ...chat };
 };
-export default connect(mapActionsToProps)(TopBarContent);
+
+// const mapActionsToProps = (state) => {
+//   return {
+//     name: state.chat.chosenChatDetails?.name,
+//   };
+// };
+export default connect(mapStoreStateToProps)(TopBarContent);

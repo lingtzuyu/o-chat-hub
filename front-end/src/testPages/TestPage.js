@@ -116,7 +116,13 @@ const DrawerWrapperMobile = styled(Drawer)(
 `
 );
 
-function ApplicationsMessenger({ setUserDetails, chosenChatDetails }) {
+// setUserDetails目前只有token
+function ApplicationsMessenger({
+  setUserDetails,
+  chosenChatDetails,
+  getUserInfoDetail,
+}) {
+  const accessToken = localStorage.getItem('accessToken');
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -125,7 +131,7 @@ function ApplicationsMessenger({ setUserDetails, chosenChatDetails }) {
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
+    // const accessToken = localStorage.getItem('accessToken');
     // const userMail = localStorage.getItem('userMail');
     if (!accessToken) {
       // TODO: logout
@@ -135,6 +141,7 @@ function ApplicationsMessenger({ setUserDetails, chosenChatDetails }) {
       setUserDetails(accessToken);
       // TODO: 透過socket.id與mail (唯一值) 的綁定廣播來讓別人知道某人上線，改寫
       connectSocketBackend(accessToken);
+      getUserInfoDetail(accessToken);
     }
   }, []);
 

@@ -28,21 +28,21 @@ export const TransferMessagePopout = ({
   chosenChatDetails,
   addCardsAfterTransfer,
 }) => {
-  console.log('不是按鈕內', chosenChatDetails.name);
   const [cardTitle, setCardTitle] = useState('write a good title');
   const [cardNotes, setCardNotes] = useState('write a good note');
   // 帶著accessToken認證欲儲存的訊息
   const messagesCollectionInString = localStorage.getItem(
     'selectedMessagesCollection'
   );
-  const messagesArray = JSON.parse(messagesCollectionInString);
+  // const messagesArray = JSON.parse(messagesCollectionInString);
   const accessToken = localStorage.getItem('accessToken');
   const category = localStorage.getItem('noteCategory');
   // 即將存進mongoDB的json 5p4ux,4
 
+  // TODO: 待改message傳送方式
   const messagesToBeSent = {
     category: category,
-    messagesToBeSaved: messagesArray,
+    messagesToBeSaved: messagesCollectionInString,
     token: accessToken,
   };
 

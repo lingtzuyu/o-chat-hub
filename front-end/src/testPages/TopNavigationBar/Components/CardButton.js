@@ -22,6 +22,9 @@ import Link from '@mui/material/Link';
 import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
 import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone';
 import { formatDistance, subHours, subSeconds, subDays } from 'date-fns';
+import { getActions } from '../../../store/actions/card_actions';
+import { connect } from 'react-redux';
+import CardNotification from './CardNotification';
 
 const AnimatedBadge = styled(Badge)(
   ({ theme }) => `
@@ -90,10 +93,13 @@ const IconButtonPrimary = styled(IconButton)(
 `
 );
 
-function CardButton() {
+function CardButton({ cards }) {
   const ref = useRef(null);
   const [isOpen, setOpen] = useState(false);
   const theme = useTheme();
+
+  // slice: 淺拷貝
+  const lastFive = cards.slice(0, 5);
 
   const handleOpen = () => {
     setOpen(true);
@@ -105,7 +111,7 @@ function CardButton() {
 
   return (
     <>
-      <Tooltip arrow title={'Notifications'}>
+      <Tooltip arrow title={'Last Five Notes'}>
         <IconButtonPrimary color="primary" ref={ref} onClick={handleOpen}>
           <NotificationsBadge
             badgeContent={0}
@@ -139,16 +145,16 @@ function CardButton() {
           display="flex"
           justifyContent="space-between"
         >
-          <Typography variant="h5">{'Notifications'}</Typography>
-          <Link
-            href="#"
+          <Typography variant="h5">{'Last Five Notes'}</Typography>
+          {/* <Link
+            href="/card"
             variant="caption"
             sx={{
               textTransform: 'none',
             }}
           >
-            {'Mark all as read'}
-          </Link>
+            {'Go check detail'}
+          </Link> */}
         </Box>
         <Divider />
         <List
@@ -156,302 +162,44 @@ function CardButton() {
             p: 2,
           }}
         >
-          <ListItem
-            sx={{
-              display: { xs: 'block', sm: 'flex' },
-            }}
-            button
-            selected
-          >
-            <ListItemAvatar
-              sx={{
-                mb: { xs: 1, sm: 0 },
-              }}
-            >
-              <Avatar alt="James Dias" src="/static/images/avatars/1.jpg" />
-            </ListItemAvatar>
-            <Box flex={1}>
-              <Box
-                display={{ xs: 'block', sm: 'flex' }}
-                justifyContent="space-between"
-              >
-                <Typography
-                  sx={{
-                    fontWeight: 'bold',
-                  }}
-                >
-                  James Dias
-                </Typography>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    textTransform: 'none',
-                  }}
-                >
-                  {formatDistance(subSeconds(new Date(), 19), new Date(), {
-                    addSuffix: true,
-                  })}
-                </Typography>
-              </Box>
-              <Typography
-                component="span"
-                variant="body2"
-                sx={{
-                  color: theme.colors.error.main,
-                }}
-              >
-                {'Missed call'}
-              </Typography>
-              <Typography
-                component="span"
-                variant="body2"
-                color="text.secondary"
-              >
-                — I'll be in your neighborhood…
-              </Typography>
-            </Box>
-          </ListItem>
-          <Divider
-            variant="inset"
-            sx={{
-              my: 1,
-            }}
-            component="li"
-          />
-          <ListItem
-            sx={{
-              display: { xs: 'block', sm: 'flex' },
-            }}
-            button
-          >
-            <ListItemAvatar
-              sx={{
-                mb: { xs: 1, sm: 0 },
-              }}
-            >
-              <AnimatedBadge
-                overlap="circular"
-                badgeContent=" "
-                variant="dot"
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-              >
-                <Avatar
-                  alt="Randy Shepard"
-                  src="/static/images/avatars/3.jpg"
-                />
-              </AnimatedBadge>
-            </ListItemAvatar>
-            <Box flex={1}>
-              <Box
-                display={{ xs: 'block', sm: 'flex' }}
-                justifyContent="space-between"
-              >
-                <Typography
-                  sx={{
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Randy Shepard
-                </Typography>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    textTransform: 'none',
-                  }}
-                >
-                  {formatDistance(subHours(new Date(), 3), new Date(), {
-                    addSuffix: true,
-                  })}
-                </Typography>
-              </Box>
-              <Typography component="span" variant="body2">
-                {'Created a new ticket'}:{' '}
-                <Link href="#" variant="body2">
-                  Header Bug Report
-                </Link>
-                .
-              </Typography>
-            </Box>
-          </ListItem>
-          <Divider
-            variant="inset"
-            sx={{
-              my: 1,
-            }}
-            component="li"
-          />
-          <ListItem
-            sx={{
-              display: { xs: 'block', sm: 'flex' },
-            }}
-            alignItems="flex-start"
-          >
-            <ListItemAvatar
-              sx={{
-                mb: { xs: 1, sm: 0 },
-              }}
-            >
-              <Avatar alt="Sarah James" src="/static/images/avatars/2.jpg" />
-            </ListItemAvatar>
-            <Box flex={1}>
-              <Box
-                display={{ xs: 'block', sm: 'flex' }}
-                justifyContent="space-between"
-              >
-                <Typography
-                  sx={{
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Sarah James
-                </Typography>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    textTransform: 'none',
-                  }}
-                >
-                  {formatDistance(subDays(new Date(), 1), new Date(), {
-                    addSuffix: true,
-                  })}
-                </Typography>
-              </Box>
-              <Typography
-                component="span"
-                variant="body2"
-                color="text.secondary"
-              >
-                {'Added some files to'}{' '}
-                <Link href="#" variant="body2">
-                  Marketing tasks
-                </Link>{' '}
-                {'section'}.
-              </Typography>
-              <Paper
-                elevation={2}
-                sx={{
-                  p: 1,
-                  mt: 2,
-                  maxWidth: 400,
-                  flexWrap: 'wrap',
-                  display: 'flex',
-                  background: theme.colors.alpha.black[5],
-                }}
-              >
-                <Box
-                  display={{ xs: 'block', md: 'flex' }}
-                  sx={{
-                    p: 1,
-                  }}
-                >
-                  <DescriptionTwoToneIcon
-                    sx={{
-                      mr: 0.5,
-                    }}
-                  />
-                  <Box>
-                    <Link href="#" variant="body2">
-                      BalanceReports.pdf
-                    </Link>
-                    <Typography component="div" variant="caption">
-                      187Kb
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box
-                  display="flex"
-                  sx={{
-                    p: 1,
-                  }}
-                >
-                  <DescriptionTwoToneIcon
-                    sx={{
-                      mr: 0.5,
-                    }}
-                  />
-                  <Box>
-                    <Link href="#" variant="body2">
-                      Income2022.pdf
-                    </Link>
-                    <Typography component="div" variant="caption">
-                      187Kb
-                    </Typography>
-                  </Box>
-                </Box>
-              </Paper>
-            </Box>
-          </ListItem>
-          <Divider
-            variant="inset"
-            sx={{
-              my: 1,
-            }}
-            component="li"
-          />
-          <ListItem
-            sx={{
-              display: { xs: 'block', sm: 'flex' },
-            }}
-          >
-            <ListItemAvatar
-              sx={{
-                mb: { xs: 1, sm: 0 },
-              }}
-            >
-              <Avatar
-                sx={{
-                  background: theme.colors.success.main,
-                }}
-              >
-                <CommentTwoToneIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <Box flex={1}>
-              <Box display="flex" justifyContent="space-between">
-                <Typography
-                  sx={{
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Messaging Platform
-                </Typography>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    textTransform: 'none',
-                  }}
-                >
-                  {formatDistance(subDays(new Date(), 3), new Date(), {
-                    addSuffix: true,
-                  })}
-                </Typography>
-              </Box>
-              <Typography component="span" variant="body2" fontWeight="bold">
-                54
-              </Typography>
-              <Typography
-                component="span"
-                variant="body2"
-                color="text.secondary"
-              >
-                {' '}
-                {'new messages in your inbox'}
-              </Typography>
-            </Box>
-          </ListItem>
+          {lastFive.map((message, index) => {
+            return (
+              <CardNotification
+                key={message._id}
+                time={message.NoteTime}
+                title={message.Title}
+                from={message.FROM}
+                notes={message.Notes}
+                Transferred={message.Transferred}
+              ></CardNotification>
+            );
+          })}
         </List>
         <Divider />
         <Box m={1}>
-          <Button color="secondary" fullWidth>
-            {'View all notifications'}
-          </Button>
+          <Link
+            href="/card"
+            variant="caption"
+            sx={{
+              textTransform: 'none',
+            }}
+          >
+            <Button color="secondary" fullWidth>
+              {'View all notes'}
+            </Button>
+          </Link>
         </Box>
       </Popover>
     </>
   );
 }
 
-export default CardButton;
+const mapStoreStateToPropse = ({ card }) => {
+  return { ...card };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(mapStoreStateToPropse, mapActionsToProps)(CardButton);

@@ -1,17 +1,62 @@
 import axios from 'axios';
 import { logout } from './shared/utils/generalAuth';
 
-// 建立後端API連線，不要衝3000
+// 建立後端API連線
 const apiAdress = process.env.REACT_APP_API_URL;
 const apiClient = axios.create({
   baseURL: apiAdress,
   timeout: 30000,
 });
 
+// modify card title and notes
+const modifyCardTitleAndNotes = async (cardId, title, notes, token) => {
+  try {
+    const response = await apiClient.post('/card/modification', {
+      cardId: cardId,
+      title: title,
+      notes: notes,
+      token: token,
+    });
+    return response.status;
+  } catch (err) {
+    console.log(err);
+    return { error: true, err };
+  }
+};
+
+// recover (change status) notion link
+const recoverPreviousNotionConnect = async (userId, token) => {
+  try {
+    const response = await apiClient.post('/notion/recover', {
+      userId: userId,
+      token: token,
+    });
+    return response.status;
+  } catch (err) {
+    console.log(err);
+    return { error: true, err };
+  }
+};
+
+// remove (change status) notoin link
+const setNotionDisconnect = async (userId, token) => {
+  try {
+    const response = await apiClient.post('/notion/removal', {
+      userId: userId,
+      token: token,
+    });
+    return response.status;
+  } catch (err) {
+    console.log(err);
+    return { error: true, err };
+  }
+};
+
 // export to Notion (正式)
 const exportToNotion = async (data) => {
   try {
-    return await apiClient.post('/notion/export', data);
+    const response = await apiClient.post('/notion/export', data);
+    return response;
   } catch (err) {
     return { error: true, err };
   }
@@ -125,11 +170,24 @@ const getCardHistory = async (data) => {
   }
 };
 
+// fetch last 5 for notification
+// const getLastFiveCard = async (data) => {
+//   try {
+//     const result = await apiClient.get('/card/lastfive', {
+//       params: { token: data },
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     return { error: true, err };
+//   }
+// };
+
 // category serach API
-const fetchCardByCategory = async (category, token) => {
+const fetchCardByCategory = async (category, token, fromId) => {
   try {
+    console.log('api.js內', fromId);
     const response = await apiClient.get(`/card/details/${category}`, {
-      params: { token: token, category: category },
+      params: { token: token, category: category, fromId: fromId },
     });
     return response;
   } catch (err) {
@@ -139,12 +197,14 @@ const fetchCardByCategory = async (category, token) => {
 };
 
 // get notion accessToken to certain DB
-const getNotionToken = async (code) => {
+const getNotionToken = async (code, token) => {
   try {
-    const response = await apiClient.get('/notion/', {
-      params: { code: code },
+    const response = await apiClient.post(`/notion/token`, {
+      code: code,
+      token: token,
     });
-    return response;
+    console.log('這邊的res', response);
+    return response.status;
   } catch (err) {
     console.log(err);
     return { error: true, err };
@@ -168,6 +228,58 @@ const dislikeCard = async (data) => {
   }
 };
 
+// 把getUserProfile移到homepage
+const getUserProfile = async (token) => {
+  try {
+    return await apiClient.get('/friend/userProfile', {
+      headers: {
+        authorization: token,
+      },
+    });
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
+const updateUserName = async (accessToken, userName, organization) => {
+  try {
+    const response = await apiClient.post('/auth/username', {
+      token: accessToken,
+      username: userName,
+      organization: organization,
+    });
+    return response.status;
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
+const updateCategory = async (accessToken, cardId, category) => {
+  try {
+    const response = await apiClient.post('/card/changecategory', {
+      token: accessToken,
+      category: category,
+      cardId: cardId,
+    });
+    return response;
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
+const getFriendUserName = async (friendId, userId, accessToken) => {
+  try {
+    const result = await apiClient.get('/friend/username', {
+      params: { token: accessToken, userId: userId, friendId: friendId },
+    });
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.log(err);
+    return { error: true, err };
+  }
+};
+
 export {
   login,
   signup,
@@ -184,4 +296,11 @@ export {
   dislikeCard,
   exportToNotion,
   fetchCardByCategory,
+  getUserProfile,
+  updateUserName,
+  setNotionDisconnect,
+  recoverPreviousNotionConnect,
+  modifyCardTitleAndNotes,
+  updateCategory,
+  getFriendUserName,
 };

@@ -1,6 +1,7 @@
 import React from 'react';
-import { styled } from '@mui/system';
+import { styled, Box } from '@mui/system';
 import { Typography } from '@mui/material';
+import GuideStep from '../../authPages/Components/GuideStep';
 
 const ChatContentMessageWrapper = styled('div')({
   flexGrow: 1,
@@ -15,9 +16,14 @@ const ChatContentMessageWrapper = styled('div')({
 export const MeesageIfNoChosenContact = () => {
   return (
     <ChatContentMessageWrapper>
-      <Typography variant="h3" sx={{ color: 'grey' }}>
-        Choose a contact to start conversation
-      </Typography>
+      <Box marginLeft="5%">
+        <Typography variant="h3" sx={{ color: 'grey' }}>
+          Choose a contact to start conversation
+        </Typography>
+      </Box>
+      <Box marginLeft="5%">
+        <GuideStep />
+      </Box>
     </ChatContentMessageWrapper>
   );
 };

@@ -89,6 +89,7 @@ function ExportIconList({
   messageRecords,
   setIsExportPopoutOpen,
   isExportTableOpen,
+  userInfoDetail,
 }) {
   const theme = useTheme();
 
@@ -120,13 +121,15 @@ function ExportIconList({
       id: 1,
       name: 'Notion',
       avatar: NotionIcon,
-      connected: 1,
+      connected: userInfoDetail?.notionConnect,
+      buttonDisabled: userInfoDetail?.notionConnect === 1 ? false : true,
     },
     {
       id: 2,
       name: 'Trello',
       avatar: TrelloIcon,
-      connected: 0,
+      connected: userInfoDetail?.trelloConnect,
+      buttonDisabled: userInfoDetail?.trelloConnect === 1 ? false : true,
     },
   ];
 
@@ -191,6 +194,7 @@ function ExportIconList({
                           size="small"
                           variant="text"
                           color="secondary"
+                          disabled={item.buttonDisabled}
                           sx={{
                             alignSelf: 'center',
                             padding: `${theme.spacing(0.5, 1.5)}`,
@@ -245,20 +249,41 @@ function ExportIconList({
                         }
                         secondary={
                           <Box display="flex" alignItems="flex-start">
-                            <DotLegend
-                              style={{
-                                background: `${theme.colors.success.main}`,
-                              }}
-                            />
-                            <Typography
-                              sx={{
-                                fontSize: `${theme.typography.pxToRem(11)}`,
-                                lineHeight: 1,
-                              }}
-                              variant="body1"
-                            >
-                              <Text color="success">{'Connected'}</Text>
-                            </Typography>
+                            {item.connected === 1 ? (
+                              <>
+                                <DotLegend
+                                  style={{
+                                    background: `${theme.colors.success.main}`,
+                                  }}
+                                />
+                                <Typography
+                                  sx={{
+                                    fontSize: `${theme.typography.pxToRem(11)}`,
+                                    lineHeight: 1,
+                                  }}
+                                  variant="body1"
+                                >
+                                  <Text color="success">{'Connected'}</Text>
+                                </Typography>
+                              </>
+                            ) : (
+                              <>
+                                <DotLegend
+                                  style={{
+                                    background: `${theme.colors.warning.main}`,
+                                  }}
+                                />
+                                <Typography
+                                  sx={{
+                                    fontSize: `${theme.typography.pxToRem(11)}`,
+                                    lineHeight: 1,
+                                  }}
+                                  variant="body1"
+                                >
+                                  <Text color="warning">{'Disconnected'}</Text>
+                                </Typography>
+                              </>
+                            )}
                           </Box>
                         }
                       />
@@ -304,8 +329,8 @@ function ExportIconList({
     </>
   );
 }
-const mapStoreStateToPropse = ({ card }) => {
-  return { ...card };
+const mapStoreStateToPropse = ({ card, auth }) => {
+  return { ...card, ...auth };
 };
 
 const mapActionsToProps = (dispatch) => {

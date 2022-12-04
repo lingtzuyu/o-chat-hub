@@ -70,6 +70,8 @@ const LeftBarFriendList = ({ friends, onlineUsers }) => {
       {checkOnline(friends, onlineUsers).map((ele, index) => (
         <LeftBarFriendListBuilder
           // FriendDataItems會製造擺放這些key, username, id的元素
+          photo={ele.photo}
+          organization={ele.organization}
           index={index}
           key={ele.id}
           username={ele.username}

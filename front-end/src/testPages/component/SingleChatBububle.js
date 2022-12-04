@@ -48,6 +48,8 @@ const CardWrapperPrimary = styled(Card)(
       border-top-right-radius: ${theme.general.borderRadius};
       max-width: 380px;
       display: inline-flex;
+      word-break: break-all;
+      white-space: pre-wrap;
 `
 );
 
@@ -61,6 +63,8 @@ const CardWrapperSecondary = styled(Card)(
       border-top-left-radius: ${theme.general.borderRadius};
       max-width: 380px;
       display: inline-flex;
+      word-break: break-all;
+      white-space: pre-wrap;
 `
 );
 
@@ -76,6 +80,10 @@ const MessageRight = ({
   mapKey,
   isSelectMessageBoxDisabled,
   isSelectedMessageBoxShown,
+  localClock,
+  localDate,
+  userInfoDetail,
+  chosenChatDetails,
 }) => {
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
@@ -133,10 +141,10 @@ const MessageRight = ({
         (message) => message.messageId === mapKey
       );
       const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
-      console.log('被移除的index', removedIndex);
+
       // 移除該index
       messageArrayToBeRemoved.splice(removedIndex, 1);
-      console.log('更新後的', messageArrayToBeRemoved);
+
       window.localStorage.setItem(
         'selectedMessagesCollection',
         JSON.stringify(messageArrayToBeRemoved)
@@ -186,7 +194,7 @@ const MessageRight = ({
           {/* {formatDistance(subHours(new Date(), 115), new Date(), {
           addSuffix: true,
         })} */}
-          {timestamp}
+          {localDate}, {localClock}
         </Typography>
       </Box>
       <Avatar
@@ -196,7 +204,7 @@ const MessageRight = ({
           height: 50,
         }}
         alt={displayName}
-        src={TempProfilePic}
+        src={userInfoDetail?.photo}
       />
     </Box>
   );
@@ -211,6 +219,10 @@ const MessageLeft = ({
   mapKey,
   isSelectMessageBoxDisabled,
   isSelectedMessageBoxShown,
+  localClock,
+  localDate,
+  userInfoDetail,
+  chosenChatDetails,
 }) => {
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
@@ -264,10 +276,10 @@ const MessageLeft = ({
         (message) => message.messageId === mapKey
       );
       const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
-      console.log('被移除的index', removedIndex);
+
       // 移除該index
       messageArrayToBeRemoved.splice(removedIndex, 1);
-      console.log('更新後的', messageArrayToBeRemoved);
+
       window.localStorage.setItem(
         'selectedMessagesCollection',
         JSON.stringify(messageArrayToBeRemoved)
@@ -285,7 +297,10 @@ const MessageLeft = ({
       <Checkbox
         // 用message save是否按下來控制visibility
 
-        sx={{ marginRight: '20px', visibility: isSelectedMessageBoxShown }}
+        sx={{
+          marginRight: '20px',
+          visibility: isSelectedMessageBoxShown,
+        }}
         checked={selected}
         onChange={handleSelected}
         icon={<BookmarkBorderIcon />}
@@ -298,7 +313,7 @@ const MessageLeft = ({
           height: 50,
         }}
         alt={displayName}
-        src={photoURL}
+        src={chosenChatDetails?.photo}
       />
       <Box
         display="flex"
@@ -326,7 +341,7 @@ const MessageLeft = ({
           {/* {formatDistance(subHours(new Date(), 115), new Date(), {
             addSuffix: true,
           })} */}
-          {timestamp}
+          {localDate}, {localClock}
         </Typography>
       </Box>
     </Box>
@@ -351,40 +366,63 @@ const SingleChatBubble = ({
   mapKey,
   isSelectMessageBoxDisabled,
   isSelectedMessageBoxShown,
+  userInfoDetail,
+  chosenChatDetails,
 }) => {
+  // UTC timestamp
+  const timestamp = date ? date : '';
+  // 轉換日期
+  const localTime = new Date(timestamp);
+  // Wed Nov 23 2022
+  const localDate = localTime.toDateString();
+  // 時間，不足兩位用pad補0
+
+  const localClock = `${localTime
+    .getHours()
+    .toString()
+    .padStart(2, '0')}:${localTime.getMinutes().toString().padStart(2, '0')}`;
+
+  // 若下一個message的localDate跟上一個不同，則加上日期分隔線
+
   if (fromMe) {
-    console.log('是否fromMe,應該要是', fromMe);
     return (
       <MessageRight
         content={content}
         username={username}
         fromMe={fromMe}
+        localDate={localDate}
+        localClock={localClock}
         date={date}
         sameTime={sameTime}
         mapKey={mapKey}
         isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
         isSelectedMessageBoxShown={isSelectedMessageBoxShown}
+        userInfoDetail={userInfoDetail}
+        chosenChatDetails={chosenChatDetails}
       />
     );
   } else {
-    console.log('是否fromMe,應該要否', fromMe);
     return (
       <MessageLeft
         content={content}
         username={username}
         fromMe={fromMe}
+        localDate={localDate}
+        localClock={localClock}
         date={date}
         sameTime={sameTime}
         mapKey={mapKey}
         isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
         isSelectedMessageBoxShown={isSelectedMessageBoxShown}
+        userInfoDetail={userInfoDetail}
+        chosenChatDetails={chosenChatDetails}
       />
     );
   }
 };
 
-const mapStoreStateToProps = ({ chat, card }) => {
-  return { ...chat, ...card };
+const mapStoreStateToProps = ({ chat, card, auth }) => {
+  return { ...chat, ...card, ...auth };
 };
 
 export default connect(mapStoreStateToProps)(SingleChatBubble);

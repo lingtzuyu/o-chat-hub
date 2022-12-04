@@ -90,22 +90,31 @@ const roles = [
   { label: 'Life', value: 'life' },
 ];
 
-function CardTopBar({ setCardsListByCategory }) {
+function CardTopBar({
+  setCardsListByCategory,
+  setCurrentCategory,
+  currentCategoryParams,
+  chosenChatDetails,
+}) {
   const token = localStorage.getItem('accessToken');
-  const [currentTab, setCurrentTab] = useState('all');
+  const [currentTab, setCurrentTab] = useState(currentCategoryParams);
+  const fromId = chosenChatDetails?.id;
 
   const handleTabsChange = (_event, value) => {
     setCurrentTab(value);
     // 將?category= 設為該value，可以設很多種，例如keyword
+    console.log(value);
     searchParams.set('category', value);
     // 改變url
     setSearchParams(searchParams);
+    setCurrentCategory(value);
   };
 
   const fetchCardByCategory = async () => {
     const category = searchParams.get('category');
     // 帶著category打api
-    const response = await api.fetchCardByCategory(category, token);
+    console.log(fromId);
+    const response = await api.fetchCardByCategory(category, token, fromId);
     console.log('api', response);
     setCardsListByCategory(response.data);
   };
@@ -124,6 +133,7 @@ function CardTopBar({ setCardsListByCategory }) {
     { value: 'work', label: 'Work' },
     { value: 'knowledge', label: 'Knowledge' },
     { value: 'life', label: 'Life' },
+    { value: 'fromCurrent', label: 'From Current User' },
   ];
 
   return (
@@ -149,7 +159,7 @@ function CardTopBar({ setCardsListByCategory }) {
               ))}
             </Tabs>
           </TabsContainerWrapper>
-          <TextField
+          {/* <TextField
             sx={{
               mt: 2,
               mb: 1,
@@ -164,15 +174,15 @@ function CardTopBar({ setCardsListByCategory }) {
               ),
             }}
             placeholder={'Search...'}
-          />
+          /> */}
         </Box>
       </RootWrapper>
     </>
   );
 }
 
-const mapStoreStateToPropse = ({ card }) => {
-  return { ...card };
+const mapStoreStateToPropse = ({ card, friends, chat }) => {
+  return { ...card, ...friends, ...chat };
 };
 const mapActionsToProps = (dispatch) => {
   return { ...getActions(dispatch) };

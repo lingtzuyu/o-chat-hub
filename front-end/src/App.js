@@ -19,6 +19,7 @@ import ProfilePage from './testPages/ProfilePage/ProfilePage';
 import TestElement from './testPages/TestElement';
 import SignInSIde from './authPages/LoginPage/SignInSIde';
 import RegisterSide from './authPages/SignupPage/RegisterSide';
+import NotionConfirmPage from './testPages/IntegrationPage/NotionConfirmPage';
 
 // 有點像是API的route
 function App() {
@@ -35,6 +36,7 @@ function App() {
 
           <Route path="/card" element={<CardPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/notion" element={<NotionConfirmPage />} />
           <Route path="/testpage" element={<RegisterSide />} />
 
           {/* Navigate is like Redirect */}

@@ -1,3 +1,5 @@
+// 要留，之後重構轉換到testPage
+
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import React, { useState } from 'react';
 import { IconButton } from '@mui/material';
@@ -18,7 +20,7 @@ export const AddFriendIcon = () => {
     <>
       <IconButton
         style={{
-          color: '#47B5FF',
+          color: '#2442AF',
           marginTop: '10px',
         }}
         onClick={handleOpenPopout}

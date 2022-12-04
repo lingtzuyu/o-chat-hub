@@ -11,10 +11,11 @@ import {
   DialogTitle,
   Typography,
   DialogActions,
+  Tooltip,
 } from '@mui/material';
 
 import InputField from '../../shared/components/InputField';
-
+import Swal from 'sweetalert2';
 import CategoryDropDown from './CategoryDropDown';
 
 import { connect } from 'react-redux';
@@ -65,6 +66,13 @@ const EditorWrapper = styled(Box)(
 `
 );
 
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+});
+
 function TransferPopOutTable({
   isPopoutOpen,
   closePopout,
@@ -73,6 +81,7 @@ function TransferPopOutTable({
   setSaveMessageButtonDisabled,
   setTransferButtonDisabled,
   chosenChatDetails,
+  setCancelButtonDisable,
 }) {
   const [cardTitle, setCardTitle] = useState('');
   const [cardNotes, setCardNotes] = useState('');
@@ -106,7 +115,7 @@ function TransferPopOutTable({
   //   console.log('test effect222', messagesToBeSent.Notes);
   // }, [cardNotes]);
 
-  const handleTransferAfterConfirm = useCallback(() => {
+  const handleTransferAfterConfirm = useCallback(async () => {
     // console.log(category);
 
     // 記住object re-render的雷
@@ -120,7 +129,7 @@ function TransferPopOutTable({
     // store action and (帶整串，因為等等要用整串渲染右邊卡片區)
 
     saveTransferredMessagesToMongo(messagesToBeSent);
-    console.log(messagesToBeSent);
+
     // // 2. 將核取方塊狀態設回去
     setTransferButtonDisabled(true);
     setSaveMessageButtonDisabled(false);
@@ -131,6 +140,10 @@ function TransferPopOutTable({
     setCardTitle('');
     setCardNotes('');
     handleClosePopout();
+    Toast.fire({
+      icon: 'success',
+      title: 'Note Saved!',
+    });
   }, [cardTitle, cardNotes]);
 
   const handleClosePopout = () => {
@@ -139,6 +152,22 @@ function TransferPopOutTable({
     localStorage.removeItem('noteCategory');
     showSelectMessageBox(true, 'hidden');
     setCardTitle('');
+
+    // diable自己
+    setTransferButtonDisabled(true);
+    // enable save button ，若有選中的聊天對象
+    if (chosenChatDetails != null) {
+      setSaveMessageButtonDisabled(false);
+    }
+    // disable cancel button
+    setCancelButtonDisable(true);
+
+    //  提示
+    Toast.fire({
+      icon: 'warning',
+      title: 'Cancel Transfer!',
+    });
+
     closePopout();
   };
 
@@ -156,9 +185,12 @@ function TransferPopOutTable({
               p: 3,
             }}
           >
-            <CategoryDropDown />
+            {/* <CategoryDropDown /> */}
 
             <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <CategoryDropDown />
+              </Grid>
               <Grid item xs={12}>
                 <InputField
                   fullWidth
@@ -179,25 +211,6 @@ function TransferPopOutTable({
                   />
                 </EditorWrapper>
               </Grid>
-              <Grid item xs={12}>
-                {/* <Autocomplete
-                multiple
-                freeSolo
-                sx={{
-                  m: 0,
-                }}
-                limitTags={5}
-                options={productTags}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    fullWidth
-                    variant="outlined"
-                    placeholder={t('Select project tags...')}
-                  />
-                )}
-              /> */}
-              </Grid>
             </Grid>
           </Card>
         </DialogContent>
@@ -211,20 +224,22 @@ function TransferPopOutTable({
           <SelectedMessagesArea />
         </DialogContent>
         <DialogActions>
-          <MainButton
-            variant="contained"
-            buttonName="Transfer"
-            onClick={handleTransferAfterConfirm}
-            customStyles={{ variant: 'contained', margin: '20' }}
-          />
+          <Tooltip title="transfer to card area">
+            <MainButton
+              variant="outlined"
+              buttonName="Transfer"
+              onClick={handleTransferAfterConfirm}
+              customStyles={{ variant: 'contained', margin: '20' }}
+            />
+          </Tooltip>
         </DialogActions>
       </Dialog>
     </Box>
   );
 }
 
-const mapStoreStateToPropse = ({ card }) => {
-  return { ...card };
+const mapStoreStateToPropse = ({ card, chat }) => {
+  return { ...card, ...chat };
 };
 
 const mapActionsToProps = (dispatch) => {

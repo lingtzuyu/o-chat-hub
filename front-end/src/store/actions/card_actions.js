@@ -1,6 +1,5 @@
-// 改變state的唯一方法，就是透過action
-// https://codesandbox.io/s/0vm2w0k9r0?file=/src/actions/todo.actions.js:4-10
 import * as api from '../../api';
+import { setChosenChatDetails } from './chat_actions';
 
 export const cardActions = {
   SHOW_SELECTE_MESSAGE_BOX: 'CARDS.SHOW_SELECTE_MESSAGE_BOX',
@@ -22,6 +21,11 @@ export const cardActions = {
   SET_NOTOIN_PRIORITY: 'CARDS.SET_NOTION_PRIORITY',
   SET_CARDS_BY_CATEGORY: 'CARDS.SET_CARDS_BY_CATEGORY',
   ADD_DELETE_CARD_CHANGE: 'CARDS.ADD_DELETE_CARD_CHANGE',
+  SET_CANCEL_BUTTON_DISABLED: 'CARDS.SET_CANCEL_BUTTON_DISABLED',
+  SET_CURRENT_CATEGORY: 'CARDS.SET_CURRETN_CATEGORY',
+  SET_FILTERED_CARDS: 'CARDS.SET_FILTERED_CARDS',
+  // 廢棄 TODO:
+  SET_FORWARDED_TARGET: 'CARDS.SET_FORWARDED_TARGET',
 };
 
 export const getActions = (dispatch) => {
@@ -83,8 +87,40 @@ export const getActions = (dispatch) => {
     addOrDeleteCard: (data) => {
       dispatch(addOrDeleteCard(data));
     },
+    setCancelButtonDisable: (data) => {
+      dispatch(setCancelButtonDisable(data));
+    },
+    setCurrentCategory: (category) => {
+      dispatch(setCurrentCategory(category));
+    },
+
+    setFilteredCards: (data) => {
+      dispatch(setFilteredCards(data));
+    },
+
+    forwardToTarget: (chatDetails, chatType, saveButtonOn) => {
+      dispatch(forwardToTarget(chatDetails, chatType, saveButtonOn));
+    },
   };
 };
+
+// export const forwardToTarget = (targetId, targetUserName) => {
+//   const chatDetails = { id: targetId, name: targetUserName };
+//   return async (dispatch) => {
+//     dispatch(setChosenChatDetails(chatDetails, 'DIRECT', false));
+//   };
+// };
+
+export const setCurrentCategory = (category) => ({
+  type: cardActions.SET_CURRENT_CATEGORY,
+  currentCategoryParams: category,
+});
+
+// set cancel button disabled
+export const setCancelButtonDisable = (data) => ({
+  type: cardActions.SET_CANCEL_BUTTON_DISABLED,
+  isCancelButtonDisabeld: data,
+});
 
 // set cards list by category
 export const setCardsListByCategory = (data) => ({
@@ -142,7 +178,6 @@ export const setSaveMessageButtonDisabled = (data) => ({
 // 傳送至notion
 export const exportToNotion = (data) => {
   return async (dispatch) => {
-    console.log('1');
     api.exportToNotionAPI(data);
     dispatch(setExportedCard(data));
   };
@@ -151,6 +186,14 @@ export const exportToNotion = (data) => {
 export const setExportedCard = (data) => ({
   type: cardActions.SET_EXPORTED_CARD,
   exportedCards: data,
+});
+
+// forward 到該聊天
+export const forwardToTarget = (chatDetails, chatType, saveButtonOn) => ({
+  type: cardActions.SET_FORWARDED_TARGET,
+  chosenChatDetails: chatDetails,
+  chatType: chatType,
+  saveButtonShow: saveButtonOn,
 });
 
 // 把卡片區的資訊狀態帶到輸出區，並且準備輸出
@@ -228,3 +271,14 @@ export const addOrDeleteCard = (data) => {
     setCardChange: data,
   };
 };
+
+// 將filter後的東西渲染到卡片區域
+export const setFilteredCards = (data) => {
+  return {
+    type: cardActions.SET_FILTERED_CARDS,
+    filteredCards: data,
+  };
+};
+
+// 跳轉回去 TODO: 廢棄
+export const forwardToChatTarget = (userId) => {};

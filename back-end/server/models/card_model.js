@@ -37,22 +37,45 @@ const fetchCardCategory = async () => {
   return result;
 };
 
+// 上方快捷用，不用滾出messages
+// const fetchLastFiveCardHistoryByMail = async (userMail) => {
+//   const lastFiveCardQuery = await NoteDataMongo.find({
+//     Authour: userMail,
+//   })
+//     .sort({ NoteTime: -1 })
+//     .limit(5);
+//   return lastFiveCardQuery;
+// };
+
 const fetchCardHistoryByMail = async (userMail) => {
   const personalCardQuery = await NoteDataMongo.find({
     Author: userMail,
-  }).populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
-  console.log(personalCardQuery);
+  })
+    .populate({ path: 'MessageRecords', model: 'MessageDataMongo' })
+    .sort({ NoteTime: -1 });
+
   return personalCardQuery;
 };
 
 const fetchCardHistoryByCategory = async (userMail, category) => {
-  console.log('userMail', userMail);
-  console.log(category);
   const personalCardQueryByCategory = await NoteDataMongo.find({
     Author: userMail,
     Category: category,
-  }).populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
+  })
+    .sort({ NoteTime: -1 })
+    .populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
   return personalCardQueryByCategory;
+};
+
+const fetchCardHistoryByChatPartner = async (userMail, fromId) => {
+  console.log(fromId);
+  const chatPartnerCardQuery = await NoteDataMongo.find({
+    Author: userMail,
+    FromId: fromId,
+  })
+    .sort({ NoteTime: -1 })
+    .populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
+  return chatPartnerCardQuery;
 };
 
 // check if card exist
@@ -69,7 +92,7 @@ const setLikeById = async (cardId) => {
   const likeCard = await NoteDataMongo.findByIdAndUpdate(cardId, {
     Liked: true,
   });
-  console.log('card liked');
+
   return likeCard;
 };
 // set dislike
@@ -77,8 +100,7 @@ const setDislikeById = async (cardId) => {
   const dislikeCard = await NoteDataMongo.findByIdAndUpdate(cardId, {
     Liked: false,
   });
-  console.log('dislike後', dislikeCard);
-  console.log('card disliked');
+
   return dislikeCard;
 };
 
@@ -88,7 +110,7 @@ const deleteCardById = async (cardId, userMail) => {
     _id: cardId,
     Author: userMail,
   });
-  console.log('card deleted by CardId');
+
   return deleteCardQuery;
 };
 
@@ -100,6 +122,40 @@ const updateLinkToNote = async (cardId, notionLink) => {
       ExportLink: notionLink,
       ExportTo: 'notion',
     });
+    return result;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
+
+// update title and notes after save
+const updateTitleAndNotes = async (cardId, title, notes, mail) => {
+  try {
+    const result = await NoteDataMongo.findOneAndUpdate(
+      { Author: mail, _id: cardId },
+      {
+        Notes: notes,
+        Title: title,
+      },
+      { new: true }
+    );
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// update category
+const updateCategory = async (cardId, category, mail) => {
+  try {
+    const result = await NoteDataMongo.findOneAndUpdate(
+      { Author: mail, _id: cardId },
+      {
+        Category: category,
+      },
+      { new: true }
+    );
     return result;
   } catch (err) {
     console.log(err);
@@ -116,5 +172,8 @@ module.exports = {
   checkCardExist,
   updateLinkToNote,
   fetchCardHistoryByCategory,
+  updateTitleAndNotes,
+  updateCategory,
+  fetchCardHistoryByChatPartner,
 };
 // module.exports = mongoose.model('NoteDataMongo', noteSchema);

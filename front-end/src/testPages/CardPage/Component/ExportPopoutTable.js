@@ -103,6 +103,10 @@ function ExportPopoutTable({
   exportApp,
   notionStatus,
   notionPriority,
+  setIsTransferred,
+  setInitialExportLink,
+  userInfoDetail,
+  friends,
 }) {
   const theme = useTheme();
   const accessToken = localStorage.getItem('accessToken');
@@ -123,22 +127,24 @@ function ExportPopoutTable({
 
   const exportToNotion = async () => {
     const result = await api.exportToNotion(notionExportData);
-    console.log('這個是啥', result);
-    if (!result) {
+
+    if (result.status !== 200) {
       closePopout();
       handleCloseExportPopout();
       await Toast.fire({
         icon: 'warning',
         title: `Please check notion connectoin`,
       });
-    }
+    } else {
+      closePopout();
+      handleCloseExportPopout();
 
-    closePopout();
-    handleCloseExportPopout();
-    await Toast.fire({
-      icon: 'success',
-      title: `Export to Notion!`,
-    });
+      await setIsTransferred(true);
+      await Toast.fire({
+        icon: 'success',
+        title: `Export to Notion!`,
+      });
+    }
   };
 
   const inputTodoChange = (e) => {
@@ -154,67 +160,87 @@ function ExportPopoutTable({
     closePopout();
   };
 
+  const setFromPicture = (friendId) => {
+    const target = friends.find((ele) => ele.id === friendId);
+    if (target !== undefined || null) {
+      return target.photo;
+    } else {
+      // 上方沒東西就是自己
+      return userInfoDetail?.photo;
+    }
+  };
+
+  // 從friends find當前用戶的username
+  const setCurrentUserName = (friendId) => {
+    const target = friends.find((ele) => ele.id === friendId);
+    if (target !== undefined || null) {
+      return target.username;
+    } else {
+      // 上方沒東西就是自己
+      return userInfoDetail?.username;
+    }
+  };
+
   return (
-    <Box p={3}>
-      <Dialog open={isPopoutOpen} onClose={handleCloseExportPopout}>
-        <Card>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            p={2}
-          >
-            <Box>
-              <Typography
-                variant="caption"
-                fontWeight="bold"
-                sx={{
-                  fontSize: `${theme.typography.pxToRem(12)}`,
-                }}
-              >
-                {/* 改成Export to Notion 根據上一層變動 */}
-                {'Export to Notion'}
-              </Typography>
-              {/* 改成Title */}
-              <Typography variant="h4">#{cardId}</Typography>
-              <Typography variant="subtitle2">Save at: {noteTime}</Typography>
-            </Box>
-            {/* TODO: 暫時做兩個component，到時候用if else判斷是notion還是trello */}
-            <Box>
-              <Avatar
-                sx={{
-                  width: 38,
-                  height: 38,
-                }}
-                alt={exportApp}
-                src={NotionIcon}
-              />
-              {/* <AvatarGradient>{NotionIcon}</AvatarGradient> */}
-            </Box>
+    <Dialog open={isPopoutOpen} onClose={handleCloseExportPopout}>
+      <Card>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          p={2}
+        >
+          <Box>
+            <Typography
+              variant="caption"
+              fontWeight="bold"
+              sx={{
+                fontSize: `${theme.typography.pxToRem(12)}`,
+              }}
+            >
+              {/* 改成Export to Notion 根據上一層變動 */}
+              {'Export to Notion'}
+            </Typography>
+            {/* 改成Title */}
+            <Typography variant="h4">#{cardId}</Typography>
+            <Typography variant="subtitle2">Save at: {noteTime}</Typography>
           </Box>
-          <Divider />
-          {/* 這個box拿來做Notes內容 */}
-          <Box
-            py={1}
-            px={2}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            sx={{
-              background: `${theme.colors.alpha.black[5]}`,
-            }}
-          >
-            <ListItemText
-              primary={<Typography variant="h4"> {title}</Typography>}
-              secondary={
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: notes,
-                  }}
-                />
-              }
+          {/* TODO: 暫時做兩個component，到時候用if else判斷是notion還是trello */}
+          <Box>
+            <Avatar
+              sx={{
+                width: 38,
+                height: 38,
+              }}
+              alt={exportApp}
+              src={NotionIcon}
             />
-            {/* <Box display="flex" flexDirection="column">
+            {/* <AvatarGradient>{NotionIcon}</AvatarGradient> */}
+          </Box>
+        </Box>
+        <Divider />
+        {/* 這個box拿來做Notes內容 */}
+        <Box
+          py={1}
+          px={2}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          sx={{
+            background: `${theme.colors.alpha.black[5]}`,
+          }}
+        >
+          <ListItemText
+            primary={<Typography variant="h4"> {title}</Typography>}
+            secondary={
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: notes,
+                }}
+              />
+            }
+          />
+          {/* <Box display="flex" flexDirection="column">
               <Typography
                 variant="caption"
                 fontWeight="bold"
@@ -228,27 +254,27 @@ function ExportPopoutTable({
                 {from}
               </Typography>
             </Box> */}
+        </Box>
+        <Divider />
+        <Box
+          py={1}
+          px={2}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{
+            background: `${theme.colors.alpha.black[2]}`,
+          }}
+        >
+          <Box>
+            <Typography variant="h4">Notion Properties</Typography>
           </Box>
-          <Divider />
-          <Box
-            py={1}
-            px={2}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{
-              background: `${theme.colors.alpha.black[2]}`,
-            }}
-          >
-            <Box>
-              <Typography variant="h4">Notion Properties</Typography>
-            </Box>
-            <Box display="flex" alignItems={'center'}>
-              <NotioinStatusDropDown />
-              <NotioinPriorityDropDown />
-              {/* TODO: 之後再把todo list開起來 */}
-              {/* <Box
+          <Box display="flex" alignItems={'center'}>
+            <NotioinStatusDropDown />
+            <NotioinPriorityDropDown />
+            {/* TODO: 之後再把todo list開起來 */}
+            {/* <Box
                 display="flex"
                 width="200px"
                 marginBottom="32px"
@@ -264,109 +290,109 @@ function ExportPopoutTable({
                   <AddCircleOutlineIcon></AddCircleOutlineIcon>
                 </IconButton>
               </Box> */}
-            </Box>
+          </Box>
 
-            {/* <Box>
+          {/* <Box>
               <ExportTodoList todoArray={todoArray}></ExportTodoList>
             </Box> */}
-          </Box>
-          <Divider />
+        </Box>
+        <Divider />
 
-          <Divider />
+        <Divider />
+        <Box
+          sx={{
+            width: 600,
+            height: 200,
+          }}
+        >
           <Box
-            sx={{
-              width: 600,
-              height: 200,
-            }}
+            py={1}
+            px={2}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            <Box
-              py={1}
-              px={2}
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Typography variant="h4">Messages</Typography>
-            </Box>
-            <Scrollbar>
-              <ListWrapper disablePadding>
-                {messageRecords.map((message) => (
-                  <Fragment key={message.id}>
-                    <ListItem
+            <Typography variant="h4">Messages</Typography>
+          </Box>
+          <Scrollbar>
+            <ListWrapper disablePadding>
+              {messageRecords.map((message) => (
+                <Fragment key={message.id}>
+                  <ListItem
+                    sx={{
+                      '&:hover': {
+                        background: `${theme.colors.alpha.black[5]}`,
+                      },
+                    }}
+                  >
+                    <ListItemAvatar
                       sx={{
-                        '&:hover': {
-                          background: `${theme.colors.alpha.black[5]}`,
-                        },
+                        mr: 1,
                       }}
                     >
-                      <ListItemAvatar
+                      <Avatar
                         sx={{
-                          mr: 1,
+                          width: 50,
+                          height: 50,
                         }}
-                      >
-                        <Avatar
-                          sx={{
-                            width: 50,
-                            height: 50,
-                          }}
-                          alt={message.sender}
-                          src={TempAvatar}
-                        />
-                      </ListItemAvatar>
-                      <ListItemText
-                        sx={{
-                          wordWrap: 'break-word',
-                          flexGrow: 0,
-                          maxWidth: '80%',
-                          flexBasis: '80%',
-                        }}
-                        disableTypography
-                        primary={
-                          <Typography
-                            sx={{
-                              pb: 0.6,
-                            }}
-                            color="text.primary"
-                            variant="h5"
-                          >
-                            {message.sender}
-                          </Typography>
-                        }
-                        secondary={
-                          <>
-                            <Box>
-                              <Typography
-                                sx={{
-                                  fontSize: `${theme.typography.pxToRem(11)}`,
-                                  lineHeight: 1.5,
-                                }}
-                                variant="body1"
-                              >
-                                <Text color="black">{message.body}</Text>
-                              </Typography>
-                            </Box>
-                          </>
-                        }
+                        alt={message.sender}
+                        src={setFromPicture(message.sender)}
                       />
-                    </ListItem>
-                    <Divider />
-                  </Fragment>
-                ))}
-              </ListWrapper>
-            </Scrollbar>
-          </Box>
-          <Divider />
-          <Box
-            display="flex"
-            justifyContent="center"
-            sx={{
-              background: `${theme.colors.alpha.black[5]}`,
-              textAlign: 'center',
-            }}
-            p={2}
-          >
-            {/* <Box marginRight="10px">
+                    </ListItemAvatar>
+                    <ListItemText
+                      sx={{
+                        wordWrap: 'break-word',
+                        flexGrow: 0,
+                        maxWidth: '80%',
+                        flexBasis: '80%',
+                      }}
+                      disableTypography
+                      primary={
+                        <Typography
+                          sx={{
+                            pb: 0.6,
+                          }}
+                          color="text.primary"
+                          variant="h5"
+                        >
+                          {setCurrentUserName(message.sender)}
+                        </Typography>
+                      }
+                      secondary={
+                        <>
+                          <Box>
+                            <Typography
+                              sx={{
+                                fontSize: `${theme.typography.pxToRem(11)}`,
+                                lineHeight: 1.5,
+                              }}
+                              variant="body1"
+                            >
+                              <Text color="black">{message.body}</Text>
+                            </Typography>
+                          </Box>
+                        </>
+                      }
+                    />
+                  </ListItem>
+                  <Divider />
+                </Fragment>
+              ))}
+            </ListWrapper>
+          </Scrollbar>
+        </Box>
+        <Divider />
+        <Box
+          display="flex"
+          justifyContent="center"
+          sx={{
+            background: `${theme.colors.alpha.black[5]}`,
+            textAlign: 'center',
+          }}
+          p={2}
+        >
+          {/* <Box marginRight="10px">
               <Button
                 size="small"
                 color="primary"
@@ -377,26 +403,25 @@ function ExportPopoutTable({
                 {'Cancel'}
               </Button>
             </Box> */}
-            <Box marginLeft="10px" marginTop="20px">
-              <Button
-                size="small"
-                color="primary"
-                onClick={exportToNotion}
-                variant="contained"
-                endIcon={<ArrowForwardTwoToneIcon />}
-              >
-                {'Export'}
-              </Button>
-            </Box>
+          <Box marginLeft="10px" marginTop="20px">
+            <Button
+              size="small"
+              color="primary"
+              onClick={exportToNotion}
+              variant="contained"
+              endIcon={<ArrowForwardTwoToneIcon />}
+            >
+              {'Export'}
+            </Button>
           </Box>
-        </Card>
-      </Dialog>
-    </Box>
+        </Box>
+      </Card>
+    </Dialog>
   );
 }
 
-const mapStoreStateToPropse = ({ card }) => {
-  return { ...card };
+const mapStoreStateToPropse = ({ card, auth, friends }) => {
+  return { ...card, ...auth, ...friends };
 };
 
 const mapActionsToProps = (dispatch) => {

@@ -59,7 +59,7 @@ function ChatContent({
   isSelectMessageBoxDisabled,
 }) {
   const userId = window.localStorage.getItem('userId');
-  console.log(userId);
+
   // 選中某個id的時後的第一次渲染
   useEffect(() => {
     getDirectMessageHistroy({
@@ -78,10 +78,22 @@ function ChatContent({
   return (
     <Box p={3}>
       {messages.map((message, index) => {
-        console.log(parseInt(userId));
-        console.log(message.sender);
         const sameSender = message.sender === parseInt(userId);
-        console.log('sameSender', sameSender);
+
+        // TODO: 分隔線待改
+        const localTime = new Date(message.date);
+        // Wed Nov 23 2022
+        const localDate = localTime.toDateString();
+        // 時間，不足兩位用pad補0
+        const localClock = `${localTime
+          .getHours()
+          .toString()
+          .padStart(2, '0')}:${localTime
+          .getMinutes()
+          .toString()
+          .padStart(2, '0')}`;
+
+        // const sameDate = index > 0 && localDate === lastLocalDate;
 
         return (
           <SingleChatBububle

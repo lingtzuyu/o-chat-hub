@@ -2,6 +2,9 @@ import { authActions } from '../actions/auth_actions';
 
 const initState = {
   userDetails: null,
+  userName: null,
+  userInfoDetail: null,
+  organizationInStore: null,
 };
 
 const reducer = (state = initState, action) => {
@@ -12,6 +15,22 @@ const reducer = (state = initState, action) => {
         // setUserDetails 那邊來的
         userDetails: action.userDetails,
       };
+    case authActions.SET_USERNAME:
+      return {
+        ...state,
+        userName: action.userName,
+      };
+    case authActions.SET_USERINFO:
+      return {
+        ...state,
+        userInfoDetail: action.userInfoData,
+      };
+    case authActions.SET_ORGANIZATION:
+      return {
+        ...state,
+        organizationInStore: action.organization,
+      };
+
     // 不做任何修改
     default:
       return state;
