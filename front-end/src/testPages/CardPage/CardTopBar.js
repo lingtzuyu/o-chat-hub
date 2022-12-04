@@ -94,9 +94,11 @@ function CardTopBar({
   setCardsListByCategory,
   setCurrentCategory,
   currentCategoryParams,
+  chosenChatDetails,
 }) {
   const token = localStorage.getItem('accessToken');
   const [currentTab, setCurrentTab] = useState(currentCategoryParams);
+  const fromId = chosenChatDetails?.id;
 
   const handleTabsChange = (_event, value) => {
     setCurrentTab(value);
@@ -111,7 +113,8 @@ function CardTopBar({
   const fetchCardByCategory = async () => {
     const category = searchParams.get('category');
     // 帶著category打api
-    const response = await api.fetchCardByCategory(category, token);
+    console.log(fromId);
+    const response = await api.fetchCardByCategory(category, token, fromId);
     console.log('api', response);
     setCardsListByCategory(response.data);
   };
@@ -178,8 +181,8 @@ function CardTopBar({
   );
 }
 
-const mapStoreStateToPropse = ({ card }) => {
-  return { ...card };
+const mapStoreStateToPropse = ({ card, friends, chat }) => {
+  return { ...card, ...friends, ...chat };
 };
 const mapActionsToProps = (dispatch) => {
   return { ...getActions(dispatch) };

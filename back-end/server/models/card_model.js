@@ -67,6 +67,17 @@ const fetchCardHistoryByCategory = async (userMail, category) => {
   return personalCardQueryByCategory;
 };
 
+const fetchCardHistoryByChatPartner = async (userMail, fromId) => {
+  console.log(fromId);
+  const chatPartnerCardQuery = await NoteDataMongo.find({
+    Author: userMail,
+    FromId: fromId,
+  })
+    .sort({ NoteTime: -1 })
+    .populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
+  return chatPartnerCardQuery;
+};
+
 // check if card exist
 const checkCardExist = async (cardId, userMail) => {
   const result = await NoteDataMongo.findOne({
@@ -163,5 +174,6 @@ module.exports = {
   fetchCardHistoryByCategory,
   updateTitleAndNotes,
   updateCategory,
+  fetchCardHistoryByChatPartner,
 };
 // module.exports = mongoose.model('NoteDataMongo', noteSchema);

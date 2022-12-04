@@ -166,7 +166,7 @@ function ExportPopoutTable({
       return target.photo;
     } else {
       // 上方沒東西就是自己
-      return userInfoDetail.photo;
+      return userInfoDetail?.photo;
     }
   };
 
@@ -177,7 +177,7 @@ function ExportPopoutTable({
       return target.username;
     } else {
       // 上方沒東西就是自己
-      return userInfoDetail.username;
+      return userInfoDetail?.username;
     }
   };
 

@@ -149,6 +149,9 @@ const fetchCardDetailsByCategory = async (req, res) => {
   // auth過來的
   const { mail } = req.user;
   const category = req.params.category;
+  const fromId = req.query.fromId;
+  console.log(category);
+  console.log(fromId);
 
   if (category === 'all') {
     const response = await Card.fetchCardHistoryByMail(mail);
@@ -156,7 +159,9 @@ const fetchCardDetailsByCategory = async (req, res) => {
   }
 
   if (category === 'fromCurrent') {
-    // 打api取得 (用FromId或是FromMail)
+    // 打model取得 (用FromId或是FromMail)
+    const response = await Card.fetchCardHistoryByChatPartner(mail, fromId);
+    return res.status(200).send(response);
   }
 
   const response = await Card.fetchCardHistoryByCategory(mail, category);

@@ -183,10 +183,11 @@ const getCardHistory = async (data) => {
 // };
 
 // category serach API
-const fetchCardByCategory = async (category, token) => {
+const fetchCardByCategory = async (category, token, fromId) => {
   try {
+    console.log('api.js內', fromId);
     const response = await apiClient.get(`/card/details/${category}`, {
-      params: { token: token, category: category },
+      params: { token: token, category: category, fromId: fromId },
     });
     return response;
   } catch (err) {
