@@ -240,11 +240,12 @@ const getUserProfile = async (token) => {
   }
 };
 
-const updateUserName = async (accessToken, userName) => {
+const updateUserName = async (accessToken, userName, organization) => {
   try {
     const response = await apiClient.post('/auth/username', {
       token: accessToken,
       username: userName,
+      organization: organization,
     });
     return response.status;
   } catch (err) {

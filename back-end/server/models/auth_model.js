@@ -107,9 +107,14 @@ const signIn = async (email, password) => {
   }
 };
 
-const upateNewUsername = async (username, mail) => {
-  const updateUserNameQuery = 'UPDATE user SET username = ? WHERE mail = ? ';
-  const response = await sqlDB.query(updateUserNameQuery, [username, mail]);
+const upateNewUsername = async (username, organization, mail) => {
+  const updateUserNameQuery =
+    'UPDATE user SET username = ?, organization = ? WHERE mail = ? ';
+  const response = await sqlDB.query(updateUserNameQuery, [
+    username,
+    organization,
+    mail,
+  ]);
   return response;
 };
 

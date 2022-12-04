@@ -99,7 +99,10 @@ const DrawerWrapperMobile = styled(Drawer)(
 `
 );
 
-function DashboardProfile({ setNewUserNameInStore }) {
+function DashboardProfile({
+  setNewUserNameInStore,
+  setNewOrganizationInStore,
+}) {
   const theme = useTheme();
   const accessToken = localStorage.getItem('accessToken');
   const [user, setUser] = useState([]);
@@ -113,9 +116,12 @@ function DashboardProfile({ setNewUserNameInStore }) {
   const getUserProfile = async (accessToken) => {
     const response = await api.getUserProfile(accessToken);
     setUser(response.data.result);
-    console.log(response.data.result);
-    console.log(response.data.result.username);
+    console.log('前端USER', response.data.result);
+    console.log('前端USER', response.data.result.username);
+    console.log('前端USER', response.data.result.organization);
     setNewUserNameInStore(response.data.result.username);
+    setNewOrganizationInStore(response.data.result.organization);
+    // setOrganizationInStore
   };
 
   useEffect(() => {

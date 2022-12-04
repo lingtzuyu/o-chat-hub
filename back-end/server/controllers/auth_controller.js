@@ -129,19 +129,27 @@ const socketAuthVerified = (socket, next) => {
 
 const updateNewUsername = async (req, res) => {
   const { mail } = req.user;
-  const { username } = req.body;
+  const { username, organization } = req.body;
   console.log('controller', username, 'rsdf');
   if (!username) {
     return res.status(400).send("username can't be null");
   }
   try {
-    const updateUserName = await User.upateNewUsername(username, mail);
+    const updateUserName = await User.upateNewUsername(
+      username,
+      organization,
+      mail
+    );
     console.log(updateUserName);
     if (!updateUserName) {
       return res.status(400).send('Internal Error');
     }
 
-    res.status(200).json({ result: 'username updated', newUserName: username });
+    res.status(200).json({
+      result: 'username updated',
+      newUserName: username,
+      newOrganization: organization,
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).send({ err: 'Internal Erro' });

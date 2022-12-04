@@ -90,7 +90,13 @@ const Toast = Swal.mixin({
   timer: 3000,
 });
 
-function Profile({ user, userName, setNewUserNameInStore }) {
+function Profile({
+  user,
+  userName,
+  setNewUserNameInStore,
+  organizationInStore,
+  setNewOrganizationInStore,
+}) {
   const notionOauthClient = process.env.REACT_APP_NOTION_OAUTHID;
   console.log(notionOauthClient);
   const accessToken = localStorage.getItem('accessToken');
@@ -116,11 +122,15 @@ function Profile({ user, userName, setNewUserNameInStore }) {
     // 打api更改姓名 (當前在store的)
     // 成功後就toast alert
 
-    const response = await api.updateUserName(accessToken, userName);
+    const response = await api.updateUserName(
+      accessToken,
+      userName,
+      organizationInStore
+    );
     if (response !== 200) {
       await Toast.fire({
         icon: 'warning',
-        title: `Something went wrong, please change your username again, your username will not be changed`,
+        title: `Something went wrong, plase try again`,
       });
     } else if (response === 200) {
       await Toast.fire({
@@ -137,6 +147,11 @@ function Profile({ user, userName, setNewUserNameInStore }) {
   const valueChangeHandler = (event) => {
     // setNewUserName(event.target.value);
     setNewUserNameInStore(event.target.value);
+  };
+
+  const organizationChangeHandler = (event) => {
+    console.log(event.target.value);
+    setNewOrganizationInStore(event.target.value);
   };
 
   // Notion Connect
@@ -257,6 +272,8 @@ function Profile({ user, userName, setNewUserNameInStore }) {
               mt: 2,
               mb: 1,
             }}
+            label="usernae"
+            variant="filled"
             size="small"
             // 這邊也要從store來
             defaultValue={userName}
@@ -264,31 +281,68 @@ function Profile({ user, userName, setNewUserNameInStore }) {
             autoFocus
             required
           />
-          <Tooltip title="Username can not be null">
-            <span>
-              <IconButton onClick={handleConfirm} disabled={isConfirmDisabled}>
-                <CheckIcon />
-              </IconButton>
-            </span>
-          </Tooltip>
-          <IconButton onClick={handleCancel}>
-            <ClearIcon />
-          </IconButton>
+
+          {/* 改公司名稱 */}
+          <TextField
+            sx={{
+              mt: 2,
+              mb: 1,
+              marginLeft: '10px',
+            }}
+            label="company"
+            variant="filled"
+            size="small"
+            // 這邊也要從store來
+            defaultValue={organizationInStore}
+            onChange={organizationChangeHandler}
+            autoFocus
+            required
+          />
+          <Box marginLeft="10px">
+            <Tooltip title="Username can not be null">
+              <span>
+                <IconButton
+                  onClick={handleConfirm}
+                  disabled={isConfirmDisabled}
+                >
+                  <CheckIcon />
+                </IconButton>
+              </span>
+            </Tooltip>
+            <IconButton onClick={handleCancel}>
+              <ClearIcon />
+            </IconButton>
+          </Box>
         </Box>
       ) : (
         <Box
           display="flex"
+          flexDirection="column"
           justifyContent="center"
           sx={{ alignItems: 'center', align: 'center' }}
         >
-          <Typography gutterBottom variant="h3">
-            {userName}
+          <Box
+            display="flex"
+            justifyContent="center"
+            sx={{ alignItems: 'center', align: 'center' }}
+          >
+            <Typography gutterBottom variant="h3">
+              {userName}
+            </Typography>
+            <Tooltip title="Change display username">
+              <IconButton onClick={handleEdit}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+          <Typography
+            sx={{
+              px: { xs: 4, md: 8 },
+            }}
+            variant="subtitle2"
+          >
+            {organizationInStore}
           </Typography>
-          <Tooltip title="Change display username">
-            <IconButton onClick={handleEdit}>
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
         </Box>
       )}
       {/* // {user.username} */}
@@ -302,14 +356,14 @@ function Profile({ user, userName, setNewUserNameInStore }) {
         <Label color="error">Angular</Label>
       </Box> */}
       {/* 筆記內文 */}
-      <Typography
+      {/* <Typography
         sx={{
           px: { xs: 4, md: 8 },
         }}
         variant="subtitle2"
       >
-        {user.mail}
-      </Typography>
+        {user.organization}
+      </Typography> */}
       <Divider
         sx={{
           mt: 3,
@@ -581,6 +635,12 @@ function Profile({ user, userName, setNewUserNameInStore }) {
             {joinTime}
           </Typography>
           <Typography variant="subtitle2">{'Join Time'}</Typography>
+        </Box>
+        <Box>
+          <Typography gutterBottom variant="h4">
+            {user.mail}
+          </Typography>
+          <Typography variant="subtitle2">{'Register Email'}</Typography>
         </Box>
       </Stack>
     </Card>

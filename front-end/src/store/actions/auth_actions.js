@@ -6,6 +6,7 @@ const authActions = {
   SET_USER_DETAILS: 'AUTH.SET_USER_DETAILS',
   SET_USERNAME: 'AUTH.SET_USERNAME',
   SET_USERINFO: 'AUTH.SET_USERINFO',
+  SET_ORGANIZATION: 'AUTH.SET_ORGANIZATION',
 };
 
 // redux 分發
@@ -20,6 +21,9 @@ const getActions = (dispatch) => {
     },
     setNewUserNameInStore: (userName) => {
       dispatch(setNewUserNameInStore(userName));
+    },
+    setNewOrganizationInStore: (organization) => {
+      dispatch(setNewOrganizationInStore(organization));
     },
     getUserInfoDetail: (token) => {
       dispatch(getUserInfoDetail(token));
@@ -46,6 +50,13 @@ export const setUserInfoDetail = (response) => {
 
 export const setNewUserNameInStore = (userName) => {
   return { type: authActions.SET_USERNAME, userName: userName };
+};
+
+export const setNewOrganizationInStore = (organization) => {
+  return {
+    type: authActions.SET_ORGANIZATION,
+    organization: organization,
+  };
 };
 
 // This needs to be exported to auth_reducers later

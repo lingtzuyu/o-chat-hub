@@ -24,6 +24,9 @@ import ViewAgendaTwoToneIcon from '@mui/icons-material/ViewAgendaTwoTone';
 import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
 import QuestionAnswerTwoToneIcon from '@mui/icons-material/QuestionAnswerTwoTone';
 
+import { getActions } from '../../../store/actions/auth_actions';
+import { connect } from 'react-redux';
+
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
         padding-left: ${theme.spacing(1)};
@@ -64,7 +67,8 @@ const UserBoxDescription = styled(Typography)(
 `
 );
 
-function UserIcon() {
+function UserIcon({ userInfoDetail, userName, organizationInStore }) {
+  console.log('profile葉面', userName);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -129,8 +133,12 @@ function UserIcon() {
         >
           <Avatar variant="rounded" alt={'name'} src={TempProfile} />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{'name'}</UserBoxLabel>
-            <UserBoxDescription variant="body2">{'CEO'}</UserBoxDescription>
+            <UserBoxLabel variant="body1">
+              {userInfoDetail.username}
+            </UserBoxLabel>
+            <UserBoxDescription variant="body2">
+              {userInfoDetail.organization}
+            </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
         <Divider
@@ -194,4 +202,12 @@ function UserIcon() {
   );
 }
 
-export default UserIcon;
+const mapStoreStateToProps = ({ auth }) => {
+  return { ...auth };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(mapStoreStateToProps, mapActionsToProps)(UserIcon);

@@ -232,7 +232,7 @@ function SidebarContent({ friends, onlineUsers, pendingInvitation }) {
           }}
           variant="h3"
         >
-          {'Contact'}
+          {'Contacts'}
         </Typography>
         {/* 加好友圖示 */}
         <AddFriendIcon />
