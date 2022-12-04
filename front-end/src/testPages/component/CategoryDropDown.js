@@ -39,7 +39,7 @@ const CategoryDropDown = ({
   // }, [category]);
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }} size="medium" fullWidth>
+    <FormControl sx={{ m: 1, minWidth: 120 }} size="large">
       <InputLabel id="category-select-small">Category</InputLabel>
       <Select
         labelId="category-select-small"

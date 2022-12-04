@@ -130,6 +130,7 @@ function CardTopBar({
     { value: 'work', label: 'Work' },
     { value: 'knowledge', label: 'Knowledge' },
     { value: 'life', label: 'Life' },
+    { value: 'fromCurrent', label: 'From Current User' },
   ];
 
   return (
@@ -155,7 +156,7 @@ function CardTopBar({
               ))}
             </Tabs>
           </TabsContainerWrapper>
-          <TextField
+          {/* <TextField
             sx={{
               mt: 2,
               mb: 1,
@@ -170,7 +171,7 @@ function CardTopBar({
               ),
             }}
             placeholder={'Search...'}
-          />
+          /> */}
         </Box>
       </RootWrapper>
     </>

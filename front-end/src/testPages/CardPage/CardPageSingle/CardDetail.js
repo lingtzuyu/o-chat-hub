@@ -188,6 +188,7 @@ function CardDetail({
   userInfoDetail,
   setChosenChatDetails,
   forwardToTarget,
+  friends,
 }) {
   const theme = useTheme();
   const ref = useRef(null);
@@ -249,10 +250,6 @@ function CardDetail({
 
   const token = localStorage.getItem('accessToken');
   const userId = localStorage.getItem('userId');
-
-  const altImageAvatar = () => {
-    return { Sundar };
-  };
 
   // edit 標題及內文
   const handleEditTitle = () => {
@@ -406,6 +403,27 @@ function CardDetail({
       const chatDetails = { id: targetId, name: targetUserName };
       await forwardToTarget(chatDetails, 'DIRECT', false);
       forwardTo('/homepage');
+    }
+  };
+
+  const setFromPicture = (friendId) => {
+    const target = friends.find((ele) => ele.id === friendId);
+    if (target !== undefined || null) {
+      return target.photo;
+    } else {
+      // 上方沒東西就是自己
+      return userInfoDetail.photo;
+    }
+  };
+
+  // 從friends find當前用戶的username
+  const setCurrentUserName = (friendId) => {
+    const target = friends.find((ele) => ele.id === friendId);
+    if (target !== undefined || null) {
+      return target.username;
+    } else {
+      // 上方沒東西就是自己
+      return userInfoDetail.username;
     }
   };
 
@@ -1500,9 +1518,8 @@ function CardDetail({
                     <Box>
                       <img
                         // TODO: 這邊待處理
-                        src={from}
-                        onError={altImageAvatar}
-                        alt={altImageAvatar}
+                        src={setFromPicture(fromId)}
+                        alt={fromId}
                         style={{ width: 60, height: 60, borderRadius: 10 }}
                       />
                     </Box>
@@ -1574,11 +1591,18 @@ function CardDetail({
                     <Box display="flex" textAlign={'left'} padding="10px">
                       <ListItemAvatar>
                         {/* TODO: 目前沒有AVATAR */}
-                        <Avatar alt={message.sender} src={message.sender} />
+                        <Avatar
+                          alt={message.sender}
+                          src={setFromPicture(message.sender)}
+                        />
                       </ListItemAvatar>
                       <ListItemText
                         // TODO: 改成吃username
-                        primary={<Text color="black">{message.sender}</Text>}
+                        primary={
+                          <Text color="black">
+                            {setCurrentUserName(message.sender)}
+                          </Text>
+                        }
                         primaryTypographyProps={{
                           variant: 'h5',
                           // noWrap: true,
@@ -1631,8 +1655,8 @@ function CardDetail({
   );
 }
 
-const mapStoreStateToProps = ({ card, auth }) => {
-  return { ...card, ...auth };
+const mapStoreStateToProps = ({ card, auth, friends }) => {
+  return { ...card, ...auth, ...friends };
 };
 
 const mapActionsToProps = (dispatch) => {

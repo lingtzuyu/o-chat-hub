@@ -155,6 +155,10 @@ const fetchCardDetailsByCategory = async (req, res) => {
     return res.status(200).send(response);
   }
 
+  if (category === 'fromCurrent') {
+    // 打api取得 (用FromId或是FromMail)
+  }
+
   const response = await Card.fetchCardHistoryByCategory(mail, category);
   res.status(200).send(response);
 };

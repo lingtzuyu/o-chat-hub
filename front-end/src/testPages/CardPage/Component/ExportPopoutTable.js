@@ -105,6 +105,8 @@ function ExportPopoutTable({
   notionPriority,
   setIsTransferred,
   setInitialExportLink,
+  userInfoDetail,
+  friends,
 }) {
   const theme = useTheme();
   const accessToken = localStorage.getItem('accessToken');
@@ -156,6 +158,27 @@ function ExportPopoutTable({
 
   const handleClosePopout = () => {
     closePopout();
+  };
+
+  const setFromPicture = (friendId) => {
+    const target = friends.find((ele) => ele.id === friendId);
+    if (target !== undefined || null) {
+      return target.photo;
+    } else {
+      // 上方沒東西就是自己
+      return userInfoDetail.photo;
+    }
+  };
+
+  // 從friends find當前用戶的username
+  const setCurrentUserName = (friendId) => {
+    const target = friends.find((ele) => ele.id === friendId);
+    if (target !== undefined || null) {
+      return target.username;
+    } else {
+      // 上方沒東西就是自己
+      return userInfoDetail.username;
+    }
   };
 
   return (
@@ -314,7 +337,7 @@ function ExportPopoutTable({
                           height: 50,
                         }}
                         alt={message.sender}
-                        src={TempAvatar}
+                        src={setFromPicture(message.sender)}
                       />
                     </ListItemAvatar>
                     <ListItemText
@@ -333,7 +356,7 @@ function ExportPopoutTable({
                           color="text.primary"
                           variant="h5"
                         >
-                          {message.sender}
+                          {setCurrentUserName(message.sender)}
                         </Typography>
                       }
                       secondary={
@@ -397,8 +420,8 @@ function ExportPopoutTable({
   );
 }
 
-const mapStoreStateToPropse = ({ card }) => {
-  return { ...card };
+const mapStoreStateToPropse = ({ card, auth, friends }) => {
+  return { ...card, ...auth, ...friends };
 };
 
 const mapActionsToProps = (dispatch) => {

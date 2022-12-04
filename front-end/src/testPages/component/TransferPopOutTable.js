@@ -11,6 +11,7 @@ import {
   DialogTitle,
   Typography,
   DialogActions,
+  Tooltip,
 } from '@mui/material';
 
 import InputField from '../../shared/components/InputField';
@@ -210,25 +211,6 @@ function TransferPopOutTable({
                   />
                 </EditorWrapper>
               </Grid>
-              <Grid item xs={12}>
-                {/* <Autocomplete
-                multiple
-                freeSolo
-                sx={{
-                  m: 0,
-                }}
-                limitTags={5}
-                options={productTags}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    fullWidth
-                    variant="outlined"
-                    placeholder={t('Select project tags...')}
-                  />
-                )}
-              /> */}
-              </Grid>
             </Grid>
           </Card>
         </DialogContent>
@@ -242,12 +224,14 @@ function TransferPopOutTable({
           <SelectedMessagesArea />
         </DialogContent>
         <DialogActions>
-          <MainButton
-            variant="contained"
-            buttonName="Transfer"
-            onClick={handleTransferAfterConfirm}
-            customStyles={{ variant: 'contained', margin: '20' }}
-          />
+          <Tooltip title="transfer to card area">
+            <MainButton
+              variant="outlined"
+              buttonName="Transfer"
+              onClick={handleTransferAfterConfirm}
+              customStyles={{ variant: 'contained', margin: '20' }}
+            />
+          </Tooltip>
         </DialogActions>
       </Dialog>
     </Box>
