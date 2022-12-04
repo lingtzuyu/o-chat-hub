@@ -30,6 +30,7 @@ const initState = {
   isCancelButtonDisabeld: true,
   // lastFiveCards: [],
   currentCategoryParams: null,
+  filteredCards: [],
 };
 
 const reducer = (state = initState, action) => {
@@ -139,6 +140,12 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         isSavedButtonDisabled: action.saveButtonShow,
+      };
+    }
+    case cardActions.SET_FILTERED_CARDS: {
+      return {
+        ...state,
+        filteredCards: action.filteredCards,
       };
     }
 

@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useState, forwardRef, useEffect } from 'react';
 import {
   Avatar,
   Box,
@@ -29,13 +29,14 @@ import {
   styled,
 } from '@mui/material';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
+import { connect } from 'react-redux';
+import { getActions } from '../../../store/actions/card_actions';
 
-export default function CardPageTopBar() {
-  const [filters, setFilters] = useState({
-    status: null,
-  });
-
-  const [query, setQuery] = useState('');
+// https://stackoverflow.com/questions/64048890/react-apply-multiple-filters-to-array
+const CardPageTopBar = ({ cards, setFilteredCards }) => {
+  const [categoryMenu, setCategoryMenu] = useState();
+  const [readMenu, setReadMenu] = useState();
+  const [exportMenu, setExportMenu] = useState();
 
   const statusOptions = [
     {
@@ -43,39 +44,139 @@ export default function CardPageTopBar() {
       name: 'Show all',
     },
     {
-      id: 'pending',
-      name: 'Pending Payment',
+      id: 'work',
+      name: 'Work',
     },
     {
-      id: 'completed',
-      name: 'Completed',
+      id: 'knowledge',
+      name: 'Knowledge',
     },
     {
-      id: 'draft',
-      name: 'Draft',
-    },
-    {
-      id: 'progress',
-      name: 'In Progress',
+      id: 'life',
+      name: 'Life',
     },
   ];
-  const handleQueryChange = (event) => {
-    event.persist();
-    setQuery(event.target.value);
-  };
 
-  const handleStatusChange = (e) => {
+  const readOptions = [
+    {
+      id: 'all',
+      name: 'Show all',
+    },
+    {
+      id: 'read',
+      name: 'Read',
+    },
+    {
+      id: 'unread',
+      name: 'Unread',
+    },
+  ];
+
+  const exportOptions = [
+    {
+      id: 'all',
+      name: 'Show all',
+    },
+    {
+      id: 'exported',
+      name: 'Exported',
+    },
+    {
+      id: 'unExported',
+      name: 'Not yet export',
+    },
+  ];
+
+  const handleCategoryChange = (e) => {
     let value = null;
 
     if (e.target.value !== 'all') {
       value = e.target.value;
     }
-
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      status: value,
-    }));
+    setCategoryMenu(value);
+    console.log(value);
   };
+
+  const handleReadChange = (e) => {
+    let value = null;
+
+    if (e.target.value !== 'all') {
+      value = e.target.value;
+    }
+    setReadMenu(value);
+    console.log('read', value);
+  };
+
+  const handleExportChange = (e) => {
+    let value = null;
+
+    if (e.target.value !== 'all') {
+      value = e.target.value;
+    }
+    setExportMenu(value);
+    console.log(value);
+  };
+
+  const filterCategory = (array) => {
+    if (categoryMenu) {
+      const categoryFilterData = array.filter((item) => {
+        return item.Category === categoryMenu;
+      });
+      return categoryFilterData;
+    } else {
+      return array;
+    }
+  };
+
+  const filterRead = (array) => {
+    if (readMenu) {
+      if (readMenu === 'read') {
+        const readFilterData = array.filter((item) => {
+          return item.Liked === true;
+        });
+        return readFilterData;
+      } else if (readMenu === 'unread') {
+        const readFilterData = array.filter((item) => {
+          return item.Liked === false;
+        });
+        return readFilterData;
+      } else if (readMenu === 'all') {
+        return array;
+      }
+    } else {
+      return array;
+    }
+  };
+
+  const filterExport = (array) => {
+    if (exportMenu) {
+      if (exportMenu === 'exported') {
+        const exportFilterData = array.filter((item) => {
+          return item.Transferred === true;
+        });
+        return exportFilterData;
+      } else if (exportMenu === 'unExported') {
+        const exportFilterData = array.filter((item) => {
+          return item.Transferred === false;
+        });
+        return exportFilterData;
+      } else if (exportMenu === 'all') {
+        return array;
+      }
+    } else {
+      return array;
+    }
+  };
+
+  useEffect(() => {
+    // 每次都從store拿出來重跑一次
+    let filterCards = cards;
+    filterCards = filterCategory(filterCards);
+    filterCards = filterRead(filterCards);
+    filterCards = filterExport(filterCards);
+    console.log(filterCards);
+    setFilteredCards(filterCards);
+  }, [categoryMenu, readMenu, exportMenu]);
 
   return (
     <>
@@ -92,8 +193,8 @@ export default function CardPageTopBar() {
             <FormControl fullWidth variant="outlined">
               <InputLabel>{'Category'}</InputLabel>
               <Select
-                value={filters.status || 'all'}
-                onChange={handleStatusChange}
+                value={categoryMenu || 'all'}
+                onChange={handleCategoryChange}
                 label={'Category'}
               >
                 {statusOptions.map((statusOption) => (
@@ -106,15 +207,15 @@ export default function CardPageTopBar() {
           </Grid>
           <Grid item xs={12} lg={4} md={4}>
             <FormControl fullWidth variant="outlined">
-              <InputLabel>{'Like'}</InputLabel>
+              <InputLabel>{'Read'}</InputLabel>
               <Select
-                value={filters.status || 'all'}
-                onChange={handleStatusChange}
-                label={'Like'}
+                value={readMenu || 'all'}
+                onChange={handleReadChange}
+                label={'Read'}
               >
-                {statusOptions.map((statusOption) => (
-                  <MenuItem key={statusOption.id} value={statusOption.id}>
-                    {statusOption.name}
+                {readOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.name}
                   </MenuItem>
                 ))}
               </Select>
@@ -124,13 +225,13 @@ export default function CardPageTopBar() {
             <FormControl fullWidth variant="outlined">
               <InputLabel>{'Export'}</InputLabel>
               <Select
-                value={filters.status || 'all'}
-                onChange={handleStatusChange}
+                value={exportMenu || 'all'}
+                onChange={handleExportChange}
                 label={'Export'}
               >
-                {statusOptions.map((statusOption) => (
-                  <MenuItem key={statusOption.id} value={statusOption.id}>
-                    {statusOption.name}
+                {exportOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.name}
                   </MenuItem>
                 ))}
               </Select>
@@ -140,4 +241,14 @@ export default function CardPageTopBar() {
       </Card>
     </>
   );
-}
+};
+
+const mapStoreStateToProps = ({ card }) => {
+  return { ...card };
+};
+
+const mapActionsToProps = (dispatch) => {
+  return { ...getActions(dispatch) };
+};
+
+export default connect(mapStoreStateToProps, mapActionsToProps)(CardPageTopBar);

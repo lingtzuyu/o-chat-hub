@@ -23,6 +23,8 @@ export const cardActions = {
   ADD_DELETE_CARD_CHANGE: 'CARDS.ADD_DELETE_CARD_CHANGE',
   SET_CANCEL_BUTTON_DISABLED: 'CARDS.SET_CANCEL_BUTTON_DISABLED',
   SET_CURRENT_CATEGORY: 'CARDS.SET_CURRETN_CATEGORY',
+  SET_FILTERED_CARDS: 'CARDS.SET_FILTERED_CARDS',
+  // 廢棄 TODO:
   SET_FORWARDED_TARGET: 'CARDS.SET_FORWARDED_TARGET',
 };
 
@@ -91,6 +93,11 @@ export const getActions = (dispatch) => {
     setCurrentCategory: (category) => {
       dispatch(setCurrentCategory(category));
     },
+
+    setFilteredCards: (data) => {
+      dispatch(setFilteredCards(data));
+    },
+
     forwardToTarget: (chatDetails, chatType, saveButtonOn) => {
       dispatch(forwardToTarget(chatDetails, chatType, saveButtonOn));
     },
@@ -265,5 +272,13 @@ export const addOrDeleteCard = (data) => {
   };
 };
 
-// 跳轉回去
+// 將filter後的東西渲染到卡片區域
+export const setFilteredCards = (data) => {
+  return {
+    type: cardActions.SET_FILTERED_CARDS,
+    filteredCards: data,
+  };
+};
+
+// 跳轉回去 TODO: 廢棄
 export const forwardToChatTarget = (userId) => {};

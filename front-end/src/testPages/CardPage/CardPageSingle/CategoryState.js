@@ -48,8 +48,6 @@ function CategoryState({ cards }) {
     return categoryCardsArray.length;
   };
 
-  console.log(categoryCard(cards, 'work'));
-
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} sm={6} lg={3}>

@@ -105,7 +105,7 @@ const DrawerWrapperMobile = styled(Drawer)(
 `
 );
 
-export function CardPage({ cards, fetchCardHistory }) {
+export function CardPage({ cards, fetchCardHistory, filteredCards }) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -181,7 +181,7 @@ export function CardPage({ cards, fetchCardHistory }) {
               }}
             >
               <Scrollbar>
-                {cards.map((card) => {
+                {filteredCards.map((card) => {
                   const localNoteTime = new Date(card.NoteTime);
                   const localDate = localNoteTime.toDateString();
                   return (
