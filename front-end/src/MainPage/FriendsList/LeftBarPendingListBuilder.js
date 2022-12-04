@@ -56,6 +56,7 @@ export const LeftBarPendingListBuilder = ({
   id,
   username,
   mail,
+  photo,
   acceptInvite = () => {},
   rejectInvite = () => {},
 }) => {
@@ -88,7 +89,7 @@ export const LeftBarPendingListBuilder = ({
                 }}
                 to="#"
                 alt={username}
-                src={ProfilePhoto}
+                src={photo}
               />
             </Tooltip>
           </AvatarGroup>

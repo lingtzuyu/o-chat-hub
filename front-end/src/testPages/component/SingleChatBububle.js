@@ -82,6 +82,8 @@ const MessageRight = ({
   isSelectedMessageBoxShown,
   localClock,
   localDate,
+  userInfoDetail,
+  chosenChatDetails,
 }) => {
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
@@ -202,7 +204,7 @@ const MessageRight = ({
           height: 50,
         }}
         alt={displayName}
-        src={TempProfilePic}
+        src={userInfoDetail?.photo}
       />
     </Box>
   );
@@ -219,6 +221,8 @@ const MessageLeft = ({
   isSelectedMessageBoxShown,
   localClock,
   localDate,
+  userInfoDetail,
+  chosenChatDetails,
 }) => {
   const message = content ? content : 'no message';
   const timestamp = date ? date : '';
@@ -309,7 +313,7 @@ const MessageLeft = ({
           height: 50,
         }}
         alt={displayName}
-        src={photoURL}
+        src={chosenChatDetails?.photo}
       />
       <Box
         display="flex"
@@ -362,6 +366,8 @@ const SingleChatBubble = ({
   mapKey,
   isSelectMessageBoxDisabled,
   isSelectedMessageBoxShown,
+  userInfoDetail,
+  chosenChatDetails,
 }) => {
   // UTC timestamp
   const timestamp = date ? date : '';
@@ -391,6 +397,8 @@ const SingleChatBubble = ({
         mapKey={mapKey}
         isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
         isSelectedMessageBoxShown={isSelectedMessageBoxShown}
+        userInfoDetail={userInfoDetail}
+        chosenChatDetails={chosenChatDetails}
       />
     );
   } else {
@@ -406,13 +414,15 @@ const SingleChatBubble = ({
         mapKey={mapKey}
         isSelectMessageBoxDisabled={isSelectMessageBoxDisabled}
         isSelectedMessageBoxShown={isSelectedMessageBoxShown}
+        userInfoDetail={userInfoDetail}
+        chosenChatDetails={chosenChatDetails}
       />
     );
   }
 };
 
-const mapStoreStateToProps = ({ chat, card }) => {
-  return { ...chat, ...card };
+const mapStoreStateToProps = ({ chat, card, auth }) => {
+  return { ...chat, ...card, ...auth };
 };
 
 export default connect(mapStoreStateToProps)(SingleChatBubble);

@@ -9,6 +9,12 @@ const checkUserExist = async (mail) => {
   return result;
 };
 
+const checkUserDetailById = async (userId) => {
+  const checkUserDetailQuery = 'SELECT * FROM user WHERE id = ?';
+  const [result] = await sqlDB.query(checkUserDetailQuery, [userId]);
+  return result;
+};
+
 // 用戶資料，過auth之後的mail
 const checkUserProfile = async (mail) => {
   const checkUserQuery = 'SELECT * FROM user WHERE mail = ?';
@@ -61,7 +67,7 @@ const checkPendingInvitation = async (senderId, receiverId) => {
 const checkPendingInvitationByReceiver = async (receiverId) => {
   // join friendinvitation以及user table直接找出送給這個receiverID的人有哪些info
   const invitationQuery =
-    'SELECT friendinvitation.sender_user_id, user.username, user.mail FROM friendinvitation JOIN user on friendinvitation.sender_user_id = user.id WHERE receiver_user_id = ? AND status = 0';
+    'SELECT friendinvitation.sender_user_id, user.username, user.mail, user.photo FROM friendinvitation JOIN user on friendinvitation.sender_user_id = user.id WHERE receiver_user_id = ? AND status = 0';
   const [result] = await sqlDB.query(invitationQuery, [receiverId]);
   return result;
 };
@@ -181,4 +187,5 @@ module.exports = {
   fetchFriendList,
   checkUserProfile,
   getFriendUserName,
+  checkUserDetailById,
 };

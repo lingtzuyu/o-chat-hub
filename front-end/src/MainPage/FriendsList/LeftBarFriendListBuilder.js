@@ -61,10 +61,17 @@ export const LeftBarFriendListBuilder = ({
   username,
   isOnline,
   setChosenChatDetails,
+  photo,
+  organization,
+  mail,
 }) => {
   // 取得username渲染上方，並點亮save Button
   const openConversation = () => {
-    setChosenChatDetails({ id: id, name: username }, chatTypes.DIRECT, false);
+    setChosenChatDetails(
+      { id: id, name: username, photo: photo, organization: organization },
+      chatTypes.DIRECT,
+      false
+    );
     // 要將saveButton的disable設false
   };
 
@@ -73,7 +80,9 @@ export const LeftBarFriendListBuilder = ({
     <List button={true} disablePadding component="div">
       <ListItemWrapper>
         <ListItemAvatar>
-          <Avatar src="" alt={username} />
+          <Tooltip arrow title={mail}>
+            <Avatar src={photo} alt={username} />
+          </Tooltip>
         </ListItemAvatar>
         <ListItemText
           onClick={openConversation}
@@ -91,7 +100,7 @@ export const LeftBarFriendListBuilder = ({
           }}
           primary={username}
           // TODO: demo這邊可以用成假文字
-          secondary={id}
+          secondary={organization}
         />
         {isOnline ? <OnlineIndicator /> : <OfflineIndicator />}
       </ListItemWrapper>

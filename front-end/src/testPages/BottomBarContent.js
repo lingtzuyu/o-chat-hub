@@ -32,7 +32,7 @@ const Input = styled('input')({
   display: 'none',
 });
 
-function BottomBarContent({ chosenChatDetails }) {
+function BottomBarContent({ chosenChatDetails, userInfoDetail }) {
   // TODO: 要改透過redux拿到
   const userMail = localStorage.getItem('userMail');
   const [messageToBeSent, setMessageToBeSent] = useState('');
@@ -84,7 +84,7 @@ function BottomBarContent({ chosenChatDetails }) {
           sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }}
           alt={userMail}
           // TODO: change later for real image
-          src={TempProfilePic}
+          src={userInfoDetail?.photo}
         />
         <MessageInputWrapper
           disabled={isSendButtonDisabled}
@@ -98,14 +98,14 @@ function BottomBarContent({ chosenChatDetails }) {
       </Box>
       <Box>
         {/* TODO: 之後用套件做出來 */}
-        {/* <Tooltip arrow placement="top" title={'Choose an emoji'}>
+        <Tooltip arrow placement="top" title={'Choose an emoji'}>
           <IconButton
             sx={{ fontSize: theme.typography.pxToRem(16) }}
             color="primary"
           >
             😀
           </IconButton>
-        </Tooltip> */}
+        </Tooltip>
         {/* <Input accept="image/*" id="messenger-upload-file" type="file" />
         <Tooltip arrow placement="top" title={t('Attach a file')}>
           <label htmlFor="messenger-upload-file">
@@ -127,8 +127,8 @@ function BottomBarContent({ chosenChatDetails }) {
   );
 }
 
-const mapStoreStateToProps = ({ chat }) => {
-  return { ...chat };
+const mapStoreStateToProps = ({ chat, auth }) => {
+  return { ...chat, ...auth };
 };
 
 export default connect(mapStoreStateToProps)(BottomBarContent);

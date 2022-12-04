@@ -94,7 +94,7 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
       value = e.target.value;
     }
     setCategoryMenu(value);
-    console.log(value);
+    console.log('category', value);
   };
 
   const handleReadChange = (e) => {
@@ -114,7 +114,7 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
       value = e.target.value;
     }
     setExportMenu(value);
-    console.log(value);
+    console.log('export', value);
   };
 
   const filterCategory = (array) => {
@@ -193,7 +193,7 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
             <FormControl fullWidth variant="outlined">
               <InputLabel>{'Category'}</InputLabel>
               <Select
-                value={categoryMenu || 'all'}
+                value={categoryMenu}
                 onChange={handleCategoryChange}
                 label={'Category'}
               >
@@ -209,7 +209,7 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
             <FormControl fullWidth variant="outlined">
               <InputLabel>{'Read'}</InputLabel>
               <Select
-                value={readMenu || 'all'}
+                value={readMenu}
                 onChange={handleReadChange}
                 label={'Read'}
               >
@@ -225,7 +225,7 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
             <FormControl fullWidth variant="outlined">
               <InputLabel>{'Export'}</InputLabel>
               <Select
-                value={exportMenu || 'all'}
+                value={exportMenu}
                 onChange={handleExportChange}
                 label={'Export'}
               >

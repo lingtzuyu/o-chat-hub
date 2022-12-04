@@ -3,6 +3,7 @@ const Friends = require('../server/models/friend_model');
 // 取得儲存socket ID及mail的Map()變數
 const serverStore = require('../serverStore');
 // 透過socket.js這邊的event來發送實實資料 (React重新渲染畫面上的pending邀請)
+require('dotenv').config();
 
 // 使用userId來尋找friendinvitation表
 const updateInvitations = async (receiverMail, receiverId) => {
@@ -53,14 +54,20 @@ const updateFriendList = async (userMail) => {
     if (connetedSocketsByuserMail.length > 0) {
       // 1. 拿此id去friendship取出所有的好友id，沒好友就是空陣列
       const friendListById = await Friends.fetchFriendList(userId[0].id);
-      // console.log('updateFriendList來的好友名單', friendListById);
+      console.log('updateFriendList來的好友名單', friendListById);
       // 這邊的friendListById資料會是 [ { friend: 66 }, { friend: 68} ]
       // 2. 用id去Users的table去抓 username
       // how to use asycn in map: https://zhuanlan.zhihu.com/p/134239237
 
+      // TODO: 待合併
       const friendInfoList = await Promise.all(
         friendListById.map(async (friendId) => {
           const userInfoList = await Friends.checkUserInfoById(friendId.friend);
+
+          const detailFriendInfoList = await Friends.checkUserDetailById(
+            friendId.friend
+          );
+
           // userInfoList長這樣
           // {
           //   userInfo: { username: 'test0002', mail: 'test0002@gmail.com', id: 66 }
@@ -70,6 +77,8 @@ const updateFriendList = async (userMail) => {
             id: userInfoList.userInfo.id,
             username: userInfoList.userInfo.username,
             mail: userInfoList.userInfo.mail,
+            photo: `${detailFriendInfoList[0].photo}`,
+            organization: detailFriendInfoList[0].organization,
           };
         })
       );

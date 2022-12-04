@@ -117,7 +117,12 @@ const checkOnline = (friends = [], onlineUsers = []) => {
   return friends;
 };
 
-function SidebarContent({ friends, onlineUsers, pendingInvitation }) {
+function SidebarContent({
+  friends,
+  onlineUsers,
+  pendingInvitation,
+  userInfoDetail,
+}) {
   const userMail = localStorage.getItem('userMail');
   // TODO: 取得username的方式來取代name
 
@@ -156,7 +161,7 @@ function SidebarContent({ friends, onlineUsers, pendingInvitation }) {
   return (
     <RootWrapper>
       <Box display="flex" alignItems="flex-start">
-        <Avatar alt={user.name} src={TempProfilePic} />
+        <Avatar alt={user.name} src={userInfoDetail?.photo} />
         <Box
           sx={{
             ml: 1.5,
@@ -171,11 +176,11 @@ function SidebarContent({ friends, onlineUsers, pendingInvitation }) {
             <Box>
               <Typography variant="h5" noWrap>
                 {/* 使用者名稱 */}
-                {user.name}
+                {userInfoDetail?.username}
               </Typography>
               <Typography variant="subtitle1" noWrap>
                 {/* 使用者信箱，之後也可以改成職位或是暱稱 */}
-                {user.mail}
+                {userInfoDetail?.organization}
               </Typography>
             </Box>
             {/* setting icon */}
@@ -262,6 +267,9 @@ function SidebarContent({ friends, onlineUsers, pendingInvitation }) {
             // FriendDataItems會製造擺放這些key, username, id的元素
             index={index}
             key={ele.id}
+            photo={ele.photo}
+            mail={ele.mail}
+            organization={ele.organization}
             username={ele.username}
             id={ele.id}
             // 如果mail跟socket廣播onlineUsers資料中任何一個相符合的話，就代表online
@@ -294,14 +302,15 @@ function SidebarContent({ friends, onlineUsers, pendingInvitation }) {
           id={ele.sender_user_id}
           username={ele.username}
           mail={ele.mail}
+          photo={ele.photo}
         />
       ))}
     </RootWrapper>
   );
 }
 
-const mapStoreStateToProps = ({ friends }) => {
-  return { ...friends };
+const mapStoreStateToProps = ({ friends, auth }) => {
+  return { ...friends, ...auth };
 };
 
 export default connect(mapStoreStateToProps)(SidebarContent);

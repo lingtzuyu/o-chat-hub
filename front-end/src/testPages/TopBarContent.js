@@ -95,7 +95,7 @@ const AccordionSummaryWrapper = styled(AccordionSummary)(
 `
 );
 
-function TopBarContent({ name }) {
+function TopBarContent({ chosenChatDetails }) {
   return (
     <>
       <RootWrapper>
@@ -106,15 +106,13 @@ function TopBarContent({ name }) {
               width: 48,
               height: 48,
             }}
-            alt={name}
-            src={FakeProfilePic}
+            alt={chosenChatDetails?.name}
+            src={chosenChatDetails?.photo}
           />
           <Box ml={1}>
-            <Typography variant="h4">{name}</Typography>
+            <Typography variant="h4">{chosenChatDetails?.name}</Typography>
             <Typography variant="subtitle1">
-              {formatDistance(subMinutes(new Date(), 8), new Date(), {
-                addSuffix: true,
-              })}
+              {chosenChatDetails?.organization}
             </Typography>
           </Box>
         </Box>
@@ -148,9 +146,13 @@ function TopBarContent({ name }) {
   );
 }
 
-const mapActionsToProps = (state) => {
-  return {
-    name: state.chat.chosenChatDetails?.name,
-  };
+const mapStoreStateToProps = ({ chat }) => {
+  return { ...chat };
 };
-export default connect(mapActionsToProps)(TopBarContent);
+
+// const mapActionsToProps = (state) => {
+//   return {
+//     name: state.chat.chosenChatDetails?.name,
+//   };
+// };
+export default connect(mapStoreStateToProps)(TopBarContent);

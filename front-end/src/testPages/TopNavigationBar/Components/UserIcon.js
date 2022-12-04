@@ -103,7 +103,7 @@ function UserIcon({ userInfoDetail, userName, organizationInStore }) {
       }}
     >
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar alt={'name'} src={TempProfile} />
+        <Avatar alt={'name'} src={userInfoDetail?.photo} />
         <ExpandMoreTwoToneIcon
           fontSize="small"
           sx={{
@@ -134,10 +134,10 @@ function UserIcon({ userInfoDetail, userName, organizationInStore }) {
           <Avatar variant="rounded" alt={'name'} src={TempProfile} />
           <UserBoxText>
             <UserBoxLabel variant="body1">
-              {userInfoDetail.username}
+              {userInfoDetail?.username}
             </UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {userInfoDetail.organization}
+              {userInfoDetail?.organization}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>

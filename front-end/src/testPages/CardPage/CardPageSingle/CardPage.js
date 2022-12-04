@@ -105,7 +105,12 @@ const DrawerWrapperMobile = styled(Drawer)(
 `
 );
 
-export function CardPage({ cards, fetchCardHistory, filteredCards }) {
+export function CardPage({
+  cards,
+  fetchCardHistory,
+  filteredCards,
+  setFilteredCards,
+}) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -120,6 +125,7 @@ export function CardPage({ cards, fetchCardHistory, filteredCards }) {
       window.location.pathname = '/login';
     } else {
       fetchCardHistory(accessToken);
+      setFilteredCards(cards);
     }
   }, []);
 
