@@ -47,7 +47,7 @@ router
     wrapAsync(rejectFriendInvitation)
   );
 
-// get user profile
+// get user profile TODO: 移到auth
 router
   .route('/friend/userprofile')
   .get(wrapAsync(verifiedAuth), wrapAsync(getUserProfile));

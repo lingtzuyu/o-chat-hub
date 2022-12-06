@@ -72,8 +72,8 @@ const removeNotionConnect = async (userId) => {
 
 // 存入針對某notion頁面(db)的accessToken以及關連到的頁面(db) id
 
-// TODO:　這邊這幾個動作要加上交易
-
+// TODO:　這邊這幾個動作要加上交易 (或是改資料結構)
+// FIXME: ????!!!!! model只做資料相關，notion連線拆
 const saveNotionTokenAndPageId = async (code, userId) => {
   // 帶著code去加上webApp的驗證資料取得notion accessToken
   try {
@@ -129,6 +129,7 @@ const saveNotionTokenAndPageId = async (code, userId) => {
   }
 };
 
+// FIXME: notion連線拆出來
 // 存入notion資料
 const createPageInNotion = async (
   notionAccessToken,
@@ -141,7 +142,7 @@ const createPageInNotion = async (
   messages,
   notes
 ) => {
-  // 建立notion連線
+  // 建立notion連線 TODO: 參考sql連線方式 傳入accessToken
   const notion = new Client({
     //fetch from db later
     auth: notionAccessToken,

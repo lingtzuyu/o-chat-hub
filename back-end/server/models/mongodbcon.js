@@ -3,6 +3,7 @@ require('dotenv').config();
 
 const mongoURI = process.env.MONGO_URI;
 
+// TODO: 沒呼叫
 const mongo = async () => {
   try {
     mongoose.connect(mongoURI, () =>
@@ -12,5 +13,7 @@ const mongo = async () => {
     console.error('mongoDB error', error);
   }
 };
+
+// mongo();
 
 module.exports = { mongo };

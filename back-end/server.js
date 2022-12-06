@@ -14,6 +14,7 @@ const server = http.createServer(app);
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// FIXME: cors裡面的設定，前後端分離不要全開
 app.use(cors());
 morganBody(app);
 
@@ -25,9 +26,11 @@ const Socket = require('./socket');
 
 // DB connection
 // https://stackoverflow.com/questions/23293202/export-and-reuse-my-mongoose-connection-across-multiple-models
+
 const { mongo } = require('./server/models/mongodbcon');
+
 mongo();
-// TODO: mysql 為何不用
+// FIXME: 刪除，放在mongo連線那邊
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -39,6 +42,8 @@ app.use(`/api/${API_VERSION}`, [
   require('./server/routes/card_route'),
   require('./server/routes/notion_route'),
 ]);
+
+// TODO: 404
 
 app.use(function (err, req, res, next) {
   console.log(err);

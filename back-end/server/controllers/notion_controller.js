@@ -3,6 +3,7 @@ const Notion = require('../models/notion_model');
 const Friend = require('../models/friend_model');
 const Card = require('../models/card_model');
 
+// TODO: 考慮 Join (Profile)
 const recoverNotionToken = async (req, res) => {
   const { userId } = req.body;
   try {

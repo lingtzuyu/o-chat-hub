@@ -13,6 +13,7 @@ const { TOKEN_EXPIRE, TOKEN_SECRET } = process.env; // 30 days by seconds
 // 2. password
 // 3. mail
 
+// TODO: JWT移出去 Q
 const signUp = async (name, email, password) => {
   const conn = await sqlDB.getConnection();
   try {
@@ -74,6 +75,7 @@ const signIn = async (email, password) => {
 
     const loginTime = new Date();
     // 2. 生成accessToken
+    // FIXME: jwt包包包包包id
     const accessToken = jwt.sign(
       {
         name: user.username,

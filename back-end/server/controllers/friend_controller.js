@@ -40,7 +40,10 @@ const sentFriendInvitation = async (req, res) => {
   const receiverMail = req.body.mail;
 
   const checkRecieverIdExist = await Friend.checkUserExist(receiverMail);
+  // TODO: jwt
   const checkSenderIdExist = await Friend.checkUserExist(senderMail);
+
+  // TODO:
   const receiverId = checkRecieverIdExist[0]?.id;
   const senderId = checkSenderIdExist[0].id;
 
@@ -58,6 +61,7 @@ const sentFriendInvitation = async (req, res) => {
 
     // 已經是好友
 
+    // TODO: JOIN user 的表
     const targetfriendCheck = await Friend.getTargetFriendFromDB(
       senderId,
       receiverId
@@ -126,9 +130,7 @@ const accpetFriendInvitation = async (req, res) => {
     if (!checkFriendInvitationiTable) {
       return res
         .status(400)
-        .send(
-          'Internal Error, please send invitation first before adding friend'
-        );
+        .send('Please send invitation first before adding friend');
     }
 
     // TODO: 現在是把friendinvitation表內的status從0改到1，但是好像直接刪除會比較好 (考慮到後面如果被刪除要重新加的話)
@@ -149,7 +151,7 @@ const accpetFriendInvitation = async (req, res) => {
     return res.status(200).json({ result: 'Accept invitation success' });
   } catch (err) {
     console.log('accept error', err);
-    return res.status(500).sned('Internal Error, please try again');
+    return res.status(500).send('Internal Error, please try again');
   }
 };
 
