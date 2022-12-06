@@ -72,7 +72,7 @@ const initialSocketServer = (server) => {
     });
   });
 
-  // 每隔10秒廣播全線上用戶
+  // FIXME: 每隔10秒廣播全線上用戶
   setInterval(() => {
     broadcastOnlineUser();
   }, process.env.SOCKET_BRAODCAST);

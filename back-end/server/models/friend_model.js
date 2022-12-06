@@ -66,8 +66,14 @@ const checkPendingInvitation = async (senderId, receiverId) => {
 // receiver 視角，渲染登入的時候有哪些好友邀請
 const checkPendingInvitationByReceiver = async (receiverId) => {
   // join friendinvitation以及user table直接找出送給這個receiverID的人有哪些info
-  const invitationQuery =
-    'SELECT friendinvitation.sender_user_id, user.username, user.mail, user.photo FROM friendinvitation JOIN user on friendinvitation.sender_user_id = user.id WHERE receiver_user_id = ? AND status = 0';
+  // FIXME: 改改改sql長長長長長長長長長長長長
+  const invitationQuery = `
+  SELECT 
+    friendinvitation.sender_user_id, user.username, user.mail, user.photo 
+  FROM 
+    friendinvitation 
+  JOIN user on friendinvitation.sender_user_id = user.id 
+  WHERE receiver_user_id = ? AND status = 0`;
   const [result] = await sqlDB.query(invitationQuery, [receiverId]);
   return result;
 };

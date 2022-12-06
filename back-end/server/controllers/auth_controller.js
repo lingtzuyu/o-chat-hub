@@ -94,6 +94,8 @@ const verifiedAuth = async (req, res, next) => {
     // 403連Auth都沒過
     return res.status(403).send('Token missing');
   }
+
+  // TODO:  confirm if try catch necessary
   try {
     // decode the token, 移除bearer
     token = token.replace(/^Bearer\s+/, '');

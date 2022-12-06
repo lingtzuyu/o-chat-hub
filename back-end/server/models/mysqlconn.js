@@ -23,4 +23,5 @@ const pool = mysql.createPool({
 
 const sqlDB = pool.promise();
 
+// FIXME: 待刪除
 module.exports = { mysql, sqlDB };

@@ -16,7 +16,7 @@ const {
 } = require('../controllers/card_controller');
 const { fetchCardHistoryByCategory } = require('../models/card_model');
 
-// 新增至最愛 .
+// 新增至最愛 TODO: 刪除verifiedAuth的wrapAsync
 router
   .route('/card/like')
   .post(
@@ -33,7 +33,7 @@ router
     wrapAsync(setDislikeById)
   );
 
-// 刪除卡片資料
+// 刪除卡片資料 //TODO: 前後端改delte
 router
   .route('/card/remove')
   .post(wrapAsync(verifiedAuth), wrapAsync(deleteCardById));
@@ -61,7 +61,7 @@ router
   .route('/card/details/:category')
   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardDetailsByCategory));
 
-// 更新卡片Title以及notes
+// 更新卡片Title以及notes //TODO: patch 前後端
 router
   .route('/card/modification')
   .post(
@@ -69,7 +69,7 @@ router
     wrapAsync(checkCardExist),
     wrapAsync(updateCardTitleAndNotes)
   );
-// 更新卡片category
+// 更新卡片category FIXME: 改成category
 router
   .route('/card/changecategory')
   .post(verifiedAuth, wrapAsync(checkCardExist), wrapAsync(updateCategory));

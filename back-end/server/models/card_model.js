@@ -4,6 +4,7 @@ const { sqlDB } = require('./mysqlconn');
 
 const { Schema } = mongoose;
 
+// FIXME: ????!!!!! mongoose schema
 // note schema
 const noteSchema = new Schema({
   NoteId: String, // userID補滿8位 + UNIX日期亂數

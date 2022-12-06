@@ -409,10 +409,10 @@ function CardDetail({
   const setFromPicture = (friendId) => {
     const target = friends.find((ele) => ele.id === friendId);
     if (target !== undefined || null) {
-      return target.photo;
+      return target?.photo;
     } else {
       // 上方沒東西就是自己
-      return userInfoDetail.photo;
+      return userInfoDetail?.photo;
     }
   };
 
@@ -420,10 +420,10 @@ function CardDetail({
   const setCurrentUserName = (friendId) => {
     const target = friends.find((ele) => ele.id === friendId);
     if (target !== undefined || null) {
-      return target.username;
+      return target?.username;
     } else {
       // 上方沒東西就是自己
-      return userInfoDetail.username;
+      return userInfoDetail?.username;
     }
   };
 

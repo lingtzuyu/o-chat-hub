@@ -21,14 +21,9 @@ const checkCardExist = async (req, res, next) => {
 
 // like
 const setLikeById = async (req, res) => {
-  try {
-    const { cardId } = req.body;
-    const result = await Card.setLikeById(cardId);
-    res.status(200).send({ message: 'Like card' });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ err: 'Internal Error' });
-  }
+  const { cardId } = req.body;
+  await Card.setLikeById(cardId);
+  res.status(200).send({ message: 'Like card' });
 };
 
 // dislike
@@ -133,7 +128,7 @@ const fetchCardHistory = async (req, res) => {
     return res.status(200).send(response);
   } catch (err) {
     console.log('controller', err);
-    res.status(500).send({ err: 'Internal Error' });
+    return res.status(500).send({ err: 'Internal Error' });
   }
 };
 
