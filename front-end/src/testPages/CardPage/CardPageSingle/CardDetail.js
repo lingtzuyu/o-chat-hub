@@ -475,6 +475,7 @@ function CardDetail({
                   dangerouslySetInnerHTML={{
                     __html: initialNotes,
                   }}
+                  style={{ textAlign: 'left' }}
                 />
               </Typography>
             </Box>
@@ -582,6 +583,7 @@ function CardDetail({
                   dangerouslySetInnerHTML={{
                     __html: initialNotes,
                   }}
+                  style={{ textAlign: 'left' }}
                 />
               </Typography>
             </Box>
