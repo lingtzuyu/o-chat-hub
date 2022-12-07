@@ -179,19 +179,18 @@ const CardBuilderKnowledge = ({
         </Box>
 
         {/* 與誰的訊息 */}
-        <Box display="flex" alignItems={'center'}>
-          <ListItemText
-            sx={{ marginTop: '8%' }}
-            primary={<Typography variant="h4"> {title}</Typography>}
-            secondary={
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: notes,
-                }}
-              />
-            }
-          />
-        </Box>
+
+        <ListItemText
+          sx={{ marginTop: '4%' }}
+          primary={<Typography variant="h4"> {title}</Typography>}
+          secondary={
+            <div
+              dangerouslySetInnerHTML={{
+                __html: notes,
+              }}
+            />
+          }
+        />
 
         <Box
           alignSelf="center"
