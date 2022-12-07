@@ -182,7 +182,7 @@ const CardBuilderKnowledge = ({
         {/* 與誰的訊息 */}
 
         <ListItemText
-          sx={{ marginTop: '8%' }}
+          sx={{ marginTop: '5%' }}
           primary={<Typography variant="h4"> {title}</Typography>}
           secondary={
             <div

@@ -156,7 +156,7 @@ const CardBuilderWork = ({
   };
 
   return (
-    <Box sx={{ backgroundColor: '#EAF6F6', justifyContent: 'space-between' }}>
+    <Box sx={{ backgroundColor: '#EAF6F6' }}>
       <ListItem
         sx={{
           p: 2,
@@ -178,19 +178,18 @@ const CardBuilderWork = ({
         </Box>
 
         {/* 與誰的訊息 */}
-        <Box display="flex" alignItems={'center'}>
-          <ListItemText
-            sx={{ marginTop: '8%' }}
-            primary={<Typography variant="h4"> {title}</Typography>}
-            secondary={
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: notes,
-                }}
-              />
-            }
-          />
-        </Box>
+
+        <ListItemText
+          sx={{ marginTop: '5%' }}
+          primary={<Typography variant="h4"> {title}</Typography>}
+          secondary={
+            <div
+              dangerouslySetInnerHTML={{
+                __html: notes,
+              }}
+            />
+          }
+        />
 
         <Box
           alignSelf="center"
