@@ -1,3 +1,5 @@
+// 似乎廢棄了
+
 import React, { useState, useEffect } from 'react';
 
 import {
@@ -39,11 +41,34 @@ function QuickMessageViewKnowledge({
   isMessageViewOpen,
   setMessageView,
   messagesInQuickView,
+  friends,
+  userInfoDetail,
 }) {
   const theme = useTheme();
 
   const handleCloseThisDialog = () => {
     setMessageView(false);
+  };
+
+  const setFromPicture = (friendId) => {
+    const target = friends.find((ele) => ele.id === friendId);
+    if (target !== undefined || null) {
+      return target?.photo;
+    } else {
+      // 上方沒東西就是自己
+      return userInfoDetail?.photo;
+    }
+  };
+
+  // 從friends find當前用戶的username
+  const setCurrentUserName = (friendId) => {
+    const target = friends.find((ele) => ele.id === friendId);
+    if (target !== undefined || null) {
+      return target?.username;
+    } else {
+      // 上方沒東西就是自己
+      return userInfoDetail?.username;
+    }
   };
 
   return (
@@ -74,11 +99,15 @@ function QuickMessageViewKnowledge({
                   <ListItem>
                     <ListItemAvatar>
                       {/* TODO: 目前沒有AVATAR */}
-                      <Avatar alt="User R" src={''} />
+                      <Avatar alt="User" src={setFromPicture(ele.sender)} />
                     </ListItemAvatar>
                     <ListItemText
                       // TODO: 改成吃username
-                      primary={<Text color="black">{ele.sender}</Text>}
+                      primary={
+                        <Text color="black">
+                          {setCurrentUserName(ele.sender)}
+                        </Text>
+                      }
                       primaryTypographyProps={{
                         variant: 'h5',
                         // noWrap: true,
@@ -116,8 +145,8 @@ function QuickMessageViewKnowledge({
   );
 }
 
-const mapStoreStateToProps = ({ card }) => {
-  return { ...card };
+const mapStoreStateToProps = ({ card, friends, auth }) => {
+  return { ...card, ...friends, ...auth };
 };
 
 const mapActionsToProps = (dispatch) => {

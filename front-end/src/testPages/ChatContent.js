@@ -67,6 +67,9 @@ function ChatContent({
     });
   }, [chosenChatDetails]);
 
+  // 按下核取方塊後的重新渲染
+  useEffect(() => {});
+
   const messageToEndRef = useRef(null);
 
   const scrollToBottom = () => {
