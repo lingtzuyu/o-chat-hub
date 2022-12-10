@@ -1,18 +1,19 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const Joi = require('joi');
+const { Exception } = require('../services/exceptions/exception');
+const { SQLException } = require('../services/exceptions/sql_exception');
 
-const User = require('../models/auth_model');
+const UserModel = require('../models/auth_model');
+const UserService = require('../services/auth_service');
 
-const { TOKEN_SECRET } = process.env;
+const { TOKEN_EXPIRE, TOKEN_SECRET, BCRYPT_SALTROUND } = process.env;
 
-// use joi and validator to validate the input
+// use joi and validator to validate the input (register & login)
 
-// joi rule for schema
-// 1. 8~20位數的username以及password
-// 2. mail foprmat
 const registerSchema = Joi.object({
-  username: Joi.string().min(3).max(20).required(),
+  username: Joi.string().min(2).max(20).required(),
   password: Joi.string().min(8).max(20).required(),
   mail: Joi.string().email().required(),
 });
@@ -22,43 +23,77 @@ const loginSchema = Joi.object({
   mail: Joi.string().email().required(),
 });
 
-// register邏輯
+// register
 const register = async (req, res) => {
-  try {
-    const { username, mail, password } = req.body;
+  const { username, mail, password } = req.body;
 
-    if (!username || !mail || !password) {
-      res.status(400).send({
-        error: 'Username, email and password are required.',
-      });
-      return;
-    }
-
-    // call signUp to insertInto DB
-    const result = await User.signUp(username, mail, password);
-
-    // email already exist會進到這邊
-    if (result.error) {
-      res.status(403).send({ error: result.error });
-      return;
-    }
-
-    res.status(200).json({
-      data: {
-        tokeninfo: {
-          accessToken: result.user.accesstoken,
-          accessExpired: result.user.access_expired,
-        },
-        userinfo: {
-          id: result.user.id,
-          name: result.user.username,
-          mail: result.user.mail,
-        },
-      },
+  if (!username || !mail || !password) {
+    res.status(400).send({
+      error: 'Username, email and password are required.',
     });
-  } catch (err) {
-    res.status(400).send('Error, please check input format');
+    return;
   }
+
+  // encrypt password
+  const hashedPassword = await bcrypt.hash(
+    password,
+    parseInt(BCRYPT_SALTROUND, 10),
+  );
+
+  // account created date
+  const createdDate = new Date();
+
+  const result = await UserModel.register(
+    username,
+    mail,
+    hashedPassword,
+    createdDate,
+  );
+
+  // FIXME: 待刪除console.log
+  console.log('controller這邊接的', result);
+  // call signUp to insertInto DB
+  // const result = await User.signUp(username, mail, password);
+
+  // // email already exist會進到這邊
+  // if (result.error) {
+  //   res.status(403).send({ error: result.error });
+  //   return;
+  // }
+
+  // use Id to generate JWT token
+  const userId = result;
+
+  const accessToken = await UserService.createJWTtoken(username, mail, userId);
+  // const accessToken = jwt.sign(
+  //   {
+  //     username,
+  //     mail,
+  //     userId,
+  //   },
+  //   TOKEN_SECRET,
+  // );
+
+  // update accessToken to user table immediately after signup
+  await UserModel.updateJWTtoken(
+    userId,
+    accessToken,
+    createdDate,
+    TOKEN_EXPIRE,
+  );
+
+  res.status(200).json({
+    data: {
+      tokeninfo: {
+        accessToken,
+      },
+      userinfo: {
+        userId,
+        username,
+        mail,
+      },
+    },
+  });
 };
 
 // login邏輯
@@ -72,7 +107,7 @@ const login = async (req, res) => {
       });
     }
 
-    const result = await User.signIn(mail, password);
+    const result = await UserModel.signIn(mail, password);
 
     const loginReturnData = {
       accessToken: result.user.accesstoken,
@@ -121,6 +156,7 @@ const socketAuthVerified = (socket, next) => {
     // 將userMail加入socket資訊裡面，之後要 Map的時候用
     // TODO: 將mail改為id增加讀取寫入效率
     socket.userMail = verifiedToken.mail;
+    socket.userId = verifiedToken.userId;
     // verifiedToken=> { name: 'test0001', mail: 'test0001@gmail.com', iat: 1668010656 }
   } catch (err) {
     const socketFailed = new Error('Invalid Token');
@@ -137,10 +173,10 @@ const updateNewUsername = async (req, res) => {
     return res.status(400).send("username can't be null");
   }
   try {
-    const updateUserName = await User.upateNewUsername(
+    const updateUserName = await UserModel.upateNewUsername(
       username,
       organization,
-      mail
+      mail,
     );
     console.log(updateUserName);
     if (!updateUserName) {

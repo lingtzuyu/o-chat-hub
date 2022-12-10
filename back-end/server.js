@@ -1,13 +1,16 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
+const http = require('http');
 const morganBody = require('morgan-body');
+const { SQLException } = require('./server/services/exceptions/sql_exception');
+const { APIExcption } = require('./server/services/exceptions/api_exception');
+const { Exception } = require('./server/services/exceptions/exception');
+
+// socket
+const Socket = require('./socket');
 
 const app = express();
-
-// ws是基於http協議之上
-const http = require('http');
-
 const server = http.createServer(app);
 
 // express settings
@@ -20,9 +23,6 @@ morganBody(app);
 
 // 環境變數
 const { SERVER_PORT, API_VERSION } = process.env;
-
-// socket
-const Socket = require('./socket');
 
 // DB connection
 // https://stackoverflow.com/questions/23293202/export-and-reuse-my-mongoose-connection-across-multiple-models
@@ -45,7 +45,20 @@ app.use(`/api/${API_VERSION}`, [
 
 // TODO: 404
 
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
+  console.log('最外層', err.fullLog);
+  if (err instanceof SQLException) {
+    console.log('SQL msg', err.message);
+    return res.status(400).json({ msg: err.message });
+  }
+  if (err instanceof APIExcption) {
+    console.log('API msg', err.message);
+    return res.status(err.status).json({ msg: err.message });
+  }
+  if (err instanceof Exception) {
+    console.log('Exception', err.message);
+    return res.status(500).json({ msg: err.message });
+  }
   console.log(err);
   res.status(500).send('Internal Server Error');
 });

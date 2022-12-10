@@ -14,9 +14,9 @@ const getSocketServer = () => {
 };
 
 // if user connect and have valid token, then save
-const addNewConnectedUsersToMap = ({ socketId, userMail }) => {
+const addNewConnectedUsersToMap = ({ socketId, userMail, userId }) => {
   //TODO: change to userID later
-  connectedUsers.set(socketId, { userMail });
+  connectedUsers.set(socketId, { userMail, userId });
   console.log('new connceted: ', connectedUsers);
 };
 

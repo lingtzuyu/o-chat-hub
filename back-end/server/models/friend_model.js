@@ -3,10 +3,14 @@ const { sqlDB } = require('./mysqlconn');
 
 // 確認用戶是否存在
 const checkUserExist = async (mail) => {
-  const checkUserQuery = 'SELECT id FROM user WHERE mail = ?';
-  const [result] = await sqlDB.query(checkUserQuery, mail);
-  // console.log('model', result);
-  return result;
+  try {
+    const checkUserQuery = 'SELECT id FROM user WHERE mail = ?';
+    const [result] = await sqlDB.query(checkUserQuery, mail);
+    // console.log('model', result);
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const checkUserDetailById = async (userId) => {

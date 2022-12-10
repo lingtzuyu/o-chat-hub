@@ -1,5 +1,4 @@
 const router = require('express').Router();
-// use joi and validator to validate the input
 const validator = require('express-joi-validation').createValidator({});
 const { wrapAsync } = require('../../util/util');
 const {
@@ -11,7 +10,7 @@ const {
   updateNewUsername,
 } = require('../controllers/auth_controller');
 
-// register route .
+// register route
 router
   .route('/register')
   .post(validator.body(registerSchema), wrapAsync(register));

@@ -1,17 +1,74 @@
 require('dotenv').config();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 const { sqlDB } = require('./mysqlconn');
+const { SQLException } = require('../services/exceptions/sql_exception');
+const { Exception } = require('../services/exceptions/exception');
 
-const salt = parseInt(process.env.BCRYPT_SALT);
+// FIXME: 待刪除，應該會在controller那處理
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const salt = parseInt(process.env.BCRYPT_SALTROUND);
+const { TOKEN_EXPIRE, TOKEN_SECRET } = process.env;
 
-const { TOKEN_EXPIRE, TOKEN_SECRET } = process.env; // 30 days by seconds
+const register = async (username, mail, hasedPassword, createdDate) => {
+  const presentFunctionName = 'register';
+  try {
+    const insertUserDataQuery = ` 
+    INSERT INTO user (username, mail, password, createddate) 
+      value (?, ?, ?, ?)`;
+    const [result] = await sqlDB.execute(insertUserDataQuery, [
+      username,
+      mail,
+      hasedPassword,
+      createdDate,
+    ]);
+    // return userID to genereate jwt token
+    return result.insertId;
+  } catch (err) {
+    // remind duplicted register
+    if (err.sqlMessage.includes('Duplicate')) {
+      throw new SQLException(
+        'Email already exist in user table',
+        'Duplicated email name is not allowed in user talbe',
+        'user',
+        'insert',
+        'register',
+      );
+    }
+    // general error handling
+    throw new Exception(
+      'Internal error',
+      `Unknow error for the insert user request, input mail: ${mail}`,
+      presentFunctionName,
+    );
+  }
+};
 
-// register的body需要含有
-// 1. username
-// 2. password
-// 3. mail
+const updateJWTtoken = async (
+  userId,
+  accessToken,
+  createdDate,
+  tokenExpired,
+) => {
+  const presentFunctionName = 'updateJWTtoken';
+  try {
+    const updateJWTtokenQuery = ` 
+    UPDATE user 
+      SET accesstoken = (?), access_expired = (?), lastlogin = (?) WHERE id = (?)`;
+    await sqlDB.execute(updateJWTtokenQuery, [
+      accessToken,
+      tokenExpired,
+      createdDate,
+      userId,
+    ]);
+  } catch (err) {
+    throw new Exception(
+      'Internal error',
+      `Unknow error for the update JWTtoken, related userId: ${userId}`,
+      presentFunctionName,
+    );
+  }
+};
 
 // TODO: JWT移出去 Q
 const signUp = async (name, email, password) => {
@@ -34,7 +91,7 @@ const signUp = async (name, email, password) => {
         name: user.username,
         mail: user.mail,
       },
-      TOKEN_SECRET
+      TOKEN_SECRET,
     );
 
     // 在user這個object新增accessToken
@@ -81,7 +138,7 @@ const signIn = async (email, password) => {
         name: user.username,
         mail: user.mail,
       },
-      TOKEN_SECRET
+      TOKEN_SECRET,
     );
 
     const updateUserLogin =
@@ -120,4 +177,10 @@ const upateNewUsername = async (username, organization, mail) => {
   return response;
 };
 
-module.exports = { signUp, signIn, upateNewUsername };
+module.exports = {
+  register,
+  updateJWTtoken,
+  signUp,
+  signIn,
+  upateNewUsername,
+};
