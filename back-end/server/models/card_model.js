@@ -4,12 +4,11 @@ const { sqlDB } = require('./mysqlconn');
 
 const { Schema } = mongoose;
 
-// FIXME: ????!!!!! mongoose schema
 // note schema
 const noteSchema = new Schema({
-  NoteId: String, // userID補滿8位 + UNIX日期亂數
-  NoteTime: Date, // contorller那生成unix間
-  Author: String, // TODO:userID
+  NoteId: String,
+  NoteTime: Date,
+  Author: String,
   FROM: String,
   FromId: Number,
   FromMail: String,
@@ -32,6 +31,16 @@ const noteSchema = new Schema({
 
 const NoteDataMongo = mongoose.model('NoteDataMongo', noteSchema);
 
+const fetchCardHistoryByMail = async (userMail) => {
+  const personalCardQuery = await NoteDataMongo.find({
+    Author: userMail,
+  })
+    .populate({ path: 'MessageRecords', model: 'MessageDataMongo' })
+    .sort({ NoteTime: -1 });
+
+  return personalCardQuery;
+};
+
 const fetchCardCategory = async () => {
   const cardCategoryQuery = 'SELECT * FROM cardcategory';
   const [result] = await sqlDB.query(cardCategoryQuery);
@@ -47,16 +56,6 @@ const fetchCardCategory = async () => {
 //     .limit(5);
 //   return lastFiveCardQuery;
 // };
-
-const fetchCardHistoryByMail = async (userMail) => {
-  const personalCardQuery = await NoteDataMongo.find({
-    Author: userMail,
-  })
-    .populate({ path: 'MessageRecords', model: 'MessageDataMongo' })
-    .sort({ NoteTime: -1 });
-
-  return personalCardQuery;
-};
 
 const fetchCardHistoryByCategory = async (userMail, category) => {
   const personalCardQueryByCategory = await NoteDataMongo.find({
@@ -139,7 +138,7 @@ const updateTitleAndNotes = async (cardId, title, notes, mail) => {
         Notes: notes,
         Title: title,
       },
-      { new: true }
+      { new: true },
     );
     return result;
   } catch (err) {
@@ -155,7 +154,7 @@ const updateCategory = async (cardId, category, mail) => {
       {
         Category: category,
       },
-      { new: true }
+      { new: true },
     );
     return result;
   } catch (err) {

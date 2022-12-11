@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken');
 const salt = parseInt(process.env.BCRYPT_SALTROUND);
 const { TOKEN_EXPIRE, TOKEN_SECRET } = process.env;
 
+// insert basic info while register
 const register = async (username, mail, hasedPassword, createdDate) => {
   const presentFunctionName = 'register';
   try {
@@ -44,6 +45,7 @@ const register = async (username, mail, hasedPassword, createdDate) => {
   }
 };
 
+// update jwt token when register or login
 const updateJWTtoken = async (
   userId,
   accessToken,
@@ -70,50 +72,37 @@ const updateJWTtoken = async (
   }
 };
 
-// TODO: JWT移出去 Q
-const signUp = async (name, email, password) => {
-  const conn = await sqlDB.getConnection();
+// check if the mail exist
+const checkUserExistByMail = async (mail) => {
+  const presentFunctionName = 'checkUserExistByMail';
   try {
-    const createdDate = new Date();
-    const hashPassword = await bcrypt.hash(password, salt);
-    // 要插入sql DB的資料
-    const user = {
-      mail: email,
-      password: hashPassword,
-      username: name,
-      createddate: createdDate,
-      access_expired: TOKEN_EXPIRE,
-    };
-
-    // sign JWT token
-    const accessToken = jwt.sign(
-      {
-        name: user.username,
-        mail: user.mail,
-      },
-      TOKEN_SECRET,
-    );
-
-    // 在user這個object新增accessToken
-    user.accesstoken = accessToken;
-
-    // insert into user table TODO: change to execute later
-    const insertUser = 'INSERT INTO user SET ?';
-    const [result] = await conn.query(insertUser, user);
-    // 返還insertId
-    user.id = result.insertId;
-    return { user };
+    const checkUserExistQuery = `
+  SELECT id, password, username
+    FROM user
+    WHERE mail = (?)`;
+    const [userLoginInfo] = await sqlDB.execute(checkUserExistQuery, [mail]);
+    return userLoginInfo[0];
   } catch (err) {
-    // 因為將email設為唯一
-    return {
-      error: 'Email Already Exists',
-      status: 403,
-    };
-  } finally {
-    await conn.release();
+    throw new Exception(
+      'Internal error',
+      `Unknow error while checking user exists, related mail: ${mail}`,
+      presentFunctionName,
+    );
   }
 };
 
+const upateNewUsername = async (username, organization, mail) => {
+  const updateUserNameQuery =
+    'UPDATE user SET username = ?, organization = ? WHERE mail = ? ';
+  const response = await sqlDB.query(updateUserNameQuery, [
+    username,
+    organization,
+    mail,
+  ]);
+  return response;
+};
+
+// FIXME: 廢棄
 const signIn = async (email, password) => {
   const conn = await sqlDB.getConnection();
   try {
@@ -166,21 +155,53 @@ const signIn = async (email, password) => {
   }
 };
 
-const upateNewUsername = async (username, organization, mail) => {
-  const updateUserNameQuery =
-    'UPDATE user SET username = ?, organization = ? WHERE mail = ? ';
-  const response = await sqlDB.query(updateUserNameQuery, [
-    username,
-    organization,
-    mail,
-  ]);
-  return response;
+// FIXME: 廢棄
+const signUp = async (name, email, password) => {
+  const conn = await sqlDB.getConnection();
+  try {
+    const createdDate = new Date();
+    const hashPassword = await bcrypt.hash(password, salt);
+    // 要插入sql DB的資料
+    const user = {
+      mail: email,
+      password: hashPassword,
+      username: name,
+      createddate: createdDate,
+      access_expired: TOKEN_EXPIRE,
+    };
+
+    // sign JWT token
+    const accessToken = jwt.sign(
+      {
+        name: user.username,
+        mail: user.mail,
+      },
+      TOKEN_SECRET,
+    );
+
+    // 在user這個object新增accessToken
+    user.accesstoken = accessToken;
+
+    // insert into user table TODO: change to execute later
+    const insertUser = 'INSERT INTO user SET ?';
+    const [result] = await conn.query(insertUser, user);
+    // 返還insertId
+    user.id = result.insertId;
+    return { user };
+  } catch (err) {
+    // 因為將email設為唯一
+    return {
+      error: 'Email Already Exists',
+      status: 403,
+    };
+  } finally {
+    await conn.release();
+  }
 };
 
 module.exports = {
   register,
   updateJWTtoken,
-  signUp,
-  signIn,
   upateNewUsername,
+  checkUserExistByMail,
 };

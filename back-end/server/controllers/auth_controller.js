@@ -2,22 +2,20 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
-const { Exception } = require('../services/exceptions/exception');
-const { SQLException } = require('../services/exceptions/sql_exception');
 
 const UserModel = require('../models/auth_model');
 const UserService = require('../services/auth_service');
 
 const { TOKEN_EXPIRE, TOKEN_SECRET, BCRYPT_SALTROUND } = process.env;
 
-// use joi and validator to validate the input (register & login)
-
+// Input validation (register)
 const registerSchema = Joi.object({
   username: Joi.string().min(2).max(20).required(),
   password: Joi.string().min(8).max(20).required(),
   mail: Joi.string().email().required(),
 });
 
+// Input validation (login)
 const loginSchema = Joi.object({
   password: Joi.string().min(8).max(20).required(),
   mail: Joi.string().email().required(),
@@ -29,7 +27,7 @@ const register = async (req, res) => {
 
   if (!username || !mail || !password) {
     res.status(400).send({
-      error: 'Username, email and password are required.',
+      msg: 'Username, email and password are required.',
     });
     return;
   }
@@ -50,29 +48,9 @@ const register = async (req, res) => {
     createdDate,
   );
 
-  // FIXME: 待刪除console.log
-  console.log('controller這邊接的', result);
-  // call signUp to insertInto DB
-  // const result = await User.signUp(username, mail, password);
-
-  // // email already exist會進到這邊
-  // if (result.error) {
-  //   res.status(403).send({ error: result.error });
-  //   return;
-  // }
-
-  // use Id to generate JWT token
   const userId = result;
 
   const accessToken = await UserService.createJWTtoken(username, mail, userId);
-  // const accessToken = jwt.sign(
-  //   {
-  //     username,
-  //     mail,
-  //     userId,
-  //   },
-  //   TOKEN_SECRET,
-  // );
 
   // update accessToken to user table immediately after signup
   await UserModel.updateJWTtoken(
@@ -96,31 +74,64 @@ const register = async (req, res) => {
   });
 };
 
-// login邏輯
+// login
 const login = async (req, res) => {
-  try {
-    const { mail, password } = req.body;
+  const { mail, password } = req.body;
 
-    if (!mail || !password) {
-      return res.status(400).send({
-        error: 'Email and password are required.',
-      });
-    }
-
-    const result = await UserModel.signIn(mail, password);
-
-    const loginReturnData = {
-      accessToken: result.user.accesstoken,
-      lastLogin: result.user.lastlogin,
-      username: result.user.username,
-      userId: result.user.id,
-      mail: result.user.mail,
-    };
-    return res.status(200).send(loginReturnData);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send('Internal Error');
+  if (!mail || !password) {
+    return res.status(400).send({
+      msg: 'Email and password are required.',
+    });
   }
+
+  // check if the mail exists
+  const userBasicInfo = await UserModel.checkUserExistByMail(mail);
+  if (!userBasicInfo) {
+    return res.status(401).send({
+      msg: 'Unauthoirzed, user not exists',
+    });
+  }
+
+  // compare the password and hashed password
+  const comparedPassword = await bcrypt.compare(
+    password,
+    userBasicInfo.password,
+  );
+  if (!comparedPassword) {
+    return res.status(403).send({
+      msg: 'Unauthenticated, mail or password is wrong',
+    });
+  }
+
+  // create jwt token
+  const createdDate = new Date();
+  const accessToken = await UserService.createJWTtoken(
+    userBasicInfo.username,
+    mail,
+    userBasicInfo.id,
+  );
+
+  // update jwt token in user table
+
+  await UserModel.updateJWTtoken(
+    userBasicInfo.id,
+    accessToken,
+    createdDate,
+    TOKEN_EXPIRE,
+  );
+
+  return res.status(200).json({
+    data: {
+      tokeninfo: {
+        accessToken,
+      },
+      userinfo: {
+        userId: userBasicInfo.id,
+        mail,
+        username: userBasicInfo.username,
+      },
+    },
+  });
 };
 
 const verifiedAuth = async (req, res, next) => {

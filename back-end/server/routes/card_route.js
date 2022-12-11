@@ -10,11 +10,15 @@ const {
   setDislikeById,
   checkCardExist,
   fetchCardDetailsByCategory,
-  fetchLastFiveCards,
   updateCardTitleAndNotes,
   updateCategory,
 } = require('../controllers/card_controller');
 const { fetchCardHistoryByCategory } = require('../models/card_model');
+
+// 取得user過去的卡片歷史紀錄
+router
+  .route('/card/history')
+  .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory));
 
 // 新增至最愛 TODO: 刪除verifiedAuth的wrapAsync
 router
@@ -22,7 +26,7 @@ router
   .post(
     wrapAsync(verifiedAuth),
     wrapAsync(checkCardExist),
-    wrapAsync(setLikeById)
+    wrapAsync(setLikeById),
   );
 // 從最愛移除
 router
@@ -30,7 +34,7 @@ router
   .post(
     wrapAsync(verifiedAuth),
     wrapAsync(checkCardExist),
-    wrapAsync(setDislikeById)
+    wrapAsync(setDislikeById),
   );
 
 // 刪除卡片資料 //TODO: 前後端改delte
@@ -46,16 +50,6 @@ router
   .route('/card/notes')
   .post(wrapAsync(verifiedAuth), wrapAsync(saveMessagesToNote));
 
-// 取得歷史紀錄
-router
-  .route('/card/history')
-  .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory));
-
-// Last 5 for notification
-// router
-//   .route('/card/lastfive')
-//   .get(wrapAsync(verifiedAuth), wrapAsync(fetchLastFiveCards));
-
 // 取得歷史紀錄by category
 router
   .route('/card/details/:category')
@@ -67,7 +61,7 @@ router
   .post(
     verifiedAuth,
     wrapAsync(checkCardExist),
-    wrapAsync(updateCardTitleAndNotes)
+    wrapAsync(updateCardTitleAndNotes),
   );
 // 更新卡片category FIXME: 改成category
 router

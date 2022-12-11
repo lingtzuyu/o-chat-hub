@@ -11,7 +11,7 @@ const { Exception } = require('./server/services/exceptions/exception');
 const Socket = require('./socket');
 
 const app = express();
-const server = http.createServer(app);
+const httpServer = http.createServer(app);
 
 // express settings
 app.use(express.static('public'));
@@ -19,7 +19,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // FIXME: cors裡面的設定，前後端分離不要全開
 app.use(cors());
-morganBody(app);
+
+// FIXME: 之後再開啟
+// morganBody(app);
 
 // 環境變數
 const { SERVER_PORT, API_VERSION } = process.env;
@@ -64,9 +66,11 @@ app.use((err, req, res, next) => {
 });
 
 // WS server 建立
-Socket.initialSocketServer(server);
+Socket.initialSocketServer(httpServer);
 
-server.listen(SERVER_PORT, () => {
+httpServer.listen(SERVER_PORT, () => {
   // TODO: remove after production published
   console.log(`Server is running on ${SERVER_PORT}`);
 });
+
+module.exports = { httpServer, app };
