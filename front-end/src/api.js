@@ -159,7 +159,7 @@ const saveMessagesToNote = async (data) => {
 // https://masteringjs.io/tutorials/axios/get-with-data
 const getCardHistory = async (data) => {
   try {
-    const result = await apiClient.get('/card/history', {
+    const result = await apiClient.get('/card/notes', {
       params: { token: data },
     });
     const cards = result.data;

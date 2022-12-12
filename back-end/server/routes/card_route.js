@@ -15,17 +15,18 @@ const {
 } = require('../controllers/card_controller');
 const { fetchCardHistoryByCategory } = require('../models/card_model');
 
-// save messages as note card
+// post: save messages to notes, get: fetch notes history
 router
   .route('/card/notes')
-  .post(wrapAsync(verifiedAuth), wrapAsync(saveMessagesToNote));
-
-// 取得user過去的卡片歷史紀錄
-router
-  .route('/card/history')
+  .post(wrapAsync(verifiedAuth), wrapAsync(saveMessagesToNote))
   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory));
 
-// 新增至最愛 TODO: 刪除verifiedAuth的wrapAsync
+// FIXME: 已經併到上方GET，可以廢棄取得user過去的卡片歷史紀錄
+// router
+//   .route('/card/history')
+//   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory));
+
+// add to read
 router
   .route('/card/like')
   .post(

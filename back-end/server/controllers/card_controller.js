@@ -1,20 +1,28 @@
 require('dotenv').config();
 const Card = require('../models/card_model');
-const Friend = require('../models/friend_model');
 const MessageModel = require('../models/message_model');
 
 // save card notes to mongoDB
 const saveMessagesToNote = async (req, res) => {
   // take usermail verifiedAuth as author
   const author = req.user.mail;
-  const { category, messagesToBeSaved, Title, Notes, From, FromId, FromMail } =
-    req.body;
+  const {
+    category,
+    messagesToBeSaved,
+    Title,
+    Notes,
+    From,
+    FromId,
+    FromMail,
+    AuthorId,
+  } = req.body;
 
   const newNote = await Card.NoteDataMongo.create({
-    NoteId: null, // TODO: 之後改
+    NoteId: null,
     NoteTime: new Date(),
-    Category: category, //
-    Author: author, // mail，從auth來
+    Category: category,
+    Author: author,
+    AuthorId,
     Title,
     FROM: From,
     FromId,
@@ -38,7 +46,7 @@ const saveMessagesToNote = async (req, res) => {
 
   await newNote.save();
 
-  const noteInsertId = newNote._id.toString();
+  const noteInsertId = newNote.id.toString();
 
   // 返回note編號
   return res
@@ -46,7 +54,15 @@ const saveMessagesToNote = async (req, res) => {
     .json({ data: { systemInfo: 'save sucessful', noteId: noteInsertId } });
 };
 
-// check if card exist before any implementation
+// fetch card history (all)
+const fetchCardHistory = async (req, res) => {
+  const { userId } = req.user;
+  const response = await Card.fetchCardHistoryById(userId);
+
+  return res.status(200).send(response);
+};
+
+// check if card exist before any implementation on card notedatamongos
 const checkCardExist = async (req, res, next) => {
   try {
     const author = req.user.mail;
@@ -106,18 +122,6 @@ const fetchCardCategory = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send({ err: 'Internal Error' });
-  }
-};
-
-const fetchCardHistory = async (req, res) => {
-  try {
-    const { mail } = req.user;
-    const response = await Card.fetchCardHistoryByMail(mail);
-    // console.log(response);
-    return res.status(200).send(response);
-  } catch (err) {
-    console.log('controller', err);
-    return res.status(500).send({ err: 'Internal Error' });
   }
 };
 

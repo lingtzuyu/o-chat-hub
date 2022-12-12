@@ -82,6 +82,7 @@ function TransferPopOutTable({
   setTransferButtonDisabled,
   chosenChatDetails,
   setCancelButtonDisable,
+  userInfoDetail,
 }) {
   const [cardTitle, setCardTitle] = useState('');
   const [cardNotes, setCardNotes] = useState('');
@@ -103,6 +104,7 @@ function TransferPopOutTable({
     From: chosenChatDetails?.name,
     FromId: chosenChatDetails?.id,
     FromMail: chosenChatDetails?.mail,
+    AuthorId: userInfoDetail?.id,
   };
 
   // useEffect(() => {
@@ -239,8 +241,8 @@ function TransferPopOutTable({
   );
 }
 
-const mapStoreStateToPropse = ({ card, chat }) => {
-  return { ...card, ...chat };
+const mapStoreStateToPropse = ({ card, chat, auth }) => {
+  return { ...card, ...chat, ...auth };
 };
 
 const mapActionsToProps = (dispatch) => {

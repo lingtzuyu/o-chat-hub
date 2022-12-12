@@ -37,7 +37,7 @@ const CardWrapper = styled(Box)(
     font-size: ${theme.typography.pxToRem(18)};
     padding: ${theme.spacing(1)};
     width: 95%;
-`
+`,
 );
 
 function CardList({
@@ -99,7 +99,7 @@ function CardList({
             py: 0,
           }}
         >
-          {cards.map((card) => {
+          {cards?.map((card) => {
             if (card.Category === 'work') {
               console.log('card', card);
               return (
