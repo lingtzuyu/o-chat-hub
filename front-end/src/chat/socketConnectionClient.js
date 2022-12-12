@@ -67,6 +67,7 @@ const sendDirectMessge = (data) => {
 
 const getDirectMessageHistroy = (data) => {
   console.log('getDirectMessageHistroy', data);
+  // {receiverUserId: 111}
   socket.emit('directMessageHistory', data);
 };
 

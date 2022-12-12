@@ -3,8 +3,11 @@ const express = require('express');
 const cors = require('cors');
 const http = require('http');
 const morganBody = require('morgan-body');
+const {
+  MongoException,
+} = require('./server/services/exceptions/mongo_exception');
 const { SQLException } = require('./server/services/exceptions/sql_exception');
-const { APIExcption } = require('./server/services/exceptions/api_exception');
+const { APIException } = require('./server/services/exceptions/api_exception');
 const { Exception } = require('./server/services/exceptions/exception');
 
 // socket
@@ -21,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // FIXME: 之後再開啟
-// morganBody(app);
+morganBody(app);
 
 // 環境變數
 const { SERVER_PORT, API_VERSION } = process.env;
@@ -49,11 +52,15 @@ app.use(`/api/${API_VERSION}`, [
 
 app.use((err, req, res, next) => {
   console.log('最外層', err.fullLog);
+  if (err instanceof MongoException) {
+    console.log('Mongo msg', err.message);
+    return res.status(400).json({ msg: err.message });
+  }
   if (err instanceof SQLException) {
     console.log('SQL msg', err.message);
     return res.status(400).json({ msg: err.message });
   }
-  if (err instanceof APIExcption) {
+  if (err instanceof APIException) {
     console.log('API msg', err.message);
     return res.status(err.status).json({ msg: err.message });
   }

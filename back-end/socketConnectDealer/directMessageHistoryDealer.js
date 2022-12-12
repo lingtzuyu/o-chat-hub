@@ -4,13 +4,12 @@ const chatDealer = require('./chatDealer');
 
 const directMessageHistoryDealer = async (socket, data) => {
   try {
-    const { userMail } = socket;
-    //TODO: 這邊一樣，還要從userMail解出userID
-    // 一開始就存userID就好，待改
+    const { userId } = socket;
     const { receiverUserId } = data;
-    console.log('receiverId in socketConnDealer', receiverUserId);
-    const checkIdByMail = await Friend.checkUserExist(userMail);
-    const userId = checkIdByMail[0].id;
+    console.log(userId, receiverUserId);
+    // console.log('receiverId in socketConnDealer', receiverUserId);
+    // const checkIdByMail = await Friend.checkUserExist(userMail);
+    // const userId = checkIdByMail[0].id;
 
     const chat = await ChatDataMongo.findOne({
       participants: { $all: [userId, receiverUserId] },
@@ -24,6 +23,7 @@ const directMessageHistoryDealer = async (socket, data) => {
     if (chat !== undefined || chat != null) {
       chatDealer.fetchChatContent(chat._id.toString(), socket.id);
     }
+    // FIXME: 如果沒有就要return null之類的
   } catch (err) {
     console.log('directMessageHistoryDealer出錯', err);
   }

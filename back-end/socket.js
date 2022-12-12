@@ -16,6 +16,8 @@ const initialSocketServer = (server) => {
     cors: { origin: '*', methods: ['GET', 'POST'] },
   });
 
+  // console.log('io內?', io);
+
   // set socketServer (每次建立一個sockerServer，就觸發)
   serverStore.setSocketServer(io);
 
@@ -57,6 +59,11 @@ const initialSocketServer = (server) => {
 
     // 取得聊天資料
     socket.on('directMessageHistory', (data) => {
+      // receiverUserId
+      console.log('後端directMessageHistory', data);
+      // 使用者
+      // console.log('後端directMessageHistory', socket);
+
       directMessageHistoryDealer(socket, data);
     });
 

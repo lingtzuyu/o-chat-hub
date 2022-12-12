@@ -1,4 +1,4 @@
-const MessageDataMongo = require('../server/models/message_model');
+const { MessageDataMongo } = require('../server/models/message_model');
 const ChatDataMongo = require('../server/models/chat_model');
 const Friend = require('../server/models/friend_model');
 const chatDealer = require('./chatDealer');

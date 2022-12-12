@@ -1,5 +1,5 @@
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
+
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
 
@@ -137,45 +137,33 @@ const login = async (req, res) => {
 const verifiedAuth = async (req, res, next) => {
   let token = req.body.token || req.headers.authorization || req.query.token;
   if (!token) {
-    // 403連Auth都沒過
-    return res.status(403).send('Token missing');
+    return res.status(403).json({ msg: 'Token missing' });
   }
 
-  // TODO:  confirm if try catch necessary
-  try {
-    // decode the token, 移除bearer
-    token = token.replace(/^Bearer\s+/, '');
-    const verifiedToken = jwt.verify(token, TOKEN_SECRET);
-    // info for next()，這邊可以傳給下一個
-    req.user = verifiedToken;
-  } catch (err) {
-    // 401可以進但沒權限
-    return res.status(401).send('Invalid Token');
-  }
+  // decode the token and pass
+  token = token.replace(/^Bearer\s+/, '');
+  const decodedJWTtoken = await UserService.verifyJWTtoken(token);
+  req.user = decodedJWTtoken;
 
   return next();
 };
 
-// TODO: 驗證前端過來的token對不對以建立後續的socket連線，若pass，則next下去
+// Verify token from frontend, and pass to create socket connection
 // https://www.tabnine.com/code/javascript/functions/socket.io/Handshake/query
-const socketAuthVerified = (socket, next) => {
-  // 等等從socket丟過來的，socket資料內確認會帶token
-  // https://stackoverflow.com/questions/36788831/authenticating-socket-io-connections-using-jwt
+const socketAuthVerified = async (socket, next) => {
+  const connectedSocket = socket;
   const tokenFromSocket = socket.handshake.auth.token;
-  try {
-    const verifiedToken = jwt.verify(tokenFromSocket, TOKEN_SECRET);
-    // 將userMail加入socket資訊裡面，之後要 Map的時候用
-    // TODO: 將mail改為id增加讀取寫入效率
-    socket.userMail = verifiedToken.mail;
-    socket.userId = verifiedToken.userId;
-    // verifiedToken=> { name: 'test0001', mail: 'test0001@gmail.com', iat: 1668010656 }
-  } catch (err) {
-    const socketFailed = new Error('Invalid Token');
-    return next(socketFailed);
-  }
+
+  const decodedJWTtoken = await UserService.verifyJWTtoken(tokenFromSocket);
+
+  // add userinfo to socket data
+  connectedSocket.userMail = decodedJWTtoken.mail;
+  connectedSocket.userId = decodedJWTtoken.userId;
+
   next();
 };
 
+// FIXME: 待檢查
 const updateNewUsername = async (req, res) => {
   const { mail } = req.user;
   const { username, organization } = req.body;

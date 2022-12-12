@@ -63,7 +63,7 @@ const EditorWrapper = styled(Box)(
         border-color: ${theme.colors.alpha.black[50]};
       }
     }
-`
+`,
 );
 
 const Toast = Swal.mixin({
@@ -88,7 +88,7 @@ function TransferPopOutTable({
 
   // 帶著accessToken認證欲儲存的訊息
   const messagesCollectionInString = localStorage.getItem(
-    'selectedMessagesCollection'
+    'selectedMessagesCollection',
   );
   const messagesArray = JSON.parse(messagesCollectionInString);
   const accessToken = localStorage.getItem('accessToken');
@@ -102,6 +102,7 @@ function TransferPopOutTable({
     token: accessToken,
     From: chosenChatDetails?.name,
     FromId: chosenChatDetails?.id,
+    FromMail: chosenChatDetails?.mail,
   };
 
   // useEffect(() => {
@@ -248,5 +249,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToPropse,
-  mapActionsToProps
+  mapActionsToProps,
 )(TransferPopOutTable);

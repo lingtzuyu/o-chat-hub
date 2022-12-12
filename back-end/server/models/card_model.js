@@ -31,6 +31,15 @@ const noteSchema = new Schema({
 
 const NoteDataMongo = mongoose.model('NoteDataMongo', noteSchema);
 
+// check if card exist
+const checkCardExist = async (cardId, userMail) => {
+  const result = await NoteDataMongo.findOne({
+    _id: cardId,
+    Author: userMail,
+  });
+  return result;
+};
+
 const fetchCardHistoryByMail = async (userMail) => {
   const personalCardQuery = await NoteDataMongo.find({
     Author: userMail,
@@ -76,15 +85,6 @@ const fetchCardHistoryByChatPartner = async (userMail, fromId) => {
     .sort({ NoteTime: -1 })
     .populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
   return chatPartnerCardQuery;
-};
-
-// check if card exist
-const checkCardExist = async (cardId, userMail) => {
-  const result = await NoteDataMongo.findOne({
-    _id: cardId,
-    Author: userMail,
-  });
-  return result;
 };
 
 // set like

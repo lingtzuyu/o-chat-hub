@@ -1,8 +1,52 @@
 require('dotenv').config();
 const Card = require('../models/card_model');
 const Friend = require('../models/friend_model');
+const MessageModel = require('../models/message_model');
 
-// check card 存在，且author符合auth過後的mail，則可以做後續動作
+// save card notes to mongoDB
+const saveMessagesToNote = async (req, res) => {
+  // take usermail verifiedAuth as author
+  const author = req.user.mail;
+  const { category, messagesToBeSaved, Title, Notes, From, FromId, FromMail } =
+    req.body;
+
+  const newNote = await Card.NoteDataMongo.create({
+    NoteId: null, // TODO: 之後改
+    NoteTime: new Date(),
+    Category: category, //
+    Author: author, // mail，從auth來
+    Title,
+    FROM: From,
+    FromId,
+    FromMail,
+    Notes,
+    Liked: false,
+    Transferred: false,
+    DELETED: false,
+  });
+
+  await Promise.all(
+    messagesToBeSaved.map(async (message) => {
+      const exist = await MessageModel.checkMessageExist(message.messageId);
+      if (exist.msg === 'Not exist') {
+        return;
+      }
+
+      newNote.MessageRecords.push(message.messageId);
+    }),
+  );
+
+  await newNote.save();
+
+  const noteInsertId = newNote._id.toString();
+
+  // 返回note編號
+  return res
+    .status(200)
+    .json({ data: { systemInfo: 'save sucessful', noteId: noteInsertId } });
+};
+
+// check if card exist before any implementation
 const checkCardExist = async (req, res, next) => {
   try {
     const author = req.user.mail;
@@ -59,61 +103,6 @@ const fetchCardCategory = async (req, res) => {
     const result = await Card.fetchCardCategory();
     const categories = result.map((e) => e.categoryname);
     res.status(200).send(categories);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ err: 'Internal Error' });
-  }
-};
-
-// 儲存note到mongoDB
-const saveMessagesToNote = async (req, res) => {
-  // verifiedAuth內拿的
-  const author = req.user.mail;
-  const { category, messagesToBeSaved, Title, Notes, From, FromId } = req.body;
-  // console.log('訊息info', messagesToBeSaved);
-
-  try {
-    const { userInfo } = await Friend.checkUserInfoById(FromId);
-
-    const newNote = await Card.NoteDataMongo.create({
-      NoteId: null, // TODO: 之後改
-      NoteTime: new Date(),
-      Category: category, //
-      Author: author, // mail，從auth來
-      Title,
-      FROM: From,
-      FromId,
-      FromMail: userInfo.mail,
-      Notes,
-      Liked: false,
-      Transferred: false,
-      DELETED: false,
-    });
-
-    // 這邊需要await
-    // 先確認messageId確實存在
-    // const chatExist = await MessageDataMongo.findById(
-    //   '637286504ad229c2424029ea'
-    // );
-    // console.log('chat存在', chatExist);
-    await Promise.all(
-      messagesToBeSaved.map((message) => {
-        const initialNoteFinish = newNote.MessageRecords.push(
-          message.messageId
-        );
-        return initialNoteFinish;
-      })
-    );
-
-    await newNote.save();
-
-    const noteInsertId = newNote._id.toString();
-    console.log('筆記ID', noteInsertId);
-
-    // 返回note編號
-    res
-      .status(200)
-      .json({ systemInfo: 'save sucessful', noteId: noteInsertId });
   } catch (err) {
     console.log(err);
     res.status(500).send({ err: 'Internal Error' });

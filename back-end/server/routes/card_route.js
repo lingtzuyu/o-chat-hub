@@ -15,6 +15,11 @@ const {
 } = require('../controllers/card_controller');
 const { fetchCardHistoryByCategory } = require('../models/card_model');
 
+// save messages as note card
+router
+  .route('/card/notes')
+  .post(wrapAsync(verifiedAuth), wrapAsync(saveMessagesToNote));
+
 // 取得user過去的卡片歷史紀錄
 router
   .route('/card/history')
@@ -44,11 +49,6 @@ router
 
 // 取得category資料
 router.route('/card/category').get(wrapAsync(fetchCardCategory));
-
-// 新增卡片
-router
-  .route('/card/notes')
-  .post(wrapAsync(verifiedAuth), wrapAsync(saveMessagesToNote));
 
 // 取得歷史紀錄by category
 router

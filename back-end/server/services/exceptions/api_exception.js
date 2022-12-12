@@ -1,6 +1,6 @@
 const { Exception } = require('./exception');
 
-class APIExeption extends Exception {
+class APIException extends Exception {
   constructor(msg, log, status, functionName) {
     super(msg, log, functionName);
     this.status = status;
@@ -14,4 +14,4 @@ class APIExeption extends Exception {
   }
 }
 
-module.exports = { APIExeption };
+module.exports = { APIException };
