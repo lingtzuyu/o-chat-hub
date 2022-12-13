@@ -62,20 +62,16 @@ const fetchCardHistory = async (req, res) => {
   return res.status(200).send(response);
 };
 
-// check if card exist before any implementation on card notedatamongos
+// check if card exist before any implementation on card
 const checkCardExist = async (req, res, next) => {
-  try {
-    const author = req.user.mail;
-    const { cardId } = req.body;
-    const result = await Card.checkCardExist(cardId, author);
-    console.log('是否有這張', result);
-    // if (!result) {
-    //   return res.status(400).send({ message: 'Card not exist' });
-    // }
-  } catch (err) {
-    console.log(err);
-    return res.status(400).send({ err: 'Card not exist' });
+  const authorId = req.user.userId;
+  const { cardId } = req.body;
+  const result = await Card.checkCardExist(cardId, authorId);
+  // already pass veriedAuth middleware if reach here
+  if (result === null) {
+    return res.status(400).send({ msg: 'no this card' });
   }
+
   return next();
 };
 
@@ -83,34 +79,22 @@ const checkCardExist = async (req, res, next) => {
 const setLikeById = async (req, res) => {
   const { cardId } = req.body;
   await Card.setLikeById(cardId);
-  res.status(200).send({ message: 'Like card' });
+  res.status(200).send({ msg: 'Like card (read)' });
 };
 
 // dislike
 const setDislikeById = async (req, res) => {
-  try {
-    const { cardId } = req.body;
-    const result = await Card.setDislikeById(cardId);
-    res.status(200).send({ message: 'Dislike card' });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ err: 'Internal Error' });
-  }
+  const { cardId } = req.body;
+  await Card.setDislikeById(cardId);
+  res.status(200).send({ msg: 'Dislike card (unread)' });
 };
 
 // delete card by its id
 const deleteCardById = async (req, res) => {
-  try {
-    const author = req.user.mail;
-    console.log(author);
-    const { cardId } = req.body;
-    console.log(cardId);
-    const result = await Card.deleteCardById(cardId, author);
-    res.status(200).send({ message: 'Card deleted!' });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ err: 'Internal Error' });
-  }
+  const authorId = req.user.userId;
+  const { cardId } = req.body;
+  await Card.deleteCardById(cardId, authorId);
+  res.status(200).send({ msg: 'Card deleted!' });
 };
 
 // 返回categoryname資料庫的category array
@@ -135,14 +119,14 @@ const fetchCardCategory = async (req, res) => {
 // fetch card history by Mail and category
 const fetchCardDetailsByCategory = async (req, res) => {
   // auth過來的
-  const { mail } = req.user;
+  const { mail, userId } = req.user;
   const category = req.params.category;
   const fromId = req.query.fromId;
   console.log(category);
   console.log(fromId);
 
   if (category === 'all') {
-    const response = await Card.fetchCardHistoryByMail(mail);
+    const response = await Card.fetchCardHistoryById(userId);
     return res.status(200).send(response);
   }
 

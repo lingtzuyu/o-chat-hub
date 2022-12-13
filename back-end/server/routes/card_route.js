@@ -15,11 +15,18 @@ const {
 } = require('../controllers/card_controller');
 const { fetchCardHistoryByCategory } = require('../models/card_model');
 
-// post: save messages to notes, get: fetch notes history
+// post: save messages to notes
+// get: fetch notes history
+// delete: delete card
 router
   .route('/card/notes')
   .post(wrapAsync(verifiedAuth), wrapAsync(saveMessagesToNote))
-  .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory));
+  .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory))
+  .delete(
+    wrapAsync(verifiedAuth),
+    wrapAsync(checkCardExist),
+    wrapAsync(deleteCardById),
+  );
 
 // FIXME: 已經併到上方GET，可以廢棄取得user過去的卡片歷史紀錄
 // router
@@ -29,15 +36,15 @@ router
 // add to read
 router
   .route('/card/like')
-  .post(
+  .patch(
     wrapAsync(verifiedAuth),
     wrapAsync(checkCardExist),
     wrapAsync(setLikeById),
   );
-// 從最愛移除
+// remove from read (unread)
 router
   .route('/card/dislike')
-  .post(
+  .patch(
     wrapAsync(verifiedAuth),
     wrapAsync(checkCardExist),
     wrapAsync(setDislikeById),

@@ -65,7 +65,7 @@ const exportToNotion = async (data) => {
 // delete Card By Id, data帶著id過來
 const deleteCard = async (data) => {
   try {
-    return await apiClient.post('/card/remove', data);
+    return await apiClient.delete('/card/notes', data);
   } catch (err) {
     return { error: true, err };
   }
@@ -214,7 +214,7 @@ const getNotionToken = async (code, token) => {
 // like or dislike card
 const likeCard = async (data) => {
   try {
-    return await apiClient.post('/card/like', data);
+    return await apiClient.patch('/card/like', data);
   } catch (err) {
     return { error: true, err };
   }
@@ -222,7 +222,7 @@ const likeCard = async (data) => {
 
 const dislikeCard = async (data) => {
   try {
-    return await apiClient.post('/card/dislike', data);
+    return await apiClient.patch('/card/dislike', data);
   } catch (err) {
     return { error: true, err };
   }

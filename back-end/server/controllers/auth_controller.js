@@ -136,6 +136,7 @@ const login = async (req, res) => {
 
 const verifiedAuth = async (req, res, next) => {
   let token = req.body.token || req.headers.authorization || req.query.token;
+
   if (!token) {
     return res.status(403).json({ msg: 'Token missing' });
   }

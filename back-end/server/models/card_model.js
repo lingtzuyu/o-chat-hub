@@ -56,12 +56,76 @@ const fetchCardHistoryById = async (authorId) => {
 };
 
 // check if card exist
-const checkCardExist = async (cardId, userMail) => {
-  const result = await NoteDataMongo.findOne({
-    _id: cardId,
-    Author: userMail,
-  });
-  return result;
+const checkCardExist = async (cardId, authorId) => {
+  const presentFunctionName = 'checkCardExist';
+  try {
+    const result = await NoteDataMongo.findOne({
+      _id: cardId,
+      AuthorId: authorId,
+    });
+
+    return result;
+  } catch (err) {
+    throw new Exception(
+      'Internal error',
+      `Unknow error when checking cardId exists: ${cardId}`,
+      presentFunctionName,
+    );
+  }
+};
+
+// set like (read)
+const setLikeById = async (cardId) => {
+  const presentFunctionName = 'setLikeById';
+  try {
+    const likeCard = await NoteDataMongo.findByIdAndUpdate(cardId, {
+      Liked: true,
+    });
+
+    return likeCard;
+  } catch (err) {
+    throw new Exception(
+      'Internal error',
+      `Unknow error set like(read) on card: ${cardId}`,
+      presentFunctionName,
+    );
+  }
+};
+// set dislike (unread)
+const setDislikeById = async (cardId) => {
+  const presentFunctionName = 'setDislikeById';
+  try {
+    const dislikeCard = await NoteDataMongo.findByIdAndUpdate(cardId, {
+      Liked: false,
+    });
+
+    return dislikeCard;
+  } catch (err) {
+    throw new Exception(
+      'Internal error',
+      `Unknow error set like(read) on card: ${cardId}`,
+      presentFunctionName,
+    );
+  }
+};
+
+// delete card by Id
+const deleteCardById = async (cardId, authorId) => {
+  const presentFunctionName = 'deleteCardById';
+  try {
+    const deleteCardQuery = await NoteDataMongo.deleteOne({
+      _id: cardId,
+      AuthorId: authorId,
+    });
+
+    return deleteCardQuery;
+  } catch (err) {
+    throw new Exception(
+      'Internal error',
+      `Unknow error when delete on card: ${cardId}`,
+      presentFunctionName,
+    );
+  }
 };
 
 const fetchCardCategory = async () => {
@@ -99,33 +163,6 @@ const fetchCardHistoryByChatPartner = async (userMail, fromId) => {
     .sort({ NoteTime: -1 })
     .populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
   return chatPartnerCardQuery;
-};
-
-// set like
-const setLikeById = async (cardId) => {
-  const likeCard = await NoteDataMongo.findByIdAndUpdate(cardId, {
-    Liked: true,
-  });
-
-  return likeCard;
-};
-// set dislike
-const setDislikeById = async (cardId) => {
-  const dislikeCard = await NoteDataMongo.findByIdAndUpdate(cardId, {
-    Liked: false,
-  });
-
-  return dislikeCard;
-};
-
-// author確認 (前方token傳回來)才能刪除，不然報錯
-const deleteCardById = async (cardId, userMail) => {
-  const deleteCardQuery = await NoteDataMongo.deleteOne({
-    _id: cardId,
-    Author: userMail,
-  });
-
-  return deleteCardQuery;
 };
 
 // update notion link to mongoDB

@@ -32,7 +32,7 @@ const ListWrapper = styled(List)(
     .MuiDivider-root:first-of-type {
         display: none;
     }
-  `
+  `,
 );
 
 const accessToken = localStorage.getItem('accessToken');
@@ -40,7 +40,7 @@ const accessToken = localStorage.getItem('accessToken');
 function DeleteAlertMessage({ isDeleteAlertOpen, setDeleteAlert, cardId }) {
   // console.log('最底層', messageRecords);
 
-  const deletedCardInfo = { token: accessToken, cardId: cardId };
+  const deletedCardInfo = { data: { token: accessToken, cardId: cardId } };
 
   const theme = useTheme();
 
@@ -125,5 +125,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToProps,
-  mapActionsToProps
+  mapActionsToProps,
 )(DeleteAlertMessage);
