@@ -6,17 +6,19 @@ const serverStore = require('../serverStore');
 require('dotenv').config();
 
 // 使用userId來尋找friendinvitation表
-const updateInvitations = async (receiverMail, receiverId) => {
+const updateInvitations = async (receiverId) => {
   try {
     // 撈一次sql資料
     const pendingInvitations = await Friends.checkPendingInvitationByReceiver(
       receiverId,
     );
+    console.log('pendingInvitations', pendingInvitations);
     // console.log(`pending邀請的資料`, pendingInvitations);
     // 如果這個receiverId (現在因當初的設計錯誤改成用mail)的人在線上，則用這些資料渲染他的畫面
     // 抓global Map => connetedUsers (in serverStore.js)
     // TODO:  之後換成userID來取資料
-    const receiverSockets = serverStore.getOnlineUsers(receiverMail);
+    // const receiverSockets = serverStore.getOnlineUsers(receiverMail);
+    const receiverSockets = serverStore.getOnlineUsers(receiverId);
 
     const io = serverStore.getSocketServer();
 
@@ -38,17 +40,17 @@ const updateInvitations = async (receiverMail, receiverId) => {
 };
 
 // TODO: 這邊也改成userId會比較好
-const updateFriendList = async (userMail) => {
+const updateFriendList = async (userId) => {
   try {
     // 確認該用戶(userMail)是否上線
     // 有哪些socket是這個用戶在連線的
-    const connetedSocketsByuserMail = serverStore.getOnlineUsers(userMail);
+    // const userId = await Friends.checkUserExist(userMail);
+    const connetedSocketsByuserMail = serverStore.getOnlineUsers(userId);
     // console.log('updateFriendList來的', connetedSocketsByuserMail);
 
     // 根據userId sorting 出 id, username, mail
     // [{id:1, username: test0001, mail: test0001@gmail.com},{},{}]
     // userMail需要從token解出來確保資安
-    const userId = await Friends.checkUserExist(userMail);
 
     // 該使用者確(userMail)實有在任一的分頁或是裝置上登入才會開始query DB
     if (connetedSocketsByuserMail.length > 0) {

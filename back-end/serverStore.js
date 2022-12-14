@@ -31,13 +31,13 @@ const removeDisconnectedUsersFromMap = (socketId) => {
 };
 
 // 之後改為userID (全部線上的socket ID有誰)
-const getOnlineUsers = (userMail) => {
+const getOnlineUsers = (userId) => {
   const onlineSocket = [];
   // 把global的Map抓近來
   // use ForEach loop the Map https://bobbyhadz.com/blog/javascript-iterate-map#:~:text=Use%20the%20forEach()%20method,Map%20object%20on%20each%20iteration.
   // ! forEach的第一個是value，第二個變數才是key
   connectedUsers.forEach((value, key) => {
-    if (value.userMail === userMail) {
+    if (value.userId === userId) {
       onlineSocket.push(key);
     }
   });

@@ -37,7 +37,7 @@ const fetchChatContent = async (chatId, socketIdToSend = null) => {
       // 這邊要用ID在轉換一次userMail
       const userMail = userInfo.userInfo.mail;
       console.log('chat.js內', userMail);
-      const onlineConnections = serverStore.getOnlineUsers(userMail.toString());
+      const onlineConnections = serverStore.getOnlineUsers(userId);
 
       // emit event到這邊的socketID (在participants內的)
       onlineConnections.forEach((socketId) => {

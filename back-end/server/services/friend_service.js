@@ -1,5 +1,6 @@
 require('dotenv').config();
 const FriendModel = require('../models/friend_model');
+
 const { APIException } = require('./exceptions/api_exception');
 const { Exception } = require('./exceptions/exception');
 
@@ -61,9 +62,26 @@ const checkInvitationIsPending = async (myId, targetId) => {
   }
 };
 
+// check accept friend request exist in friendinvitation table
+const checkAcceptFriend = async (myId, targetId) => {
+  const presentFunctionName = 'checkInvitationIsPending';
+  const result = await FriendModel.checkPendingInvitation(targetId, myId);
+  // to prevent user directly add friend via POSTman
+
+  if (!result[0]) {
+    throw new APIException(
+      'Please send invitation first before adding friend',
+      'Wrong way to accept friend',
+      400,
+      presentFunctionName,
+    );
+  }
+};
+
 module.exports = {
   checkUserExistService,
   checkTargetIsNotMyself,
   checkAlreadyFriends,
   checkInvitationIsPending,
+  checkAcceptFriend,
 };

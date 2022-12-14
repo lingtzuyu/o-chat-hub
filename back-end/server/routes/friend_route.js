@@ -7,7 +7,6 @@ const { verifiedAuth } = require('../controllers/auth_controller');
 const {
   invitationSchema,
   friendConfirmSchema,
-  friendRejectSchema,
   sentFriendInvitation,
   accpetFriendInvitation,
   rejectFriendInvitation,
@@ -24,25 +23,20 @@ router
     wrapAsync(sentFriendInvitation),
   );
 
-// 接受好友邀請&寫入資料庫
+// accept or reject friend
 router
   .route('/friend/accept')
-  // 前端打過來的資料再驗證一次
   .post(
-    // 一樣從local storage拿，是誰發出的好友邀請要從這邊解，以防有人拿token去亂加好友
     wrapAsync(verifiedAuth),
     validator.body(friendConfirmSchema),
     wrapAsync(accpetFriendInvitation),
   );
 
-// 拒絕好友邀請&從資料庫刪除
 router
   .route('/friend/reject')
-  // 前端打過來的資料再驗證一次
   .post(
-    // 一樣從local storage拿，是誰發出的好友邀請要從這邊解，以防有人拿token去亂加好友
     wrapAsync(verifiedAuth),
-    validator.body(friendRejectSchema),
+    validator.body(friendConfirmSchema),
     wrapAsync(rejectFriendInvitation),
   );
 
