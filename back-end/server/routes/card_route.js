@@ -13,25 +13,26 @@ const {
   updateCardTitleAndNotes,
   updateCategory,
 } = require('../controllers/card_controller');
-const { fetchCardHistoryByCategory } = require('../models/card_model');
 
-// post: save messages to notes
-// get: fetch notes history
-// delete: delete card
+// card notes related
 router
   .route('/card/notes')
+  // post: save messages to notes
   .post(wrapAsync(verifiedAuth), wrapAsync(saveMessagesToNote))
+  // get: fetch all notes history
   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory))
+  // delete: delete single card
   .delete(
     wrapAsync(verifiedAuth),
     wrapAsync(checkCardExist),
     wrapAsync(deleteCardById),
+  )
+  // change card title and content
+  .patch(
+    wrapAsync(verifiedAuth),
+    wrapAsync(checkCardExist),
+    wrapAsync(updateCardTitleAndNotes),
   );
-
-// FIXME: 已經併到上方GET，可以廢棄取得user過去的卡片歷史紀錄
-// router
-//   .route('/card/history')
-//   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory));
 
 // add to read
 router
@@ -50,30 +51,19 @@ router
     wrapAsync(setDislikeById),
   );
 
-// 刪除卡片資料 //TODO: 前後端改delte
+// get current available category name from sql
 router
-  .route('/card/remove')
-  .post(wrapAsync(verifiedAuth), wrapAsync(deleteCardById));
+  .route('/card/category')
+  .get(wrapAsync(fetchCardCategory))
+  .patch(
+    wrapAsync(verifiedAuth),
+    wrapAsync(checkCardExist),
+    wrapAsync(updateCategory),
+  );
 
-// 取得category資料
-router.route('/card/category').get(wrapAsync(fetchCardCategory));
-
-// 取得歷史紀錄by category
+// fetch card history by category or current user
 router
   .route('/card/details/:category')
   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardDetailsByCategory));
-
-// 更新卡片Title以及notes //TODO: patch 前後端
-router
-  .route('/card/modification')
-  .post(
-    verifiedAuth,
-    wrapAsync(checkCardExist),
-    wrapAsync(updateCardTitleAndNotes),
-  );
-// 更新卡片category FIXME: 改成category
-router
-  .route('/card/changecategory')
-  .post(verifiedAuth, wrapAsync(checkCardExist), wrapAsync(updateCategory));
 
 module.exports = router;

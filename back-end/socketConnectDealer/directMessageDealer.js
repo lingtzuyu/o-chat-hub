@@ -1,5 +1,5 @@
 const { MessageDataMongo } = require('../server/models/message_model');
-const ChatDataMongo = require('../server/models/chat_model');
+const ChatModel = require('../server/models/chat_model');
 const Friend = require('../server/models/friend_model');
 const chatDealer = require('./chatDealer');
 
@@ -12,7 +12,7 @@ const directMessageDealer = async (socket, data) => {
     const { receiverId, content } = data;
     // TODO: save user id and name to socket object (from jwt token)
     const checkIdByMail = await Friend.checkUserExist(userMail);
-    const userId = checkIdByMail[0].id;
+    const userId = checkIdByMail;
     // console.log('前端傳來的message data', socket);
     // console.log('前端傳來的message data', data);
 
@@ -27,7 +27,7 @@ const directMessageDealer = async (socket, data) => {
     // 用chatExist來查找是否存在相關對話
     // 使用 $addToSet來保證不會重複插入userId
     // https://stackoverflow.com/questions/36518635/avoid-a-duplicate-value-when-i-update-array-using-push-on-mongodb
-    const chatExist = await ChatDataMongo.findOne({
+    const chatExist = await ChatModel.ChatDataMongo.findOne({
       // 用$all 找不會管先後順序
       participants: { $all: [userId, receiverId] },
     });
@@ -42,7 +42,7 @@ const directMessageDealer = async (socket, data) => {
       chatDealer.fetchChatContent(chatExist._id.toString());
     } else {
       // 建立新的chat document
-      const newChat = await ChatDataMongo.create({
+      const newChat = await ChatModel.ChatDataMongo.create({
         messages: [message._id],
         participants: [userId, receiverId],
       });

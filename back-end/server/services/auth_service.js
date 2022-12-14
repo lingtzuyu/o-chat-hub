@@ -1,9 +1,8 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 const { APIException } = require('./exceptions/api_exception');
 
-const { TOKEN_EXPIRE, TOKEN_SECRET, BCRYPT_SALTROUND } = process.env;
+const { TOKEN_SECRET } = process.env;
 
 const createJWTtoken = async (username, mail, userId) => {
   const presentFunctionName = 'createJWTtoken';

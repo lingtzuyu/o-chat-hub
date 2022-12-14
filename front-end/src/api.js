@@ -11,7 +11,7 @@ const apiClient = axios.create({
 // modify card title and notes
 const modifyCardTitleAndNotes = async (cardId, title, notes, token) => {
   try {
-    const response = await apiClient.post('/card/modification', {
+    const response = await apiClient.patch('/card/notes', {
       cardId: cardId,
       title: title,
       notes: notes,
@@ -256,7 +256,7 @@ const updateUserName = async (accessToken, userName, organization) => {
 
 const updateCategory = async (accessToken, cardId, category) => {
   try {
-    const response = await apiClient.post('/card/changecategory', {
+    const response = await apiClient.patch('/card/category', {
       token: accessToken,
       category: category,
       cardId: cardId,

@@ -1,5 +1,5 @@
 require('dotenv').config();
-const Card = require('../models/card_model');
+const CardModel = require('../models/card_model');
 const MessageModel = require('../models/message_model');
 
 // save card notes to mongoDB
@@ -17,7 +17,7 @@ const saveMessagesToNote = async (req, res) => {
     AuthorId,
   } = req.body;
 
-  const newNote = await Card.NoteDataMongo.create({
+  const newNote = await CardModel.NoteDataMongo.create({
     NoteId: null,
     NoteTime: new Date(),
     Category: category,
@@ -57,7 +57,7 @@ const saveMessagesToNote = async (req, res) => {
 // fetch card history (all)
 const fetchCardHistory = async (req, res) => {
   const { userId } = req.user;
-  const response = await Card.fetchCardHistoryById(userId);
+  const response = await CardModel.fetchCardHistoryById(userId);
 
   return res.status(200).send(response);
 };
@@ -66,7 +66,7 @@ const fetchCardHistory = async (req, res) => {
 const checkCardExist = async (req, res, next) => {
   const authorId = req.user.userId;
   const { cardId } = req.body;
-  const result = await Card.checkCardExist(cardId, authorId);
+  const result = await CardModel.checkCardExist(cardId, authorId);
   // already pass veriedAuth middleware if reach here
   if (result === null) {
     return res.status(400).send({ msg: 'no this card' });
@@ -78,14 +78,14 @@ const checkCardExist = async (req, res, next) => {
 // like
 const setLikeById = async (req, res) => {
   const { cardId } = req.body;
-  await Card.setLikeById(cardId);
+  await CardModel.setLikeById(cardId);
   res.status(200).send({ msg: 'Like card (read)' });
 };
 
 // dislike
 const setDislikeById = async (req, res) => {
   const { cardId } = req.body;
-  await Card.setDislikeById(cardId);
+  await CardModel.setDislikeById(cardId);
   res.status(200).send({ msg: 'Dislike card (unread)' });
 };
 
@@ -93,74 +93,58 @@ const setDislikeById = async (req, res) => {
 const deleteCardById = async (req, res) => {
   const authorId = req.user.userId;
   const { cardId } = req.body;
-  await Card.deleteCardById(cardId, authorId);
+  await CardModel.deleteCardById(cardId, authorId);
   res.status(200).send({ msg: 'Card deleted!' });
 };
 
-// 返回categoryname資料庫的category array
+// return category name
 const fetchCardCategory = async (req, res) => {
-  try {
-    const result = await Card.fetchCardCategory();
-    const categories = result.map((e) => e.categoryname);
-    res.status(200).send(categories);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ err: 'Internal Error' });
-  }
+  const result = await CardModel.fetchCardCategory();
+  const categories = result.map((e) => e.categoryname);
+  res.status(200).send(categories);
 };
 
-// fetch last 5 card for notifiation
-// const fetchLastFiveCards = async (req, res) => {
-//   const { mail } = req.user;
-//   const response = await Card.fetchLastFiveCardHistoryByMail(mail);
-//   return res.status(200).send(response);
-// };
-
-// fetch card history by Mail and category
+// fetch card history by author and category
 const fetchCardDetailsByCategory = async (req, res) => {
-  // auth過來的
-  const { mail, userId } = req.user;
-  const category = req.params.category;
-  const fromId = req.query.fromId;
-  console.log(category);
-  console.log(fromId);
+  const { userId } = req.user;
+  const { category } = req.params;
+  const { fromId } = req.query;
 
-  if (category === 'all') {
-    const response = await Card.fetchCardHistoryById(userId);
+  if (category === 'all' || !category) {
+    const response = await CardModel.fetchCardHistoryById(userId);
     return res.status(200).send(response);
   }
 
   if (category === 'fromCurrent') {
-    // 打model取得 (用FromId或是FromMail)
-    const response = await Card.fetchCardHistoryByChatPartner(mail, fromId);
+    const response = await CardModel.fetchCardHistoryByChatPartner(
+      userId,
+      fromId,
+    );
     return res.status(200).send(response);
   }
 
-  const response = await Card.fetchCardHistoryByCategory(mail, category);
-  res.status(200).send(response);
+  // depending on category from params
+  const response = await CardModel.fetchCardHistoryByCategory(userId, category);
+  return res.status(200).send(response);
 };
 
+// update notes or title for existing card
 const updateCardTitleAndNotes = async (req, res) => {
   // 用auth來的mail驗證card author
-  const { mail } = req.user;
+  const { userId } = req.user;
   const { cardId, title, notes } = req.body;
-  const response = await Card.updateTitleAndNotes(cardId, title, notes, mail);
-  console.log(response);
-  if (response) {
-    return res.status(200).send({ result: 'update success' });
-  }
-  return res.status(500).send({ result: 'update fail' });
+
+  await CardModel.updateTitleAndNotes(cardId, title, notes, userId);
+
+  return res.status(200).send({ msg: 'update success' });
 };
 
 const updateCategory = async (req, res) => {
-  const { mail } = req.user;
+  const { userId } = req.user;
   const { cardId, category } = req.body;
-  const response = await Card.updateCategory(cardId, category, mail);
-  console.log(response);
-  if (response) {
-    return res.status(200).send({ result: 'update success' });
-  }
-  return res.status(500).send({ result: 'update fail' });
+  await CardModel.updateCategory(cardId, category, userId);
+
+  return res.status(200).send({ msg: 'update success' });
 };
 
 module.exports = {

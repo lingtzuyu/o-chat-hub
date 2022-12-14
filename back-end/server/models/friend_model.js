@@ -1,16 +1,31 @@
 require('dotenv').config();
 const { sqlDB } = require('./mysqlconn');
+const { SQLException } = require('../services/exceptions/sql_exception');
+const { Exception } = require('../services/exceptions/exception');
 
-// 確認用戶是否存在
+// check if user exist by mail
 const checkUserExist = async (mail) => {
+  const presentFunctionName = 'checkUserExist';
   try {
     const checkUserQuery = 'SELECT id FROM user WHERE mail = ?';
     const [result] = await sqlDB.query(checkUserQuery, mail);
-    // console.log('model', result);
-    return result;
+    const userId = result[0]?.id;
+    return userId;
   } catch (err) {
-    console.log(err);
+    throw new Exception(
+      'Internal error',
+      `Unknow error for the query user request, input mail: ${mail}`,
+      presentFunctionName,
+    );
   }
+};
+
+// get user's friend
+const getAllFriendshipFromDB = async (userId) => {
+  const friendshipQuery = 'SELECT friend FROM friendship WHERE user = ?';
+  const [result] = await sqlDB.query(friendshipQuery, userId);
+  console.log('fd from db', result);
+  return result;
 };
 
 const checkUserDetailById = async (userId) => {
@@ -92,15 +107,6 @@ const checkUserInfoById = async (userId) => {
     id: userId,
   };
   return { userInfo };
-};
-
-// 取得全部的DB
-const getAllFriendshipFromDB = async (userId) => {
-  const friendshipQuery = 'SELECT friend FROM friendship WHERE user = ?';
-  const [result] = await sqlDB.query(friendshipQuery, userId);
-  const friendList = result.map((ele) => ele.friend);
-  // 這會return像這樣的array => [ 66, 47 ]
-  return friendList;
 };
 
 // 加快讀取速度，只鎖定senderId(user)以及receiverId(friend)

@@ -1,4 +1,4 @@
-const ChatDataMongo = require('../server/models/chat_model');
+const ChatModel = require('../server/models/chat_model');
 const Friend = require('../server/models/friend_model');
 // 從serverStore拿該使用者連線中的socket
 const serverStore = require('../serverStore');
@@ -7,9 +7,9 @@ const serverStore = require('../serverStore');
 // 把message Array取出照時間排序
 // socketIdToSend，點該好友的人需要得到渲染歷史資烙後的聊天紀錄
 const fetchChatContent = async (chatId, socketIdToSend = null) => {
-  const chat = await ChatDataMongo.findById(
+  const chat = await ChatModel.ChatDataMongo.findById(
     // https://dev.to/paras594/how-to-use-populate-in-mongoose-node-js-mo0
-    chatId
+    chatId,
   ).populate({
     // 那一個path (如果是array)
     path: 'messages',

@@ -1,14 +1,14 @@
 require('dotenv').config();
 const Joi = require('joi');
 const Friend = require('../models/friend_model');
+const FriendService = require('../services/friend_service');
 const FriendEmitEvent = require('../../socketConnectDealer/updateChatStatus');
 
-// mail from friendInvitation
+// invitation req data format
 const invitationSchema = Joi.object({
   mail: Joi.string().email().required(),
-  // https://github.com/hapijs/joi/issues/992
   token: Joi.string().regex(
-    /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/
+    /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/,
   ),
 });
 
@@ -22,6 +22,30 @@ const friendConfirmSchema = Joi.object({
     .required(),
 });
 
+const sentFriendInvitation = async (req, res) => {
+  const senderId = req.user.userId;
+  const receiverMail = req.body.mail;
+
+  // logic for blocking invitation
+  const receiverId = await FriendService.checkUserExistService(receiverMail);
+
+  FriendService.checkTargetIsNotMyself(senderId, receiverId);
+
+  await FriendService.checkAlreadyFriends(senderId, receiverId);
+  await FriendService.checkInvitationIsPending(senderId, receiverId);
+
+  // add to friend invitation table
+  const result = await Friend.sendFriendRequest(senderId, receiverId);
+
+  // emit to socket event
+  FriendEmitEvent.updateInvitations(receiverMail, receiverId);
+
+  return res.status(200).json({
+    status: 'Friend Request sent ok',
+    friendRequestId: result.insertId,
+  });
+};
+
 // TODO: accept以及reject可以合併，需要改body內的key，統一為id (instead of acceptId & rejectId)
 const friendRejectSchema = Joi.object({
   // TODO: 這個用number或是string都會過..靠邀
@@ -33,76 +57,6 @@ const friendRejectSchema = Joi.object({
 });
 
 // 送出好友邀請
-const sentFriendInvitation = async (req, res) => {
-  // 可以從 verifiedAuth(auth_controller)的middleware中拿到是誰發出(sender_user_id)的順便認證
-  const senderMail = req.user.mail;
-  // 從payload中拿到mail (送出者: frontend: api.sendFriendRequest)
-  const receiverMail = req.body.mail;
-
-  const checkRecieverIdExist = await Friend.checkUserExist(receiverMail);
-  // TODO: jwt
-  const checkSenderIdExist = await Friend.checkUserExist(senderMail);
-
-  // TODO:
-  const receiverId = checkRecieverIdExist[0]?.id;
-  const senderId = checkSenderIdExist[0].id;
-
-  try {
-    // receiver使用者不存在
-    if (receiverId === undefined) {
-      return res.status(400).send({ error: `User ${receiverMail} not exist` });
-    }
-    // 不能加自己
-    if (receiverId === senderId) {
-      return res
-        .status(400)
-        .send({ error: 'You are not allowed to add yourself' });
-    }
-
-    // 已經是好友
-
-    // TODO: JOIN user 的表
-    const targetfriendCheck = await Friend.getTargetFriendFromDB(
-      senderId,
-      receiverId
-    );
-
-    if (targetfriendCheck[0]) {
-      return res.status(400).json({
-        error: `The user ${receiverMail} is already your friend`,
-      });
-    }
-
-    // 已經被加過了，在等待
-    const checkPendingInvitation = await Friend.checkPendingInvitation(
-      senderId,
-      receiverId
-    );
-    // !=null => 表內有資料，已經邀請過
-    if (checkPendingInvitation[0]) {
-      const sentTime = checkPendingInvitation[0].sendtime;
-
-      return res.status(400).json({
-        error: 'You have already sent the invitation',
-        senttime: `${sentTime}`,
-      });
-    }
-
-    // 加入好友邀請資料表
-    const result = await Friend.sendFriendRequest(senderId, receiverId);
-
-    // 靠event: friendInvitations來傳送邀請到某個特定的socketId(s)
-    FriendEmitEvent.updateInvitations(receiverMail, receiverId);
-
-    return res.status(200).json({
-      status: 'Friend Request sent ok',
-      friendRequestId: result.insertId,
-    });
-  } catch (err) {
-    console.log('error msg', err);
-    res.status(500).send('Internal Error controller');
-  }
-};
 
 // 接受好友邀請
 const accpetFriendInvitation = async (req, res) => {
@@ -115,7 +69,7 @@ const accpetFriendInvitation = async (req, res) => {
   const queryAcceptInfoById = await Friend.checkUserInfoById(acceptId);
   console.log('accept用ID反查', queryAcceptInfoById);
   const acceptMail = queryAcceptInfoById.userInfo.mail;
-  const acceptorId = queryAccptorIdByMail[0].id;
+  const acceptorId = queryAccptorIdByMail;
   const acceptTime = new Date();
   console.log('接受這個人的好友', acceptId);
   console.log('這是接受別人好友的人', acceptorId);
@@ -124,7 +78,7 @@ const accpetFriendInvitation = async (req, res) => {
     // 不能讓別人直接用打API亂加
     const checkFriendInvitationiTable = await Friend.checkPendingInvitation(
       acceptId,
-      acceptorId
+      acceptorId,
     );
     // 如果資料庫內有該筆資料，才讓他執行插入好友資料表
     if (!checkFriendInvitationiTable) {
@@ -137,7 +91,7 @@ const accpetFriendInvitation = async (req, res) => {
     const result = await Friend.insertDaulFriendship(
       acceptId,
       acceptorId,
-      acceptTime
+      acceptTime,
     );
 
     // update socket event friendInvitation (讓渲染pending List的消失)
@@ -162,7 +116,7 @@ const rejectFriendInvitation = async (req, res) => {
     // TODO: 直接在body內 (JWT解出來的地方)，改為id也帶進去，就不用再query sql找一次id
     const rejectorMail = req.user.mail;
     const queryRejectorIdByMail = await Friend.checkUserExist(rejectorMail);
-    const rejectorId = queryRejectorIdByMail[0].id;
+    const rejectorId = queryRejectorIdByMail;
     console.log('拒絕這個人的好友', rejectId);
     console.log('這是拒絕別人好友的人', rejectorId);
     // update socket event friendInvitation

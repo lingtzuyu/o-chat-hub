@@ -12,7 +12,7 @@ const newConnectionDealer = async (socket, io) => {
   // console.log(`可以從socket拿到userMail`, socket.userMail);
 
   const userIdCheck = await Friend.checkUserExist(socket.userMail);
-  const userId = userIdCheck[0].id;
+  const userId = userIdCheck;
 
   // update pending invitation from table friendinvitation
   // 拿updateChatStatus.updateInvitations, 裡面的Friends.checkPendingInvitationByReceiver會去sqlDB要

@@ -4,7 +4,6 @@ const { sqlDB } = require('./mysqlconn');
 
 const { Schema } = mongoose;
 
-const { MongoException } = require('../services/exceptions/mongo_exception');
 const { Exception } = require('../services/exceptions/exception');
 
 // note schema
@@ -128,41 +127,104 @@ const deleteCardById = async (cardId, authorId) => {
   }
 };
 
+// fetch card category
 const fetchCardCategory = async () => {
-  const cardCategoryQuery = 'SELECT * FROM cardcategory';
-  const [result] = await sqlDB.query(cardCategoryQuery);
-  return result;
+  const presentFunctionName = 'fetchCardCategory';
+  try {
+    const cardCategoryQuery = 'SELECT * FROM cardcategory';
+    const [result] = await sqlDB.query(cardCategoryQuery);
+    return result;
+  } catch (err) {
+    throw new Exception(
+      'Internal error',
+      `Unknow error when fetching card category, msg: ${err}`,
+      presentFunctionName,
+    );
+  }
 };
 
-// 上方快捷用，不用滾出messages
-// const fetchLastFiveCardHistoryByMail = async (userMail) => {
-//   const lastFiveCardQuery = await NoteDataMongo.find({
-//     Authour: userMail,
-//   })
-//     .sort({ NoteTime: -1 })
-//     .limit(5);
-//   return lastFiveCardQuery;
-// };
-
-const fetchCardHistoryByCategory = async (userMail, category) => {
-  const personalCardQueryByCategory = await NoteDataMongo.find({
-    Author: userMail,
-    Category: category,
-  })
-    .sort({ NoteTime: -1 })
-    .populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
-  return personalCardQueryByCategory;
+// fetch all card history by category
+const fetchCardHistoryByCategory = async (userId, category) => {
+  const presentFunctionName = 'fetchCardHistoryByCategory';
+  try {
+    const personalCardQueryByCategory = await NoteDataMongo.find({
+      AuthorId: userId,
+      Category: category,
+    })
+      .sort({ NoteTime: -1 })
+      .populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
+    return personalCardQueryByCategory;
+  } catch (err) {
+    throw new Exception(
+      'Internal error',
+      `Unknow error when fetching card hitory by category, msg: ${err}`,
+      presentFunctionName,
+    );
+  }
 };
 
-const fetchCardHistoryByChatPartner = async (userMail, fromId) => {
-  console.log(fromId);
-  const chatPartnerCardQuery = await NoteDataMongo.find({
-    Author: userMail,
-    FromId: fromId,
-  })
-    .sort({ NoteTime: -1 })
-    .populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
-  return chatPartnerCardQuery;
+// fetch all card history by current chat partner
+const fetchCardHistoryByChatPartner = async (userId, fromId) => {
+  const presentFunctionName = 'fetchCardHistoryByChatPartner';
+  try {
+    const chatPartnerCardQuery = await NoteDataMongo.find({
+      AuthorId: userId,
+      FromId: fromId,
+    })
+      .sort({ NoteTime: -1 })
+      .populate({ path: 'MessageRecords', model: 'MessageDataMongo' });
+    return chatPartnerCardQuery;
+  } catch (err) {
+    throw new Exception(
+      'Internal error',
+      `Unknow error when fetching card hitory by chat partner, msg: ${err}`,
+      presentFunctionName,
+    );
+  }
+};
+
+// update title and notes after save
+const updateTitleAndNotes = async (cardId, title, notes, userId) => {
+  const presentFunctionName = 'updateTitleAndNotes';
+  try {
+    const result = await NoteDataMongo.findOneAndUpdate(
+      { AuthorId: userId, _id: cardId },
+      {
+        Notes: notes,
+        Title: title,
+      },
+      // return the document after update
+      { new: true },
+    );
+    return result;
+  } catch (err) {
+    throw new Exception(
+      'Internal error',
+      `Unknow error when updating card content, msg: ${err}, cardId:${cardId}`,
+      presentFunctionName,
+    );
+  }
+};
+
+// update category
+const updateCategory = async (cardId, category, userId) => {
+  const presentFunctionName = 'updateCategory';
+  try {
+    const result = await NoteDataMongo.findOneAndUpdate(
+      { AuthorId: userId, _id: cardId },
+      {
+        Category: category,
+      },
+      { new: true },
+    );
+    return result;
+  } catch (err) {
+    throw new Exception(
+      'Internal error',
+      `Unknow error when updating card category, msg: ${err}, cardId:${cardId}`,
+      presentFunctionName,
+    );
+  }
 };
 
 // update notion link to mongoDB
@@ -177,39 +239,6 @@ const updateLinkToNote = async (cardId, notionLink) => {
   } catch (err) {
     console.log(err);
     return err;
-  }
-};
-
-// update title and notes after save
-const updateTitleAndNotes = async (cardId, title, notes, mail) => {
-  try {
-    const result = await NoteDataMongo.findOneAndUpdate(
-      { Author: mail, _id: cardId },
-      {
-        Notes: notes,
-        Title: title,
-      },
-      { new: true },
-    );
-    return result;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-// update category
-const updateCategory = async (cardId, category, mail) => {
-  try {
-    const result = await NoteDataMongo.findOneAndUpdate(
-      { Author: mail, _id: cardId },
-      {
-        Category: category,
-      },
-      { new: true },
-    );
-    return result;
-  } catch (err) {
-    console.log(err);
   }
 };
 
