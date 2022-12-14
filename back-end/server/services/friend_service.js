@@ -63,14 +63,14 @@ const checkInvitationIsPending = async (myId, targetId) => {
 };
 
 // check accept friend request exist in friendinvitation table
-const checkAcceptFriend = async (myId, targetId) => {
+const checkFriendInvitationExist = async (myId, targetId) => {
   const presentFunctionName = 'checkInvitationIsPending';
   const result = await FriendModel.checkPendingInvitation(targetId, myId);
-  // to prevent user directly add friend via POSTman
+  // this line is to prevent user directly add friend via POSTman
 
   if (!result[0]) {
     throw new APIException(
-      'Please send invitation first before adding friend',
+      'Please send invitation first before adding/rejecting friend',
       'Wrong way to accept friend',
       400,
       presentFunctionName,
@@ -83,5 +83,5 @@ module.exports = {
   checkTargetIsNotMyself,
   checkAlreadyFriends,
   checkInvitationIsPending,
-  checkAcceptFriend,
+  checkFriendInvitationExist,
 };

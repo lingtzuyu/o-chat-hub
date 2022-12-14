@@ -54,7 +54,7 @@ const accpetFriendInvitation = async (req, res) => {
   const acceptorId = req.user.userId;
 
   // to prevent directly post api to add
-  await FriendService.checkAcceptFriend(acceptorId, acceptId);
+  await FriendService.checkFriendInvitationExist(acceptorId, acceptId);
 
   // insert into friendship table, delete invitation in friendinvitation table
   await Friend.insertDualFriendship(acceptId, acceptorId);
@@ -71,35 +71,23 @@ const accpetFriendInvitation = async (req, res) => {
   return res.status(200).json({ msg: 'Accept invitation success' });
 };
 
-// 拒絕好友邀請
+// reject friend invitation
 const rejectFriendInvitation = async (req, res) => {
-  try {
-    const rejectId = req.body.userId;
-    console.log('reject', rejectId);
-    // TODO: 直接在body內 (JWT解出來的地方)，改為id也帶進去，就不用再query sql找一次id
-    const rejectorMail = req.user.mail;
-    const queryRejectorIdByMail = await Friend.checkUserExist(rejectorMail);
-    console.log('queryRejectorIdByMail', queryRejectorIdByMail);
-    const rejectorId = queryRejectorIdByMail;
-    console.log('拒絕這個人的好友', rejectId);
-    console.log('這是拒絕別人好友的人', rejectorId);
-    // update socket event friendInvitation
-    // TODO: 這邊之後也需要做更改... 統一用id
-    await FriendEmitEvent.updateInvitations(rejectorId);
-    const result = await Friend.deleteRejectedFriendship(rejectId, rejectorId);
-    res.status(200).json({ result: 'Reject invitation success' });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send('Internal Error, please try again');
-  }
-};
+  // reject who to be frien
+  const rejectId = req.body.userId;
+  // who reject the above
+  const rejectorId = req.user.userId;
 
-// user Profile
-const getUserProfile = async (req, res) => {
-  const { mail } = req.user;
-  const response = await Friend.checkUserProfile(mail);
-  // console.log('controller', response);
-  res.status(200).json({ result: response });
+  // to prevent directly post api to reject
+  await FriendService.checkFriendInvitationExist(rejectorId, rejectId);
+
+  // delete friendinvitation data
+  await Friend.deleteRejectedFriendship(rejectId, rejectorId);
+
+  // update socket event friendInvitation
+  await FriendEmitEvent.updateInvitations(rejectorId);
+
+  res.status(200).json({ msg: 'Reject invitation success' });
 };
 
 // friend username
@@ -122,6 +110,5 @@ module.exports = {
   sentFriendInvitation,
   accpetFriendInvitation,
   rejectFriendInvitation,
-  getUserProfile,
   getFriendUserName,
 };

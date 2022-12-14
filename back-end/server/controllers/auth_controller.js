@@ -134,6 +134,7 @@ const login = async (req, res) => {
   });
 };
 
+// token verify middleware
 const verifiedAuth = async (req, res, next) => {
   let token = req.body.token || req.headers.authorization || req.query.token;
 
@@ -149,8 +150,14 @@ const verifiedAuth = async (req, res, next) => {
   return next();
 };
 
+// fetch user profile
+const fetchUserProfile = async (req, res) => {
+  const { userId } = req.user;
+  const result = await UserModel.fetchUserProfile(userId);
+  return res.status(200).json({ result });
+};
+
 // Verify token from frontend, and pass to create socket connection
-// https://www.tabnine.com/code/javascript/functions/socket.io/Handshake/query
 const socketAuthVerified = async (socket, next) => {
   const connectedSocket = socket;
   const tokenFromSocket = socket.handshake.auth.token;
@@ -200,6 +207,7 @@ module.exports = {
   registerSchema,
   loginSchema,
   verifiedAuth,
+  fetchUserProfile,
   socketAuthVerified,
   updateNewUsername,
 };

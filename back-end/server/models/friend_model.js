@@ -96,6 +96,27 @@ const insertDualFriendship = async (senderId, receiverId) => {
   }
 };
 
+// reject friend invitation and delete data in table
+const deleteRejectedFriendship = async (rejectId, rejectorId) => {
+  try {
+    const deleteFirendInviteQuery = `DELETE FROM friendinvitation 
+        WHERE sender_user_id = ? AND receiver_user_id = ?`;
+    const [result] = await sqlDB.query(deleteFirendInviteQuery, [
+      rejectId,
+      rejectorId,
+    ]);
+    return result;
+  } catch (err) {
+    throw new SQLException(
+      'Error when reject friends, please try again',
+      'Error occured when deleteFirendInviteQuery',
+      'friendinvitation',
+      'delete',
+      'deleteRejectedFriendship',
+    );
+  }
+};
+
 // get user's friend
 const getAllFriendshipFromDB = async (userId) => {
   const friendshipQuery = 'SELECT friend FROM friendship WHERE user = ?';
@@ -108,14 +129,6 @@ const checkUserDetailById = async (userId) => {
   const checkUserDetailQuery = 'SELECT * FROM user WHERE id = ?';
   const [result] = await sqlDB.query(checkUserDetailQuery, [userId]);
   return result;
-};
-
-// 用戶資料，過auth之後的mail
-const checkUserProfile = async (mail) => {
-  const checkUserQuery = 'SELECT * FROM user WHERE mail = ?';
-  const [result] = await sqlDB.query(checkUserQuery, mail);
-  // console.log('result', result[0]);
-  return result[0];
 };
 
 const sendFriendRequest = async (senderId, receiverId) => {
@@ -180,22 +193,6 @@ const checkUserInfoById = async (userId) => {
   return { userInfo };
 };
 
-// 如果拒絕則直接刪除該筆在friendinvitation內的資料 (下次就可以加)
-const deleteRejectedFriendship = async (rejectId, rejectorId) => {
-  try {
-    const deleteFirendInviteQuery =
-      'DELETE FROM friendinvitation WHERE sender_user_id = ? AND receiver_user_id = ?';
-    const [result] = await sqlDB.query(deleteFirendInviteQuery, [
-      rejectId,
-      rejectorId,
-    ]);
-    console.log(result);
-    return result;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 // checkFriendsByUserId
 const fetchFriendList = async (userId) => {
   try {
@@ -232,7 +229,6 @@ module.exports = {
   insertDualFriendship,
   deleteRejectedFriendship,
   fetchFriendList,
-  checkUserProfile,
   getFriendUserName,
   checkUserDetailById,
 };

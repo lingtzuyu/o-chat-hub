@@ -66,7 +66,7 @@ const updateJWTtoken = async (
   }
 };
 
-// check if the mail exist
+// check if the mail exist (login)
 const checkUserExistByMail = async (mail) => {
   const presentFunctionName = 'checkUserExistByMail';
   try {
@@ -80,6 +80,24 @@ const checkUserExistByMail = async (mail) => {
     throw new Exception(
       'Internal error',
       `Unknow error while checking user exists, related mail: ${mail}`,
+      presentFunctionName,
+    );
+  }
+};
+
+// fetch current user profile data from token
+const fetchUserProfile = async (userId) => {
+  const presentFunctionName = 'fetchUserProfiles';
+  try {
+    const checkUserQuery = `SELECT * 
+    FROM user 
+    WHERE id = ?`;
+    const [result] = await sqlDB.query(checkUserQuery, [userId]);
+    return result[0];
+  } catch (err) {
+    throw new Exception(
+      'Internal error',
+      `Unknow error while fetching user data for userId: ${userId}`,
       presentFunctionName,
     );
   }
@@ -101,5 +119,6 @@ module.exports = {
   register,
   updateJWTtoken,
   upateNewUsername,
+  fetchUserProfile,
   checkUserExistByMail,
 };

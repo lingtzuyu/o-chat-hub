@@ -231,7 +231,7 @@ const dislikeCard = async (data) => {
 // 把getUserProfile移到homepage
 const getUserProfile = async (token) => {
   try {
-    return await apiClient.get('/friend/userProfile', {
+    return await apiClient.get('/auth/userprofile', {
       headers: {
         authorization: token,
       },

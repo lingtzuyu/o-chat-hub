@@ -7,6 +7,7 @@ const {
   registerSchema,
   loginSchema,
   verifiedAuth,
+  fetchUserProfile,
   updateNewUsername,
 } = require('../controllers/auth_controller');
 
@@ -17,6 +18,11 @@ router
 
 // login route
 router.route('/login').post(validator.body(loginSchema), wrapAsync(login));
+
+// get user profile
+router
+  .route('/auth/userprofile')
+  .get(wrapAsync(verifiedAuth), wrapAsync(fetchUserProfile));
 
 // update userName
 router.route('/auth/username').post(verifiedAuth, wrapAsync(updateNewUsername));
