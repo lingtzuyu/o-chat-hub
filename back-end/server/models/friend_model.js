@@ -50,17 +50,40 @@ const checkPendingInvitation = async (senderId, receiverId) => {
   try {
     const invitationQuery = `SELECT * 
       FROM friendinvitation 
-      WHERE sender_user_id = ? AND receiver_user_id = ? AND status = 0`;
+      WHERE sender_user_id = ? AND receiver_user_id = ? `;
     const [result] = await sqlDB.execute(invitationQuery, [
       senderId,
       receiverId,
     ]);
+
     return result;
   } catch (err) {
     throw new Exception(
       'Internal error',
       `Unknow error for the query user request, input mail: senderId: ${senderId}, receiverId: ${receiverId}`,
       presentFunctionName,
+    );
+  }
+};
+
+// send Friend request
+const sendFriendRequest = async (senderId, receiverId, sendTime) => {
+  try {
+    const insertInviteQuery = `INSERT INTO friendinvitation 
+        SET sender_user_id = ?, receiver_user_id = ?, sendtime = ?`;
+    const [result] = await sqlDB.execute(insertInviteQuery, [
+      senderId,
+      receiverId,
+      sendTime,
+    ]);
+    return result;
+  } catch (err) {
+    throw new SQLException(
+      'Error when send friend invitation, please try again',
+      'Error occured when sending friend invitation',
+      'friendinvitation',
+      'insert',
+      'sendFriendRequest',
     );
   }
 };
@@ -117,7 +140,27 @@ const deleteRejectedFriendship = async (rejectId, rejectorId) => {
   }
 };
 
-// get user's friend
+// Join friendship and user to get info
+const getFriendUserName = async (userId, friendId) => {
+  try {
+    const friendNameQuery = `SELECT user.id, user.username 
+        FROM user 
+        JOIN friendship ON user.id = friendship.friend 
+        WHERE friendship.user = ? AND friendship.friend = ?`;
+    const [result] = await sqlDB.execute(friendNameQuery, [userId, friendId]);
+    return result;
+  } catch (err) {
+    throw new SQLException(
+      'Error, please try again',
+      'Error occured when query user and friendship join table',
+      'user',
+      'select',
+      'getFriendUserName',
+    );
+  }
+};
+
+// get user's friend FIXME: 只有這邊用，可刪除
 const getAllFriendshipFromDB = async (userId) => {
   const friendshipQuery = 'SELECT friend FROM friendship WHERE user = ?';
   const [result] = await sqlDB.query(friendshipQuery, userId);
@@ -125,39 +168,11 @@ const getAllFriendshipFromDB = async (userId) => {
   return result;
 };
 
+// FIXME: 檢查updateChatStatus
 const checkUserDetailById = async (userId) => {
   const checkUserDetailQuery = 'SELECT * FROM user WHERE id = ?';
   const [result] = await sqlDB.query(checkUserDetailQuery, [userId]);
   return result;
-};
-
-const sendFriendRequest = async (senderId, receiverId) => {
-  const conn = await sqlDB.getConnection();
-
-  // TODO: 這個應該放在controller，把時間變成參數，待改
-  const sendTime = new Date();
-
-  // 0 is pending, 1 is accepted, reject就直接刪除該筆
-  const initialStatus = 0;
-
-  try {
-    const insertInviteQuery =
-      'INSERT INTO friendinvitation SET sender_user_id = ?, receiver_user_id = ?, status = ?, sendtime = ?';
-    const [result] = await conn.query(insertInviteQuery, [
-      senderId,
-      receiverId,
-      initialStatus,
-      sendTime,
-    ]);
-    return result;
-  } catch (err) {
-    return {
-      error: 'Internal Error SQL',
-      status: 500,
-    };
-  } finally {
-    await conn.release();
-  }
 };
 
 // 拒絕後如果要重新申請
@@ -175,7 +190,7 @@ const checkPendingInvitationByReceiver = async (receiverId) => {
   FROM 
     friendinvitation 
   JOIN user on friendinvitation.sender_user_id = user.id 
-  WHERE receiver_user_id = ? AND status = 0`;
+  WHERE receiver_user_id = ?`;
   const [result] = await sqlDB.query(invitationQuery, [receiverId]);
   console.log('checkPendingInvitationByReceiver', result);
   return result;
@@ -201,20 +216,6 @@ const fetchFriendList = async (userId) => {
     return friendListById;
   } catch (err) {
     console.log('fetchFriendList Error (model)', err);
-  }
-};
-
-// JOIN取得好友username
-const getFriendUserName = async (userId, friendId) => {
-  try {
-    const friendNameQuery =
-      'SELECT user.id, user.username FROM user JOIN friendship ON user.id = friendship.friend WHERE friendship.user = ? AND friendship.friend = ?';
-    const [result] = await sqlDB.query(friendNameQuery, [userId, friendId]);
-    console.log('model', result);
-    return result;
-  } catch (err) {
-    console.log(err);
-    return err;
   }
 };
 

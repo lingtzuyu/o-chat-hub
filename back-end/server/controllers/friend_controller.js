@@ -25,6 +25,8 @@ const friendConfirmSchema = Joi.object({
 const sentFriendInvitation = async (req, res) => {
   const senderId = req.user.userId;
   const receiverMail = req.body.mail;
+  const sendTime = new Date();
+  const initialStatus = 0;
 
   // logic for blocking invitation
   const receiverId = await FriendService.checkUserExistService(receiverMail);
@@ -35,7 +37,7 @@ const sentFriendInvitation = async (req, res) => {
   await FriendService.checkInvitationIsPending(senderId, receiverId);
 
   // add to friend invitation table
-  const result = await Friend.sendFriendRequest(senderId, receiverId);
+  const result = await Friend.sendFriendRequest(senderId, receiverId, sendTime);
 
   // emit to socket event
   FriendEmitEvent.updateInvitations(receiverId);
@@ -92,16 +94,16 @@ const rejectFriendInvitation = async (req, res) => {
 
 // friend username
 const getFriendUserName = async (req, res) => {
-  const { userId, friendId } = req.query;
+  const { userId } = req.user;
+  const { friendId } = req.query;
 
-  const [response] = await Friend.getFriendUserName(userId, friendId);
-  console.log(response);
-  if (response === undefined || null) {
+  const [result] = await Friend.getFriendUserName(userId, friendId);
+  if (result === undefined || null) {
     return res
       .status(400)
-      .send('frined id or user id wrong, maybe you are not friends');
+      .json({ msg: 'frined id or user id wrong, maybe you are not friends' });
   }
-  return res.status(200).json({ target: response });
+  return res.status(200).json({ data: result });
 };
 
 module.exports = {

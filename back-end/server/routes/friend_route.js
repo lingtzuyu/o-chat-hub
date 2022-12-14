@@ -40,9 +40,9 @@ router
     wrapAsync(rejectFriendInvitation),
   );
 
-// get friend username
+// get friend username to set chosen chat details
 router
   .route('/friend/username')
-  .get(verifiedAuth, wrapAsync(getFriendUserName));
+  .get(wrapAsync(verifiedAuth), wrapAsync(getFriendUserName));
 
 module.exports = router;

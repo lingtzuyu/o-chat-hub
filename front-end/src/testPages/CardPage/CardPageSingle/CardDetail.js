@@ -83,7 +83,7 @@ const CardActions = styled(Box)(
     right: ${theme.spacing(1.5)};
     top: ${theme.spacing(1.5)};
     z-index: 7;
-  `
+  `,
 );
 
 const EditorWrapper = styled(Box)(
@@ -123,7 +123,7 @@ const EditorWrapper = styled(Box)(
         border-color: ${theme.colors.alpha.black[50]};
       }
     }
-`
+`,
 );
 
 const ListWrapper = styled(List)(
@@ -131,7 +131,7 @@ const ListWrapper = styled(List)(
     .MuiListItem-root:last-of-type + .MuiDivider-root {
         display: none;
     }
-`
+`,
 );
 
 const CardActionAreaWrapper = styled(Box)(
@@ -152,7 +152,7 @@ const CardActionAreaWrapper = styled(Box)(
             opacity: .05;
           }
         }
-  `
+  `,
 );
 
 const DotLegend = styled('span')(
@@ -162,7 +162,7 @@ const DotLegend = styled('span')(
     height: 10px;
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
-`
+`,
 );
 
 const Toast = Swal.mixin({
@@ -275,7 +275,7 @@ function CardDetail({
       mapId,
       initialTitle,
       initialNotes,
-      token
+      token,
     );
     if (result === 200) {
       Toast.fire({
@@ -398,8 +398,8 @@ function CardDetail({
     } else {
       // 設定target的id及username
       // TODO: 目前這邊無用，跳轉過去帶不了狀態
-      const targetId = result.data.target.id;
-      const targetUserName = result.data.target.username;
+      const targetId = result.data.data.id;
+      const targetUserName = result.data.data.username;
       const chatDetails = { id: targetId, name: targetUserName };
       await forwardToTarget(chatDetails, 'DIRECT', false);
       forwardTo('/homepage');
@@ -699,17 +699,17 @@ function CardDetail({
                                               alignSelf: 'center',
                                               padding: `${theme.spacing(
                                                 0.5,
-                                                1.5
+                                                1.5,
                                               )}`,
                                               backgroundColor: `${theme.colors.secondary.lighter}`,
                                               textTransform: 'uppercase',
                                               fontSize: `${theme.typography.pxToRem(
-                                                11
+                                                11,
                                               )}`,
                                               '&:hover': {
                                                 backgroundColor: `${theme.colors.secondary.main}`,
                                                 color: `${theme.palette.getContrastText(
-                                                  theme.colors.secondary.main
+                                                  theme.colors.secondary.main,
                                                 )}`,
                                               },
                                             }}
@@ -863,17 +863,17 @@ function CardDetail({
                                               alignSelf: 'center',
                                               padding: `${theme.spacing(
                                                 0.5,
-                                                1.5
+                                                1.5,
                                               )}`,
                                               backgroundColor: `${theme.colors.secondary.lighter}`,
                                               textTransform: 'uppercase',
                                               fontSize: `${theme.typography.pxToRem(
-                                                11
+                                                11,
                                               )}`,
                                               '&:hover': {
                                                 backgroundColor: `${theme.colors.secondary.main}`,
                                                 color: `${theme.palette.getContrastText(
-                                                  theme.colors.secondary.main
+                                                  theme.colors.secondary.main,
                                                 )}`,
                                               },
                                             }}
@@ -1034,17 +1034,17 @@ function CardDetail({
                                               alignSelf: 'center',
                                               padding: `${theme.spacing(
                                                 0.5,
-                                                1.5
+                                                1.5,
                                               )}`,
                                               backgroundColor: `${theme.colors.secondary.lighter}`,
                                               textTransform: 'uppercase',
                                               fontSize: `${theme.typography.pxToRem(
-                                                11
+                                                11,
                                               )}`,
                                               '&:hover': {
                                                 backgroundColor: `${theme.colors.secondary.main}`,
                                                 color: `${theme.palette.getContrastText(
-                                                  theme.colors.secondary.main
+                                                  theme.colors.secondary.main,
                                                 )}`,
                                               },
                                             }}
@@ -1376,17 +1376,17 @@ function CardDetail({
                                               alignSelf: 'center',
                                               padding: `${theme.spacing(
                                                 0.5,
-                                                1.5
+                                                1.5,
                                               )}`,
                                               backgroundColor: `${theme.colors.secondary.lighter}`,
                                               textTransform: 'uppercase',
                                               fontSize: `${theme.typography.pxToRem(
-                                                11
+                                                11,
                                               )}`,
                                               '&:hover': {
                                                 backgroundColor: `${theme.colors.secondary.main}`,
                                                 color: `${theme.palette.getContrastText(
-                                                  theme.colors.secondary.main
+                                                  theme.colors.secondary.main,
                                                 )}`,
                                               },
                                             }}
@@ -1444,7 +1444,7 @@ function CardDetail({
                                                   <Typography
                                                     sx={{
                                                       fontSize: `${theme.typography.pxToRem(
-                                                        11
+                                                        11,
                                                       )}`,
                                                       lineHeight: 1,
                                                     }}
@@ -1465,7 +1465,7 @@ function CardDetail({
                                                   <Typography
                                                     sx={{
                                                       fontSize: `${theme.typography.pxToRem(
-                                                        11
+                                                        11,
                                                       )}`,
                                                       lineHeight: 1,
                                                     }}
