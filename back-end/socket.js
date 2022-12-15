@@ -5,14 +5,14 @@ const SocketAuthController = require('./socket/controllers/socket_auth_controlle
 const SocketConnectionController = require('./socket/controllers/socket_connection_controller');
 const SocketChatController = require('./socket/controllers/socket_chat_controller');
 
-const serverStore = require('./serverStore');
+const SocketMap = require('./socket/socket_map');
 
 const initialSocketServer = (server) => {
   const io = new Server(server, {
     cors: { origin: '*', methods: ['GET', 'POST'] },
   });
 
-  serverStore.setSocketServer(io);
+  SocketMap.setSocketServer(io);
 
   // middleware for verify socket
   io.use((socket, next) => {
@@ -20,7 +20,7 @@ const initialSocketServer = (server) => {
   });
 
   const broadcastOnlineUser = () => {
-    const onlineUsers = serverStore.fetchOnlineUserSocket();
+    const onlineUsers = SocketMap.fetchOnlineUserSocket();
     io.emit('onlineUsers', { onlineUsers });
   };
 

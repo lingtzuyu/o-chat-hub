@@ -2,7 +2,7 @@ const SocketChatModel = require('../models/socket_chat_model');
 
 const SocketException = require('../../server/services/exceptions/socket_exception');
 
-const serverStore = require('../../serverStore');
+const SocketMap = require('../socket_map');
 
 const fetchChatContent = async (chatId, socketIdToSend = null) => {
   const presentFunctionName = 'fetchChatContent';
@@ -11,7 +11,7 @@ const fetchChatContent = async (chatId, socketIdToSend = null) => {
 
     // if have chat history
     if (chatHistory) {
-      const io = serverStore.getSocketServer();
+      const io = SocketMap.getSocketServer();
       // if related sockets online (not null)
       if (socketIdToSend) {
         return io.to(socketIdToSend).emit('directMessageHistory', {
@@ -23,7 +23,7 @@ const fetchChatContent = async (chatId, socketIdToSend = null) => {
       // check participants
       chatHistory.participants.forEach(async (userId) => {
         // get related socket ids
-        const onlineConnections = serverStore.getOnlineUsers(userId);
+        const onlineConnections = SocketMap.getOnlineUsers(userId);
 
         onlineConnections.forEach((socketId) => {
           io.to(socketId).emit('directMessageHistory', {

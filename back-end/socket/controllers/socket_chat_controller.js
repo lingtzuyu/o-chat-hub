@@ -31,7 +31,7 @@ const directMessageHandler = async (socket, data) => {
       message.id,
     );
 
-    await SocketChatService.fetchChatContent(newChat?.id.toSttring());
+    await SocketChatService.fetchChatContent(newChat?.id.toString());
   }
 };
 

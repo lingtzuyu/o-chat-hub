@@ -1,4 +1,4 @@
-const serverStore = require('../../serverStore');
+const socketMap = require('../socket_map');
 
 const {
   updatePendingInvitationList,
@@ -6,11 +6,11 @@ const {
 } = require('./socket_friends_controller');
 
 const newDisconnectHandler = async (socket) => {
-  serverStore.removeDisconnectedUsersFromMap(socket.id);
+  socketMap.removeDisconnectedUsersFromMap(socket.id);
 };
 
 const newConnectionHandler = async (socket) => {
-  serverStore.addNewConnectedUsersToMap({
+  socketMap.addNewConnectedUsersToMap({
     socketId: socket.id,
     userMail: socket.userMail,
     userId: socket.userId,

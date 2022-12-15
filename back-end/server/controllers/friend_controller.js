@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const FriendModel = require('../models/friend_model');
 const FriendService = require('../services/friend_service');
-const FriendEmitEvent = require('../../socketConnectDealer/updateChatStatus');
+const FriendEmitEvent = require('../../socket/controllers/socket_friends_controller');
 
 // invitation req data format
 const invitationSchema = Joi.object({
@@ -43,7 +43,7 @@ const sentFriendInvitation = async (req, res) => {
   );
 
   // emit to socket event
-  FriendEmitEvent.updateInvitations(receiverId);
+  FriendEmitEvent.updatePendingInvitationList(receiverId);
 
   return res.status(200).json({
     status: 'Friend Request sent ok',
@@ -67,7 +67,7 @@ const accpetFriendInvitation = async (req, res) => {
   // socket event
 
   // update invitation to client
-  await FriendEmitEvent.updateInvitations(acceptorId);
+  await FriendEmitEvent.updatePendingInvitationList(acceptorId);
 
   // update FriendList (both side)
   await FriendEmitEvent.updateFriendList(acceptorId);
@@ -90,7 +90,7 @@ const rejectFriendInvitation = async (req, res) => {
   await FriendModel.deleteRejectedFriendship(rejectId, rejectorId);
 
   // update socket event friendInvitation
-  await FriendEmitEvent.updateInvitations(rejectorId);
+  await FriendEmitEvent.updatePendingInvitationList(rejectorId);
 
   res.status(200).json({ msg: 'Reject invitation success' });
 };

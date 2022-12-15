@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const FriendsModel = require('../../server/models/friend_model');
 const UserModel = require('../../server/models/auth_model');
-const serverStore = require('../../serverStore');
+const SocketMap = require('../socket_map');
 
 const updatePendingInvitationList = async (receiverId) => {
   // get list from sql db
@@ -10,9 +10,9 @@ const updatePendingInvitationList = async (receiverId) => {
     await FriendsModel.checkPendingInvitationByReceiver(receiverId);
 
   // get these recievers online sockets
-  const receiverSockets = serverStore.getOnlineUsers(receiverId);
+  const receiverSockets = SocketMap.getOnlineUsers(receiverId);
 
-  const io = serverStore.getSocketServer();
+  const io = SocketMap.getSocketServer();
 
   receiverSockets.forEach((socketId) => {
     io.to(socketId).emit('friendInvitations', {
@@ -23,7 +23,7 @@ const updatePendingInvitationList = async (receiverId) => {
 
 const updateFriendList = async (userId) => {
   // how many sockets alive by userId in array
-  const connectedSocketsByUser = serverStore.getOnlineUsers(userId);
+  const connectedSocketsByUser = SocketMap.getOnlineUsers(userId);
 
   if (connectedSocketsByUser.length > 0) {
     // fetch friends list by this id
@@ -45,7 +45,7 @@ const updateFriendList = async (userId) => {
     );
 
     // emit to connected receiver's socket id
-    const io = serverStore.getSocketServer();
+    const io = SocketMap.getSocketServer();
 
     connectedSocketsByUser.forEach((userSocketId) => {
       io.to(userSocketId).emit('friendListUpdate', { friends: friendInfoList });
