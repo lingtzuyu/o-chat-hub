@@ -1,5 +1,5 @@
-require('dotenv').config();
 const Joi = require('joi');
+
 const FriendModel = require('../models/friend_model');
 const FriendService = require('../services/friend_service');
 const FriendEmitEvent = require('../../socketConnectDealer/updateChatStatus');

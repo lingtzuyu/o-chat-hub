@@ -22,12 +22,10 @@ router
 // login route
 router.route('/login').post(validator.body(loginSchema), wrapAsync(login));
 
-// get user profile
+// get user profile | patch: chane username
 router
   .route('/auth/userprofile')
-  .get(wrapAsync(verifiedAuth), wrapAsync(fetchUserProfile));
-
-// update userName
-router.route('/auth/username').post(verifiedAuth, wrapAsync(updateNewUsername));
+  .get(wrapAsync(verifiedAuth), wrapAsync(fetchUserProfile))
+  .patch(wrapAsync(verifiedAuth), wrapAsync(updateNewUsername));
 
 module.exports = router;

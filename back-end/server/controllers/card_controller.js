@@ -1,4 +1,3 @@
-require('dotenv').config();
 const CardModel = require('../models/card_model');
 const MessageModel = require('../models/message_model');
 

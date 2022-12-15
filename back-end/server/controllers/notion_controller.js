@@ -1,4 +1,3 @@
-require('dotenv').config();
 const NotionModel = require('../models/notion_model');
 const NotionService = require('../services/notion_service');
 

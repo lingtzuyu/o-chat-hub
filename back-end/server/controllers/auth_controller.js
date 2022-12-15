@@ -6,7 +6,7 @@ const Joi = require('joi');
 const UserModel = require('../models/auth_model');
 const UserService = require('../services/auth_service');
 
-const { TOKEN_EXPIRE, TOKEN_SECRET, BCRYPT_SALTROUND } = process.env;
+const { TOKEN_EXPIRE, BCRYPT_SALTROUND } = process.env;
 
 // Input validation (register)
 const registerSchema = Joi.object({
@@ -171,34 +171,19 @@ const socketAuthVerified = async (socket, next) => {
   next();
 };
 
-// FIXME: 待檢查
 const updateNewUsername = async (req, res) => {
-  const { mail } = req.user;
+  const { userId } = req.user;
   const { username, organization } = req.body;
-  console.log('controller', username, 'rsdf');
-  if (!username) {
-    return res.status(400).send("username can't be null");
+  if (!username || username === null) {
+    return res.status(400).json({ msg: "username can't be null" });
   }
-  try {
-    const updateUserName = await UserModel.upateNewUsername(
-      username,
-      organization,
-      mail,
-    );
-    console.log(updateUserName);
-    if (!updateUserName) {
-      return res.status(400).send('Internal Error');
-    }
+  await UserService.updateUserName(username, organization, userId);
 
-    res.status(200).json({
-      result: 'username updated',
-      newUserName: username,
-      newOrganization: organization,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send({ err: 'Internal Erro' });
-  }
+  return res.status(200).json({
+    result: 'username updated',
+    newUserName: username,
+    newOrganization: organization,
+  });
 };
 
 module.exports = {

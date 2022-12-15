@@ -1,5 +1,8 @@
 require('dotenv').config();
+
 const jwt = require('jsonwebtoken');
+
+const UserModel = require('../models/auth_model');
 const { APIException } = require('./exceptions/api_exception');
 
 const { TOKEN_SECRET } = process.env;
@@ -33,4 +36,22 @@ const verifyJWTtoken = async (token) => {
   }
 };
 
-module.exports = { createJWTtoken, verifyJWTtoken };
+const updateUserName = async (username, organization, userId) => {
+  const presentFunctionName = 'updateUserName';
+  const updatedUserName = await UserModel.upateNewUsername(
+    username,
+    organization,
+    userId,
+  );
+  if (!updatedUserName) {
+    throw new APIException(
+      'username can not be null',
+      'Missing necessary data when updating username',
+      400,
+      presentFunctionName,
+    );
+  }
+  return updatedUserName;
+};
+
+module.exports = { createJWTtoken, verifyJWTtoken, updateUserName };

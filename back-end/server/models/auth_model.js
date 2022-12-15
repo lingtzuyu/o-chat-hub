@@ -1,6 +1,5 @@
-require('dotenv').config();
-
 const { sqlDB } = require('./mysqlconn');
+
 const { SQLException } = require('../services/exceptions/sql_exception');
 const { Exception } = require('../services/exceptions/exception');
 
@@ -103,14 +102,14 @@ const fetchUserProfile = async (userId) => {
   }
 };
 
-// FIXME: 尚未檢查
-const upateNewUsername = async (username, organization, mail) => {
-  const updateUserNameQuery =
-    'UPDATE user SET username = ?, organization = ? WHERE mail = ? ';
+const upateNewUsername = async (username, organization, userId) => {
+  const updateUserNameQuery = `UPDATE user 
+      SET username = ?, organization = ? 
+      WHERE id = ? `;
   const response = await sqlDB.query(updateUserNameQuery, [
     username,
     organization,
-    mail,
+    userId,
   ]);
   return response;
 };

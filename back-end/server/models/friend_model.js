@@ -1,5 +1,5 @@
-require('dotenv').config();
 const { sqlDB } = require('./mysqlconn');
+
 const { SQLException } = require('../services/exceptions/sql_exception');
 const { Exception } = require('../services/exceptions/exception');
 

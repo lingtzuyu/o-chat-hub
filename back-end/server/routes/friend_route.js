@@ -1,5 +1,5 @@
 const router = require('express').Router();
-// 用來validate payload
+
 const validator = require('express-joi-validation').createValidator({});
 const { wrapAsync } = require('../../util/util');
 

@@ -1,4 +1,3 @@
-require('dotenv').config();
 const FriendModel = require('../models/friend_model');
 
 const { APIException } = require('./exceptions/api_exception');

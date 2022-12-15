@@ -4,10 +4,6 @@ const axios = require('axios');
 
 const { Client } = require('@notionhq/client');
 
-const NotionModel = require('../models/notion_model');
-
-const { SQLException } = require('./exceptions/sql_exception');
-const { Exception } = require('./exceptions/exception');
 const { APIException } = require('./exceptions/api_exception');
 
 const issueNotionRequest = async (code) => {

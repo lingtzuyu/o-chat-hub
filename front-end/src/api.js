@@ -243,7 +243,7 @@ const getUserProfile = async (token) => {
 
 const updateUserName = async (accessToken, userName, organization) => {
   try {
-    const response = await apiClient.post('/auth/username', {
+    const response = await apiClient.patch('/auth/userprofile', {
       token: accessToken,
       username: userName,
       organization: organization,
