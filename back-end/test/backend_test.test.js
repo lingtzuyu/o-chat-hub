@@ -1,3 +1,14 @@
-test('Check the result of 5 + ', () => {
-  expect(5 + 2).toBe(7);
+import * as request from 'supertest';
+
+test('updateUserName in auth.service', () => {
+  const testUpdateUserName1 = {
+    username: 'Alex Ling',
+    orgainization: 'AppWorks',
+    userId: 300,
+  };
+  const testUpdateUserName2 = {
+    username: '',
+    orgainization: 'AppWorks',
+    userId: 300,
+  };
 });
