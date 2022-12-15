@@ -9,10 +9,7 @@ const setSocketServer = (ioServer) => {
   io = ioServer;
 };
 
-const getSocketServer = () => {
-  return io;
-};
-
+const getSocketServer = () => io;
 // if user connect and have valid token, then save
 const addNewConnectedUsersToMap = ({ socketId, userMail, userId }) => {
   //TODO: change to userID later

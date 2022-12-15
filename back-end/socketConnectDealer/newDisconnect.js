@@ -7,3 +7,5 @@ const newDisconnectDealer = async (socket, io) => {
 };
 
 module.exports = { newDisconnectDealer };
+
+// TODO: 已搬到 socket_connection_controller

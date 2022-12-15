@@ -157,20 +157,6 @@ const fetchUserProfile = async (req, res) => {
   return res.status(200).json({ result });
 };
 
-// Verify token from frontend, and pass to create socket connection
-const socketAuthVerified = async (socket, next) => {
-  const connectedSocket = socket;
-  const tokenFromSocket = socket.handshake.auth.token;
-
-  const decodedJWTtoken = await UserService.verifyJWTtoken(tokenFromSocket);
-
-  // add userinfo to socket data
-  connectedSocket.userMail = decodedJWTtoken.mail;
-  connectedSocket.userId = decodedJWTtoken.userId;
-
-  next();
-};
-
 const updateNewUsername = async (req, res) => {
   const { userId } = req.user;
   const { username, organization } = req.body;
@@ -193,6 +179,5 @@ module.exports = {
   loginSchema,
   verifiedAuth,
   fetchUserProfile,
-  socketAuthVerified,
   updateNewUsername,
 };

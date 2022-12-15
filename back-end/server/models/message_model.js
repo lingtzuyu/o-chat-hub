@@ -17,9 +17,6 @@ const messageSchema = new Schema({
 
 const MessageDataMongo = mongoose.model('MessageDataMongo', messageSchema);
 
-// Buffering timed out after 10000ms
-// https://masteringjs.io/tutorials/mongoose/buffering-timed-out-after-10000ms#:~:text=This%20error%20happens%20because%20you,created%20connection%20but%20using%20mongoose.
-
 // check if id exist
 const checkMessageExist = async (messageId) => {
   const presentFunctionName = 'checkMessageExist';

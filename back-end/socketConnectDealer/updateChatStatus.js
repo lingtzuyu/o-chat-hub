@@ -48,7 +48,7 @@ const updateFriendList = async (userId) => {
     // const userId = await Friends.checkUserExist(userMail);
     const connetedSocketsByuserMail = serverStore.getOnlineUsers(userId);
     // console.log('updateFriendList來的', connetedSocketsByuserMail);
-
+    console.log('updateChatStatus', connetedSocketsByuserMail);
     // 根據userId sorting 出 id, username, mail
     // [{id:1, username: test0001, mail: test0001@gmail.com},{},{}]
     // userMail需要從token解出來確保資安
@@ -96,3 +96,5 @@ const updateFriendList = async (userId) => {
 };
 
 module.exports = { updateInvitations, updateFriendList };
+
+//TODO:  to socket_friends_controller

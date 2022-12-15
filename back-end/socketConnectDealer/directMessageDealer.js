@@ -5,6 +5,8 @@ const chatDealer = require('./chatDealer');
 
 const directMessageDealer = async (socket, data) => {
   // 1. 從serverStore獲取這個用戶有哪些連線中的socket通道
+
+  console.log('socket.userId', socket.userId);
   try {
     const { userMail } = socket;
     //TODO: 這邊一樣，還要從userMail解出userID
@@ -32,9 +34,12 @@ const directMessageDealer = async (socket, data) => {
       participants: { $all: [userId, receiverId] },
     });
 
+    console.log('chatExist', chatExist);
+
     // 直接用上面findone後的來push就好，減少一次db query
     if (chatExist) {
-      chatExist.messages.push(message._id);
+      chatExist.messages.push(message.id);
+      console.log(message.id);
       await chatExist.save();
       // TODO: 用socket event來發送即時訊息
       // 兩人之間的對話 => ChatDataMongo._id
@@ -56,3 +61,5 @@ const directMessageDealer = async (socket, data) => {
 };
 
 module.exports = { directMessageDealer };
+
+// TODO: 已搬家到directMessageHandler
