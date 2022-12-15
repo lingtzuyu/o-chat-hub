@@ -95,7 +95,7 @@ const CardBuilderKnowledge = ({
     // set true 打開  delete Alert
     // setDeleteAlert(true);
     // console.log('open delete alert');
-    const deletedCardInfo = { token: accessToken, cardId: cardId };
+    const deletedCardInfo = { data: { token: accessToken, cardId: cardId } };
     Swal.fire({
       title: 'Are you sure?',
       html: `<p>The following card will be deleted forever!<p><b>Title:</b> ${title}</p><p><b>Card Id:</b> ${cardId}</p>`,
@@ -291,5 +291,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToPropse,
-  mapActionsToProps
+  mapActionsToProps,
 )(CardBuilderKnowledge);

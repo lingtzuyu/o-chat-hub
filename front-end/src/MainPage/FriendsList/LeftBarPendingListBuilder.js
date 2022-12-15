@@ -49,7 +49,7 @@ const MeetingBox = styled(Box)(
           margin: ${theme.spacing(2)} 0;
           border-radius: ${theme.general.borderRadius};
           padding: ${theme.spacing(2)};
-    `
+    `,
 );
 
 export const LeftBarPendingListBuilder = ({
@@ -63,13 +63,13 @@ export const LeftBarPendingListBuilder = ({
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const dealAcceptInivte = () => {
-    acceptInvite({ acceptId: id, token: localStorage.accessToken });
+    acceptInvite({ userId: id, token: localStorage.accessToken });
     // 如果按了一次 就不能再按第二次
     setButtonDisabled(true);
   };
 
   const dealRejectInivte = () => {
-    rejectInvite({ rejectId: id, token: localStorage.accessToken });
+    rejectInvite({ userId: id, token: localStorage.accessToken });
     // 如果按了一次 就不能再按第二次
     setButtonDisabled(true);
   };

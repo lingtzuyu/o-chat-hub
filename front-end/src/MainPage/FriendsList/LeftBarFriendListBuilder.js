@@ -45,7 +45,7 @@ import { connect } from 'react-redux';
 const RootWrapper = styled(Box)(
   ({ theme }) => `
         padding: ${theme.spacing(0.5)};
-  `
+  `,
 );
 
 const ListItemWrapper = styled(ListItemButton)(
@@ -53,7 +53,7 @@ const ListItemWrapper = styled(ListItemButton)(
         &.MuiButtonBase-root {
             margin: ${theme.spacing(1)} 0;
         }
-  `
+  `,
 );
 
 export const LeftBarFriendListBuilder = ({
@@ -68,9 +68,15 @@ export const LeftBarFriendListBuilder = ({
   // 取得username渲染上方，並點亮save Button
   const openConversation = () => {
     setChosenChatDetails(
-      { id: id, name: username, photo: photo, organization: organization },
+      {
+        id: id,
+        name: username,
+        photo: photo,
+        organization: organization,
+        mail: mail,
+      },
       chatTypes.DIRECT,
-      false
+      false,
     );
     // 要將saveButton的disable設false
   };

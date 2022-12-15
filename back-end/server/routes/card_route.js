@@ -1,4 +1,5 @@
 const router = require('express').Router();
+
 const { wrapAsync } = require('../../util/util');
 const { verifiedAuth } = require('../controllers/auth_controller');
 const {
@@ -10,68 +11,60 @@ const {
   setDislikeById,
   checkCardExist,
   fetchCardDetailsByCategory,
-  fetchLastFiveCards,
   updateCardTitleAndNotes,
   updateCategory,
 } = require('../controllers/card_controller');
-const { fetchCardHistoryByCategory } = require('../models/card_model');
 
-// 新增至最愛 TODO: 刪除verifiedAuth的wrapAsync
-router
-  .route('/card/like')
-  .post(
-    wrapAsync(verifiedAuth),
-    wrapAsync(checkCardExist),
-    wrapAsync(setLikeById)
-  );
-// 從最愛移除
-router
-  .route('/card/dislike')
-  .post(
-    wrapAsync(verifiedAuth),
-    wrapAsync(checkCardExist),
-    wrapAsync(setDislikeById)
-  );
-
-// 刪除卡片資料 //TODO: 前後端改delte
-router
-  .route('/card/remove')
-  .post(wrapAsync(verifiedAuth), wrapAsync(deleteCardById));
-
-// 取得category資料
-router.route('/card/category').get(wrapAsync(fetchCardCategory));
-
-// 新增卡片
+// card notes related
 router
   .route('/card/notes')
-  .post(wrapAsync(verifiedAuth), wrapAsync(saveMessagesToNote));
+  // post: save messages to notes
+  .post(wrapAsync(verifiedAuth), wrapAsync(saveMessagesToNote))
+  // get: fetch all notes history
+  .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory))
+  // delete: delete single card
+  .delete(
+    wrapAsync(verifiedAuth),
+    wrapAsync(checkCardExist),
+    wrapAsync(deleteCardById),
+  )
+  // change card title and content
+  .patch(
+    wrapAsync(verifiedAuth),
+    wrapAsync(checkCardExist),
+    wrapAsync(updateCardTitleAndNotes),
+  );
 
-// 取得歷史紀錄
+// add to read
 router
-  .route('/card/history')
-  .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardHistory));
+  .route('/card/like')
+  .patch(
+    wrapAsync(verifiedAuth),
+    wrapAsync(checkCardExist),
+    wrapAsync(setLikeById),
+  );
+// remove from read (unread)
+router
+  .route('/card/dislike')
+  .patch(
+    wrapAsync(verifiedAuth),
+    wrapAsync(checkCardExist),
+    wrapAsync(setDislikeById),
+  );
 
-// Last 5 for notification
-// router
-//   .route('/card/lastfive')
-//   .get(wrapAsync(verifiedAuth), wrapAsync(fetchLastFiveCards));
+// get current available category name from sql
+router
+  .route('/card/category')
+  .get(wrapAsync(fetchCardCategory))
+  .patch(
+    wrapAsync(verifiedAuth),
+    wrapAsync(checkCardExist),
+    wrapAsync(updateCategory),
+  );
 
-// 取得歷史紀錄by category
+// fetch card history by category or current user
 router
   .route('/card/details/:category')
   .get(wrapAsync(verifiedAuth), wrapAsync(fetchCardDetailsByCategory));
-
-// 更新卡片Title以及notes //TODO: patch 前後端
-router
-  .route('/card/modification')
-  .post(
-    verifiedAuth,
-    wrapAsync(checkCardExist),
-    wrapAsync(updateCardTitleAndNotes)
-  );
-// 更新卡片category FIXME: 改成category
-router
-  .route('/card/changecategory')
-  .post(verifiedAuth, wrapAsync(checkCardExist), wrapAsync(updateCategory));
 
 module.exports = router;

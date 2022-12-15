@@ -46,7 +46,7 @@ const AnimatedBadge = styled(Badge)(
             content: "";
         }
     }
-`
+`,
 );
 
 const NotificationsBadge = styled(Badge)(
@@ -70,7 +70,7 @@ const NotificationsBadge = styled(Badge)(
             content: "";
         }
     }
-`
+`,
 );
 
 const IconButtonPrimary = styled(IconButton)(
@@ -90,7 +90,7 @@ const IconButtonPrimary = styled(IconButton)(
       background: ${alpha(theme.colors.alpha.trueWhite[30], 0.2)};
       color: ${theme.colors.alpha.trueWhite[100]};
     }
-`
+`,
 );
 
 function CardButton({ cards }) {
@@ -99,7 +99,7 @@ function CardButton({ cards }) {
   const theme = useTheme();
 
   // slice: 淺拷貝
-  const lastFive = cards.slice(0, 5);
+  const lastFive = cards?.slice(0, 5);
 
   const handleOpen = () => {
     setOpen(true);
@@ -162,7 +162,7 @@ function CardButton({ cards }) {
             p: 2,
           }}
         >
-          {lastFive.map((message, index) => {
+          {lastFive?.map((message, index) => {
             return (
               <CardNotification
                 key={message._id}

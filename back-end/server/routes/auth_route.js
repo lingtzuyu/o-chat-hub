@@ -1,17 +1,20 @@
 const router = require('express').Router();
-// use joi and validator to validate the input
+
 const validator = require('express-joi-validation').createValidator({});
+
 const { wrapAsync } = require('../../util/util');
+
 const {
   register,
   login,
   registerSchema,
   loginSchema,
   verifiedAuth,
+  fetchUserProfile,
   updateNewUsername,
 } = require('../controllers/auth_controller');
 
-// register route .
+// register route
 router
   .route('/register')
   .post(validator.body(registerSchema), wrapAsync(register));
@@ -19,7 +22,10 @@ router
 // login route
 router.route('/login').post(validator.body(loginSchema), wrapAsync(login));
 
-// update userName
-router.route('/auth/username').post(verifiedAuth, wrapAsync(updateNewUsername));
+// get user profile | patch: chane username
+router
+  .route('/auth/userprofile')
+  .get(wrapAsync(verifiedAuth), wrapAsync(fetchUserProfile))
+  .patch(wrapAsync(verifiedAuth), wrapAsync(updateNewUsername));
 
 module.exports = router;

@@ -1,14 +1,20 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
+const http = require('http');
 const morganBody = require('morgan-body');
+const {
+  MongoException,
+} = require('./server/services/exceptions/mongo_exception');
+const { SQLException } = require('./server/services/exceptions/sql_exception');
+const { APIException } = require('./server/services/exceptions/api_exception');
+const { Exception } = require('./server/services/exceptions/exception');
+
+// socket
+const Socket = require('./socket');
 
 const app = express();
-
-// ws是基於http協議之上
-const http = require('http');
-
-const server = http.createServer(app);
+const httpServer = http.createServer(app);
 
 // express settings
 app.use(express.static('public'));
@@ -16,13 +22,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // FIXME: cors裡面的設定，前後端分離不要全開
 app.use(cors());
+
+// FIXME: 之後再開啟
 morganBody(app);
 
 // 環境變數
 const { SERVER_PORT, API_VERSION } = process.env;
-
-// socket
-const Socket = require('./socket');
 
 // DB connection
 // https://stackoverflow.com/questions/23293202/export-and-reuse-my-mongoose-connection-across-multiple-models
@@ -45,15 +50,34 @@ app.use(`/api/${API_VERSION}`, [
 
 // TODO: 404
 
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
+  console.log('最外層', err.fullLog);
+  if (err instanceof MongoException) {
+    console.log('Mongo msg', err.message);
+    return res.status(400).json({ msg: err.message });
+  }
+  if (err instanceof SQLException) {
+    console.log('SQL msg', err.message);
+    return res.status(400).json({ msg: err.message });
+  }
+  if (err instanceof APIException) {
+    console.log('API msg', err.message);
+    return res.status(err.status).json({ msg: err.message });
+  }
+  if (err instanceof Exception) {
+    console.log('Exception', err.message);
+    return res.status(500).json({ msg: err.message });
+  }
   console.log(err);
   res.status(500).send('Internal Server Error');
 });
 
 // WS server 建立
-Socket.initialSocketServer(server);
+Socket.initialSocketServer(httpServer);
 
-server.listen(SERVER_PORT, () => {
+httpServer.listen(SERVER_PORT, () => {
   // TODO: remove after production published
   console.log(`Server is running on ${SERVER_PORT}`);
 });
+
+module.exports = { httpServer, app };

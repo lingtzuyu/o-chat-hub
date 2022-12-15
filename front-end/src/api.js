@@ -11,7 +11,7 @@ const apiClient = axios.create({
 // modify card title and notes
 const modifyCardTitleAndNotes = async (cardId, title, notes, token) => {
   try {
-    const response = await apiClient.post('/card/modification', {
+    const response = await apiClient.patch('/card/notes', {
       cardId: cardId,
       title: title,
       notes: notes,
@@ -65,7 +65,7 @@ const exportToNotion = async (data) => {
 // delete Card By Id, data帶著id過來
 const deleteCard = async (data) => {
   try {
-    return await apiClient.post('/card/remove', data);
+    return await apiClient.delete('/card/notes', data);
   } catch (err) {
     return { error: true, err };
   }
@@ -159,7 +159,7 @@ const saveMessagesToNote = async (data) => {
 // https://masteringjs.io/tutorials/axios/get-with-data
 const getCardHistory = async (data) => {
   try {
-    const result = await apiClient.get('/card/history', {
+    const result = await apiClient.get('/card/notes', {
       params: { token: data },
     });
     const cards = result.data;
@@ -214,7 +214,7 @@ const getNotionToken = async (code, token) => {
 // like or dislike card
 const likeCard = async (data) => {
   try {
-    return await apiClient.post('/card/like', data);
+    return await apiClient.patch('/card/like', data);
   } catch (err) {
     return { error: true, err };
   }
@@ -222,7 +222,7 @@ const likeCard = async (data) => {
 
 const dislikeCard = async (data) => {
   try {
-    return await apiClient.post('/card/dislike', data);
+    return await apiClient.patch('/card/dislike', data);
   } catch (err) {
     return { error: true, err };
   }
@@ -231,7 +231,7 @@ const dislikeCard = async (data) => {
 // 把getUserProfile移到homepage
 const getUserProfile = async (token) => {
   try {
-    return await apiClient.get('/friend/userProfile', {
+    return await apiClient.get('/auth/userprofile', {
       headers: {
         authorization: token,
       },
@@ -243,7 +243,7 @@ const getUserProfile = async (token) => {
 
 const updateUserName = async (accessToken, userName, organization) => {
   try {
-    const response = await apiClient.post('/auth/username', {
+    const response = await apiClient.patch('/auth/userprofile', {
       token: accessToken,
       username: userName,
       organization: organization,
@@ -256,7 +256,7 @@ const updateUserName = async (accessToken, userName, organization) => {
 
 const updateCategory = async (accessToken, cardId, category) => {
   try {
-    const response = await apiClient.post('/card/changecategory', {
+    const response = await apiClient.patch('/card/category', {
       token: accessToken,
       category: category,
       cardId: cardId,
