@@ -5,6 +5,7 @@ const { sqlDB } = require('./mysqlconn');
 const { Schema } = mongoose;
 
 const { Exception } = require('../services/exceptions/exception');
+const { MongoException } = require('../services/exceptions/mongo_exception');
 
 // note schema
 const noteSchema = new Schema({
@@ -229,6 +230,7 @@ const updateCategory = async (cardId, category, userId) => {
 
 // update notion link to mongoDB
 const updateLinkToNote = async (cardId, notionLink) => {
+  const presentFunctionName = 'updateLinkToNote';
   try {
     const result = await NoteDataMongo.findByIdAndUpdate(cardId, {
       Transferred: true,
@@ -237,8 +239,13 @@ const updateLinkToNote = async (cardId, notionLink) => {
     });
     return result;
   } catch (err) {
-    console.log(err);
-    return err;
+    throw new MongoException(
+      'Internal error',
+      `Unknow error when export cardId: ${cardId} to notion`,
+      'NoteDataMongo',
+      'findByIdAndUpdate',
+      presentFunctionName,
+    );
   }
 };
 
@@ -256,4 +263,3 @@ module.exports = {
   updateCategory,
   fetchCardHistoryByChatPartner,
 };
-// module.exports = mongoose.model('NoteDataMongo', noteSchema);

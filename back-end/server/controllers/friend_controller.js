@@ -1,6 +1,6 @@
 require('dotenv').config();
 const Joi = require('joi');
-const Friend = require('../models/friend_model');
+const FriendModel = require('../models/friend_model');
 const FriendService = require('../services/friend_service');
 const FriendEmitEvent = require('../../socketConnectDealer/updateChatStatus');
 
@@ -36,7 +36,11 @@ const sentFriendInvitation = async (req, res) => {
   await FriendService.checkInvitationIsPending(senderId, receiverId);
 
   // add to friend invitation table
-  const result = await Friend.sendFriendRequest(senderId, receiverId, sendTime);
+  const result = await FriendModel.sendFriendRequest(
+    senderId,
+    receiverId,
+    sendTime,
+  );
 
   // emit to socket event
   FriendEmitEvent.updateInvitations(receiverId);
@@ -58,7 +62,7 @@ const accpetFriendInvitation = async (req, res) => {
   await FriendService.checkFriendInvitationExist(acceptorId, acceptId);
 
   // insert into friendship table, delete invitation in friendinvitation table
-  await Friend.insertDualFriendship(acceptId, acceptorId);
+  await FriendModel.insertDualFriendship(acceptId, acceptorId);
 
   // socket event
 
@@ -83,7 +87,7 @@ const rejectFriendInvitation = async (req, res) => {
   await FriendService.checkFriendInvitationExist(rejectorId, rejectId);
 
   // delete friendinvitation data
-  await Friend.deleteRejectedFriendship(rejectId, rejectorId);
+  await FriendModel.deleteRejectedFriendship(rejectId, rejectorId);
 
   // update socket event friendInvitation
   await FriendEmitEvent.updateInvitations(rejectorId);

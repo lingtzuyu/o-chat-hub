@@ -1,6 +1,9 @@
 const router = require('express').Router();
+
 const validator = require('express-joi-validation').createValidator({});
+
 const { wrapAsync } = require('../../util/util');
+
 const {
   register,
   login,
