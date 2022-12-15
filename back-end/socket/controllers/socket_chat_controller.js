@@ -21,7 +21,6 @@ const directMessageHandler = async (socket, data) => {
   if (chatObject) {
     await SocketChatModel.pushMessageToExistingchat(chatObject, message.id);
 
-    console.log('chatObj', chatObject);
     // emit message to related online users
     await SocketChatService.fetchChatContent(chatObject.id.toString());
   } else {
@@ -32,8 +31,21 @@ const directMessageHandler = async (socket, data) => {
       message.id,
     );
 
-    await SocketChatService.fetchChatContent(newChat.id.toSttring());
+    await SocketChatService.fetchChatContent(newChat?.id.toSttring());
   }
 };
 
-module.exports = { directMessageHandler };
+const directMessageHistoryHandler = async (socket, data) => {
+  const { userId } = socket;
+  const { receiverUserId } = data;
+  const chatHistory = await SocketChatModel.fetchChatHistoryById(
+    userId,
+    receiverUserId,
+  );
+
+  if (chatHistory !== undefined || null) {
+    SocketChatService.fetchChatContent(chatHistory?.id.toString(), socket.id);
+  }
+};
+
+module.exports = { directMessageHandler, directMessageHistoryHandler };

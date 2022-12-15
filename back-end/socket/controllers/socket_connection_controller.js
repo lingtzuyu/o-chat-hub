@@ -5,11 +5,11 @@ const {
   updateFriendList,
 } = require('./socket_friends_controller');
 
-const newDisconnectHandler = async (socket, io) => {
+const newDisconnectHandler = async (socket) => {
   serverStore.removeDisconnectedUsersFromMap(socket.id);
 };
 
-const newConnectionHandler = async (socket, io) => {
+const newConnectionHandler = async (socket) => {
   serverStore.addNewConnectedUsersToMap({
     socketId: socket.id,
     userMail: socket.userMail,
