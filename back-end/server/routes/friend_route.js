@@ -10,7 +10,6 @@ const {
   sentFriendInvitation,
   accpetFriendInvitation,
   rejectFriendInvitation,
-  getUserProfile,
   getFriendUserName,
 } = require('../controllers/friend_controller');
 
@@ -40,7 +39,7 @@ router
     wrapAsync(rejectFriendInvitation),
   );
 
-// get friend username to set chosen chat details
+// get friend username to forward chosen chat details in card page
 router
   .route('/friend/username')
   .get(wrapAsync(verifiedAuth), wrapAsync(getFriendUserName));

@@ -33,10 +33,10 @@ const fetchChatContent = async (chatId, socketIdToSend = null) => {
     console.log('chat.js內', chat.participants);
     // 檢查雙方是否online，如果是，則emit (任一在線上也會觸發)
     chat.participants.forEach(async (userId) => {
-      const userInfo = await Friend.checkUserInfoById(userId);
+      // const userInfo = await Friend.checkUserInfoById(userId);
       // 這邊要用ID在轉換一次userMail
-      const userMail = userInfo.userInfo.mail;
-      console.log('chat.js內', userMail);
+      // const userMail = userInfo.userInfo.mail;
+      // console.log('chat.js內', userMail);
       const onlineConnections = serverStore.getOnlineUsers(userId);
 
       // emit event到這邊的socketID (在participants內的)

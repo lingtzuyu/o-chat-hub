@@ -2,7 +2,6 @@ require('dotenv').config();
 const FriendModel = require('../models/friend_model');
 
 const { APIException } = require('./exceptions/api_exception');
-const { Exception } = require('./exceptions/exception');
 
 const checkUserExistService = async (mail) => {
   const presentFunctionName = 'checkUserExistService';
@@ -78,10 +77,26 @@ const checkFriendInvitationExist = async (myId, targetId) => {
   }
 };
 
+// check if user can really jump to chat with target
+const checkIsValidForwardTarget = async (myId, targetId) => {
+  const presentFunctionName = 'checkIsValidForwardTarget';
+  const [result] = await FriendModel.getFriendUserName(myId, targetId);
+  if (result === undefined || null) {
+    throw new APIException(
+      'frined id or user id wrong, maybe you are not friends',
+      'Wrong way to forward message from user',
+      400,
+      presentFunctionName,
+    );
+  }
+  return result;
+};
+
 module.exports = {
   checkUserExistService,
   checkTargetIsNotMyself,
   checkAlreadyFriends,
   checkInvitationIsPending,
   checkFriendInvitationExist,
+  checkIsValidForwardTarget,
 };

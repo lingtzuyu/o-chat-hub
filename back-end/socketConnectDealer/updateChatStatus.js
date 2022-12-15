@@ -1,9 +1,10 @@
-// TODO: 1. 新訊息 2. 上線狀態 3. 好友邀請
+require('dotenv').config();
 const Friends = require('../server/models/friend_model');
+const UserModel = require('../server/models/auth_model');
+
 // 取得儲存socket ID及mail的Map()變數
 const serverStore = require('../serverStore');
 // 透過socket.js這邊的event來發送實實資料 (React重新渲染畫面上的pending邀請)
-require('dotenv').config();
 
 // 使用userId來尋找friendinvitation表
 const updateInvitations = async (receiverId) => {
@@ -12,7 +13,7 @@ const updateInvitations = async (receiverId) => {
     const pendingInvitations = await Friends.checkPendingInvitationByReceiver(
       receiverId,
     );
-    console.log('pendingInvitations', pendingInvitations);
+    // console.log('pendingInvitations here 1', pendingInvitations);
     // console.log(`pending邀請的資料`, pendingInvitations);
     // 如果這個receiverId (現在因當初的設計錯誤改成用mail)的人在線上，則用這些資料渲染他的畫面
     // 抓global Map => connetedUsers (in serverStore.js)
@@ -56,7 +57,7 @@ const updateFriendList = async (userId) => {
     if (connetedSocketsByuserMail.length > 0) {
       // 1. 拿此id去friendship取出所有的好友id，沒好友就是空陣列
       const friendListById = await Friends.fetchFriendList(userId);
-      console.log('updateFriendList來的好友名單', friendListById);
+      // console.log('updateFriendList來的好友名單', friendListById);
       // 這邊的friendListById資料會是 [ { friend: 66 }, { friend: 68} ]
       // 2. 用id去Users的table去抓 username
       // how to use asycn in map: https://zhuanlan.zhihu.com/p/134239237
@@ -64,23 +65,16 @@ const updateFriendList = async (userId) => {
       // TODO: 待合併
       const friendInfoList = await Promise.all(
         friendListById.map(async (friendId) => {
-          const userInfoList = await Friends.checkUserInfoById(friendId.friend);
-
-          const detailFriendInfoList = await Friends.checkUserDetailById(
+          const detailFriendInfoList = await UserModel.fetchUserProfile(
             friendId.friend,
           );
 
-          // userInfoList長這樣
-          // {
-          //   userInfo: { username: 'test0002', mail: 'test0002@gmail.com', id: 66 }
-          // }
-          // console.log("map內",userInfoList.userInfo);
           return {
-            id: userInfoList.userInfo.id,
-            username: userInfoList.userInfo.username,
-            mail: userInfoList.userInfo.mail,
-            photo: `${detailFriendInfoList[0].photo}`,
-            organization: detailFriendInfoList[0].organization,
+            id: detailFriendInfoList.id,
+            username: detailFriendInfoList.username,
+            mail: detailFriendInfoList.mail,
+            photo: detailFriendInfoList.photo,
+            organization: detailFriendInfoList.organization,
           };
         }),
       );

@@ -160,76 +160,59 @@ const getFriendUserName = async (userId, friendId) => {
   }
 };
 
-// get user's friend FIXME: 只有這邊用，可刪除
-const getAllFriendshipFromDB = async (userId) => {
-  const friendshipQuery = 'SELECT friend FROM friendship WHERE user = ?';
-  const [result] = await sqlDB.query(friendshipQuery, userId);
-  console.log('fd from db', result);
-  return result;
-};
-
-// FIXME: 檢查updateChatStatus
-const checkUserDetailById = async (userId) => {
-  const checkUserDetailQuery = 'SELECT * FROM user WHERE id = ?';
-  const [result] = await sqlDB.query(checkUserDetailQuery, [userId]);
-  return result;
-};
-
-// 拒絕後如果要重新申請
-// 確認pending Invitations
-// 這邊直接設0的好處是，如果接受(status變1)或是拒絕後(刪除)，就query不到 => 也不會渲染畫面
-// 但是要即時消失的機制靠FriendEmitEvent發送，重新讓react撈DB渲染畫面 (接受: 因為status變成1撈不到 拒絕: 因為直接刪除該欄位所以找不到)
-
-// receiver 視角，渲染登入的時候有哪些好友邀請
+// receiver perspective, check who send invitation to me
 const checkPendingInvitationByReceiver = async (receiverId) => {
-  // join friendinvitation以及user table直接找出送給這個receiverID的人有哪些info
-  // FIXME: 改改改sql長長長長長長長長長長長長
-  const invitationQuery = `
+  // get related photo, mail of sender
+
+  try {
+    const invitationQuery = `
   SELECT 
     friendinvitation.sender_user_id, user.username, user.mail, user.photo 
   FROM 
     friendinvitation 
   JOIN user on friendinvitation.sender_user_id = user.id 
   WHERE receiver_user_id = ?`;
-  const [result] = await sqlDB.query(invitationQuery, [receiverId]);
-  console.log('checkPendingInvitationByReceiver', result);
-  return result;
+    const [result] = await sqlDB.execute(invitationQuery, [receiverId]);
+
+    return result;
+  } catch (err) {
+    throw new SQLException(
+      'Error to fetch data for invitaion list, please try again',
+      'Error occured when query user and friendinvitation join table',
+      'friendinvitation',
+      'select',
+      'checkPendingInvitationByReceiver',
+    );
+  }
 };
 
-// check user info by ID
-const checkUserInfoById = async (userId) => {
-  const userQuery = 'SELECT username, mail FROM user WHERE id = ?';
-  const [result] = await sqlDB.query(userQuery, [userId]);
-  const userInfo = {
-    username: result[0].username,
-    mail: result[0].mail,
-    id: userId,
-  };
-  return { userInfo };
-};
-
-// checkFriendsByUserId
+// update friend list
 const fetchFriendList = async (userId) => {
   try {
-    const friendListQuery = 'SELECT friend FROM friendship WHERE user = ?';
-    const [friendListById] = await sqlDB.query(friendListQuery, [userId]);
+    const friendListQuery = `SELECT friend 
+      FROM friendship 
+      WHERE user = ?`;
+    const [friendListById] = await sqlDB.execute(friendListQuery, [userId]);
     return friendListById;
   } catch (err) {
-    console.log('fetchFriendList Error (model)', err);
+    throw new SQLException(
+      'Error to fetch data for friend list, please try again',
+      'Error occured when query friendship',
+      'friendship',
+      'select',
+      'fetchFriendList',
+    );
   }
 };
 
 module.exports = {
-  checkUserInfoById,
   checkPendingInvitationByReceiver,
   checkUserExist,
   sendFriendRequest,
   checkPendingInvitation,
-  getAllFriendshipFromDB,
   getTargetFriendFromDB,
   insertDualFriendship,
   deleteRejectedFriendship,
   fetchFriendList,
   getFriendUserName,
-  checkUserDetailById,
 };

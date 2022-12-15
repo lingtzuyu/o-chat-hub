@@ -26,7 +26,6 @@ const sentFriendInvitation = async (req, res) => {
   const senderId = req.user.userId;
   const receiverMail = req.body.mail;
   const sendTime = new Date();
-  const initialStatus = 0;
 
   // logic for blocking invitation
   const receiverId = await FriendService.checkUserExistService(receiverMail);
@@ -92,17 +91,16 @@ const rejectFriendInvitation = async (req, res) => {
   res.status(200).json({ msg: 'Reject invitation success' });
 };
 
-// friend username
+// get friend username (to set forward target)
 const getFriendUserName = async (req, res) => {
   const { userId } = req.user;
   const { friendId } = req.query;
 
-  const [result] = await Friend.getFriendUserName(userId, friendId);
-  if (result === undefined || null) {
-    return res
-      .status(400)
-      .json({ msg: 'frined id or user id wrong, maybe you are not friends' });
-  }
+  const result = await FriendService.checkIsValidForwardTarget(
+    userId,
+    friendId,
+  );
+
   return res.status(200).json({ data: result });
 };
 
