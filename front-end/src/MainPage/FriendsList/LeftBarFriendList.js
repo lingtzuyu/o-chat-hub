@@ -63,7 +63,6 @@ const checkOnline = (friends = [], onlineUsers = []) => {
 };
 
 const LeftBarFriendList = ({ friends, onlineUsers }) => {
-  console.log('UserList', friends);
   return (
     // <MainContainer>
     <FriedListWrapper>

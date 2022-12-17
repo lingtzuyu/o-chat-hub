@@ -35,9 +35,8 @@ export const getUserInfoDetail = (token) => {
   return async (dispatch) => {
     const response = await api.getUserProfile(token);
     if (response.error) {
-      console.log(response?.exception?.response?.data);
+      return response?.exception?.response?.data;
     } else {
-      console.log('getUserInfo', response.data.result);
       dispatch(setUserInfoDetail(response.data.result));
       return response.status;
     }
@@ -66,34 +65,24 @@ const setUserDetails = (userDetails) => {
 
 // login
 const login = (userDetails, forwardTo) => {
-  console.log('login action', userDetails);
   // {mail: 'test8888@gmail.com', password: '88888888'}
   return async (dispatch) => {
     // userDetails will become the data for this post request
     const response = await api.login(userDetails);
-    console.log('login action', response);
+
     // {data: {…}, status: 200, statusText: 'OK', headers: AxiosHeaders, config: {…}, …}
     if (response.error) {
-      // {error: true, exception: AxiosError}
-      console.log('login-error', response?.exception?.response?.data);
-      // show error message from API in alert, error是從login apis那邊的exception來的
-      // dispatch(showAlert(response?.exception?.response?.data));
-      // FIXME: 前端已經用toast直接跳error了，不從這邊接了
       return response?.exception?.response?.data;
       // {msg: 'Unauthenticated, mail or password is wrong'}
     } else {
       // TODO: 把API回來的資料存在local storage
       // if the return is null, userDetails會變成undefined
       const { accessToken } = response?.data?.data?.tokeninfo;
-      console.log('response?.data?.data?.tokeninfo', accessToken);
-      console.log('userDetail到底是啥', userDetails);
+
       localStorage.setItem(
         'accessToken',
         response.data.data.tokeninfo.accessToken,
       );
-      // // FIXME: 找到哪裡受影響後刪除，後面應該全用token去解
-      // localStorage.setItem('userMail', response.data.data.userinfo.mail);
-      // localStorage.setItem('userId', response.data.data.userinfo.userId);
 
       // 改變store state (redux)
       dispatch(setUserDetails(userDetails));
@@ -109,7 +98,6 @@ const signup = (userDetails, forwardTo) => {
     const response = await api.signup(userDetails);
 
     if (response.error) {
-      console.log(response?.exception?.response?.data);
       // show error message from API in alert
       dispatch(showAlert(response?.exception?.response?.data));
     } else {

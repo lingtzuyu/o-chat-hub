@@ -28,7 +28,6 @@ const MessageAreaContainer = styled('div')({
 });
 
 export const MessageContentArea = ({ chosenChatDetails }) => {
-  console.log('messageContentArea', chosenChatDetails);
   // useEffect(() => {
   //   getDirectMessageHistroy({
   //     receiverUserId: chosenChatDetails.id,

@@ -42,7 +42,6 @@ const checkOnline = (friends = [], onlineUsers = []) => {
 // TODO: 改寫FriendsUsernameList
 // 從props來的friends => connect to store
 const FriedListBarAndTitle = ({ friends, onlineUsers }) => {
-  // console.log("UserList", friends);
   return (
     <>
       <LeftFriendListTitleContainer>

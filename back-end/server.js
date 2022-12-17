@@ -51,7 +51,7 @@ app.use(`/api/${API_VERSION}`, [
 // TODO: 404
 
 app.use((err, req, res, next) => {
-  console.log('最外層', err.fullLog);
+  console.log('General Error msg', err.fullLog);
   if (err instanceof MongoException) {
     console.log('Mongo msg', err.message);
     return res.status(400).json({ msg: err.message });

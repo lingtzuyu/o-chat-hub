@@ -31,12 +31,10 @@ const sendFriendRequest = (data, closePopout) => {
     // TODO: 之後要dispatch到某個popout alert上
     const response = await api.sendFriendRequest(data);
     if (response.error) {
-      console.log(response.exception?.response?.data);
+      return response.exception?.response?.data;
+
       // TODO: show error message from API in alert, error是從login apis那邊的exception來的， 後面可以做alert Popout
     } else {
-      console.log('Invitation sent');
-      // TODO: 做alert popout來dispatch message
-      // 如果沒事的話，就關閉這個邀請好友的popout
       closePopout();
     }
   };
@@ -49,11 +47,7 @@ const acceptInvite = (data) => {
     const response = await api.acceptInvite(data);
     // 錯誤處理
     if (response.error) {
-      console.log(response.exception?.response?.data);
-      // TODO: show error message from API in alert, error是從login apis那邊的exception來的， 後面可以做alert Popout
     } else {
-      console.log('Invitation accpet');
-      // TODO: 做alert popout來dispatch message
     }
   };
 };
@@ -63,11 +57,8 @@ const rejectInvite = (data) => {
     const response = await api.rejectInvite(data);
     // 錯誤處理
     if (response.error) {
-      console.log(response.exception?.response?.data);
-      // TODO: show error message from API in alert, error是從login apis那邊的exception來的， 後面可以做alert Popout
+      return response.exception?.response?.data;
     } else {
-      console.log('Invitation reject');
-      // TODO: 做alert popout來dispatch message
     }
   };
 };

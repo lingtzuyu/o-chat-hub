@@ -24,7 +24,7 @@ export const TransferMessagePopout = ({
   setSaveMessageButtonDisabled,
 }) => {
   const messagesCollectionInString = localStorage.getItem(
-    'selectedMessagesCollection'
+    'selectedMessagesCollection',
   );
   const messagesArray = JSON.parse(messagesCollectionInString);
   const accessToken = localStorage.getItem('accessToken');
@@ -36,8 +36,6 @@ export const TransferMessagePopout = ({
   };
 
   const handleTransferAfterConfirm = () => {
-    // console.log(category);
-    // TODO:
     // 1. 按下確認後，儲存至DB以及store
     // POST API (帶message ID即可)
     // store action and (帶整串，因為等等要用整串渲染右邊卡片區)
@@ -100,5 +98,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToPropse,
-  mapActionsToProps
+  mapActionsToProps,
 )(TransferMessagePopout);

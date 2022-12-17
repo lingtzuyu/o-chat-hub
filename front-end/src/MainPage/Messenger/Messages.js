@@ -45,15 +45,6 @@ const Messages = ({ chosenChatDetails, messages }) => {
         const sameSender =
           index > 0 && messages[index].sender === messages[index - 1].sender;
         // 比較前後，會判斷true或false
-        // console.log(message);
-
-        //TODO: 放在同一天下
-        // const sameTime =
-        //   index > 0 &&
-        //   convertDate(new Date(message.date), 'dd/mm/yy') ===
-        //     convertDate(new Date(messages[index - 1].date), 'dd/mm/yy');
-
-        // console.log(convertDate(new Date(message.date)), 'yy/mm/dd');
 
         return (
           // <div>{message.content}</div>

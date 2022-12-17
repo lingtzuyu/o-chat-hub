@@ -87,14 +87,14 @@ const CardBuilderKnowledge = ({
   const handleOpenMessageView = () => {
     // 把值傳到state去做渲染
     setMessagesArrayInQuickView(messageRecords);
-    console.log(messageRecords);
+
     setMessageView(true);
   };
 
   const handleOpenDeleteAlert = () => {
     // set true 打開  delete Alert
     // setDeleteAlert(true);
-    // console.log('open delete alert');
+
     const deletedCardInfo = { data: { token: accessToken, cardId: cardId } };
     Swal.fire({
       title: 'Are you sure?',
@@ -153,7 +153,6 @@ const CardBuilderKnowledge = ({
 
     // 轉換卡片用
     selecteExportCards(selectedCardInfo);
-    console.log(selectedCardInfo);
   };
 
   return (

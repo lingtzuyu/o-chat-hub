@@ -63,16 +63,11 @@ const RegisterSide = ({ signup }) => {
   const handleSignup = async (event) => {
     event.preventDefault();
     // const data = new FormData(event.currentTarget);
-    console.log({
-      mail: mail,
-      password: password,
-      username: username,
-    });
+
     const signupData = { mail, password, username };
     // auth action
     const result = await signup(signupData, forwardTo);
 
-    console.log(result);
     if (result !== 200) {
       Toast.fire({
         icon: 'warning',

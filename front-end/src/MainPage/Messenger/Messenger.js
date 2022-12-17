@@ -14,14 +14,6 @@ import { getDirectMessageHistroy } from '../../chat/socketConnectionClient';
 // });
 
 const Messenger = ({ chosenChatDetails }) => {
-  // chosenChatDetails如果忘記，想想你在MessageStatusBar.js那編取值卡多久
-  console.log('Messenger內', chosenChatDetails);
-
-  // useEffect(() => {
-  //   getDirectMessageHistroy({
-  //     receiverUserId: chosenChatDetails.id,
-  //   });
-  // }, [chosenChatDetails]);
   return (
     // MessengerContent裡面的東西會根據chosenChatDetails來做相對應的找DB及渲染
     <>

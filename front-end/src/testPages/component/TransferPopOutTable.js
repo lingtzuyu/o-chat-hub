@@ -107,26 +107,11 @@ function TransferPopOutTable({
     AuthorId: userInfoDetail?.id,
   };
 
-  // useEffect(() => {
-  //   messagesToBeSent['Title'] = cardTitle;
-
-  //   console.log('messagesToBeSent.Title', messagesToBeSent.Title);
-  // }, [cardTitle]);
-
-  // useEffect(() => {
-  //   messagesToBeSent['Notes'] = cardNotes;
-  //   console.log('test effect222', messagesToBeSent.Notes);
-  // }, [cardNotes]);
-
   const handleTransferAfterConfirm = useCallback(async () => {
-    // console.log(category);
-
     // 記住object re-render的雷
     messagesToBeSent.Title = cardTitle;
     messagesToBeSent.Notes = cardNotes;
 
-    // console.log('堂新民', messagesToBeSent);
-    // TODO:
     // 1. 按下確認後，儲存至DB以及store
     // POST API (帶message ID即可)
     // store action and (帶整串，因為等等要用整串渲染右邊卡片區)

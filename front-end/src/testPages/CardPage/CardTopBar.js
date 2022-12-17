@@ -51,7 +51,7 @@ const RootWrapper = styled(Box)(
           align-items: center;
           justify-content: space-between;
       }
-`
+`,
 );
 
 const TabsContainerWrapper = styled(Box)(
@@ -80,7 +80,7 @@ const TabsContainerWrapper = styled(Box)(
                 color: ${theme.colors.alpha.black[100]};
             }
         }
-  `
+  `,
 );
 
 const roles = [
@@ -103,7 +103,7 @@ function CardTopBar({
   const handleTabsChange = (_event, value) => {
     setCurrentTab(value);
     // 將?category= 設為該value，可以設很多種，例如keyword
-    console.log(value);
+
     searchParams.set('category', value);
     // 改變url
     setSearchParams(searchParams);
@@ -113,9 +113,9 @@ function CardTopBar({
   const fetchCardByCategory = async () => {
     const category = searchParams.get('category');
     // 帶著category打api
-    console.log(fromId);
+
     const response = await api.fetchCardByCategory(category, token, fromId);
-    console.log('api', response);
+
     setCardsListByCategory(response.data);
   };
 
@@ -124,7 +124,6 @@ function CardTopBar({
 
   // location改變的時候同時也fetch api (card category)
   useEffect(() => {
-    console.log(location);
     fetchCardByCategory();
   }, [location]);
 

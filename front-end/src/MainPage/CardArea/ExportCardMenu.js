@@ -49,11 +49,10 @@ export const ExportCardMenu = ({ cardsToBeExporting, exportToNotion }) => {
       notionStatus: status,
       cardsToBeExporting: exportCard,
     };
-    console.log(exportedInfo);
+
     api.exportToNotionAPI(exportedInfo);
     // exportToNotion(exportedInfo);
     setOpen(false);
-    console.log(1);
   };
 
   return (
@@ -111,5 +110,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToPropse,
-  mapActionsToProps
+  mapActionsToProps,
 )(ExportCardMenu);

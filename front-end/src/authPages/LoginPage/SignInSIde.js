@@ -62,15 +62,10 @@ const SignInSide = ({ login }) => {
   const handleLogin = async (event) => {
     event.preventDefault();
     // const data = new FormData(event.currentTarget);
-    console.log({
-      mail: mail,
-      password: password,
-    });
+
     const loginData = { mail, password };
     // auth action
     const result = await login(loginData, forwardTo);
-
-    console.log(result);
 
     if (result !== 200) {
       Toast.fire({

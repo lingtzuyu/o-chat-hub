@@ -94,7 +94,6 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
       value = e.target.value;
     }
     setCategoryMenu(value);
-    console.log('category', value);
   };
 
   const handleReadChange = (e) => {
@@ -104,7 +103,6 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
       value = e.target.value;
     }
     setReadMenu(value);
-    console.log('read', value);
   };
 
   const handleExportChange = (e) => {
@@ -114,7 +112,6 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
       value = e.target.value;
     }
     setExportMenu(value);
-    console.log('export', value);
   };
 
   const filterCategory = (array) => {
@@ -174,7 +171,7 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
     filterCards = filterCategory(filterCards);
     filterCards = filterRead(filterCards);
     filterCards = filterExport(filterCards);
-    console.log(filterCards);
+
     setFilteredCards(filterCards);
   }, [categoryMenu, readMenu, exportMenu]);
 

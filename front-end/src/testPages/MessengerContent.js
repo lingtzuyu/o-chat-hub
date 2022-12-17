@@ -6,9 +6,6 @@ import { MeesageIfNoChosenContact } from './component/MessageIfNoChosenContact';
 import ChatContent from './ChatContent';
 
 const MessengerContent = ({ chosenChatDetails }) => {
-  // chosenChatDetails如果忘記，想想你在MessageStatusBar.js那編取值卡多久
-  console.log('Messenger內', chosenChatDetails);
-
   // useEffect(() => {
   //   getDirectMessageHistroy({
   //     receiverUserId: chosenChatDetails.id,

@@ -68,7 +68,6 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function UserIcon({ userInfoDetail, userName, organizationInStore }) {
-  console.log('profile葉面', userName);
   const location = useLocation();
   const navigate = useNavigate();
 

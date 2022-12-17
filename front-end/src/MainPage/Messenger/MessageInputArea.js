@@ -36,9 +36,6 @@ const MessageInputArea = ({ chosenChatDetails }) => {
   // send Messaages to mongoDB
 
   const sendMessages = () => {
-    console.log('send Message to DB successful');
-
-    // TODO: 在socketConnection中設立發訊息事件
     // 防止空的messgage
     if (messageToBeSent.length > 0) {
       sendDirectMessge({

@@ -153,39 +153,39 @@ const MessageLeft = ({
         MessageCollectionArray.push(selectedMessage);
         window.localStorage.setItem(
           'selectedMessagesCollection',
-          JSON.stringify(MessageCollectionArray)
+          JSON.stringify(MessageCollectionArray),
         );
       } else {
         // parse localStorage內的array後，push新selected並存入
         const messageCollectionFromLocal = JSON.parse(
-          window.localStorage.getItem('selectedMessagesCollection')
+          window.localStorage.getItem('selectedMessagesCollection'),
         );
 
         messageCollectionFromLocal.push(selectedMessage);
         window.localStorage.setItem(
           'selectedMessagesCollection',
-          JSON.stringify(messageCollectionFromLocal)
+          JSON.stringify(messageCollectionFromLocal),
         );
       }
     } else {
       setSelected(false);
       let messageArrayToBeRemoved = JSON.parse(
-        window.localStorage.getItem('selectedMessagesCollection')
+        window.localStorage.getItem('selectedMessagesCollection'),
       );
 
       // find object and index
 
       const removedMessage = messageArrayToBeRemoved.find(
-        (message) => message.messageId === mapKey
+        (message) => message.messageId === mapKey,
       );
       const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
-      console.log('被移除的index', removedIndex);
+
       // 移除該index
       messageArrayToBeRemoved.splice(removedIndex, 1);
-      console.log('更新後的', messageArrayToBeRemoved);
+
       window.localStorage.setItem(
         'selectedMessagesCollection',
-        JSON.stringify(messageArrayToBeRemoved)
+        JSON.stringify(messageArrayToBeRemoved),
       );
     }
   };
@@ -246,39 +246,39 @@ const MessageRight = ({
         MessageCollectionArray.push(selectedMessage);
         window.localStorage.setItem(
           'selectedMessagesCollection',
-          JSON.stringify(MessageCollectionArray)
+          JSON.stringify(MessageCollectionArray),
         );
       } else {
         // parse localStorage內的array後，push新selected並存入
         const messageCollectionFromLocal = JSON.parse(
-          window.localStorage.getItem('selectedMessagesCollection')
+          window.localStorage.getItem('selectedMessagesCollection'),
         );
 
         messageCollectionFromLocal.push(selectedMessage);
         window.localStorage.setItem(
           'selectedMessagesCollection',
-          JSON.stringify(messageCollectionFromLocal)
+          JSON.stringify(messageCollectionFromLocal),
         );
       }
     } else {
       setSelected(false);
       let messageArrayToBeRemoved = JSON.parse(
-        window.localStorage.getItem('selectedMessagesCollection')
+        window.localStorage.getItem('selectedMessagesCollection'),
       );
 
       // find object and index
 
       const removedMessage = messageArrayToBeRemoved.find(
-        (message) => message.messageId === mapKey
+        (message) => message.messageId === mapKey,
       );
       const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
-      console.log('被移除的index', removedIndex);
+
       // 移除該index
       messageArrayToBeRemoved.splice(removedIndex, 1);
-      console.log('更新後的', messageArrayToBeRemoved);
+
       window.localStorage.setItem(
         'selectedMessagesCollection',
-        JSON.stringify(messageArrayToBeRemoved)
+        JSON.stringify(messageArrayToBeRemoved),
       );
     }
   };

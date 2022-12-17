@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 
 // 顯示Username以及mail
 const SelectedChat = ({ name }) => {
-  //  注意這邊這個name是下面connect後傳來得
-  console.log('SelectedChat內', name);
   return (
     <>
       <Typography

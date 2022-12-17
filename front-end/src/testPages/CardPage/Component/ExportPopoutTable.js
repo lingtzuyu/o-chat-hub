@@ -46,7 +46,7 @@ const AvatarGradient = styled(Avatar)(
   ({ theme }) => `
         background: ${theme.colors.gradients.blue1};
         color: ${theme.colors.alpha.trueWhite[100]};
-    `
+    `,
 );
 
 const DotLegend = styled('span')(
@@ -56,7 +56,7 @@ const DotLegend = styled('span')(
       height: 10px;
       display: inline-block;
       margin-right: ${theme.spacing(0.5)};
-  `
+  `,
 );
 
 const OutlinedInputWrapper = styled(OutlinedInput)(
@@ -66,7 +66,7 @@ const OutlinedInputWrapper = styled(OutlinedInput)(
       .MuiOutlinedInput-notchedOutline {
           border: 0;
       }
-  `
+  `,
 );
 
 const ListWrapper = styled(List)(
@@ -74,7 +74,7 @@ const ListWrapper = styled(List)(
       .MuiListItem-root:last-of-type + .MuiDivider-root {
           display: none;
       }
-  `
+  `,
 );
 const Toast = Swal.mixin({
   toast: true,
@@ -149,7 +149,6 @@ function ExportPopoutTable({
 
   const inputTodoChange = (e) => {
     setInputTodo(e.target.value);
-    console.log(e.target.value);
   };
 
   const handleCancel = () => {
@@ -431,5 +430,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToPropse,
-  mapActionsToProps
+  mapActionsToProps,
 )(ExportPopoutTable);

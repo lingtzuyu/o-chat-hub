@@ -31,7 +31,7 @@ const ListWrapper = styled(List)(
     .MuiDivider-root:first-of-type {
         display: none;
     }
-  `
+  `,
 );
 
 function QuickMessageView({
@@ -41,12 +41,9 @@ function QuickMessageView({
   friends,
   userInfoDetail,
 }) {
-  // console.log('最底層', messageRecords);
-
   const theme = useTheme();
 
   const handleCloseThisDialog = () => {
-    console.log('這有啥', messagesInQuickView);
     setMessageView(false);
   };
 
@@ -161,5 +158,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToProps,
-  mapActionsToProps
+  mapActionsToProps,
 )(QuickMessageView);

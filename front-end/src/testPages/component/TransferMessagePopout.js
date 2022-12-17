@@ -32,7 +32,7 @@ export const TransferMessagePopout = ({
   const [cardNotes, setCardNotes] = useState('write a good note');
   // 帶著accessToken認證欲儲存的訊息
   const messagesCollectionInString = localStorage.getItem(
-    'selectedMessagesCollection'
+    'selectedMessagesCollection',
   );
   // const messagesArray = JSON.parse(messagesCollectionInString);
   const accessToken = localStorage.getItem('accessToken');
@@ -46,25 +46,11 @@ export const TransferMessagePopout = ({
     token: accessToken,
   };
 
-  // useEffect(() => {
-  //   messagesToBeSent['Title'] = cardTitle;
-
-  //   console.log('messagesToBeSent.Title', messagesToBeSent.Title);
-  // }, [cardTitle]);
-
-  // useEffect(() => {
-  //   messagesToBeSent['Notes'] = cardNotes;
-  //   console.log('test effect222', messagesToBeSent.Notes);
-  // }, [cardNotes]);
-
   const handleTransferAfterConfirm = () => {
-    // console.log(category);
-
     // 記住object re-render的雷
     messagesToBeSent.Title = cardTitle;
     messagesToBeSent.Notes = cardNotes;
 
-    // console.log('堂新民', messagesToBeSent);
     // TODO:
     // 1. 按下確認後，儲存至DB以及store
     // POST API (帶message ID即可)
@@ -156,5 +142,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToPropse,
-  mapActionsToProps
+  mapActionsToProps,
 )(TransferMessagePopout);

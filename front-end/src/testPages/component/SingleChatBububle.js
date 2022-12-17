@@ -35,7 +35,7 @@ const DividerWrapper = styled(Divider)(
         font-size: ${theme.typography.pxToRem(13)};
         color: ${theme.colors.alpha.black[50]};
       }
-`
+`,
 );
 
 // 自己發出去的訊息
@@ -50,7 +50,7 @@ const CardWrapperPrimary = styled(Card)(
       display: inline-flex;
       word-break: break-all;
       white-space: pre-wrap;
-`
+`,
 );
 
 // 別人回送的訊息
@@ -65,7 +65,7 @@ const CardWrapperSecondary = styled(Card)(
       display: inline-flex;
       word-break: break-all;
       white-space: pre-wrap;
-`
+`,
 );
 
 // 1. iterate下來，If 日期 == ，則繼續依照sender左右
@@ -90,9 +90,6 @@ const MessageRight = ({
   const photoURL = FakeProfilePic;
   const displayName = username ? username : 'no username';
 
-  // console.log('來自於我sameTime', sameTime);
-  // console.log('來自於我date', date);
-  // console.log('來自於我fromMe', fromMe);
   // checkbox是否被select到
   const [selected, setSelected] = useState(false);
 
@@ -115,30 +112,30 @@ const MessageRight = ({
         MessageCollectionArray.push(selectedMessage);
         window.localStorage.setItem(
           'selectedMessagesCollection',
-          JSON.stringify(MessageCollectionArray)
+          JSON.stringify(MessageCollectionArray),
         );
       } else {
         // parse localStorage內的array後，push新selected並存入
         const messageCollectionFromLocal = JSON.parse(
-          window.localStorage.getItem('selectedMessagesCollection')
+          window.localStorage.getItem('selectedMessagesCollection'),
         );
 
         messageCollectionFromLocal.push(selectedMessage);
         window.localStorage.setItem(
           'selectedMessagesCollection',
-          JSON.stringify(messageCollectionFromLocal)
+          JSON.stringify(messageCollectionFromLocal),
         );
       }
     } else {
       setSelected(false);
       let messageArrayToBeRemoved = JSON.parse(
-        window.localStorage.getItem('selectedMessagesCollection')
+        window.localStorage.getItem('selectedMessagesCollection'),
       );
 
       // find object and index
 
       const removedMessage = messageArrayToBeRemoved.find(
-        (message) => message.messageId === mapKey
+        (message) => message.messageId === mapKey,
       );
       const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
 
@@ -147,7 +144,7 @@ const MessageRight = ({
 
       window.localStorage.setItem(
         'selectedMessagesCollection',
-        JSON.stringify(messageArrayToBeRemoved)
+        JSON.stringify(messageArrayToBeRemoved),
       );
     }
   };
@@ -250,30 +247,30 @@ const MessageLeft = ({
         MessageCollectionArray.push(selectedMessage);
         window.localStorage.setItem(
           'selectedMessagesCollection',
-          JSON.stringify(MessageCollectionArray)
+          JSON.stringify(MessageCollectionArray),
         );
       } else {
         // parse localStorage內的array後，push新selected並存入
         const messageCollectionFromLocal = JSON.parse(
-          window.localStorage.getItem('selectedMessagesCollection')
+          window.localStorage.getItem('selectedMessagesCollection'),
         );
 
         messageCollectionFromLocal.push(selectedMessage);
         window.localStorage.setItem(
           'selectedMessagesCollection',
-          JSON.stringify(messageCollectionFromLocal)
+          JSON.stringify(messageCollectionFromLocal),
         );
       }
     } else {
       setSelected(false);
       let messageArrayToBeRemoved = JSON.parse(
-        window.localStorage.getItem('selectedMessagesCollection')
+        window.localStorage.getItem('selectedMessagesCollection'),
       );
 
       // find object and index
 
       const removedMessage = messageArrayToBeRemoved.find(
-        (message) => message.messageId === mapKey
+        (message) => message.messageId === mapKey,
       );
       const removedIndex = messageArrayToBeRemoved.indexOf(removedMessage);
 
@@ -282,7 +279,7 @@ const MessageLeft = ({
 
       window.localStorage.setItem(
         'selectedMessagesCollection',
-        JSON.stringify(messageArrayToBeRemoved)
+        JSON.stringify(messageArrayToBeRemoved),
       );
     }
   };

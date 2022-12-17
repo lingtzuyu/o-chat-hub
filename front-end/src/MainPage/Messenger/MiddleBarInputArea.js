@@ -44,10 +44,8 @@ function BottomBarContent({ chosenChatDetails, userInfoDetail }) {
   };
 
   const sendMessages = () => {
-    // TODO: 在socketConnection中設立發訊息事件
     // 防止空的messgage
     if (messageToBeSent.length > 0) {
-      console.log(chosenChatDetails);
       sendDirectMessge({
         // 選擇好友的時候會存入的
         receiverId: chosenChatDetails.id,
@@ -56,8 +54,6 @@ function BottomBarContent({ chosenChatDetails, userInfoDetail }) {
     }
     // setMessage空直要放在送出資料後面，不然會直接先清空
     setMessageToBeSent('');
-
-    console.log('send Message to DB successful');
   };
 
   // 按下按鍵後就執行send Message

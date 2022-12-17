@@ -52,7 +52,6 @@ function BottomBarContent({ chosenChatDetails, userInfoDetail }) {
     // TODO: 在socketConnection中設立發訊息事件
     // 防止空的messgage
     if (messageToBeSent.length > 0) {
-      console.log(chosenChatDetails);
       sendDirectMessge({
         // 選擇好友的時候會存入的
         receiverId: chosenChatDetails.id,

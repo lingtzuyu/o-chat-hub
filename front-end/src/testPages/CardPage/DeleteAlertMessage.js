@@ -38,8 +38,6 @@ const ListWrapper = styled(List)(
 const accessToken = localStorage.getItem('accessToken');
 
 function DeleteAlertMessage({ isDeleteAlertOpen, setDeleteAlert, cardId }) {
-  // console.log('最底層', messageRecords);
-
   const deletedCardInfo = { data: { token: accessToken, cardId: cardId } };
 
   const theme = useTheme();

@@ -258,12 +258,12 @@ function CardDetail({
 
   // title value change
   const titleChangeHandler = (event) => {
-    console.log(event.target.value);
+    
     setInitialTitle(event.target.value);
   };
 
   const notesChangeHandler = (event) => {
-    console.log(event);
+    
     setInitialNotes(event);
   };
 
@@ -370,10 +370,10 @@ function CardDetail({
 
   const handleChangeCategory = async (e) => {
     const categoryChange = e.target.value;
-    console.log(categoryChange);
+    
     const response = await api.updateCategory(token, mapId, categoryChange);
     setIsCategoryOpen(false);
-    console.log(response);
+
     if (response.status === 200) {
       Toast.fire({
         icon: 'success',

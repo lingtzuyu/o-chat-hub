@@ -19,7 +19,6 @@ const modifyCardTitleAndNotes = async (cardId, title, notes, token) => {
     });
     return response.status;
   } catch (err) {
-    console.log(err);
     return { error: true, err };
   }
 };
@@ -33,7 +32,6 @@ const recoverPreviousNotionConnect = async (userId, token) => {
     });
     return response.status;
   } catch (err) {
-    console.log(err);
     return { error: true, err };
   }
 };
@@ -47,7 +45,6 @@ const setNotionDisconnect = async (userId, token) => {
     });
     return response.status;
   } catch (err) {
-    console.log(err);
     return { error: true, err };
   }
 };
@@ -150,7 +147,6 @@ const saveMessagesToNote = async (data) => {
   try {
     return await apiClient.post('/card/notes', data);
   } catch (err) {
-    console.log(err);
     return { error: true, err };
   }
 };
@@ -165,33 +161,18 @@ const getCardHistory = async (data) => {
     const cards = result.data;
     return cards;
   } catch (err) {
-    console.log(err);
     return { error: true, err };
   }
 };
 
-// fetch last 5 for notification
-// const getLastFiveCard = async (data) => {
-//   try {
-//     const result = await apiClient.get('/card/lastfive', {
-//       params: { token: data },
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     return { error: true, err };
-//   }
-// };
-
 // category serach API
 const fetchCardByCategory = async (category, token, fromId) => {
   try {
-    console.log('api.js內', fromId);
     const response = await apiClient.get(`/card/details/${category}`, {
       params: { token: token, category: category, fromId: fromId },
     });
     return response;
   } catch (err) {
-    console.log(err);
     return { error: true, err };
   }
 };
@@ -203,10 +184,9 @@ const getNotionToken = async (code, token) => {
       code: code,
       token: token,
     });
-    console.log('這邊的res', response);
+
     return response.status;
   } catch (err) {
-    console.log(err);
     return { error: true, err };
   }
 };
@@ -272,10 +252,9 @@ const getFriendUserName = async (friendId, userId, accessToken) => {
     const result = await apiClient.get('/friend/username', {
       params: { token: accessToken, userId: userId, friendId: friendId },
     });
-    console.log(result);
+
     return result;
   } catch (err) {
-    console.log(err);
     return { error: true, err };
   }
 };
@@ -287,7 +266,7 @@ const clearNotionLinkForever = async (accessToken) => {
         Authorization: accessToken,
       },
     });
-    console.log(result);
+
     return result;
   } catch (err) {
     return { error: true, err };

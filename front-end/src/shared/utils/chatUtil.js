@@ -9,14 +9,10 @@ const updateDirectMessageIfMatch = (data) => {
   // receiverID可以在redux內的chat.chosenChatDetails內解出來
   const receiverId = store.getState().chat.chosenChatDetails?.id;
   const userId = store.getState().auth.userInfoDetail?.id;
-  // TODO: 待改，應該要從getState拿比較安全
-  // const userIdString = localStorage.getItem('userId');
-  // const userId = parseInt(userIdString);
-  // console.log("chatUtil來的receiverId",receiverId);
-  // console.log("chatUtil來的receiverId",userId);
+
   if (userId && receiverId) {
     const participantsOfChat = [receiverId, userId];
-    console.log(participantsOfChat);
+
     // 比對 送回來的{participants:[],messages:[]}
     // participants內的id要和receiverId及userId一樣
     updateChatHistoryIfChatExist({

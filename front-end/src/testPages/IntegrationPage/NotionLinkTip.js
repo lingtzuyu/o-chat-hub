@@ -48,7 +48,7 @@ const CardActionAreaWrapper = styled(Box)(
             opacity: .05;
           }
         }
-  `
+  `,
 );
 
 const Toast = Swal.mixin({
@@ -65,11 +65,9 @@ const NotionLinkTip = () => {
   const token = localStorage.getItem('accessToken');
   const code = params.get('code');
   const webRoute = process.env.REACT_APP_WEB_ROUTE;
-  console.log('AAAAAAAAAAAAAA', webRoute);
 
   const handleSaveNotionToken = async () => {
     const result = await api.getNotionToken(code, token);
-    // console.log('前端', code);
 
     if (result !== 200) {
       await Toast.fire({

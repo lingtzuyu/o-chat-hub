@@ -20,7 +20,6 @@ function TransferMessageButton({
   const [isPopoutOpen, setIsPopoutOpen] = useState(false);
 
   const handleTransferMessage = () => {
-    console.log('chosenChatDetails', chosenChatDetails.name);
     // 1. 彈出視窗
     setIsPopoutOpen(true);
     // 2. 取得分類訊息並儲存在store中
@@ -77,5 +76,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToPropse,
-  mapActionsToProps
+  mapActionsToProps,
 )(TransferMessageButton);

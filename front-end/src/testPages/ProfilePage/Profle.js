@@ -101,9 +101,8 @@ function Profile({
   organizationInStore,
   setNewOrganizationInStore,
 }) {
-  console.log(user.notiondblink);
   const notionOauthClient = process.env.REACT_APP_NOTION_OAUTHID;
-  console.log(notionOauthClient);
+
   const accessToken = localStorage.getItem('accessToken');
   const userId = userInfoDetail?.id;
   const theme = useTheme();
@@ -155,7 +154,6 @@ function Profile({
   };
 
   const organizationChangeHandler = (event) => {
-    console.log(event.target.value);
     setNewOrganizationInStore(event.target.value);
   };
 
@@ -174,9 +172,8 @@ function Profile({
     }).then(async (result) => {
       if (result.isConfirmed) {
         const result = await api.clearNotionLinkForever(accessToken);
-        console.log(result);
+
         if (result.status === 200) {
-          console.log('ready to link new notion');
           window.location.href = `https://api.notion.com/v1/oauth/authorize?client_id=${notionOauthClient}&response_type=code&owner=user`;
         }
       }
@@ -228,7 +225,7 @@ function Profile({
           userId,
           accessToken,
         );
-        console.log(responseCode);
+
         if (responseCode !== 200) {
           Toast.fire({
             icon: 'warning',

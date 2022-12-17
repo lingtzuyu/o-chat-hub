@@ -235,8 +235,7 @@ export const saveTransferredMessagesToMongo = (data) => {
   return async (dispatch) => {
     const response = await api.saveMessagesToNote(data);
     const noteId = response.data.noteId;
-    console.log('預存的筆記資料', data);
-    // TODO: 發送ALERT訊息到 (用response.systemInfo)
+
     dispatch(setTransferredMessagesToStore(data, noteId));
     // 再發到這邊做新增或是刪除改變的偵測
     dispatch(addOrDeleteCard(data));
@@ -244,7 +243,6 @@ export const saveTransferredMessagesToMongo = (data) => {
 };
 
 export const setTransferredMessagesToStore = (data, noteId) => {
-  console.log(noteId);
   return {
     type: cardActions.SET_TRANSFFERED_MESSAGES_NOTE,
     transfferedMessages: data.messagesToBeSaved,

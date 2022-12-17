@@ -61,8 +61,6 @@ const NoteCard = ({
     };
 
     selecteExportCards(selectedCardInfo);
-
-    console.log(selectedCardInfo);
   };
 
   return (

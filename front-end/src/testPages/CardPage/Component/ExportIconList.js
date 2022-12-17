@@ -99,7 +99,6 @@ function ExportIconList({
   const [isPopoutOpen, setIsPopoutOpen] = useState(false);
 
   const handleExport = () => {
-    console.log('handle export button');
     // 打開ExportPopout
     handleClose();
     setIsPopoutOpen(true);

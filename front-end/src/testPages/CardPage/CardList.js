@@ -56,7 +56,7 @@ function CardList({
 
     // 帶著category打api
     const response = await api.fetchCardByCategory(categoryParam, accessToken);
-    console.log('api', response);
+
     setCardsListByCategory(response.data);
   };
 
@@ -101,7 +101,6 @@ function CardList({
         >
           {cards?.map((card) => {
             if (card.Category === 'work') {
-              console.log('card', card);
               return (
                 <CardBuilder
                   cardId={card._id}

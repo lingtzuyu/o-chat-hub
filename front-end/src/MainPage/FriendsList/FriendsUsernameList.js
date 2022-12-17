@@ -23,7 +23,6 @@ const checkOnline = (friends = [], onlineUsers = []) => {
 
 // 從props來的friends => connect to store
 const FriendsUsernameList = ({ friends, onlineUsers }) => {
-  // console.log("UserList", friends);
   return (
     <FriedListWrapper>
       {/* 拆解出來渲染 */}
