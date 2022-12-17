@@ -7,9 +7,16 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import FakeAvatar from '../../shared/images/fake_avatar.png';
+import { connect } from 'react-redux';
 
-export const SingleMessageList = ({ sender, content, date, id }) => {
-  const myMail = localStorage.getItem('userMail');
+export const SingleMessageList = ({
+  sender,
+  content,
+  date,
+  id,
+  userInfoDetail,
+}) => {
+  const myMail = userInfoDetail?.mail;
   return (
     <List
       sx={{
@@ -44,3 +51,9 @@ export const SingleMessageList = ({ sender, content, date, id }) => {
     </List>
   );
 };
+
+const mapStoreStateToProps = ({ card, auth }) => {
+  return { ...card, ...auth };
+};
+
+export default connect(mapStoreStateToProps)(SingleMessageList);

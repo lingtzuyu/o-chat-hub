@@ -49,7 +49,7 @@ const AvatarSuccess = styled(Avatar)(
           height: ${theme.spacing(8)};
           margin-left: auto;
           margin-right: auto;
-    `
+    `,
 );
 
 const MeetingBox = styled(Box)(
@@ -58,13 +58,13 @@ const MeetingBox = styled(Box)(
           margin: ${theme.spacing(2)} 0;
           border-radius: ${theme.general.borderRadius};
           padding: ${theme.spacing(2)};
-    `
+    `,
 );
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
         padding: ${theme.spacing(2.5)};
-  `
+  `,
 );
 
 const ListItemWrapper = styled(ListItemButton)(
@@ -72,7 +72,7 @@ const ListItemWrapper = styled(ListItemButton)(
         &.MuiButtonBase-root {
             margin: ${theme.spacing(1)} 0;
         }
-  `
+  `,
 );
 
 const TabsContainerWrapper = styled(Box)(
@@ -101,7 +101,7 @@ const TabsContainerWrapper = styled(Box)(
                 color: ${theme.colors.alpha.black[100]};
             }
         }
-  `
+  `,
 );
 
 // 檢查線上狀態更改綠點或是紅點
@@ -123,7 +123,7 @@ function SidebarContent({
   pendingInvitation,
   userInfoDetail,
 }) {
-  const userMail = localStorage.getItem('userMail');
+  const userMail = userInfoDetail?.mail;
   // TODO: 取得username的方式來取代name
 
   const user = { name: userMail, mail: userMail };

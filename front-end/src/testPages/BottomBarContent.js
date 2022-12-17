@@ -25,7 +25,7 @@ const MessageInputWrapper = styled(InputBase)(
     font-size: ${theme.typography.pxToRem(18)};
     padding: ${theme.spacing(1)};
     width: 100%;
-`
+`,
 );
 
 const Input = styled('input')({
@@ -34,7 +34,7 @@ const Input = styled('input')({
 
 function BottomBarContent({ chosenChatDetails, userInfoDetail }) {
   // TODO: 要改透過redux拿到
-  const userMail = localStorage.getItem('userMail');
+  const userMail = userInfoDetail?.mail;
   const [messageToBeSent, setMessageToBeSent] = useState('');
   const theme = useTheme();
 

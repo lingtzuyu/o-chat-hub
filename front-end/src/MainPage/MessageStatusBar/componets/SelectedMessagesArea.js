@@ -11,12 +11,12 @@ import FakeAvatar from '../../../shared/images/fake_avatar.png';
 import { getActions } from '../../../store/actions/card_actions';
 import { connect } from 'react-redux';
 
-export const SelectedMessagesArea = () => {
+export const SelectedMessagesArea = (userInfoDetail) => {
   const messagesCollectionInString = localStorage.getItem(
-    'selectedMessagesCollection'
+    'selectedMessagesCollection',
   );
   const messagesArray = JSON.parse(messagesCollectionInString);
-  const myMail = localStorage.getItem('userMail');
+  const myMail = userInfoDetail?.mail;
 
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -61,8 +61,8 @@ export const SelectedMessagesArea = () => {
   );
 };
 
-const mapStoreStateToProps = ({ card }) => {
-  return { ...card };
+const mapStoreStateToProps = ({ card, auth }) => {
+  return { ...card, ...auth };
 };
 
 const mapActionsToProps = (dispatch) => {
@@ -71,5 +71,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToProps,
-  mapActionsToProps
+  mapActionsToProps,
 )(SelectedMessagesArea);

@@ -105,7 +105,7 @@ function Profile({
   const notionOauthClient = process.env.REACT_APP_NOTION_OAUTHID;
   console.log(notionOauthClient);
   const accessToken = localStorage.getItem('accessToken');
-  const userId = localStorage.getItem('userId');
+  const userId = userInfoDetail?.id;
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
   // const [newUserName, setNewUserName] = useState(user.username);

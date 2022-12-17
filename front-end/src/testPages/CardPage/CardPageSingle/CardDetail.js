@@ -249,7 +249,7 @@ function CardDetail({
   const [initialCategory, setInitialCategory] = useState(category);
 
   const token = localStorage.getItem('accessToken');
-  const userId = localStorage.getItem('userId');
+  const userId = userInfoDetail?.id;
 
   // edit 標題及內文
   const handleEditTitle = () => {

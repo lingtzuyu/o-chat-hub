@@ -25,7 +25,7 @@ const DividerWrapper = styled(Divider)(
         font-size: ${theme.typography.pxToRem(13)};
         color: ${theme.colors.alpha.black[50]};
       }
-`
+`,
 );
 
 const CardWrapperPrimary = styled(Card)(
@@ -37,7 +37,7 @@ const CardWrapperPrimary = styled(Card)(
       border-top-right-radius: ${theme.general.borderRadius};
       max-width: 380px;
       display: inline-flex;
-`
+`,
 );
 
 const CardWrapperSecondary = styled(Card)(
@@ -49,16 +49,17 @@ const CardWrapperSecondary = styled(Card)(
       border-top-left-radius: ${theme.general.borderRadius};
       max-width: 380px;
       display: inline-flex;
-`
+`,
 );
 
 function ChatContent({
+  userInfoDetail,
   chosenChatDetails,
   messages,
   isSelectedMessageBoxShown,
   isSelectMessageBoxDisabled,
 }) {
-  const userId = window.localStorage.getItem('userId');
+  const userId = userInfoDetail?.id;
 
   // 選中某個id的時後的第一次渲染
   useEffect(() => {
@@ -117,8 +118,8 @@ function ChatContent({
   );
 }
 
-const mapStoreStateToProps = ({ chat, card }) => {
-  return { ...chat, ...card };
+const mapStoreStateToProps = ({ chat, card, auth }) => {
+  return { ...chat, ...card, ...auth };
 };
 
 export default connect(mapStoreStateToProps)(ChatContent);
