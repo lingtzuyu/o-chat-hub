@@ -83,7 +83,7 @@ const CardBuilderKnowledge = ({
   const handleCardInfo = { token: accessToken, cardId: cardId };
   const theme = useTheme();
   const [selected, setSelected] = useState(liked);
-
+  const [isTransferred, setIsTransferred] = useState(transferred);
   const handleOpenMessageView = () => {
     // 把值傳到state去做渲染
     setMessagesArrayInQuickView(messageRecords);
@@ -223,6 +223,7 @@ const CardBuilderKnowledge = ({
           {/* export到第三方 */}
           <Box marginTop="2px" marginLeft="9px">
             <ExportIconList
+              setIsTransferred={setIsTransferred}
               cardId={cardId}
               noteTime={noteTime}
               from={from}

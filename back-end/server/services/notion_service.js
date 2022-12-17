@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const axios = require('axios');
 
+const NotionModel = require('../models/notion_model');
+
 const { Client } = require('@notionhq/client');
 
 const { APIException } = require('./exceptions/api_exception');
@@ -174,4 +176,17 @@ const createNotionPage = (
   }
 };
 
-module.exports = { issueNotionRequest, createNotionPage };
+const clearNotionTokenLogic = async (userId) => {
+  const notionExist = await NotionModel.checkNotionTokenExist(userId);
+  if (notionExist[0] !== undefined || null) {
+    await NotionModel.clearNotionConnect(userId);
+    return true;
+  }
+  return true;
+};
+
+module.exports = {
+  issueNotionRequest,
+  createNotionPage,
+  clearNotionTokenLogic,
+};

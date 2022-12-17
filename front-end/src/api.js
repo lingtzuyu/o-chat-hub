@@ -280,6 +280,20 @@ const getFriendUserName = async (friendId, userId, accessToken) => {
   }
 };
 
+const clearNotionLinkForever = async (accessToken) => {
+  try {
+    const result = await apiClient.delete('/notion/token', {
+      headers: {
+        Authorization: accessToken,
+      },
+    });
+    console.log(result);
+    return result;
+  } catch (err) {
+    return { error: true, err };
+  }
+};
+
 export {
   login,
   signup,
@@ -303,4 +317,5 @@ export {
   modifyCardTitleAndNotes,
   updateCategory,
   getFriendUserName,
+  clearNotionLinkForever,
 };

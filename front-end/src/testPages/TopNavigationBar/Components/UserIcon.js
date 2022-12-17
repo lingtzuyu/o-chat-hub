@@ -36,21 +36,21 @@ const UserBoxButton = styled(Button)(
         &:hover {
           color: ${theme.colors.alpha.trueWhite[100]};
         }
-`
+`,
 );
 
 const MenuUserBox = styled(Box)(
   ({ theme }) => `
         background: ${theme.colors.alpha.black[5]};
         padding: ${theme.spacing(2)};
-`
+`,
 );
 
 const UserBoxText = styled(Box)(
   ({ theme }) => `
         text-align: left;
         padding-left: ${theme.spacing(1)};
-`
+`,
 );
 
 const UserBoxLabel = styled(Typography)(
@@ -58,13 +58,13 @@ const UserBoxLabel = styled(Typography)(
         font-weight: ${theme.typography.fontWeightBold};
         color: ${theme.palette.secondary.main};
         display: block;
-`
+`,
 );
 
 const UserBoxDescription = styled(Typography)(
   ({ theme }) => `
         color: ${theme.palette.secondary.light}
-`
+`,
 );
 
 function UserIcon({ userInfoDetail, userName, organizationInStore }) {
@@ -131,7 +131,7 @@ function UserIcon({ userInfoDetail, userName, organizationInStore }) {
           }}
           display="flex"
         >
-          <Avatar variant="rounded" alt={'name'} src={TempProfile} />
+          <Avatar variant="rounded" alt={'name'} src={userInfoDetail?.photo} />
           <UserBoxText>
             <UserBoxLabel variant="body1">
               {userInfoDetail?.username}

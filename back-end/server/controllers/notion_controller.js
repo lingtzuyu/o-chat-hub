@@ -106,6 +106,14 @@ const exportToNotion = async (req, res) => {
     .json({ msg: 'Export to Notion successfully', link: result });
 };
 
+// clear notion token and notion link forever
+const clearNotionLink = async (req, res) => {
+  const { userId } = req.user;
+  const result = await NotionService.clearNotionTokenLogic(userId);
+  console.log('result', result);
+  return res.status(200).json({ msg: 'Notion db link totally removed' });
+};
+
 module.exports = {
   getNotionToken,
   exportToNotion,
@@ -113,4 +121,5 @@ module.exports = {
   checkNotionTokenWhenExporting,
   removeNotionToken,
   recoverNotionToken,
+  clearNotionLink,
 };

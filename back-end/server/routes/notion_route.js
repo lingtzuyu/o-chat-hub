@@ -9,7 +9,9 @@ const {
   checkNotionTokenWhenExporting,
   removeNotionToken,
   recoverNotionToken,
+  clearNotionLink,
 } = require('../controllers/notion_controller');
+const { clearNotionConnect } = require('../models/notion_model');
 
 // create notion connection
 router
@@ -18,7 +20,8 @@ router
     wrapAsync(verifiedAuth),
     wrapAsync(checkNotionToken),
     wrapAsync(getNotionToken),
-  );
+  )
+  .delete(wrapAsync(verifiedAuth), wrapAsync(clearNotionLink));
 
 // remove notion connection
 router

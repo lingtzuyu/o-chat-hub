@@ -91,9 +91,9 @@ const login = (userDetails, forwardTo) => {
         'accessToken',
         response.data.data.tokeninfo.accessToken,
       );
-      // FIXME: 找到哪裡受影響後刪除，後面應該全用token去解
-      localStorage.setItem('userMail', response.data.data.userinfo.mail);
-      localStorage.setItem('userId', response.data.data.userinfo.userId);
+      // // FIXME: 找到哪裡受影響後刪除，後面應該全用token去解
+      // localStorage.setItem('userMail', response.data.data.userinfo.mail);
+      // localStorage.setItem('userId', response.data.data.userinfo.userId);
 
       // 改變store state (redux)
       dispatch(setUserDetails(userDetails));

@@ -30,10 +30,12 @@ import Label from '../../shared/components/Lable';
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import Swal from 'sweetalert2';
 
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import ContactSupportTwoToneIcon from '@mui/icons-material/ContactSupportTwoTone';
+import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
 import AddLinkTwoToneIcon from '@mui/icons-material/AddLinkTwoTone';
 import LinkOffTwoToneIcon from '@mui/icons-material/LinkOffTwoTone';
 import InsertLinkTwoToneIcon from '@mui/icons-material/InsertLinkTwoTone';
@@ -42,6 +44,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import { connect } from 'react-redux';
 import { getActions } from '../../store/actions/auth_actions';
 import * as api from '../../api';
+import { GiWindowBars } from 'react-icons/gi';
 
 const CardActions = styled(Box)(
   ({ theme }) => `
@@ -49,7 +52,7 @@ const CardActions = styled(Box)(
     right: ${theme.spacing(1.5)};
     top: ${theme.spacing(1.5)};
     z-index: 7;
-  `
+  `,
 );
 
 const CardActionAreaWrapper = styled(Box)(
@@ -70,7 +73,7 @@ const CardActionAreaWrapper = styled(Box)(
             opacity: .05;
           }
         }
-  `
+  `,
 );
 
 const DotLegend = styled('span')(
@@ -80,7 +83,7 @@ const DotLegend = styled('span')(
     height: 10px;
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
-`
+`,
 );
 
 const Toast = Swal.mixin({
@@ -93,10 +96,12 @@ const Toast = Swal.mixin({
 function Profile({
   user,
   userName,
+  userInfoDetail,
   setNewUserNameInStore,
   organizationInStore,
   setNewOrganizationInStore,
 }) {
+  console.log(user.notiondblink);
   const notionOauthClient = process.env.REACT_APP_NOTION_OAUTHID;
   console.log(notionOauthClient);
   const accessToken = localStorage.getItem('accessToken');
@@ -125,7 +130,7 @@ function Profile({
     const response = await api.updateUserName(
       accessToken,
       userName,
-      organizationInStore
+      organizationInStore,
     );
     if (response !== 200) {
       await Toast.fire({
@@ -155,9 +160,27 @@ function Profile({
   };
 
   // Notion Connect
-  const handleNotionConnect = () => {
+  const handleNotionConnect = async () => {
     // TODO: 待刪除，已經用直連代替了
-    console.log('test');
+    Swal.fire({
+      title: 'Are you sure?',
+      html: `<p>This will removed the original linked notion (if exists)and build a new one, your current linked notion page is<a href = ${user?.notiondblink} >${user?.notiondblink}</a></p>`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText:
+        'Remove the current one (if exists) and build a new linked notion',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const result = await api.clearNotionLinkForever(accessToken);
+        console.log(result);
+        if (result.status === 200) {
+          console.log('ready to link new notion');
+          window.location.href = `https://api.notion.com/v1/oauth/authorize?client_id=${notionOauthClient}&response_type=code&owner=user`;
+        }
+      }
+    });
   };
 
   // TODO: 待改，不能從local拿，不安全
@@ -191,7 +214,6 @@ function Profile({
 
   const handleRecover = () => {
     // 拿userId及token去回復
-    console.log(user.notiondblink);
     Swal.fire({
       title: 'Recover the previous notion DB',
       html: `<p>The previous Notion will be recovered and linked to your account again!<p><b>Notion Link:</b> <a href = ${user.notiondblink} >${user.notiondblink}</a></p>`,
@@ -204,7 +226,7 @@ function Profile({
       if (result.isConfirmed) {
         const responseCode = await api.recoverPreviousNotionConnect(
           userId,
-          accessToken
+          accessToken,
         );
         console.log(responseCode);
         if (responseCode !== 200) {
@@ -472,14 +494,14 @@ function Profile({
                             <AutorenewTwoToneIcon />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="connect to Notion (build a new linked Notion db)">
-                          <Link
-                            href={`https://api.notion.com/v1/oauth/authorize?client_id=${notionOauthClient}&response_type=code&owner=user`}
-                          >
-                            <IconButton onClick={handleNotionConnect}>
-                              <AddLinkTwoToneIcon />
-                            </IconButton>
-                          </Link>
+                        <Tooltip title="remove the current linked notion (if exists) and build a new linked Notion db">
+                          {/* <Link
+                      href={`https://api.notion.com/v1/oauth/authorize?client_id=${notionOauthClient}&response_type=code&owner=user`}
+                    > */}
+                          <IconButton onClick={handleNotionConnect}>
+                            <AddLinkTwoToneIcon color="action" />
+                          </IconButton>
+                          {/* </Link> */}
                         </Tooltip>
                       </Box>
                     )}
