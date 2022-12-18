@@ -1,34 +1,13 @@
-import React, { useState, forwardRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Avatar,
-  Box,
   Card,
-  Checkbox,
   Grid,
-  Slide,
-  Divider,
-  Tooltip,
-  IconButton,
   MenuItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TablePagination,
-  TableContainer,
-  TableRow,
-  TextField,
-  Button,
-  Typography,
-  Dialog,
   FormControl,
   Select,
   InputLabel,
-  Zoom,
-  InputAdornment,
-  styled,
 } from '@mui/material';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
+
 import { connect } from 'react-redux';
 import { getActions } from '../../../store/actions/card_actions';
 
@@ -94,7 +73,6 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
       value = e.target.value;
     }
     setCategoryMenu(value);
-    console.log('category', value);
   };
 
   const handleReadChange = (e) => {
@@ -104,7 +82,6 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
       value = e.target.value;
     }
     setReadMenu(value);
-    console.log('read', value);
   };
 
   const handleExportChange = (e) => {
@@ -114,7 +91,6 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
       value = e.target.value;
     }
     setExportMenu(value);
-    console.log('export', value);
   };
 
   const filterCategory = (array) => {
@@ -174,7 +150,7 @@ const CardPageTopBar = ({ cards, setFilteredCards }) => {
     filterCards = filterCategory(filterCards);
     filterCards = filterRead(filterCards);
     filterCards = filterExport(filterCards);
-    console.log(filterCards);
+
     setFilteredCards(filterCards);
   }, [categoryMenu, readMenu, exportMenu]);
 

@@ -58,7 +58,7 @@ const saveNotionTokenAndDBid = async (
       'Error when insert notion token, please try again',
       'Error occured when transaction while inserting notion token',
       'notionaccess',
-      'insert',
+      'transaction',
       'saveNotionTokenAndDBid',
     );
   } finally {
@@ -101,7 +101,7 @@ const removeNotionConnect = async (userId) => {
       'Error when remove notion connection, please try again',
       'Error occured when remove notion connection transaction',
       'notionaccess',
-      'update',
+      'transaction',
       'removeNotionConnect',
     );
   } finally {
@@ -143,8 +143,39 @@ const recoverNotionConnect = async (userId) => {
       'Error when recover notion connection, please try again',
       'Error occured when recover notion connection transaction',
       'notionaccess',
-      'update',
+      'transaction',
       'recoverNotionConnect',
+    );
+  } finally {
+    await conn.release();
+  }
+};
+
+// clear the notion connection (forever), if user linked before
+const clearNotionConnect = async (userId) => {
+  const conn = await sqlDB.getConnection();
+  try {
+    await conn.query('START TRANSACTION');
+
+    const notionTokenClearQuery = `DELETE 
+      FROM notionaccess 
+      WHERE user_id = ?`;
+
+    const notionLinkRemovedQuery = `Update user
+      SET notionConnect = 0, notiondblink = null
+      WHERE id =?`;
+
+    await conn.query(notionTokenClearQuery, [userId]);
+    await conn.query(notionLinkRemovedQuery, [userId]);
+    await conn.query('COMMIT');
+  } catch (err) {
+    await conn.query('ROLLBACK');
+    throw new SQLException(
+      'Error when clear notion token',
+      `Error occured when userId:${userId} is trying to clear notion token transaction`,
+      'notionaccess',
+      'transaction',
+      'clearNotionConnect',
     );
   } finally {
     await conn.release();
@@ -156,4 +187,5 @@ module.exports = {
   saveNotionTokenAndDBid,
   removeNotionConnect,
   recoverNotionConnect,
+  clearNotionConnect,
 };

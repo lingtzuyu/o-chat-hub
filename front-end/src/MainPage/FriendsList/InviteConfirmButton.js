@@ -1,8 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import CheckIcon from '@mui/icons-material/Check';
-import ClearIcon from '@mui/icons-material/Clear';
 import { GiConfirmed } from 'react-icons/gi';
 import { GiCancel } from 'react-icons/gi';
 //TODO: change to mui icons later

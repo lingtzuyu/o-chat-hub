@@ -2,10 +2,8 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import FriendDataItems from './FriendDataItems';
 import { connect } from 'react-redux';
-import { Typography } from '@mui/material';
 import FriendsListLabel from './FriendsListLabel';
 import { AddFriendIcon } from '../../MainPage/FriendsList/AddFriendIcon';
-import List from '@mui/joy/List';
 
 // MainContainer
 const MainContainer = styled('div')({
@@ -56,7 +54,6 @@ const checkOnline = (friends = [], onlineUsers = []) => {
 // TODO: 改寫FriendsUsernameList
 // 從props來的friends => connect to store
 const FriedListBarWithTitle = ({ friends, onlineUsers }) => {
-  // console.log("UserList", friends);
   return (
     <MainContainer>
       <LeftFriendListTitleContainer>

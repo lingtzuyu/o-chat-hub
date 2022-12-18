@@ -12,10 +12,10 @@ import { connect } from 'react-redux';
 
 export const SelectedMessagesArea = ({ friends, userInfoDetail }) => {
   const messagesCollectionInString = localStorage.getItem(
-    'selectedMessagesCollection'
+    'selectedMessagesCollection',
   );
   const messagesArray = JSON.parse(messagesCollectionInString);
-  const myMail = localStorage.getItem('userMail');
+  const myMail = userInfoDetail?.mail;
 
   const setFromPicture = (friendmail) => {
     const target = friends.find((ele) => ele.mail === friendmail);
@@ -89,5 +89,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToProps,
-  mapActionsToProps
+  mapActionsToProps,
 )(SelectedMessagesArea);

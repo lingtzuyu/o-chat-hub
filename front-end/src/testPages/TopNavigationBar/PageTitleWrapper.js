@@ -1,12 +1,4 @@
-import {
-  Box,
-  styled,
-  Card,
-  IconButton,
-  Tooltip,
-  alpha,
-  Link,
-} from '@mui/material';
+import { Box, styled, Card, IconButton, alpha, Link } from '@mui/material';
 import TopButtonGroup from './TopbuttonGroup';
 import UserIcon from './Components/UserIcon';
 import MainLogo from '../../shared/images/TopBar-Logo.png';
@@ -16,7 +8,7 @@ const PageTitle = styled(Box)(
   ({ theme }) => `
         padding: ${theme.spacing(1)};
       
-`
+`,
 );
 
 const HeaderWrapper = styled(Card)(
@@ -34,7 +26,7 @@ const HeaderWrapper = styled(Card)(
     display: flex;
     align-items: center;
     border-radius: 0;
-`
+`,
 );
 
 const IconButtonPrimary = styled(IconButton)(
@@ -53,7 +45,7 @@ const IconButtonPrimary = styled(IconButton)(
       background: ${alpha(theme.colors.alpha.trueWhite[30], 0.2)};
       color: ${theme.colors.alpha.trueWhite[100]};
     }
-`
+`,
 );
 
 const BoxLogoWrapper = styled(Box)(
@@ -64,7 +56,7 @@ const BoxLogoWrapper = styled(Box)(
     width: calc(${theme.sidebar.width} - ${theme.spacing(4)});
   }
     
-`
+`,
 );
 
 // 把上方header空間撐開

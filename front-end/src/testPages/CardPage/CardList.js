@@ -1,14 +1,11 @@
 // 用CardBuilder map卡片資料組成
-import React, { useEffect, useState } from 'react';
-import { useSearchParams, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Box,
   CardHeader,
   Card,
   List,
-  ListItemAvatar,
-  ListItem,
-  ListItemText,
   Typography,
   Divider,
   useTheme,
@@ -19,13 +16,6 @@ import {
 import CardBuilder from './CardBuilder';
 import CardBuilderKnowledge from './CardBuilderKnowledge';
 import CardBuilderLife from './CardBuilderLife';
-
-import Text from '../../shared/components/Text';
-
-import AutoAwesomeMosaicTwoToneIcon from '@mui/icons-material/AutoAwesomeMosaicTwoTone';
-import CardTravelTwoToneIcon from '@mui/icons-material/CardTravelTwoTone';
-import ContactPhoneTwoToneIcon from '@mui/icons-material/ContactPhoneTwoTone';
-import EvStationTwoToneIcon from '@mui/icons-material/EvStationTwoTone';
 
 import * as api from '../../api';
 import { getActions } from '../../store/actions/card_actions';
@@ -56,7 +46,7 @@ function CardList({
 
     // 帶著category打api
     const response = await api.fetchCardByCategory(categoryParam, accessToken);
-    console.log('api', response);
+
     setCardsListByCategory(response.data);
   };
 
@@ -101,7 +91,6 @@ function CardList({
         >
           {cards?.map((card) => {
             if (card.Category === 'work') {
-              console.log('card', card);
               return (
                 <CardBuilder
                   cardId={card._id}

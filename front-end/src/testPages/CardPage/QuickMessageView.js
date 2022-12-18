@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -9,7 +9,6 @@ import {
   ListItem,
   Card,
   Typography,
-  IconButton,
   Button,
   Avatar,
   styled,
@@ -20,8 +19,6 @@ import {
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
 
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
-
 import Scrollbar from '../../../src/shared/components/Scrollbar';
 import Text from '../../shared/components/Text';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
@@ -31,7 +28,7 @@ const ListWrapper = styled(List)(
     .MuiDivider-root:first-of-type {
         display: none;
     }
-  `
+  `,
 );
 
 function QuickMessageView({
@@ -41,12 +38,9 @@ function QuickMessageView({
   friends,
   userInfoDetail,
 }) {
-  // console.log('最底層', messageRecords);
-
   const theme = useTheme();
 
   const handleCloseThisDialog = () => {
-    console.log('這有啥', messagesInQuickView);
     setMessageView(false);
   };
 
@@ -161,5 +155,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToProps,
-  mapActionsToProps
+  mapActionsToProps,
 )(QuickMessageView);

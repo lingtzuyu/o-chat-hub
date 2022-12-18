@@ -5,13 +5,10 @@ import {
   Box,
   List,
   ListItem,
-  Badge,
   ListItemAvatar,
   Button,
   Divider,
-  FormControl,
   OutlinedInput,
-  InputAdornment,
   Typography,
   ListItemText,
   alpha,
@@ -24,11 +21,9 @@ import {
 import Text from '../../../shared/components/Text';
 import { getActions } from '../../../store/actions/card_actions';
 import { connect } from 'react-redux';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
+
 import Scrollbar from '../../../shared/components/Scrollbar';
-import ForumTwoToneIcon from '@mui/icons-material/ForumTwoTone';
-import MarkChatReadTwoToneIcon from '@mui/icons-material/MarkChatReadTwoTone';
+
 import IosShareTwoToneIcon from '@mui/icons-material/IosShareTwoTone';
 
 import NotionIcon from '../../../shared/images/notion-icon.png';
@@ -39,7 +34,7 @@ const AvatarGradient = styled(Avatar)(
   ({ theme }) => `
       background: ${theme.colors.gradients.blue1};
       color: ${theme.colors.alpha.trueWhite[100]};
-  `
+  `,
 );
 
 const DotLegend = styled('span')(
@@ -49,7 +44,7 @@ const DotLegend = styled('span')(
     height: 10px;
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
-`
+`,
 );
 
 const OutlinedInputWrapper = styled(OutlinedInput)(
@@ -59,7 +54,7 @@ const OutlinedInputWrapper = styled(OutlinedInput)(
     .MuiOutlinedInput-notchedOutline {
         border: 0;
     }
-`
+`,
 );
 
 const ListWrapper = styled(List)(
@@ -67,7 +62,7 @@ const ListWrapper = styled(List)(
     .MuiListItem-root:last-of-type + .MuiDivider-root {
         display: none;
     }
-`
+`,
 );
 
 const IconButtonWrapper = styled(IconButton)(
@@ -76,7 +71,7 @@ const IconButtonWrapper = styled(IconButton)(
   width: ${theme.spacing(3)};
   height: ${theme.spacing(3)};
   border-radius: ${theme.general.borderRadiusLg};
-`
+`,
 );
 
 function ExportIconList({
@@ -90,6 +85,7 @@ function ExportIconList({
   setIsExportPopoutOpen,
   isExportTableOpen,
   userInfoDetail,
+  setIsTransferred,
 }) {
   const theme = useTheme();
 
@@ -98,7 +94,6 @@ function ExportIconList({
   const [isPopoutOpen, setIsPopoutOpen] = useState(false);
 
   const handleExport = () => {
-    console.log('handle export button');
     // 打開ExportPopout
     handleClose();
     setIsPopoutOpen(true);
@@ -204,7 +199,7 @@ function ExportIconList({
                             '&:hover': {
                               backgroundColor: `${theme.colors.secondary.main}`,
                               color: `${theme.palette.getContrastText(
-                                theme.colors.secondary.main
+                                theme.colors.secondary.main,
                               )}`,
                             },
                           }}
@@ -314,6 +309,7 @@ function ExportIconList({
         </Box>
       </Popover>
       <ExportPopoutTable
+        setIsTransferred={setIsTransferred}
         handleCloseExportPopout={handleCloseExportPopout}
         isPopoutOpen={isPopoutOpen}
         closePopout={handleCloseExportPopout}
@@ -339,5 +335,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToPropse,
-  mapActionsToProps
+  mapActionsToProps,
 )(ExportIconList);

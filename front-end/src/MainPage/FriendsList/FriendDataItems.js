@@ -26,7 +26,6 @@ const MainContainer = styled('div')({
 const FriendDataItems = ({ id, username, isOnline, setChosenChatDetails }) => {
   const openConversation = () => {
     setChosenChatDetails({ id: id, name: username }, chatTypes.DIRECT);
-    console.log('openConversation內的', username);
   };
 
   return (

@@ -14,8 +14,6 @@ function NotionLogin() {
     const code = params.get('code');
     // 如果param沒有帶code就返回
     if (!code) return;
-    // const response = getNotionToken(code);
-    // console.log('前端的response data', response.data);
 
     // 拿code打後端api儲存
     fetch(`${process.env.REACT_APP_API_URL}/notion/${code}`, {

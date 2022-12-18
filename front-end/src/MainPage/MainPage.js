@@ -1,18 +1,12 @@
 import React, { useEffect } from 'react';
 import { styled } from '@mui/system';
-import AppBar from './AppBar/AppBar';
-import FriendsListBar from './FriendsList/FriendsListBar';
-import Messenger from './Messenger/Messenger';
 
-import TopBar from './TopBar/TopBar';
 import { connect } from 'react-redux';
 import { getActions } from '../store/actions/auth_actions';
 import { connectSocketBackend } from '../chat/socketConnectionClient';
-import CardArea from './CardArea/CardArea';
-import ResponsiveAppBar from './TopBar/TopAppBar';
+
 import TopAppBar from './TopBar/TopAppBar';
-import { MainBodyContainerCombine } from '../HomePage/MainBody/MainBody';
-import BasicGrid from '../HomePage/MainBody/MainBody';
+
 import MainBody from '../HomePage/MainBody/MainBody';
 
 const MainPageWrapper = styled('div')({

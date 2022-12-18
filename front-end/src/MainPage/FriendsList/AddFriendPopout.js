@@ -4,16 +4,23 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
-import TextField from '@mui/material/TextField';
 
 import MainButton from '../../shared/components/MainButton';
 import { validateInputMail } from '../../shared/utils/validators';
 import { Typography } from '@mui/material';
 import InputField from '../../shared/components/InputField';
+import Swal from 'sweetalert2';
 
 // 朋友相關的actions都定義完綁定後
 import { getActions } from '../../store/actions/friend_actions';
 import { connect } from 'react-redux';
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+});
 
 // TODO: 透過mail來新增朋友
 // 1. 按下新增好友按鈕打開popout
@@ -29,13 +36,25 @@ const AddFriendPopout = ({
   const [invitationMessage, setInvitationMessage] = useState('');
   const [isMailValid, setIsMailValid] = useState('');
 
-  const handleInvitationSent = () => {
+  const handleInvitationSent = async () => {
     // send friend request to server via mail，上方useState
-    sendFriendRequest(
+    const response = await sendFriendRequest(
       // 好友邀請也送出token(從前端localStorage拿) 驗證
       { mail: mail, token: localStorage.accessToken },
-      handleClosePopout
+      handleClosePopout,
     );
+
+    if (response.msg.includes('not exist')) {
+      Toast.fire({
+        icon: 'warning',
+        title: 'Email Not Exist',
+      });
+    } else {
+      Toast.fire({
+        icon: 'success',
+        title: 'Invitation Sent!',
+      });
+    }
   };
 
   const handleClosePopout = () => {

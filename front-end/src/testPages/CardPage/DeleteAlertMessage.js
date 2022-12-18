@@ -1,18 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Swal from 'sweetalert2';
+import React from 'react';
 
 import {
   Box,
-  ListItemAvatar,
-  ListItemText,
   Divider,
   List,
-  ListItem,
   Card,
   Typography,
-  IconButton,
   Button,
-  Avatar,
   styled,
   useTheme,
   Dialog,
@@ -21,28 +15,13 @@ import {
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
 import * as api from '../../api';
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 
-import Scrollbar from '../../../src/shared/components/Scrollbar';
-import Text from '../../shared/components/Text';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
-
-const ListWrapper = styled(List)(
-  () => `
-    .MuiDivider-root:first-of-type {
-        display: none;
-    }
-  `,
-);
 
 const accessToken = localStorage.getItem('accessToken');
 
 function DeleteAlertMessage({ isDeleteAlertOpen, setDeleteAlert, cardId }) {
-  // console.log('最底層', messageRecords);
-
   const deletedCardInfo = { data: { token: accessToken, cardId: cardId } };
-
-  const theme = useTheme();
 
   const handleConfirmDelete = async () => {
     await api.deleteCard(deletedCardInfo);

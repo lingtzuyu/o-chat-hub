@@ -12,8 +12,6 @@ import {
 
 import TempProfilePic from '../../shared/images/ProfilePhoto.jpg';
 
-import AttachFileTwoToneIcon from '@mui/icons-material/AttachFileTwoTone';
-
 import SendTwoToneIcon from '@mui/icons-material/SendTwoTone';
 
 import { sendDirectMessge } from '../../chat/socketConnectionClient';
@@ -25,16 +23,16 @@ const MessageInputWrapper = styled(InputBase)(
     font-size: ${theme.typography.pxToRem(18)};
     padding: ${theme.spacing(1)};
     width: 100%;
-`
+`,
 );
 
 const Input = styled('input')({
   display: 'none',
 });
 
-function BottomBarContent({ chosenChatDetails }) {
+function BottomBarContent({ chosenChatDetails, userInfoDetail }) {
   // TODO: 要改透過redux拿到
-  const userMail = localStorage.getItem('userMail');
+  const userMail = userInfoDetail?.mail;
   const [messageToBeSent, setMessageToBeSent] = useState('');
   const theme = useTheme();
 
@@ -44,10 +42,8 @@ function BottomBarContent({ chosenChatDetails }) {
   };
 
   const sendMessages = () => {
-    // TODO: 在socketConnection中設立發訊息事件
     // 防止空的messgage
     if (messageToBeSent.length > 0) {
-      console.log(chosenChatDetails);
       sendDirectMessge({
         // 選擇好友的時候會存入的
         receiverId: chosenChatDetails.id,
@@ -56,8 +52,6 @@ function BottomBarContent({ chosenChatDetails }) {
     }
     // setMessage空直要放在送出資料後面，不然會直接先清空
     setMessageToBeSent('');
-
-    console.log('send Message to DB successful');
   };
 
   // 按下按鍵後就執行send Message
@@ -118,8 +112,8 @@ function BottomBarContent({ chosenChatDetails }) {
   );
 }
 
-const mapStoreStateToProps = ({ chat }) => {
-  return { ...chat };
+const mapStoreStateToProps = ({ chat, auth }) => {
+  return { ...chat, ...auth };
 };
 
 export default connect(mapStoreStateToProps)(BottomBarContent);

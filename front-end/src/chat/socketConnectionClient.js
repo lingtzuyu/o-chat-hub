@@ -22,14 +22,13 @@ export const connectSocketBackend = (accessToken) => {
   });
   socket.on('connect', () => {
     console.log('client side connected, id: ', socket.id);
-    console.log(socket);
   });
 
   // custom evnet: firneds-invitation
   // 確認此socket是否有pending的邀請
   socket.on('friendInvitations', (data) => {
     const { pendingInvitations } = data;
-    // console.log('friendInvitation event launch', pendingInvitations);
+
     // dispatch改變store state
 
     store.dispatch(setPendingFriendsInvite(pendingInvitations));
@@ -41,7 +40,6 @@ export const connectSocketBackend = (accessToken) => {
   });
 
   socket.on('onlineUsers', (data) => {
-    // console.log('check broadcast every 10s', data);
     // obj可以動態被加屬性，盡量不影響本來的邏輯
     const { onlineUsers } = data;
     // 有資料進來，就記得dispatch
@@ -51,9 +49,6 @@ export const connectSocketBackend = (accessToken) => {
 
   // came from the server side (server端發送給我)
   socket.on('directMessageHistory', (data) => {
-    console.log('server主動送的', data);
-    // {mesasage: Array(xx), participants: Array(xx)}
-    // 如果選到的choesentDetail的ID是一樣的，就渲染及update
     updateDirectMessageIfMatch(data);
   });
 };
@@ -61,13 +56,10 @@ export const connectSocketBackend = (accessToken) => {
 // 如果用戶online，就送出message，否則存入DB
 // data等等直接用個{}來包要的東西
 const sendDirectMessge = (data) => {
-  console.log('確認socket事件directMessage內的data', data);
   socket.emit('directMessage', data);
 };
 
 const getDirectMessageHistroy = (data) => {
-  console.log('getDirectMessageHistroy', data);
-  // {receiverUserId: 111}
   socket.emit('directMessageHistory', data);
 };
 

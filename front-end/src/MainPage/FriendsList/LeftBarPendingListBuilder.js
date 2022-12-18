@@ -4,41 +4,14 @@ import React, { useState } from 'react';
 import {
   Box,
   Typography,
-  FormControlLabel,
-  Switch,
-  Tabs,
-  Tab,
-  TextField,
-  IconButton,
-  InputAdornment,
   Avatar,
-  List,
-  Button,
   Tooltip,
-  Divider,
   AvatarGroup,
-  ListItemButton,
-  ListItemAvatar,
-  ListItemText,
   lighten,
   styled,
 } from '@mui/material';
 
-import ProfilePhoto from '../../shared/images/kd.jpg';
-
-import { formatDistance, subMinutes, subHours } from 'date-fns';
-import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-
-import Label from '../../shared/components/Lable';
-
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import AlarmTwoToneIcon from '@mui/icons-material/AlarmTwoTone';
-import { Link as RouterLink } from 'react-router-dom';
-
 import InviteConfirmButton from './InviteConfirmButton';
-import OnlineIndicator from './OnlineIndicator';
-import OfflineIndicator from './OfflineIndicator';
 
 import { connect } from 'react-redux';
 import { getActions } from '../../store/actions/friend_actions';

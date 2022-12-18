@@ -2,25 +2,17 @@ import { Fragment } from 'react';
 
 import {
   Box,
-  ListItemAvatar,
   ListItemText,
   Divider,
   List,
   ListItem,
-  Card,
-  Typography,
-  IconButton,
   Button,
-  Avatar,
   styled,
   useTheme,
 } from '@mui/material';
 
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
-
 import Scrollbar from '../../../shared/components/Scrollbar';
 import Text from '../../../shared/components/Text';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 
 const CardActions = styled(Box)(
   ({ theme }) => `
@@ -28,7 +20,7 @@ const CardActions = styled(Box)(
     right: ${theme.spacing(1.5)};
     top: ${theme.spacing(1.5)};
     z-index: 7;
-  `
+  `,
 );
 
 const ListWrapper = styled(List)(
@@ -36,7 +28,7 @@ const ListWrapper = styled(List)(
     .MuiDivider-root:first-of-type {
         display: none;
     }
-  `
+  `,
 );
 
 function ExportTodoList({ todoArray }) {
@@ -121,7 +113,7 @@ function ExportTodoList({ todoArray }) {
                       '&:hover': {
                         backgroundColor: `${theme.colors.secondary.main}`,
                         color: `${theme.palette.getContrastText(
-                          theme.colors.secondary.main
+                          theme.colors.secondary.main,
                         )}`,
                       },
                     }}

@@ -2,24 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 import PageTitleWrapper from '../../TopNavigationBar/PageTitleWrapper';
 
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import CardDetail from './CardDetail';
 import CategoryState from './CategoryState';
 
 import Scrollbar from '../../../shared/components/Scrollbar';
 import CardPageTopBar from './CardPageTopBar';
 
-import {
-  Box,
-  styled,
-  Divider,
-  Drawer,
-  IconButton,
-  useTheme,
-  Grid,
-} from '@mui/material';
-
-import UnreadStatic from './UnreadStatic';
+import { Box, styled, Drawer, IconButton, useTheme, Grid } from '@mui/material';
 
 import { getActions } from '../../../store/actions/card_actions';
 import { connect } from 'react-redux';
@@ -28,7 +17,7 @@ const RootWrapper = styled(Box)(
   ({ theme }) => `
        height: calc(100vh - ${theme.header.height});
        display: flex;
-`
+`,
 );
 
 const Sidebar = styled(Box)(
@@ -36,7 +25,7 @@ const Sidebar = styled(Box)(
         width: 300px;
         background: ${theme.colors.alpha.white[100]};
         border-right: ${theme.colors.alpha.black[10]} 1px;
-`
+`,
 );
 
 const WorkSpaceWrapper = styled(Box)(
@@ -45,7 +34,7 @@ const WorkSpaceWrapper = styled(Box)(
         height: 100%;
         display: flex;
         
-`
+`,
 );
 
 const ChatWindow = styled(Box)(
@@ -55,7 +44,7 @@ const ChatWindow = styled(Box)(
         display: flex;
         flex-direction: column;
         
-`
+`,
 );
 
 const CardWindow = styled(Box)(
@@ -65,7 +54,7 @@ const CardWindow = styled(Box)(
         display: flex;
         flex-direction: column;
         
-`
+`,
 );
 
 const ChatTopBar = styled(Box)(
@@ -74,7 +63,7 @@ const ChatTopBar = styled(Box)(
         border-bottom: ${theme.colors.alpha.black[10]}  1px;
         padding: ${theme.spacing(2)};
         align-items: center;
-`
+`,
 );
 
 const ChatTopBarContainer = styled(Box)(
@@ -82,7 +71,7 @@ const ChatTopBarContainer = styled(Box)(
         background: ${theme.colors.alpha.white[100]};
         padding: ${theme.spacing(2)};
         align-items: center;
-`
+`,
 );
 
 const IconButtonToggle = styled(IconButton)(
@@ -90,7 +79,7 @@ const IconButtonToggle = styled(IconButton)(
   width: ${theme.spacing(4)};
   height: ${theme.spacing(4)};
   background: ${theme.colors.alpha.white[100]};
-`
+`,
 );
 
 const DrawerWrapperMobile = styled(Drawer)(
@@ -102,7 +91,7 @@ const DrawerWrapperMobile = styled(Drawer)(
         width: 340px;
         z-index: 3;
   }
-`
+`,
 );
 
 export function CardPage({

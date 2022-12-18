@@ -19,10 +19,6 @@ const SignupPage = ({ signup }) => {
   const handleSignup = () => {
     const signupData = { mail, password, username };
     signup(signupData, forwardTo);
-    console.log(mail);
-    console.log(password);
-    console.log(username);
-    console.log('signup');
   };
 
   useEffect(() => {

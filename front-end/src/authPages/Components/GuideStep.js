@@ -7,7 +7,6 @@ import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import OperationButton from '../../shared/images/GuideStep.png';
 import ExportIcon from '../../shared/images/exportIcon.png';

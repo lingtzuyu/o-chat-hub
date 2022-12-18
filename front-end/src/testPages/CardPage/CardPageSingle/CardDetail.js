@@ -25,20 +25,16 @@ import {
 import NotionIcon from '../../../shared/images/notion-icon.png';
 import TrelloIcon from '../../../shared/images/trello-icon.png';
 import Text from '../../../shared/components/Text';
-import Label from '../../../shared/components/Lable';
+
 import Scrollbar from '../../../shared/components/Scrollbar';
 import ExportPopoutTable from '../Component/ExportPopoutTable';
 
-import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
-import AddLinkTwoToneIcon from '@mui/icons-material/AddLinkTwoTone';
-import LinkOffTwoToneIcon from '@mui/icons-material/LinkOffTwoTone';
 import InsertLinkTwoToneIcon from '@mui/icons-material/InsertLinkTwoTone';
-import AutorenewTwoToneIcon from '@mui/icons-material/AutorenewTwoTone';
+
 import BorderColorTwoToneIcon from '@mui/icons-material/BorderColorTwoTone';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import FavoriteBorderTwoToneIcon from '@mui/icons-material/FavoriteBorderTwoTone';
+
 import ImportExportTwoToneIcon from '@mui/icons-material/ImportExportTwoTone';
-import DraftsIcon from '@mui/icons-material/Drafts';
+
 import DraftsTwoToneIcon from '@mui/icons-material/DraftsTwoTone';
 import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone';
 
@@ -57,14 +53,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import LockIcon from '@mui/icons-material/Lock';
 import EditIcon from '@mui/icons-material/Edit';
 
-// mock
-import Sundar from '../../../shared/images/mock/sundar_head.jpg';
-
 // api
 import * as api from '../../../api';
-
-// alt
-import AltHeadshot from '../../../shared/images/alt/alt_headshot.jpg';
 
 // alert
 import Swal from 'sweetalert2';
@@ -74,7 +64,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 import { getActions } from '../../../store/actions/card_actions';
-import { setChosenChatDetails } from '../../../store/actions/chat_actions';
+
 import { connect } from 'react-redux';
 
 const CardActions = styled(Box)(
@@ -249,7 +239,7 @@ function CardDetail({
   const [initialCategory, setInitialCategory] = useState(category);
 
   const token = localStorage.getItem('accessToken');
-  const userId = localStorage.getItem('userId');
+  const userId = userInfoDetail?.id;
 
   // edit 標題及內文
   const handleEditTitle = () => {
@@ -258,12 +248,10 @@ function CardDetail({
 
   // title value change
   const titleChangeHandler = (event) => {
-    console.log(event.target.value);
     setInitialTitle(event.target.value);
   };
 
   const notesChangeHandler = (event) => {
-    console.log(event);
     setInitialNotes(event);
   };
 
@@ -370,10 +358,10 @@ function CardDetail({
 
   const handleChangeCategory = async (e) => {
     const categoryChange = e.target.value;
-    console.log(categoryChange);
+
     const response = await api.updateCategory(token, mapId, categoryChange);
     setIsCategoryOpen(false);
-    console.log(response);
+
     if (response.status === 200) {
       Toast.fire({
         icon: 'success',

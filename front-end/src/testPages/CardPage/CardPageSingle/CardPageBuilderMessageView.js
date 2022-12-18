@@ -1,25 +1,15 @@
 // Card分頁內的message呈現
 
 import {
-  CardHeader,
-  Card,
   List,
   ListItemAvatar,
   ListItem,
   ListItemText,
   Avatar,
-  Button,
   Typography,
   Divider,
   useTheme,
-  Box,
 } from '@mui/material';
-
-import AutoAwesomeMosaicTwoToneIcon from '@mui/icons-material/AutoAwesomeMosaicTwoTone';
-import ContactPhoneTwoToneIcon from '@mui/icons-material/ContactPhoneTwoTone';
-import EvStationTwoToneIcon from '@mui/icons-material/EvStationTwoTone';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import { secondsInQuarter } from 'date-fns';
 
 function CardPageBuilderMessageView({ sender, body, date }) {
   const theme = useTheme();

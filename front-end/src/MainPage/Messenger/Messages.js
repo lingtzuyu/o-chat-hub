@@ -1,28 +1,10 @@
-import React, { useRef, useEffect } from 'react';
-
-// https://ithelp.ithome.com.tw/articles/10266635
-// useRef 只會回傳一個值，這個值是一個有 current 屬性的物件。
-// current 值並不會觸發 re-render
-// 可以用來避免元件第一次 render 時，useEffect 內的程式碼執行
+import React from 'react';
 
 import { styled } from '@mui/system';
 import { MessageAreaHeader } from './MessageAreaHeader';
 import { connect } from 'react-redux';
-import { DUMMY_MESSAGES } from './DUMMY_MESSAGES';
+
 import SingleMessage from './SingleMessage';
-// import { SingleMessageBox } from './ChatBox';
-// import { SingleChatRoomBubble } from './SingleChatBubble';
-
-// const convertDate = (date, format) => {
-//   const map = {
-//     mm: date.getMonth() + 1,
-//     dd: date.getDate(),
-//     yy: date.getFullYear().toString().slice(-2),
-//     yyyy: date.getFullYear(),
-//   };
-
-//   return format.replace(/mm|dd|yy|yyyy/gi, (matched) => map[matched]);
-// };
 
 const MessagesContainer = styled('div')({
   // 卷軸
@@ -45,15 +27,6 @@ const Messages = ({ chosenChatDetails, messages }) => {
         const sameSender =
           index > 0 && messages[index].sender === messages[index - 1].sender;
         // 比較前後，會判斷true或false
-        // console.log(message);
-
-        //TODO: 放在同一天下
-        // const sameTime =
-        //   index > 0 &&
-        //   convertDate(new Date(message.date), 'dd/mm/yy') ===
-        //     convertDate(new Date(messages[index - 1].date), 'dd/mm/yy');
-
-        // console.log(convertDate(new Date(message.date)), 'yy/mm/dd');
 
         return (
           // <div>{message.content}</div>

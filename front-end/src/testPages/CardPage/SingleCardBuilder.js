@@ -17,7 +17,6 @@ import {
 } from '@mui/material';
 
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
-import { connect } from 'react-redux';
 
 const LinearProgressSuccess = styled(LinearProgress)(
   ({ theme }) => `
@@ -32,7 +31,7 @@ const LinearProgressSuccess = styled(LinearProgress)(
             border-radius: ${theme.general.borderRadiusLg};
             background-color: ${theme.colors.success.main};
         }
-    `
+    `,
 );
 
 const CardActions = styled(Box)(
@@ -41,7 +40,7 @@ const CardActions = styled(Box)(
     right: ${theme.spacing(1.5)};
     top: ${theme.spacing(1.5)};
     z-index: 7;
-  `
+  `,
 );
 
 function SingleCardBuilder({
@@ -186,7 +185,7 @@ function SingleCardBuilder({
           '&:hover': {
             backgroundColor: `${theme.colors.success.main}`,
             color: `${theme.palette.getContrastText(
-              theme.colors.success.dark
+              theme.colors.success.dark,
             )}`,
           },
         }}
