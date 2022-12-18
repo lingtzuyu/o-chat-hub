@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -9,7 +9,6 @@ import {
   ListItem,
   Card,
   Typography,
-  IconButton,
   Button,
   Avatar,
   styled,
@@ -19,8 +18,6 @@ import {
 
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
-
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 
 import Scrollbar from '../../../src/shared/components/Scrollbar';
 import Text from '../../shared/components/Text';

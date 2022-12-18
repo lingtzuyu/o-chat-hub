@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Card,
@@ -6,50 +6,21 @@ import {
   Typography,
   Divider,
   Stack,
-  IconButton,
-  TextField,
   Avatar,
   styled,
   useTheme,
   Link,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Tooltip,
-  CardActionArea,
-  Grid,
   Button,
 } from '@mui/material';
 
 import StepNotion from '../../shared/images/step_notion.png';
 import NotionTemplate from '../../shared/images/notion_template.png';
 import MainLogo from '../../shared/images/LogoPureBlue.png';
-import Text from '../../shared/components/Text';
+
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 import Swal from 'sweetalert2';
 import * as api from '../../api';
-
-const CardActionAreaWrapper = styled(Box)(
-  ({ theme }) => `
-        text-align: center;
-        background: ${alpha(theme.colors.primary.main, 0.03)};
-
-        .MuiTouchRipple-root {
-          opacity: .2;
-        }
-  
-        .MuiCardActionArea-focusHighlight {
-          background: ${theme.colors.primary.main};
-        }
-  
-        &:hover {
-          .MuiCardActionArea-focusHighlight {
-            opacity: .05;
-          }
-        }
-  `,
-);
 
 const Toast = Swal.mixin({
   toast: true,
@@ -64,7 +35,6 @@ const NotionLinkTip = () => {
   const params = new URL(window.document.location).searchParams;
   const token = localStorage.getItem('accessToken');
   const code = params.get('code');
-  const webRoute = process.env.REACT_APP_WEB_ROUTE;
 
   const handleSaveNotionToken = async () => {
     const result = await api.getNotionToken(code, token);

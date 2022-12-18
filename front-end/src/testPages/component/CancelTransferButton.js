@@ -1,6 +1,5 @@
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 
 import { getActions } from '../../store/actions/card_actions';
@@ -68,5 +67,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToPropse,
-  mapActionsToProps
+  mapActionsToProps,
 )(CancelTransferButton);

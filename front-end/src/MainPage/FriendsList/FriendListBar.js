@@ -1,12 +1,8 @@
 // TODO: 準備取代FriendDataItems.js
 // 各好友按鈕的公版
-
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-
-import { chatTypes, getActions } from '../../store/actions/chat_actions';
-import { connect } from 'react-redux';
 
 export default function SimplePaper() {
   return (

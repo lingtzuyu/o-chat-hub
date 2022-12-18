@@ -1,34 +1,13 @@
-import React, { useState, forwardRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Avatar,
-  Box,
   Card,
-  Checkbox,
   Grid,
-  Slide,
-  Divider,
-  Tooltip,
-  IconButton,
   MenuItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TablePagination,
-  TableContainer,
-  TableRow,
-  TextField,
-  Button,
-  Typography,
-  Dialog,
   FormControl,
   Select,
   InputLabel,
-  Zoom,
-  InputAdornment,
-  styled,
 } from '@mui/material';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
+
 import { connect } from 'react-redux';
 import { getActions } from '../../../store/actions/card_actions';
 

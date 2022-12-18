@@ -1,5 +1,4 @@
 import * as api from '../../api';
-import { setChosenChatDetails } from './chat_actions';
 
 export const cardActions = {
   SHOW_SELECTE_MESSAGE_BOX: 'CARDS.SHOW_SELECTE_MESSAGE_BOX',

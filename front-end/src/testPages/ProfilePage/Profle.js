@@ -12,13 +12,8 @@ import {
   styled,
   useTheme,
   Link,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   Tooltip,
-  CardActionArea,
   Grid,
-  Button,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -26,34 +21,20 @@ import NotionIcon from '../../shared/images/notion-icon.png';
 import TrelloIcon from '../../shared/images/trello-icon.png';
 
 import Text from '../../shared/components/Text';
-import Label from '../../shared/components/Lable';
-import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
+
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
-import AddBoxIcon from '@mui/icons-material/AddBox';
+
 import Swal from 'sweetalert2';
 
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
-import ContactSupportTwoToneIcon from '@mui/icons-material/ContactSupportTwoTone';
-import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
 import AddLinkTwoToneIcon from '@mui/icons-material/AddLinkTwoTone';
 import LinkOffTwoToneIcon from '@mui/icons-material/LinkOffTwoTone';
 import InsertLinkTwoToneIcon from '@mui/icons-material/InsertLinkTwoTone';
 import AutorenewTwoToneIcon from '@mui/icons-material/AutorenewTwoTone';
-import LinkIcon from '@mui/icons-material/Link';
+
 import { connect } from 'react-redux';
 import { getActions } from '../../store/actions/auth_actions';
 import * as api from '../../api';
-import { GiWindowBars } from 'react-icons/gi';
-
-const CardActions = styled(Box)(
-  ({ theme }) => `
-    position: absolute;
-    right: ${theme.spacing(1.5)};
-    top: ${theme.spacing(1.5)};
-    z-index: 7;
-  `,
-);
 
 const CardActionAreaWrapper = styled(Box)(
   ({ theme }) => `

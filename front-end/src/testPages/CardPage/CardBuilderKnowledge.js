@@ -2,49 +2,32 @@
 import React, { useState } from 'react';
 import {
   Box,
-  CardHeader,
-  Card,
-  List,
   ListItemAvatar,
   ListItem,
   ListItemText,
   Typography,
   Divider,
   useTheme,
-  styled,
   Checkbox,
   IconButton,
   Tooltip,
 } from '@mui/material';
 import Label from '../../shared/components/Lable';
-import Text from '../../shared/components/Text';
+
 import ExportIconList from './Component/ExportIconList';
 import EmailIcon from '@mui/icons-material/Email';
 import DraftsIcon from '@mui/icons-material/Drafts';
 
-import AutoAwesomeMosaicTwoToneIcon from '@mui/icons-material/AutoAwesomeMosaicTwoTone';
-import CardTravelTwoToneIcon from '@mui/icons-material/CardTravelTwoTone';
-import ContactPhoneTwoToneIcon from '@mui/icons-material/ContactPhoneTwoTone';
-import EvStationTwoToneIcon from '@mui/icons-material/EvStationTwoTone';
-import NightlifeIcon from '@mui/icons-material/Nightlife';
-// stands for work
-import WorkIcon from '@mui/icons-material/Work';
 import Swal from 'sweetalert2';
 // stands for knowledge
 import SchoolIcon from '@mui/icons-material/School';
-
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
-import Favorite from '@mui/icons-material/Favorite';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import * as api from '../../api';
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
-import Work from '@mui/icons-material/Work';
+
 import QuickMessageView from './QuickMessageView';
-import DeleteAlertMessage from './DeleteAlertMessage';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 

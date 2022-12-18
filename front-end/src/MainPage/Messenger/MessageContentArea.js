@@ -1,11 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import MessageTextField from './MessageTextField';
-import MiddleBarInputArea from './MiddleBarInputArea';
-import ChatBubblesCombined from './ChatBubblesCombined';
+
 import Messenger from './Messenger';
-import { getDirectMessageHistroy } from '../../chat/socketConnectionClient';
-import { connect } from 'react-redux';
 
 const MessageContentAreaMainContainer = styled('div')({
   width: '90%',

@@ -4,7 +4,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
-import TextField from '@mui/material/TextField';
 
 import MainButton from '../../shared/components/MainButton';
 import { validateInputMail } from '../../shared/utils/validators';
@@ -34,7 +33,7 @@ const AddFriendPopout = ({
     sendFriendRequest(
       // 好友邀請也送出token(從前端localStorage拿) 驗證
       { mail: mail, token: localStorage.accessToken },
-      handleClosePopout
+      handleClosePopout,
     );
   };
 

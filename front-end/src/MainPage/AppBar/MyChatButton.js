@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-// icons: https://mui.com/material-ui/material-icons/
 
 import TextsmsIcon from '@mui/icons-material/Textsms';
 

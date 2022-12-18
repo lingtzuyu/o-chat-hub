@@ -8,12 +8,6 @@ import {
   styled,
 } from '@mui/material';
 
-import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone';
-import ReceiptTwoToneIcon from '@mui/icons-material/ReceiptTwoTone';
-import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
-import SupportTwoToneIcon from '@mui/icons-material/SupportTwoTone';
-import YardTwoToneIcon from '@mui/icons-material/YardTwoTone';
-import SnowmobileTwoToneIcon from '@mui/icons-material/SnowmobileTwoTone';
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import NightlifeOutlinedIcon from '@mui/icons-material/NightlifeOutlined';
@@ -28,7 +22,7 @@ const AvatarWrapper = styled(Avatar)(
       color:  ${theme.colors.alpha.trueWhite[100]};
       width: ${theme.spacing(5.5)};
       height: ${theme.spacing(5.5)};
-`
+`,
 );
 
 function CategoryState({ cards }) {

@@ -2,76 +2,30 @@ import React, { useState } from 'react';
 import {
   Box,
   Typography,
-  FormControlLabel,
-  Switch,
   Tabs,
   Tab,
   TextField,
   IconButton,
   InputAdornment,
   Avatar,
-  List,
-  Button,
-  Tooltip,
-  Divider,
-  AvatarGroup,
-  ListItemButton,
-  ListItemAvatar,
-  ListItemText,
-  lighten,
   styled,
 } from '@mui/material';
-// import useAuth from 'src/hooks/useAuth';
-// import { useTranslation } from 'react-i18next';
-import { formatDistance, subMinutes, subHours } from 'date-fns';
+
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import Label from '../shared/components/Lable';
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import AlarmTwoToneIcon from '@mui/icons-material/AlarmTwoTone';
-import { Link as RouterLink } from 'react-router-dom';
-
-import TempProfilePic from '../shared/images/ProfilePhoto.jpg';
 
 import LeftBarFriendListBuilder from '../MainPage/FriendsList/LeftBarFriendListBuilder';
 
 import { AddFriendIcon } from '../MainPage/FriendsList/AddFriendIcon';
 
 import { connect } from 'react-redux';
-import PendingInvitationList from '../MainPage/FriendsList/PendingInvitationList';
+
 import LeftBarPendingListBuilder from '../MainPage/FriendsList/LeftBarPendingListBuilder';
-
-const AvatarSuccess = styled(Avatar)(
-  ({ theme }) => `
-          background-color: ${theme.colors.success.lighter};
-          color: ${theme.colors.success.main};
-          width: ${theme.spacing(8)};
-          height: ${theme.spacing(8)};
-          margin-left: auto;
-          margin-right: auto;
-    `,
-);
-
-const MeetingBox = styled(Box)(
-  ({ theme }) => `
-          background-color: ${lighten(theme.colors.alpha.black[10], 0.5)};
-          margin: ${theme.spacing(2)} 0;
-          border-radius: ${theme.general.borderRadius};
-          padding: ${theme.spacing(2)};
-    `,
-);
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
         padding: ${theme.spacing(2.5)};
-  `,
-);
-
-const ListItemWrapper = styled(ListItemButton)(
-  ({ theme }) => `
-        &.MuiButtonBase-root {
-            margin: ${theme.spacing(1)} 0;
-        }
   `,
 );
 

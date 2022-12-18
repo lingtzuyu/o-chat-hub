@@ -1,6 +1,6 @@
 // 廢棄嚕，請用popout
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@mui/material';
 import Dialog from '@mui/material/Dialog';

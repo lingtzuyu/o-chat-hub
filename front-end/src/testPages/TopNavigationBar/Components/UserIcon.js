@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import TempProfile from '../../../shared/images/ProfilePhoto.jpg';
+
 import { logout } from '../../../shared/utils/generalAuth';
 
 import {
@@ -15,12 +15,11 @@ import {
   Typography,
   styled,
 } from '@mui/material';
-import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
+
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
-import ViewAgendaTwoToneIcon from '@mui/icons-material/ViewAgendaTwoTone';
+
 import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
 import QuestionAnswerTwoToneIcon from '@mui/icons-material/QuestionAnswerTwoTone';
 

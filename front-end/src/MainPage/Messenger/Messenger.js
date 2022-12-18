@@ -1,17 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { MeesageIfNoChosenContact } from './MeesageIfNoChosenContact';
 import ChatBubblesCombined from './ChatBubblesCombined';
-import { getDirectMessageHistroy } from '../../chat/socketConnectionClient';
-
-// const MessengerWrapper = styled('div')({
-//   // 空間足夠時允許擴展
-//   flexGrow: 1,
-//   backgroundColor: 'white',
-//   marginTop: '80px',
-//   height: '920px',
-//   display: 'flex',
-// });
 
 const Messenger = ({ chosenChatDetails }) => {
   return (

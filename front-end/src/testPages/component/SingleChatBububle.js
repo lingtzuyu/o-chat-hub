@@ -13,16 +13,9 @@ import {
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 
-import {
-  formatDistance,
-  format,
-  subDays,
-  subHours,
-  subMinutes,
-} from 'date-fns';
 import ScheduleTwoToneIcon from '@mui/icons-material/ScheduleTwoTone';
 import FakeProfilePic from '../../shared/images/avatar.jpg';
-import TempProfilePic from '../../shared/images/ProfilePhoto.jpg';
+
 import { connect } from 'react-redux';
 
 // 日期分隔線

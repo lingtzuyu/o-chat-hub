@@ -12,23 +12,13 @@ import {
   Avatar,
   styled,
   ListItem,
-  Badge,
   OutlinedInput,
-  InputAdornment,
-  FormControl,
   useTheme,
   Dialog,
-  Grid,
-  IconButton,
-  Input,
-  Tooltip,
 } from '@mui/material';
-import ExportTodoList from './ExportTodoList';
+
 import Scrollbar from '../../../shared/components/Scrollbar';
-import TempAvatar from '../../../shared/images/fake_avatar.png';
-import InputField from '../../../shared/components/InputField';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
+
 import Text from '../../../shared/components/Text';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import NotioinStatusDropDown from './NotionStatusDropDown';
@@ -36,7 +26,6 @@ import NotioinPriorityDropDown from './NotionPriorityDropDown copy';
 import { getActions } from '../../../store/actions/card_actions';
 import { connect } from 'react-redux';
 
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import NotionIcon from '../../../shared/images/notion-icon.png';
 import TrelloIcon from '../../../shared/images/trello-icon.png';
 import * as api from '../../../api';

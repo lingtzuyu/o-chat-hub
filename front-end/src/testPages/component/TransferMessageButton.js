@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import InputIcon from '@mui/icons-material/Input';
-import TransferMessagePopout from './TransferMessagePopout';
+
 import TransferPopOutTable from './TransferPopOutTable';
 
 import { getActions } from '../../store/actions/card_actions';

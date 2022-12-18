@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -73,5 +73,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToProps,
-  mapActionsToProps
+  mapActionsToProps,
 )(CategoryDropDown);

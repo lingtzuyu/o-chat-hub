@@ -1,15 +1,11 @@
 import {
   alpha,
-  Avatar,
   Badge,
   Box,
   Button,
   Divider,
   IconButton,
   List,
-  ListItem,
-  ListItemAvatar,
-  Paper,
   Popover,
   useTheme,
   Tooltip,
@@ -19,9 +15,7 @@ import {
 import { useRef, useState } from 'react';
 import NotificationsActiveTwoToneIcon from '@mui/icons-material/NotificationsActiveTwoTone';
 import Link from '@mui/material/Link';
-import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
-import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone';
-import { formatDistance, subHours, subSeconds, subDays } from 'date-fns';
+
 import { getActions } from '../../../store/actions/card_actions';
 import { connect } from 'react-redux';
 import CardNotification from './CardNotification';

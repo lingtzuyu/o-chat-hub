@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Footer from '../component/Footer';
-import {
-  Box,
-  styled,
-  Divider,
-  Drawer,
-  IconButton,
-  useTheme,
-} from '@mui/material';
+
+import { Box, styled, Drawer, IconButton, useTheme } from '@mui/material';
 
 import PageTitleWrapper from '../TopNavigationBar/PageTitleWrapper';
 import * as api from '../../api';
 
 import Scrollbar from '../../shared/components/Scrollbar';
 import Profile from './Profle';
-import { acceptInvite } from '../../api';
 
 import { getActions } from '../../store/actions/auth_actions';
 import { connect } from 'react-redux';

@@ -7,12 +7,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import MenuItem from '@mui/material/MenuItem';
+
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { styled } from '@mui/material/styles';
-import NativeSelect from '@mui/material/NativeSelect';
-import InputBase from '@mui/material/InputBase';
 import TextField from '@mui/material/TextField';
 
 import { connect } from 'react-redux';

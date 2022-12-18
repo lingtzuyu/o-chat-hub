@@ -5,13 +5,10 @@ import {
   Box,
   List,
   ListItem,
-  Badge,
   ListItemAvatar,
   Button,
   Divider,
-  FormControl,
   OutlinedInput,
-  InputAdornment,
   Typography,
   ListItemText,
   alpha,
@@ -24,11 +21,9 @@ import {
 import Text from '../../../shared/components/Text';
 import { getActions } from '../../../store/actions/card_actions';
 import { connect } from 'react-redux';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
+
 import Scrollbar from '../../../shared/components/Scrollbar';
-import ForumTwoToneIcon from '@mui/icons-material/ForumTwoTone';
-import MarkChatReadTwoToneIcon from '@mui/icons-material/MarkChatReadTwoTone';
+
 import IosShareTwoToneIcon from '@mui/icons-material/IosShareTwoTone';
 
 import NotionIcon from '../../../shared/images/notion-icon.png';

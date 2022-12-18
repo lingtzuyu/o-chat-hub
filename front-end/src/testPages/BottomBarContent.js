@@ -10,10 +10,6 @@ import {
   useTheme,
 } from '@mui/material';
 
-import TempProfilePic from '../shared/images/ProfilePhoto.jpg';
-
-import AttachFileTwoToneIcon from '@mui/icons-material/AttachFileTwoTone';
-
 import SendTwoToneIcon from '@mui/icons-material/SendTwoTone';
 
 import { sendDirectMessge } from '../chat/socketConnectionClient';

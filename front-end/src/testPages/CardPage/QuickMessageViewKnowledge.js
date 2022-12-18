@@ -1,6 +1,6 @@
 // 似乎廢棄了
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -11,7 +11,6 @@ import {
   ListItem,
   Card,
   Typography,
-  IconButton,
   Button,
   Avatar,
   styled,
@@ -22,8 +21,6 @@ import {
 import { getActions } from '../../store/actions/card_actions';
 import { connect } from 'react-redux';
 
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
-
 import Scrollbar from '../../../src/shared/components/Scrollbar';
 import Text from '../../shared/components/Text';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
@@ -33,7 +30,7 @@ const ListWrapper = styled(List)(
     .MuiDivider-root:first-of-type {
         display: none;
     }
-  `
+  `,
 );
 
 function QuickMessageViewKnowledge({
@@ -157,5 +154,5 @@ const mapActionsToProps = (dispatch) => {
 
 export default connect(
   mapStoreStateToProps,
-  mapActionsToProps
+  mapActionsToProps,
 )(QuickMessageViewKnowledge);
