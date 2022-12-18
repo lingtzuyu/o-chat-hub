@@ -10,10 +10,9 @@ const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
-  // 讓整個專案存取store的state
   <Provider store={store}>
     <App />
-  </Provider>
+  </Provider>,
 );
 
 // If you want to start measuring performance in your app, pass a function
