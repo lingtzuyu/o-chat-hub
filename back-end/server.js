@@ -20,22 +20,17 @@ const httpServer = http.createServer(app);
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// FIXME: cors裡面的設定，前後端分離不要全開
+
 app.use(cors());
 
-// FIXME: 之後再開啟
 morganBody(app);
 
 // 環境變數
 const { SERVER_PORT, API_VERSION } = process.env;
 
-// DB connection
-// https://stackoverflow.com/questions/23293202/export-and-reuse-my-mongoose-connection-across-multiple-models
-
 const { mongo } = require('./server/models/mongodbcon');
 
 mongo();
-// FIXME: 刪除，放在mongo連線那邊
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -47,8 +42,6 @@ app.use(`/api/${API_VERSION}`, [
   require('./server/routes/card_route'),
   require('./server/routes/notion_route'),
 ]);
-
-// TODO: 404
 
 app.use((err, req, res, next) => {
   console.log('General Error msg', err.fullLog);
