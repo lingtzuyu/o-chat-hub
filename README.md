@@ -42,7 +42,7 @@ The version is following Semantic Versioning rule
 
 ## Architecture
 
-<img width="962" alt="image" src="https://user-images.githubusercontent.com/85784074/217858124-1ed8dc8b-0587-4d77-b8d3-138a2aba0fb0.png">
+<img width="967" alt="image" src="https://user-images.githubusercontent.com/85784074/217995101-bd5a565b-8d9c-46f9-ac11-4a7cbf168185.png">
 
 ## DB schema
 
