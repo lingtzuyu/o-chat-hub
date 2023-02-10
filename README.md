@@ -11,6 +11,7 @@ The version is following Semantic Versioning rule
 | Version | Release Date |             Patch Notes             |
 | ------- | :----------: | :---------------------------------: |
 | 1.0.0   |  2022/12/16  | released version of take-notes.chat |
+| 1.0.1   |  2023/01/13  | bug fix for connecting notion |
 
 ## Features in future
 
@@ -42,7 +43,7 @@ The version is following Semantic Versioning rule
 
 ## Architecture
 
-<img width="967" alt="image" src="https://user-images.githubusercontent.com/85784074/217995101-bd5a565b-8d9c-46f9-ac11-4a7cbf168185.png">
+<img width="974" alt="image" src="https://user-images.githubusercontent.com/85784074/217998197-aab1aa23-77ac-4b76-a2bb-aa77c7891ea0.png">
 
 ## DB schema
 
